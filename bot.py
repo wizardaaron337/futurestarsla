@@ -461,6 +461,46 @@ async def jersey_stock(ctx, jersey_type):
     
     await ctx.send(embed=embed)
 
+@bot.command(name='setup_channels')
+@commands.has_permissions(manage_channels=True)
+async def setup_channels(ctx):
+    """Auto-create server channels for FS Sports Merch"""
+    guild = ctx.guild
+    
+    # Define categories and channels
+    setup = {
+        '📋 INFO': ['welcome', 'announcements'],
+        '🏆 TOURNAMENTS': ['upcoming', 'locked', 'need-filled'],
+        '📦 INVENTORY': ['stock-alerts', 'sortly-updates'],
+        '🚐 LOGISTICS': ['hotels', 'vehicles', 'crew-assignments']
+    }
+    
+    created = []
+    
+    for category_name, channels in setup.items():
+        # Create category
+        category = await guild.create_category(category_name)
+        created.append(f"📁 {category_name}")
+        
+        # Create channels in category
+        for channel_name in channels:
+            await guild.create_text_channel(channel_name, category=category)
+            created.append(f"  └─ #{channel_name}")
+    
+    # Send summary
+    embed = discord.Embed(
+        title="✅ Channels Created",
+        description="\n".join(created),
+        color=0x00ff88
+    )
+    embed.set_footer(text="Future Stars Sports Merch - Server Setup")
+    await ctx.send(embed=embed)
+
+@setup_channels.error
+async def setup_channels_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("❌ You need 'Manage Channels' permission to use this command.")
+
 # Error handling
 @bot.event
 async def on_command_error(ctx, error):
