@@ -13,8 +13,9 @@
         .logo { font-family: 'Orbitron'; font-size: 2.5em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
         .tagline { color: #8892b0; margin-bottom: 40px; font-size: 1.2em; }
         .crew-select { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-        .crew-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; }
-        .crew-btn:hover, .crew-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-2px); }
+        .crew-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; user-select: none; }
+        .crew-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-2px); }
+        .crew-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.2); transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { display: block; color: #8892b0; font-size: 1em; margin-bottom: 8px; font-family: 'Orbitron'; }
         .input-group input { width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: #fff; font-family: 'Rajdhani'; font-size: 1.2em; outline: none; }
@@ -38,7 +39,7 @@
         </div>
         <div class="input-group">
             <label>Password</label>
-            <input type="password" id="password" placeholder="Password: 2026">
+            <input type="text" id="password" placeholder="Password: 2026" value="2026">
         </div>
         <button class="btn" onclick="login()">ACCESS SYSTEM</button>
         <div class="error" id="error">Invalid password</div>
@@ -55,6 +56,7 @@
 
         function selectCrew(crew) {
             selectedCrew = crew;
+            console.log('Selected:', crew);
             document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
         }
@@ -62,13 +64,26 @@
         function login() {
             const pass = document.getElementById('password').value;
             const error = document.getElementById('error');
-            if (!selectedCrew) { error.textContent = 'Select your role'; error.classList.add('show'); return; }
+            
+            console.log('Selected crew:', selectedCrew);
+            console.log('Password entered:', pass);
+            
+            if (!selectedCrew) { 
+                error.textContent = 'Select your role first'; 
+                error.classList.add('show'); 
+                return; 
+            }
+            
             if (CREW[selectedCrew].pass === pass) {
+                console.log('Login successful!');
                 sessionStorage.setItem('fs_auth', selectedCrew);
                 sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
                 sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
+                console.log('Redirecting to index.html...');
                 window.location.href = 'index.html';
             } else {
+                console.log('Login failed - wrong password');
+                error.textContent = 'Wrong password. Try: 2026';
                 error.classList.add('show');
                 setTimeout(() => error.classList.remove('show'), 3000);
             }
