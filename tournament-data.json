@@ -1,0 +1,12 @@
+[
+  {"name": "Community Kick off (KY)", "month": "August", "startDate": "16-17", "state": "KY", "sport": "Soccer", "size": 50, "status": "LOCKED", "crew": "Caleb", "kickback": "$200", "website": "", "contact": ""},
+  {"name": "Collein Riley (PA)", "month": "August", "startDate": "16-17", "state": "PA", "sport": "Soccer", "size": 80, "status": "LOCKED", "crew": "Caleb", "kickback": "$300", "website": "", "contact": ""},
+  {"name": "Boilingbrook Labor Day Festival", "month": "August", "startDate": "30-Sep 1", "state": "IL", "sport": "Soccer", "size": 60, "status": "LOCKED", "crew": "PJ", "kickback": "$250", "website": "", "contact": ""},
+  {"name": "Texas Labor Day Cup", "month": "August", "startDate": "30-Sep 1", "state": "TX", "sport": "Soccer", "size": 40, "status": "NEED FILLED", "crew": "", "kickback": "$150", "website": "", "contact": ""},
+  {"name": "Labor Day Kick-off Classic", "month": "August", "startDate": "30-Sep 1", "state": "", "sport": "Soccer", "size": 45, "status": "LOCKED", "crew": "Marlon", "kickback": "$200", "website": "", "contact": ""},
+  {"name": "Cajun Classic", "month": "September", "startDate": "TBD", "state": "LA", "sport": "Soccer", "size": 55, "status": "LOCKED", "crew": "Caleb", "kickback": "$250", "website": "", "contact": ""},
+  {"name": "Queen City Cup", "month": "September", "startDate": "TBD", "state": "NC", "sport": "Soccer", "size": 70, "status": "LOCKED", "crew": "PJ", "kickback": "$300", "website": "", "contact": ""},
+  {"name": "Quad City Fall Shootout", "month": "September", "startDate": "TBD", "state": "IA", "sport": "Soccer", "size": 50, "status": "PENDING", "crew": "", "kickback": "$200", "website": "", "contact": ""},
+  {"name": "Montana Surf Challenge", "month": "September", "startDate": "TBD", "state": "MT", "sport": "Soccer", "size": 90, "status": "LOCKED", "crew": "Caleb", "kickback": "$400", "website": "", "contact": ""},
+  {"name": "Give N Go Charity Event", "month": "September", "startDate": "TBD", "state": "", "sport": "Soccer", "size": 30, "status": "LOCKED", "crew": "Marlon", "kickback": "$100", "website": "", "contact": ""}
+]

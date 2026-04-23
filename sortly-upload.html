@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sortly Import — Future Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --neon-gold: #ffd700;
+            --neon-blue: #00d4ff;
+            --neon-purple: #b829dd;
+            --neon-green: #00ff88;
+            --neon-red: #ff4444;
+            --dark-bg: #050810;
+            --card-bg: rgba(255,255,255,0.03);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #8892b0;
+            margin-bottom: 30px;
+        }
+        
+        .drop-zone {
+            border: 2px dashed rgba(0,212,255,0.3);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--neon-blue);
+            background: rgba(0,212,255,0.05);
+        }
+        
+        .drop-zone .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .drop-zone p {
+            color: #8892b0;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2));
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.2);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .status.success {
+            display: block;
+            background: rgba(0,255,136,0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+        
+        .status.error {
+            display: block;
+            background: rgba(255,68,68,0.1);
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+        }
+        
+        .preview {
+            margin-top: 20px;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 15px;
+            display: none;
+        }
+        
+        .preview.show { display: block; }
+        
+        .preview-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .nav-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+        }
+        
+        .nav-back:hover { color: var(--neon-gold); }
+    </style>
+</head>
+<body>
+    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="login.html";}</script>
+    <a href="index.html" class="nav-back">← Dashboard</a>
+    
+    <div class="container">
+        <div class="logo">📦 SORTLY IMPORT</div>
+        <p class="subtitle">For Marlon — Drop Sortly CSV export here</p>
+        
+        <div class="drop-zone" id="dropZone">
+            <div class="icon">📁</div>
+            <p>Drop Sortly CSV file here<br>or click to browse</p>
+            <input type="file" id="fileInput" accept=".csv">
+        </div>
+        
+        <button class="btn" id="importBtn" style="display:none;">Import to Inventory</button>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="preview" id="preview"></div>
+    </div>
+    
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const importBtn = document.getElementById('importBtn');
+        const status = document.getElementById('status');
+        const preview = document.getElementById('preview');
+        
+        let csvData = null;
+        
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) handleFile(e.target.files[0]);
+        });
+        
+        function handleFile(file) {
+            if (!file.name.endsWith('.csv')) {
+                showStatus('Please upload a CSV file', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                csvData = e.target.result;
+                parseCSV(csvData);
+                importBtn.style.display = 'inline-block';
+                showStatus(`Loaded: ${file.name}`, 'success');
+            };
+            reader.readAsText(file);
+        }
+        
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const headers = lines[0].split(',');
+            
+            // Find key columns
+            const nameIdx = headers.findIndex(h => h.includes('Entry Name'));
+            const typeIdx = headers.findIndex(h => h.includes('Entry Type'));
+            const sizeIdx = headers.findIndex(h => h.includes('Attribute 1 Option'));
+            const qtyIdx = headers.findIndex(h => h.includes('Quantity'));
+            const folderIdx = headers.findIndex(h => h.includes('Primary Folder'));
+            
+            const items = [];
+            for (let i = 1; i < Math.min(lines.length, 50); i++) {
+                const cols = lines[i].split(',');
+                if (cols[typeIdx]?.trim() === 'Item') {
+                    items.push({
+                        name: cols[nameIdx]?.trim() || '',
+                        size: cols[sizeIdx]?.trim() || '',
+                        qty: parseFloat(cols[qtyIdx]) || 0,
+                        folder: cols[folderIdx]?.trim() || ''
+                    });
+                }
+            }
+            
+            // Show preview
+            preview.innerHTML = '<h3 style="color: var(--neon-gold); margin-bottom: 15px;">Preview (first 20 items)</h3>';
+            items.slice(0, 20).forEach(item => {
+                preview.innerHTML += `
+                    <div class="preview-item">
+                        <span>${item.name} ${item.size ? `(${item.size})` : ''}</span>
+                        <span style="color: var(--neon-blue)">${item.qty} units</span>
+                    </div>
+                `;
+            });
+            preview.classList.add('show');
+        }
+        
+        importBtn.addEventListener('click', () => {
+            if (!csvData) return;
+            
+            // Store in localStorage for now (since we can't write server-side)
+            localStorage.setItem('sortlyImport', csvData);
+            localStorage.setItem('sortlyImportTime', new Date().toISOString());
+            
+            showStatus('✅ Import saved! Inventory page will use this data.', 'success');
+            
+            // In production, this would send to server/API
+            console.log('Sortly data imported:', csvData.length, 'bytes');
+        });
+        
+        function showStatus(msg, type) {
+            status.textContent = msg;
+            status.className = 'status ' + type;
+        }
+    </script>
+</body>
+</html>
