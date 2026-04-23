@@ -52,15 +52,21 @@
 
         function selectCrew(crew) {
             selectedCrew = crew;
+            console.log('Selected crew:', crew);
             document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
+            // Hide error when selection is made
+            document.getElementById('error').classList.remove('show');
         }
 
         function login() {
             const error = document.getElementById('error');
             
+            console.log('Login clicked, selectedCrew:', selectedCrew);
+            
             if (!selectedCrew) { 
-                error.textContent = 'Select your role first'; 
+                error.textContent = 'Please click on your name first!'; 
+                error.style.color = '#ff4444';
                 error.classList.add('show'); 
                 return; 
             }
