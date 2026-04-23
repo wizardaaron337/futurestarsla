@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner — Future Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --gold: #ffd700; --blue: #00d4ff; --green: #00ff88; --red: #ff4444; --bg: #050810; --card: rgba(255,255,255,0.03); }
+        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; font-size: 18px; line-height: 1.6; }
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 20px 30px; background: rgba(5,8,16,0.95); border-bottom: 2px solid rgba(0,212,255,0.15); position: sticky; top: 0; z-index: 100; }
+        .logo { font-family: 'Orbitron'; font-size: 2.2em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-name { font-family: 'Orbitron'; color: var(--gold); font-size: 1.1em; }
+        .logout-btn { padding: 10px 20px; border: 2px solid var(--red); color: var(--red); background: transparent; border-radius: 8px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.9em; }
+        .nav { display: flex; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
+        .nav a { padding: 14px 24px; border: 2px solid rgba(0,212,255,0.25); color: var(--blue); text-decoration: none; border-radius: 10px; font-size: 1.1em; font-family: 'Orbitron'; transition: all 0.3s; }
+        .nav a:hover, .nav a.active { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.08); transform: translateY(-2px); }
+        .main { max-width: 1400px; margin: 0 auto; padding: 40px 30px; }
+        .welcome { font-family: 'Orbitron'; font-size: 2em; color: var(--gold); margin-bottom: 10px; }
+        .planner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .panel { background: var(--card); border: 2px solid rgba(0,212,255,0.1); border-radius: 16px; padding: 30px; }
+        .panel-title { font-family: 'Orbitron'; font-size: 1.3em; color: var(--gold); margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; color: #8892b0; margin-bottom: 8px; font-family: 'Orbitron'; font-size: 0.9em; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px; color: #fff; font-family: 'Rajdhani'; font-size: 1.1em; outline: none; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue); }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .btn { padding: 16px 32px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 10px; font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
+        .btn-success { border-color: var(--green); color: var(--green); background: rgba(0,255,136,0.1); }
+        .checklist { list-style: none; }
+        .checklist li { padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s; }
+        .checklist li:hover { background: rgba(0,212,255,0.05); }
+        .checklist li.checked { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); }
+        .checklist li.checked::before { content: '✅'; }
+        .checklist li:not(.checked)::before { content: '⬜'; }
+        .trip-card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid var(--blue); }
+        .trip-card-title { font-family: 'Orbitron'; color: var(--blue); font-size: 1.1em; margin-bottom: 10px; }
+        .trip-card-info { color: #8892b0; line-height: 1.8; }
+        .trip-card-info strong { color: #fff; }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 0.85em; font-family: 'Orbitron'; }
+        .status-planned { background: rgba(0,212,255,0.1); color: var(--blue); border: 1px solid rgba(0,212,255,0.2); }
+        .status-ready { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+        @media (max-width: 768px) { .planner-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="login.html";}</script>
+    <div class="header">
+        <div class="logo">🏆 FUTURE STARS</div>
+        <div class="user-info">
+            <span class="user-name" id="user-name"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <div class="main">
+        <div class="welcome">🚐 Trip Planner</div>
+        <p style="color: #8892b0; margin-bottom: 30px;">Plan tournament trips — hotels, vehicles, crew, and more</p>
+        
+        <div class="planner-grid">
+            <div class="panel">
+                <div class="panel-title">📋 NEW TRIP PLAN</div>
+                <form id="plan-form">
+                    <div class="form-group">
+                        <label>Tournament</label>
+                        <select id="tournament-select">
+                            <option value="">Select tournament...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hotel Name & Details</label>
+                        <input type="text" id="hotel" placeholder="e.g., Hampton Inn, 2 rooms, $120/night">
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Rental</label>
+                        <input type="text" id="vehicle" placeholder="e.g., Chevy Tahoe, Enterprise, $80/day">
+                    </div>
+                    <div class="form-group">
+                        <label>Crew Members</label>
+                        <input type="text" id="crew" placeholder="e.g., Caleb, Marlon">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="notes" placeholder="Any special instructions..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">CREATE PLAN</button>
+                </form>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-title">✅ PLANNING CHECKLIST</div>
+                <ul class="checklist" id="checklist">
+                    <li onclick="toggleCheck(this)">Hotel booked with confirmation</li>
+                    <li onclick="toggleCheck(this)">Vehicle rented with confirmation</li>
+                    <li onclick="toggleCheck(this)">Crew confirmed and notified</li>
+                    <li onclick="toggleCheck(this)">Inventory packed and checked</li>
+                    <li onclick="toggleCheck(this)">Kickback confirmed with director</li>
+                    <li onclick="toggleCheck(this)">Weather forecast checked</li>
+                    <li onclick="toggleCheck(this)">Route planned (GPS ready)</li>
+                    <li onclick="toggleCheck(this)">Emergency contacts saved</li>
+                    <li onclick="toggleCheck(this)">Cash/change prepared</li>
+                    <li onclick="toggleCheck(this)">Square reader charged</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <div class="panel-title">📅 PLANNED TRIPS</div>
+            <div id="planned-trips"></div>
+        </div>
+    </div>
+    
+    <script>
+        const NAME = sessionStorage.getItem('fs_name') || 'User';
+        document.getElementById('user-name').textContent = NAME;
+        
+        // Tournament data (sync with bot)
+        const TOURNAMENTS = [
+            {"name": "Community Kick off (KY)", "month": "August", "startDate": "16-17", "state": "KY", "crew": "Caleb"},
+            {"name": "Collein Riley (PA)", "month": "August", "startDate": "16-17", "state": "PA", "crew": "Caleb"},
+            {"name": "Boilingbrook Labor Day Festival", "month": "August", "startDate": "30-Sep 1", "state": "IL", "crew": "PJ"},
+            {"name": "Texas Labor Day Cup", "month": "August", "startDate": "30-Sep 1", "state": "TX", "crew": ""},
+            {"name": "Labor Day Kick-off Classic", "month": "August", "startDate": "30-Sep 1", "state": "", "crew": "Marlon"},
+            {"name": "Cajun Classic", "month": "September", "startDate": "TBD", "state": "LA", "crew": "Caleb"},
+            {"name": "Queen City Cup", "month": "September", "startDate": "TBD", "state": "NC", "crew": "PJ"},
+            {"name": "Quad City Fall Shootout", "month": "September", "startDate": "TBD", "state": "IA", "crew": ""},
+            {"name": "Montana Surf Challenge", "month": "September", "startDate": "TBD", "state": "MT", "crew": "Caleb"},
+            {"name": "Give N Go Charity Event", "month": "September", "startDate": "TBD", "state": "", "crew": "Marlon"}
+        ];
+        
+        // Populate tournament select
+        const select = document.getElementById('tournament-select');
+        TOURNAMENTS.forEach(t => {
+            const option = document.createElement('option');
+            option.value = t.name;
+            option.textContent = `${t.name} — ${t.month} ${t.startDate}`;
+            select.appendChild(option);
+        });
+        
+        // Toggle checklist
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+            saveChecklist();
+        }
+        
+        // Save/load checklist
+        function saveChecklist() {
+            const items = document.querySelectorAll('.checklist li');
+            const checked = Array.from(items).map(li => li.classList.contains('checked'));
+            localStorage.setItem('trip_checklist', JSON.stringify(checked));
+        }
+        
+        function loadChecklist() {
+            const saved = localStorage.getItem('trip_checklist');
+            if (saved) {
+                const checked = JSON.parse(saved);
+                const items = document.querySelectorAll('.checklist li');
+                items.forEach((li, i) => {
+                    if (checked[i]) li.classList.add('checked');
+                });
+            }
+        }
+        
+        // Trip plans storage
+        let tripPlans = JSON.parse(localStorage.getItem('trip_plans') || '[]');
+        
+        function savePlans() {
+            localStorage.setItem('trip_plans', JSON.stringify(tripPlans));
+            displayPlans();
+        }
+        
+        function displayPlans() {
+            const container = document.getElementById('planned-trips');
+            if (tripPlans.length === 0) {
+                container.innerHTML = '<p style="color: #8892b0;">No trips planned yet. Create one above!</p>';
+                return;
+            }
+            
+            container.innerHTML = tripPlans.map((plan, i) => `
+                <div class="trip-card">
+                    <div class="trip-card-title">${plan.tournament}</div>
+                    <div class="trip-card-info">
+                        <strong>Hotel:</strong> ${plan.hotel || 'Not set'}<br>
+                        <strong>Vehicle:</strong> ${plan.vehicle || 'Not set'}<br>
+                        <strong>Crew:</strong> ${plan.crew || 'Not set'}<br>
+                        <strong>Notes:</strong> ${plan.notes || 'None'}<br>
+                        <span class="status-badge ${plan.ready ? 'status-ready' : 'status-planned'}">${plan.ready ? 'READY TO GO' : 'PLANNING'}</span>
+                    </div>
+                    <button onclick="deletePlan(${i})" style="margin-top: 15px; padding: 8px 16px; background: rgba(255,68,68,0.1); border: 1px solid var(--red); color: var(--red); border-radius: 6px; cursor: pointer;">Delete</button>
+                </div>
+            `).join('');
+        }
+        
+        function deletePlan(index) {
+            tripPlans.splice(index, 1);
+            savePlans();
+        }
+        
+        // Form submit
+        document.getElementById('plan-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const plan = {
+                tournament: document.getElementById('tournament-select').value,
+                hotel: document.getElementById('hotel').value,
+                vehicle: document.getElementById('vehicle').value,
+                crew: document.getElementById('crew').value,
+                notes: document.getElementById('notes').value,
+                ready: false,
+                created: new Date().toISOString()
+            };
+            
+            if (!plan.tournament) {
+                alert('Please select a tournament');
+                return;
+            }
+            
+            tripPlans.push(plan);
+            savePlans();
+            
+            // Reset form
+            e.target.reset();
+            alert('Trip plan created!');
+        });
+        
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        }
+        
+        // Init
+        loadChecklist();
+        displayPlans();
+    </script>
+</body>
+</html>
