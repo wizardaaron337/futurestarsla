@@ -37,17 +37,8 @@
             <button class="crew-btn" onclick="selectCrew('caleb')">📞 Caleb</button>
             <button class="crew-btn" onclick="selectCrew('marlon')">📦 Marlon</button>
         </div>
-        <div class="input-group">
-            <label>Password</label>
-            <input type="text" id="password" placeholder="Any password works" value="2026">
-        </div>
         <button class="btn" onclick="login()">ACCESS SYSTEM</button>
         <div class="error" id="error"></div>
-        <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,136,0.1); border: 1px solid var(--green); border-radius: 8px; color: var(--green); font-size: 0.9em;">
-            <strong>Debug Info:</strong><br>
-            Selected: <span id="debug-role">None</span><br>
-            Password: <span id="debug-pass">Empty</span>
-        </div>
     </div>
     <script>
         const CREW = {
@@ -67,10 +58,7 @@
         }
 
         function login() {
-            const pass = document.getElementById('password').value.trim();
             const error = document.getElementById('error');
-            
-            document.getElementById('debug-pass').textContent = pass || 'Empty';
             
             if (!selectedCrew) { 
                 error.textContent = 'Select your role first'; 
@@ -78,7 +66,6 @@
                 return; 
             }
             
-            // ALWAYS allow login for now
             error.textContent = 'Login successful! Redirecting...';
             error.style.color = '#00ff88';
             error.classList.add('show');
