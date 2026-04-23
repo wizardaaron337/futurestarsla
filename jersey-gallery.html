@@ -18,13 +18,16 @@
         .section { margin-bottom: 20px; }
         .section-title { font-family: 'Orbitron'; font-size: 0.95em; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; letter-spacing: 2px; }
         .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-        .jersey { background: var(--card); border: 1px solid rgba(0,212,255,0.06); border-radius: 10px; padding: 16px; text-align: center; }
-        .jersey-img { width: 100%; height: 160px; background: rgba(0,0,0,0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 3em; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+        .jersey { background: var(--card); border: 1px solid rgba(0,212,255,0.06); border-radius: 10px; padding: 16px; text-align: center; transition: all 0.2s; }
+        .jersey:hover { border-color: rgba(0,212,255,0.15); transform: translateY(-2px); }
+        .jersey-img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.3); }
+        .jersey-img.error { display: flex; align-items: center; justify-content: center; font-size: 3em; }
         .jersey-name { font-family: 'Orbitron'; font-size: 0.85em; color: var(--blue); margin-bottom: 6px; }
         .jersey-status { padding: 4px 10px; border-radius: 4px; font-size: 0.75em; font-family: 'Orbitron'; display: inline-block; }
         .jersey-status.approved { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
         .jersey-status.pending { background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid rgba(255,215,0,0.2); }
+        .jersey-status.rejected { background: rgba(255,68,68,0.1); color: var(--red); border: 1px solid rgba(255,68,68,0.2); }
         .jersey-actions { display: flex; gap: 6px; margin-top: 10px; justify-content: center; }
         .btn { padding: 4px 12px; border-radius: 4px; font-size: 0.75em; font-family: 'Orbitron'; cursor: pointer; border: none; }
         .btn-approve { background: rgba(0,255,136,0.15); color: var(--green); }
@@ -56,46 +59,55 @@
     </div>
     <script>
         const jerseys = [
-            { name: 'Ronaldo Red', emoji: '🔴', status: 'approved' },
-            { name: 'Ronaldo Blue', emoji: '🔵', status: 'approved' },
-            { name: 'Ronaldo White', emoji: '⚪', status: 'approved' },
-            { name: 'Messi Argentina', emoji: '🇦🇷', status: 'approved' },
-            { name: 'Messi PSG', emoji: '🔴🔵', status: 'approved' },
-            { name: 'Yamal Flower', emoji: '🌸', status: 'pending' },
-            { name: 'Yamal Kobe', emoji: '🐍', status: 'pending' },
-            { name: 'Mbappe France', emoji: '🇫🇷', status: 'pending' },
-            { name: 'Neymar Tribute', emoji: '🇧🇷', status: 'pending' },
+            { name: 'Ronaldo Red', image: 'images/image0.png', status: 'approved' },
+            { name: 'Ronaldo Blue', image: 'images/image1.png', status: 'approved' },
+            { name: 'Messi Argentina', image: 'images/image2.jpeg', status: 'approved' },
+            { name: 'Yamal Flower', image: 'images/image3.png', status: 'pending' },
+            { name: 'Mbappe France', image: 'images/image4.png', status: 'pending' },
+            { name: 'Neymar Tribute', image: 'images/image5.png', status: 'pending' },
+            { name: 'Saka Arsenal', image: 'images/image6.png', status: 'pending' },
+            { name: 'Vini Jr Real', image: 'images/image7.jpeg', status: 'pending' },
+            { name: 'Pulisic USA', image: 'images/image8.png', status: 'approved' },
+            { name: 'Gimenez Mexico', image: 'images/image9.png', status: 'approved' },
         ];
+        
         function render() {
             const pending = document.getElementById('pending-gallery');
             const approved = document.getElementById('approved-gallery');
             pending.innerHTML = '';
             approved.innerHTML = '';
+            
             jerseys.forEach(j => {
+                const imgHtml = `<img src="${j.image}" alt="${j.name}" class="jersey-img" onerror="this.classList.add('error'); this.outerHTML='<div class=\\'jersey-img error\\'>👕</div>';">`;
+                
                 const html = `
                     <div class="jersey">
-                        <div class="jersey-img">${j.emoji}</div>
+                        ${imgHtml}
                         <div class="jersey-name">${j.name}</div>
                         <span class="jersey-status ${j.status}">${j.status.toUpperCase()}</span>
                         ${j.status === 'pending' ? `
                         <div class="jersey-actions">
-                            <button class="btn btn-approve" onclick="approve('${j.name}')">✓</button>
-                            <button class="btn btn-reject" onclick="reject('${j.name}')">✗</button>
+                            <button class="btn btn-approve" onclick="approve('${j.name}')">✓ Approve</button>
+                            <button class="btn btn-reject" onclick="reject('${j.name}')">✗ Reject</button>
                         </div>` : ''}
                     </div>
                 `;
+                
                 if (j.status === 'pending') pending.innerHTML += html;
-                else approved.innerHTML += html;
+                else if (j.status === 'approved') approved.innerHTML += html;
             });
         }
+        
         function approve(name) {
             const j = jerseys.find(x => x.name === name);
             if (j) { j.status = 'approved'; render(); }
         }
+        
         function reject(name) {
             const j = jerseys.find(x => x.name === name);
             if (j) { j.status = 'rejected'; render(); }
         }
+        
         render();
     </script>
 </body>
