@@ -49,7 +49,6 @@
 
         function selectCrew(crew) {
             selectedCrew = crew;
-            document.getElementById('debug-role').textContent = crew.toUpperCase();
             document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
         }
@@ -75,7 +74,7 @@
                 window.location.href = 'index.html';
             }, 500);
         }
-        document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
+
     </script>
 </body>
 </html>
