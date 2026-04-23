@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>Login — Future Stars</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
@@ -41,11 +38,16 @@
             <button class="crew-btn" onclick="selectCrew('marlon')">📦 Marlon</button>
         </div>
         <div class="input-group">
-            <label>Password</label>
-            <input type="text" id="password" placeholder="Password: 2026" value="2026">
+            <label>Password (type 2026)</label>
+            <input type="text" id="password" placeholder="Enter 2026" value="">
         </div>
         <button class="btn" onclick="login()">ACCESS SYSTEM</button>
-        <div class="error" id="error">Invalid password</div>
+        <div class="error" id="error"></div>
+        <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,136,0.1); border: 1px solid var(--green); border-radius: 8px; color: var(--green); font-size: 0.9em;">
+            <strong>Debug Info:</strong><br>
+            Selected: <span id="debug-role">None</span><br>
+            Password: <span id="debug-pass">Empty</span>
+        </div>
     </div>
     <script>
         const CREW = {
@@ -59,7 +61,7 @@
 
         function selectCrew(crew) {
             selectedCrew = crew;
-            console.log('Selected:', crew);
+            document.getElementById('debug-role').textContent = crew.toUpperCase();
             document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
         }
@@ -68,9 +70,7 @@
             const pass = document.getElementById('password').value.trim();
             const error = document.getElementById('error');
             
-            console.log('Selected crew:', selectedCrew);
-            console.log('Password entered:', pass);
-            console.log('Expected password:', selectedCrew ? CREW[selectedCrew].pass : 'none');
+            document.getElementById('debug-pass').textContent = pass || 'Empty';
             
             if (!selectedCrew) { 
                 error.textContent = 'Select your role first'; 
@@ -78,19 +78,23 @@
                 return; 
             }
             
-            // Force login for testing
-            if (pass === '2026' || pass === '') {
-                console.log('Login successful!');
+            // Check password
+            if (pass === '2026') {
+                error.textContent = 'Login successful! Redirecting...';
+                error.style.color = 'var(--green)';
+                error.classList.add('show');
+                
                 sessionStorage.setItem('fs_auth', selectedCrew);
                 sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
                 sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
-                console.log('Redirecting to index.html...');
-                window.location.href = 'index.html';
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
             } else {
-                console.log('Login failed - wrong password');
-                error.textContent = 'Wrong password. Try: 2026';
+                error.textContent = 'Wrong password. Type: 2026';
+                error.style.color = 'var(--red)';
                 error.classList.add('show');
-                setTimeout(() => error.classList.remove('show'), 3000);
             }
         }
         document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
