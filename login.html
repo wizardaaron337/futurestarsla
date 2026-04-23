@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Future Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --gold: #ffd700; --blue: #00d4ff; --red: #ff4444; --bg: #050810; --card: rgba(255,255,255,0.02); }
+        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--card); border: 1px solid rgba(0,212,255,0.15); border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; text-align: center; }
+        .logo { font-family: 'Orbitron'; font-size: 2em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .tagline { color: #8892b0; margin-bottom: 30px; font-size: 0.9em; }
+        .input-group { margin-bottom: 16px; text-align: left; }
+        .input-group label { display: block; color: #8892b0; font-size: 0.85em; margin-bottom: 6px; font-family: 'Orbitron'; letter-spacing: 1px; }
+        .input-group input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(0,212,255,0.2); border-radius: 10px; color: #fff; font-family: 'Rajdhani'; font-size: 1em; outline: none; transition: all 0.2s; }
+        .input-group input:focus { border-color: var(--blue); box-shadow: 0 0 15px rgba(0,212,255,0.1); }
+        .btn { width: 100%; padding: 14px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 10px; font-family: 'Orbitron'; font-size: 0.9em; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+        .btn:hover { background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(184,41,221,0.3)); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
+        .error { color: var(--red); margin-top: 15px; font-size: 0.9em; display: none; }
+        .error.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="logo">🏆 FUTURE STARS</div>
+        <p class="tagline">Command Center Access</p>
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Enter username">
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+        </div>
+        <button class="btn" onclick="login()">ACCESS SYSTEM</button>
+        <div class="error" id="error">Invalid credentials</div>
+    </div>
+    <script>
+        // Simple auth - in production use proper backend auth
+        const USERS = {
+            'jr': 'futurestars2026',
+            'lane': 'futurestars2026',
+            'pj': 'logistics2026',
+            'caleb': 'tournaments2026',
+            'marlon': 'inventory2026'
+        };
+        
+        function login() {
+            const user = document.getElementById('username').value.toLowerCase().trim();
+            const pass = document.getElementById('password').value;
+            const error = document.getElementById('error');
+            
+            if (USERS[user] && USERS[user] === pass) {
+                sessionStorage.setItem('fs_auth', user);
+                sessionStorage.setItem('fs_auth_time', Date.now());
+                window.location.href = 'index.html';
+            } else {
+                error.classList.add('show');
+                setTimeout(() => error.classList.remove('show'), 3000);
+            }
+        }
+        
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+    </script>
+</body>
+</html>
