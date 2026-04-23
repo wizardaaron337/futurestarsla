@@ -66,14 +66,14 @@
         document.getElementById('role-badge').textContent = ROLE.toUpperCase();
 
         const NAV = {
-            owner: ['Dashboard', 'Finance', 'Inventory', 'Trips', 'Trip Planner', 'Team', 'Jerseys'],
-            logistics: ['Dashboard', 'Trips', 'Trip Planner', 'Hotels', 'Vehicles', 'Team'],
-            tournament: ['Dashboard', 'Tournaments', 'Trip Planner', 'Crew Assign', 'Trips', 'Team'],
-            inventory: ['Dashboard', 'Inventory', 'Trip Planner', 'Sortly Upload', 'Jerseys', 'Low Stock']
+            owner: ['Dashboard', 'Departments', 'Finance', 'Inventory', 'Trips', 'Trip Planner', 'Team', 'Jerseys'],
+            logistics: ['Dashboard', 'Departments', 'Trips', 'Trip Planner', 'Hotels', 'Vehicles', 'Team'],
+            tournament: ['Dashboard', 'Departments', 'Tournaments', 'Trip Planner', 'Crew Assign', 'Trips', 'Team'],
+            inventory: ['Dashboard', 'Departments', 'Inventory', 'Trip Planner', 'Sortly Upload', 'Jerseys', 'Low Stock']
         };
 
         const LINKS = {
-            'Dashboard': 'index.html', 'Finance': '#finance', 'Inventory': 'inventory.html',
+            'Dashboard': 'index.html', 'Departments': 'departments.html', 'Finance': '#finance', 'Inventory': 'inventory.html',
             'Trips': 'trips.html', 'Trip Planner': 'trip-planner.html', 'Team': 'team.html', 'Jerseys': 'jersey-gallery.html',
             'Hotels': '#hotels', 'Vehicles': '#vehicles', 'Tournaments': 'trips.html',
             'Crew Assign': '#crew', 'Sortly Upload': 'sortly-upload.html', 'Low Stock': '#lowstock'
@@ -107,6 +107,7 @@
             document.getElementById('main-content').innerHTML = `
                 <div class="section-title">Quick Access</div>
                 <div class="cards">
+                    <a href="departments.html" class="card"><span class="card-icon">🏢</span><div class="card-body"><h3>Departments</h3><p>Access all company departments and role-specific tools.</p></div></a>
                     <a href="inventory.html" class="card"><span class="card-icon">📦</span><div class="card-body"><h3>Inventory</h3><p>Full stock overview. 3,763 units across baseball and soccer.</p></div></a>
                     <a href="trips.html" class="card"><span class="card-icon">🚐</span><div class="card-body"><h3>All Trips</h3><p>Tournament missions, revenue tracking, crew assignments.</p></div></a>
                     <a href="team.html" class="card"><span class="card-icon">👥</span><div class="card-body"><h3>Crew Management</h3><p>Manage PJ, Caleb, Marlon. View roles and assignments.</p></div></a>
