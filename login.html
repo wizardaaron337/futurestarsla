@@ -14,6 +14,7 @@
         .tagline { color: #8892b0; margin-bottom: 40px; font-size: 1.2em; }
         .crew-select { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
         .crew-select > :nth-child(5) { grid-column: 1 / -1; justify-self: center; width: 50%; }
+        .hint { color: #8892b0; font-size: 0.9em; margin-top: 10px; }
         .crew-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; user-select: none; }
         .crew-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-2px); }
         .crew-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.2); transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
@@ -37,6 +38,7 @@
         </div>
         <button class="btn" onclick="login()">ENTER</button>
         <div class="error" id="error"></div>
+        <p class="hint">Just select your name and click ENTER</p>
     </div>
     <script>
         const CREW = {
