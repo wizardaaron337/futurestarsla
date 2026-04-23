@@ -7,64 +7,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #ffd700; --blue: #00d4ff; --red: #ff4444; --bg: #050810; --card: rgba(255,255,255,0.02); }
-        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .login-box { background: var(--card); border: 1px solid rgba(0,212,255,0.15); border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; text-align: center; }
-        .logo { font-family: 'Orbitron'; font-size: 2em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        .tagline { color: #8892b0; margin-bottom: 30px; font-size: 0.9em; }
-        .input-group { margin-bottom: 16px; text-align: left; }
-        .input-group label { display: block; color: #8892b0; font-size: 0.85em; margin-bottom: 6px; font-family: 'Orbitron'; letter-spacing: 1px; }
-        .input-group input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(0,212,255,0.2); border-radius: 10px; color: #fff; font-family: 'Rajdhani'; font-size: 1em; outline: none; transition: all 0.2s; }
-        .input-group input:focus { border-color: var(--blue); box-shadow: 0 0 15px rgba(0,212,255,0.1); }
-        .btn { width: 100%; padding: 14px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 10px; font-family: 'Orbitron'; font-size: 0.9em; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
-        .btn:hover { background: linear-gradient(135deg, rgba(0,212,255,0.3), rgba(184,41,221,0.3)); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
-        .error { color: var(--red); margin-top: 15px; font-size: 0.9em; display: none; }
+        :root { --gold: #ffd700; --blue: #00d4ff; --red: #ff4444; --bg: #050810; }
+        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-box { background: rgba(255,255,255,0.03); border: 2px solid rgba(0,212,255,0.2); border-radius: 24px; padding: 50px; width: 100%; max-width: 480px; text-align: center; }
+        .logo { font-family: 'Orbitron'; font-size: 2.5em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
+        .tagline { color: #8892b0; margin-bottom: 40px; font-size: 1.2em; }
+        .crew-select { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
+        .crew-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; }
+        .crew-btn:hover, .crew-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-2px); }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; color: #8892b0; font-size: 1em; margin-bottom: 8px; font-family: 'Orbitron'; }
+        .input-group input { width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: #fff; font-family: 'Rajdhani'; font-size: 1.2em; outline: none; }
+        .input-group input:focus { border-color: var(--blue); }
+        .btn { width: 100%; padding: 18px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 12px; font-family: 'Orbitron'; font-size: 1.2em; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
+        .error { color: var(--red); margin-top: 20px; font-size: 1.1em; display: none; }
         .error.show { display: block; }
     </style>
 </head>
 <body>
     <div class="login-box">
         <div class="logo">🏆 FUTURE STARS</div>
-        <p class="tagline">Command Center Access</p>
-        <div class="input-group">
-            <label>Username</label>
-            <input type="text" id="username" placeholder="Enter username">
+        <p class="tagline">Select Your Role</p>
+        <div class="crew-select">
+            <button class="crew-btn" onclick="selectCrew('jr')">👑 JR</button>
+            <button class="crew-btn" onclick="selectCrew('lane')">👑 Lane</button>
+            <button class="crew-btn" onclick="selectCrew('pj')">🚐 PJ</button>
+            <button class="crew-btn" onclick="selectCrew('caleb')">📞 Caleb</button>
+            <button class="crew-btn" onclick="selectCrew('marlon')">📦 Marlon</button>
         </div>
         <div class="input-group">
             <label>Password</label>
             <input type="password" id="password" placeholder="Enter password">
         </div>
         <button class="btn" onclick="login()">ACCESS SYSTEM</button>
-        <div class="error" id="error">Invalid credentials</div>
+        <div class="error" id="error">Invalid password</div>
     </div>
     <script>
-        // Simple auth - in production use proper backend auth
-        const USERS = {
-            'jr': 'futurestars2026',
-            'lane': 'futurestars2026',
-            'pj': 'logistics2026',
-            'caleb': 'tournaments2026',
-            'marlon': 'inventory2026'
+        const CREW = {
+            'jr': { pass: 'futurestars2026', role: 'owner', name: 'JR' },
+            'lane': { pass: 'futurestars2026', role: 'owner', name: 'Lane' },
+            'pj': { pass: 'logistics2026', role: 'logistics', name: 'PJ' },
+            'caleb': { pass: 'tournaments2026', role: 'tournament', name: 'Caleb' },
+            'marlon': { pass: 'inventory2026', role: 'inventory', name: 'Marlon' }
         };
-        
+        let selectedCrew = null;
+
+        function selectCrew(crew) {
+            selectedCrew = crew;
+            document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
         function login() {
-            const user = document.getElementById('username').value.toLowerCase().trim();
             const pass = document.getElementById('password').value;
             const error = document.getElementById('error');
-            
-            if (USERS[user] && USERS[user] === pass) {
-                sessionStorage.setItem('fs_auth', user);
-                sessionStorage.setItem('fs_auth_time', Date.now());
+            if (!selectedCrew) { error.textContent = 'Select your role'; error.classList.add('show'); return; }
+            if (CREW[selectedCrew].pass === pass) {
+                sessionStorage.setItem('fs_auth', selectedCrew);
+                sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
+                sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
                 window.location.href = 'index.html';
             } else {
                 error.classList.add('show');
                 setTimeout(() => error.classList.remove('show'), 3000);
             }
         }
-        
-        document.getElementById('password').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') login();
-        });
+        document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
     </script>
 </body>
 </html>
