@@ -78,24 +78,18 @@
                 return; 
             }
             
-            // Check password - accept 2026 or any password for testing
-            if (pass === '2026' || pass === 'password' || pass.length > 0) {
-                error.textContent = 'Login successful! Redirecting...';
-                error.style.color = '#00ff88';
-                error.classList.add('show');
-                
-                sessionStorage.setItem('fs_auth', selectedCrew);
-                sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
-                sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 500);
-            } else {
-                error.textContent = 'Wrong password. Type: 2026';
-                error.style.color = '#ff4444';
-                error.classList.add('show');
-            }
+            // ALWAYS allow login for now
+            error.textContent = 'Login successful! Redirecting...';
+            error.style.color = '#00ff88';
+            error.classList.add('show');
+            
+            sessionStorage.setItem('fs_auth', selectedCrew);
+            sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
+            sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 500);
         }
         document.getElementById('password').addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
     </script>
