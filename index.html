@@ -16,7 +16,7 @@
             --green: #00ff88;
             --red: #ff4444;
             --bg: #050810;
-            --card: rgba(255,255,255,0.02);
+            --card: rgba(255,255,255,0.03);
         }
         
         body {
@@ -24,26 +24,27 @@
             background: var(--bg);
             color: #fff;
             min-height: 100vh;
-            font-size: 14px;
+            font-size: 16px;
+            line-height: 1.6;
         }
         
-        /* Compact header */
+        /* Header */
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 20px;
+            padding: 16px 24px;
             background: rgba(5,8,16,0.95);
-            border-bottom: 1px solid rgba(0,212,255,0.1);
+            border-bottom: 1px solid rgba(0,212,255,0.15);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
-            font-weight: 700;
+            font-family: 'Orbitron';
+            font-size: 1.8em;
+            font-weight: 900;
             background: linear-gradient(135deg, var(--gold), var(--blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -52,17 +53,17 @@
         
         .nav {
             display: flex;
-            gap: 8px;
+            gap: 12px;
         }
         
         .nav a {
-            padding: 6px 14px;
-            border: 1px solid rgba(0,212,255,0.2);
+            padding: 10px 20px;
+            border: 2px solid rgba(0,212,255,0.25);
             color: var(--blue);
             text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-family: 'Orbitron', sans-serif;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Orbitron';
             letter-spacing: 1px;
             transition: all 0.2s;
         }
@@ -70,204 +71,224 @@
         .nav a:hover, .nav a.active {
             border-color: var(--gold);
             color: var(--gold);
-            background: rgba(255,215,0,0.05);
+            background: rgba(255,215,0,0.08);
+            transform: translateY(-2px);
         }
         
-        /* Main content */
+        /* Main */
         .main {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px 24px;
         }
         
-        /* Compact stats row */
+        /* Stats */
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
         }
         
         .stat {
             background: var(--card);
-            border: 1px solid rgba(0,212,255,0.08);
-            border-radius: 12px;
-            padding: 16px;
+            border: 1px solid rgba(0,212,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
         
         .stat:hover {
             border-color: rgba(0,212,255,0.2);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.05);
         }
         
         .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em;
+            font-family: 'Orbitron';
+            font-size: 2.4em;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--gold), var(--blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--gold);
+            margin-bottom: 8px;
         }
         
         .stat-label {
             color: #8892b0;
-            font-size: 0.8em;
-            letter-spacing: 2px;
+            font-size: 0.95em;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-top: 4px;
         }
         
-        /* Section headers */
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(184,41,221,0.12));
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--blue);
+            border-radius: 12px;
+            font-family: 'Orbitron';
+            font-size: 1em;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,212,255,0.15);
+            border-color: var(--blue);
+        }
+        
+        /* Sections */
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1em;
+            font-family: 'Orbitron';
+            font-size: 1.3em;
             color: var(--gold);
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            letter-spacing: 2px;
+            gap: 15px;
+            letter-spacing: 3px;
         }
         
         .section-title::after {
             content: '';
             flex: 1;
-            height: 1px;
+            height: 2px;
             background: linear-gradient(90deg, var(--gold), transparent);
         }
         
-        /* Compact cards */
+        /* Cards */
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
         }
         
         .card {
             background: var(--card);
-            border: 1px solid rgba(0,212,255,0.06);
-            border-radius: 12px;
-            padding: 20px;
+            border: 1px solid rgba(0,212,255,0.08);
+            border-radius: 16px;
+            padding: 28px;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            transition: all 0.2s;
+            gap: 16px;
+            transition: all 0.3s;
             text-decoration: none;
             color: #fff;
         }
         
         .card:hover {
-            border-color: rgba(0,212,255,0.15);
-            background: rgba(255,255,255,0.03);
+            border-color: rgba(0,212,255,0.2);
+            background: rgba(255,255,255,0.04);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
         
         .card-icon {
-            font-size: 2em;
+            font-size: 2.5em;
             flex-shrink: 0;
         }
         
         .card-body h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95em;
+            font-family: 'Orbitron';
+            font-size: 1.2em;
             color: var(--gold);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
         
         .card-body p {
             color: #8892b0;
-            font-size: 0.9em;
-            line-height: 1.5;
+            font-size: 1.05em;
+            line-height: 1.6;
         }
         
         /* Status grid */
         .status-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
         }
         
         .status-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
+            gap: 16px;
+            padding: 20px;
             background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s;
+        }
+        
+        .status-item:hover {
+            background: rgba(0,0,0,0.3);
+            border-color: rgba(0,212,255,0.1);
         }
         
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             flex-shrink: 0;
         }
         
-        .status-dot.online { background: var(--green); box-shadow: 0 0 8px var(--green); }
-        .status-dot.warning { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
-        .status-dot.offline { background: var(--red); box-shadow: 0 0 8px var(--red); }
+        .status-dot.online { background: var(--green); box-shadow: 0 0 12px var(--green); }
+        .status-dot.warning { background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+        .status-dot.offline { background: var(--red); box-shadow: 0 0 12px var(--red); }
         
         .status-text h4 {
-            font-size: 0.9em;
-            margin-bottom: 2px;
+            font-size: 1.1em;
+            margin-bottom: 6px;
+            font-family: 'Orbitron';
         }
         
         .status-text p {
-            font-size: 0.8em;
+            font-size: 0.95em;
             color: #8892b0;
-        }
-        
-        /* Quick actions */
-        .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            padding: 8px 16px;
-            background: rgba(0,212,255,0.08);
-            border: 1px solid rgba(0,212,255,0.2);
-            color: var(--blue);
-            border-radius: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8em;
-            letter-spacing: 1px;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background: rgba(0,212,255,0.15);
-            transform: translateY(-1px);
         }
         
         .last-update {
             text-align: right;
             color: var(--green);
-            font-size: 0.8em;
-            margin-bottom: 10px;
+            font-size: 0.95em;
+            margin-bottom: 16px;
+            font-family: 'Orbitron';
         }
         
         /* Responsive */
         @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 10px; padding: 10px; }
+            .header { flex-direction: column; gap: 16px; padding: 20px; }
             .nav { flex-wrap: wrap; justify-content: center; }
+            .nav a { padding: 12px 20px; font-size: 1em; }
             .stats { grid-template-columns: repeat(2, 1fr); }
+            .stat-value { font-size: 2em; }
             .cards { grid-template-columns: 1fr; }
+            .actions { justify-content: center; }
+            .btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
     <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="login.html";}</script>
+    
     <div class="header">
         <div class="logo">🏆 FUTURE STARS</div>
         <nav class="nav">
@@ -283,9 +304,9 @@
         <div class="last-update" id="last-update">Syncing...</div>
         
         <div class="actions">
-            <a href="inventory.html" class="btn">+ Inventory</a>
-            <a href="trips.html" class="btn">+ Trip</a>
-            <a href="sortly-upload.html" class="btn">📦 Sortly</a>
+            <a href="inventory.html" class="btn">📦 Inventory</a>
+            <a href="trips.html" class="btn">🚐 Trips</a>
+            <a href="sortly-upload.html" class="btn">📥 Sortly</a>
             <button class="btn" onclick="refresh()">🔄 Refresh</button>
         </div>
         
@@ -322,25 +343,28 @@
                         <p>Live stock from Sortly. Baseball & soccer jerseys, gear, tournament supplies.</p>
                     </div>
                 </a>
+                
                 <a href="trips.html" class="card">
                     <span class="card-icon">🚐</span>
                     <div class="card-body">
                         <h3>Active Trips</h3>
-                        <p>Tournament missions, crew assignments, vehicles, hotels.</p>
+                        <p>Tournament missions across multiple states. Crew assignments, vehicles, hotels.</p>
                     </div>
                 </a>
+                
                 <a href="team.html" class="card">
                     <span class="card-icon">👥</span>
                     <div class="card-body">
-                        <h3>Crew</h3>
-                        <p>JR, Lane, PJ, Caleb, Marlon. Roles, contacts, assignments.</p>
+                        <h3>Crew Directory</h3>
+                        <p>JR, Lane, PJ, Caleb, Marlon. Roles, contacts, trip assignments.</p>
                     </div>
                 </a>
+                
                 <a href="jersey-gallery.html" class="card">
                     <span class="card-icon">👕</span>
                     <div class="card-body">
                         <h3>Jersey Gallery</h3>
-                        <p>Approve/deny jersey images. Help match photos to products.</p>
+                        <p>Approve jersey images. Match photos to products in inventory.</p>
                     </div>
                 </a>
             </div>
