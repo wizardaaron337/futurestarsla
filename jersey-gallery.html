@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://docs.google.com; img-src 'self' https: data:; frame-src 'none';">
+    <meta name="description" content="Jersey image gallery for Future Stars Sports Merch. Review and approve product images.">
+    <meta property="og:title" content="Future Stars — Jersey Gallery">
+    <meta property="og:description" content="Jersey image review and approval gallery">
+    <title>Future Stars — Jersey Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --neon-gold: #ffd700;
+            --neon-blue: #00d4ff;
+            --neon-purple: #b829dd;
+            --neon-green: #00ff88;
+            --neon-red: #ff4444;
+            --dark-bg: #050810;
+            --card-bg: rgba(255,255,255,0.03);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .header {
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(10,14,39,0.95) 0%, rgba(10,14,39,0.8) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,212,255,0.2);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            color: var(--neon-blue);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+        
+        .nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+        
+        .nav-btn {
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.4s;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
+        }
+        
+        .main {
+            position: relative;
+            z-index: 5;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: var(--neon-gold);
+            margin: 40px 0 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 2px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--neon-gold), transparent);
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .toggle-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        
+        .toggle-btn.active {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
+        }
+        
+        .jersey-viewer {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .jersey-viewer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-gold));
+        }
+        
+        .jersey-counter {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 0.9em;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        
+        .jersey-image-container {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(184,41,221,0.05));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(0,212,255,0.1);
+            position: relative;
+        }
+        
+        .jersey-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+        }
+        
+        .jersey-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .jersey-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        
+        .jersey-desc {
+            color: #8892b0;
+            font-size: 1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .jersey-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .action-btn {
+            padding: 14px 32px;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            background: transparent;
+        }
+        
+        .action-btn.approve {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        
+        .action-btn.approve:hover, .action-btn.approve.active {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px rgba(0,255,136,0.3);
+        }
+        
+        .action-btn.deny {
+            border-color: var(--neon-red);
+            color: var(--neon-red);
+        }
+        
+        .action-btn.deny:hover, .action-btn.deny.active {
+            background: var(--neon-red);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255,68,68,0.3);
+        }
+        
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            padding: 0 20px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0,212,255,0.1);
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            font-size: 1.5em;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-arrow:hover {
+            background: rgba(0,212,255,0.2);
+            box-shadow: 0 0 20px rgba(0,212,255,0.2);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+        
+        .status-badge.approved {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            color: var(--neon-green);
+        }
+        
+        .status-badge.denied {
+            background: rgba(255,68,68,0.1);
+            border: 1px solid rgba(255,68,68,0.3);
+            color: var(--neon-red);
+        }
+        
+        .status-badge.pending {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+        }
+        
+        .approved-grid, .denied-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .jersey-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .jersey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.1);
+        }
+        
+        .jersey-card.approved {
+            border-color: rgba(0,255,136,0.3);
+        }
+        
+        .jersey-card.denied {
+            border-color: rgba(255,68,68,0.3);
+            opacity: 0.7;
+        }
+        
+        .jersey-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .jersey-card .name {
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .jersey-card .remove-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--neon-red);
+            color: var(--neon-red);
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7em;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        
+        .jersey-card .remove-btn:hover {
+            background: var(--neon-red);
+            color: #fff;
+        }
+        
+        .hidden { display: none !important; }
+        
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            opacity: 0.3;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 4px; }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.5em;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Mobile menu */
+        .menu-toggle { display: none; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(5,8,16,0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                padding: 80px 20px;
+            }
+            .nav.hidden { display: none; }
+            .nav-btn { width: 80%; text-align: center; }
+            .logo { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <div class="header">
+        <div class="logo">🏆 FUTURE STARS</div>
+        <div class="tagline">Jersey Gallery</div>
+    </div>
+    
+    <div class="nav" id="nav">
+        <a href="index.html" class="nav-btn">Dashboard</a>
+        <a href="inventory.html" class="nav-btn">Inventory</a>
+        <a href="trips.html" class="nav-btn">Trips</a>
+        <a href="team.html" class="nav-btn">Team</a>
+        <a href="jersey-gallery.html" class="nav-btn active">Jersey Gallery</a>
+        <a href="export-data.html" class="nav-btn">Export</a>
+    </div>
+    
+    <div class="main">
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="toggle-btn active" onclick="showView('review')">👀 Review (<span id="pending-count">0</span>)</button>
+            <button class="toggle-btn" onclick="showView('approved')">✅ Approved (<span id="approved-count">0</span>)</button>
+            <button class="toggle-btn" onclick="showView('denied')">❌ Denied (<span id="denied-count">0</span>)</button>
+        </div>
+        
+        <!-- Review View -->
+        <div id="review-view">
+            <div class="jersey-viewer">
+                <div class="nav-arrows">
+                    <button class="nav-arrow" onclick="prevJersey()">◀</button>
+                    <button class="nav-arrow" onclick="nextJersey()">▶</button>
+                </div>
+                
+                <div class="jersey-counter">
+                    JERSEY <span id="current-num">1</span> OF <span id="total-num">--</span>
+                </div>
+                
+                <div class="jersey-image-container" id="image-container">
+                    <div class="no-image" id="jersey-emoji">🏃</div>
+                </div>
+                
+                <div class="jersey-name" id="jersey-name">Loading...</div>
+                <div class="jersey-desc" id="jersey-desc">Loading description...</div>
+                
+                <div class="jersey-actions">
+                    <button class="action-btn approve" id="btn-approve" onclick="vote('approve')">✅ APPROVE</button>
+                    <button class="action-btn deny" id="btn-deny" onclick="vote('deny')">❌ DENY</button>
+                </div>
+                
+                <div class="status-badge pending" id="status-badge">⏳ PENDING</div>
+            </div>
+        </div>
+        
+        <!-- Approved View -->
+        <div id="approved-view" class="hidden">
+            <div class="section-title">✅ Approved Jerseys</div>
+            <div class="approved-grid" id="approved-grid"></div>
+        </div>
+        
+        <!-- Denied View -->
+        <div id="denied-view" class="hidden">
+            <div class="section-title">❌ Denied Jerseys</div>
+            <div class="denied-grid" id="denied-grid"></div>
+        </div>
+    </div>
+    
+    <script>
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const nav = document.getElementById('nav');
+            nav.classList.toggle('hidden');
+        }
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('nav').classList.add('hidden');
+                }
+            });
+        });
+        // Jersey data with Wikimedia Commons image URLs
+        const allJerseys = [
+            { 
+                id: 'ronaldo-red', 
+                name: 'Ronaldo Red', 
+                desc: 'Portugal Home — Bold red with green trim', 
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Cristiano_Ronaldo_Portugal_2023.jpg/440px-Cristiano_Ronaldo_Portugal_2023.jpg',
+                fallback: '🔴'
+            },
+            { 
+                id: 'ronaldo-wc', 
+                name: 'Ronaldo WC', 
+                desc: 'Portugal World Cup Away — White with green accents', 
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/440px-Cristiano_Ronaldo_2018.jpg',
+                fallback: '⚪'
+            },
+            { 
+                id: 'ronaldo-special', 
+                name: 'Ronaldo Special', 
+                desc: 'Sporting CP Ballon d\'Or Tribute — Black with gold #7', 
+                image: '',
+                fallback: '🖤'
+            },
+            { 
+                id: 'ronaldo-blue', 
+                name: 'Ronaldo Blue', 
+                desc: 'Al Nassr Away — Dark blue with gold details', 
+                image: '',
+                fallback: '🔵'
+            },
+            { 
+                id: 'ronaldo-white', 
+                name: 'Ronaldo White', 
+                desc: 'Real Madrid Home — White kit', 
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ronaldo_vs_FC_Schalke_04_%2816854146922%29.jpg/440px-Ronaldo_vs_FC_Schalke_04_%2816854146922%29.jpg',
+                fallback: '⚪'
+            },
+            { 
+                id: 'yamal-barca2026', 
+                name: 'New Barca 2026', 
+                desc: 'Barcelona 125th Anniversary — Red/blue halved', 
+                image: '',
+                fallback: '🔷'
+            },
+            { 
+                id: 'yamal-pink', 
+                name: 'Yamal Pink', 
+                desc: 'Barcelona Pre-Match — Pink jersey', 
+                image: '',
+                fallback: '🩷'
+            },
+            { 
+                id: 'yamal-kobe', 
+                name: 'Yamal Kobe', 
+                desc: 'Barcelona x Kobe Bryant Tribute', 
+                image: '',
+                fallback: '🐍'
+            },
+            { 
+                id: 'yamal-special', 
+                name: 'Yamal Special', 
+                desc: 'Barcelona Special Edition', 
+                image: '',
+                fallback: '✨'
+            },
+            { 
+                id: 'yamal-barca', 
+                name: 'Yamal Barca', 
+                desc: 'Standard Barcelona Home — Blue/red stripes', 
+                image: '',
+                fallback: '🔵🔴'
+            },
+            { 
+                id: 'yamal-snake', 
+                name: 'Yamal Snake', 
+                desc: 'Kobe tribute OR Patta edition', 
+                image: '',
+                fallback: '🐍'
+            },
+            { 
+                id: 'yamal-spain', 
+                name: 'Yamal Spain', 
+                desc: 'Spain National Team Home — Red with yellow wave', 
+                image: '',
+                fallback: '🇪🇸'
+            },
+            { 
+                id: 'yamal-flower', 
+                name: 'Yamal Flower', 
+                desc: 'UNKNOWN — Need your input!', 
+                image: '',
+                fallback: '🌸'
+            },
+            { 
+                id: 'yamal-black', 
+                name: 'Yamal Black', 
+                desc: 'Barcelona Away 2024/25 — Black with red/blue', 
+                image: '',
+                fallback: '⚫'
+            },
+            { 
+                id: 'mbappe-france', 
+                name: 'France Mbappe', 
+                desc: 'France Home 2024 — Blue with red/white/blue collar', 
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%931129_%28cropped%29.jpg/440px-2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%931129_%28cropped%29.jpg',
+                fallback: '🇫🇷'
+            },
+            { 
+                id: 'mbappe-orange', 
+                name: 'Mbappe Orange', 
+                desc: 'Real Madrid Away 2024/25 — Orange', 
+                image: '',
+                fallback: '🟠'
+            },
+            { 
+                id: 'messi', 
+                name: 'Messi Jerseys', 
+                desc: 'Inter Miami "Euforia" 2025 — Two-tone pink stripes', 
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/440px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg',
+                fallback: '🩷'
+            },
+            { 
+                id: 'pulisic', 
+                name: 'Pulisic AC Milan', 
+                desc: 'AC Milan Home 2024/25 — Red/black stripes', 
+                image: '',
+                fallback: '🔴⚫'
+            },
+            { 
+                id: 'gimenez', 
+                name: 'Gimenez', 
+                desc: 'Atletico Madrid Home 2024/25 — Red/white stripes', 
+                image: '',
+                fallback: '🔴⚪'
+            },
+            { 
+                id: 'neymar', 
+                name: 'Neymar Jerseys', 
+                desc: 'Al Hilal Home — Blue with gold zigzag', 
+                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Bra-Cos_%281%29_%28cropped%29.jpg/440px-Bra-Cos_%281%29_%28cropped%29.jpg',
+                fallback: '🔵'
+            },
+            { 
+                id: 'pulisic2', 
+                name: 'Pulisic Jerseys', 
+                desc: 'AC Milan Home (duplicate)', 
+                image: '',
+                fallback: '🔴⚫'
+            }
+        ];
+        
+        let votes = JSON.parse(localStorage.getItem('jerseyVotes') || '{}');
+        let currentIndex = 0;
+        
+        function getPendingJerseys() {
+            return allJerseys.filter(j => !votes[j.id]);
+        }
+        
+        function getApprovedJerseys() {
+            return allJerseys.filter(j => votes[j.id] === 'approve');
+        }
+        
+        function getDeniedJerseys() {
+            return allJerseys.filter(j => votes[j.id] === 'deny');
+        }
+        
+        function updateCounts() {
+            document.getElementById('pending-count').textContent = getPendingJerseys().length;
+            document.getElementById('approved-count').textContent = getApprovedJerseys().length;
+            document.getElementById('denied-count').textContent = getDeniedJerseys().length;
+        }
+        
+        function showJersey(index) {
+            const pending = getPendingJerseys();
+            
+            if (pending.length === 0) {
+                document.getElementById('jersey-name').textContent = '🎉 All Done!';
+                document.getElementById('jersey-desc').textContent = 'No more jerseys to review. Check the Approved or Denied tabs.';
+                document.getElementById('image-container').innerHTML = '<div class="no-image">✅</div>';
+                document.getElementById('current-num').textContent = '0';
+                document.getElementById('total-num').textContent = '0';
+                document.getElementById('btn-approve').style.display = 'none';
+                document.getElementById('btn-deny').style.display = 'none';
+                document.getElementById('status-badge').style.display = 'none';
+                return;
+            }
+            
+            if (index < 0) index = pending.length - 1;
+            if (index >= pending.length) index = 0;
+            currentIndex = index;
+            
+            const jersey = pending[currentIndex];
+            
+            document.getElementById('current-num').textContent = currentIndex + 1;
+            document.getElementById('total-num').textContent = pending.length;
+            document.getElementById('jersey-name').textContent = jersey.name;
+            document.getElementById('jersey-desc').textContent = jersey.desc;
+            
+            // Show image or fallback
+            const container = document.getElementById('image-container');
+            if (jersey.image) {
+                container.innerHTML = `<img src="${jersey.image}" alt="${jersey.name}" class="jersey-img" onerror="this.parentElement.innerHTML='<div class=\'no-image\'>${jersey.fallback}</div>'">`;
+            } else {
+                container.innerHTML = `<div class="no-image">${jersey.fallback}</div>`;
+            }
+            
+            document.getElementById('btn-approve').style.display = 'inline-block';
+            document.getElementById('btn-deny').style.display = 'inline-block';
+            document.getElementById('status-badge').style.display = 'inline-block';
+            document.getElementById('btn-approve').classList.remove('active');
+            document.getElementById('btn-deny').classList.remove('active');
+            
+            const badge = document.getElementById('status-badge');
+            badge.className = 'status-badge pending';
+            badge.textContent = '⏳ PENDING';
+        }
+        
+        function nextJersey() {
+            showJersey(currentIndex + 1);
+        }
+        
+        function prevJersey() {
+            showJersey(currentIndex - 1);
+        }
+        
+        function vote(type) {
+            const pending = getPendingJerseys();
+            if (pending.length === 0) return;
+            
+            const jersey = pending[currentIndex];
+            votes[jersey.id] = type;
+            localStorage.setItem('jerseyVotes', JSON.stringify(votes));
+            
+            const badge = document.getElementById('status-badge');
+            if (type === 'approve') {
+                badge.className = 'status-badge approved';
+                badge.textContent = '✅ APPROVED!';
+                document.getElementById('btn-approve').classList.add('active');
+            } else {
+                badge.className = 'status-badge denied';
+                badge.textContent = '❌ DENIED!';
+                document.getElementById('btn-deny').classList.add('active');
+            }
+            
+            updateCounts();
+            
+            setTimeout(() => {
+                showJersey(currentIndex);
+            }, 800);
+        }
+        
+        function showView(view) {
+            document.getElementById('review-view').classList.add('hidden');
+            document.getElementById('approved-view').classList.add('hidden');
+            document.getElementById('denied-view').classList.add('hidden');
+            
+            document.getElementById(view + '-view').classList.remove('hidden');
+            
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (view === 'approved') renderApprovedGrid();
+            if (view === 'denied') renderDeniedGrid();
+        }
+        
+        function renderApprovedGrid() {
+            const grid = document.getElementById('approved-grid');
+            const approved = getApprovedJerseys();
+            
+            if (approved.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#8892b0;padding:40px;">No approved jerseys yet. Go to Review to approve some!</p>';
+                return;
+            }
+            
+            grid.innerHTML = approved.map(jersey => `
+                <div class="jersey-card approved">
+                    ${jersey.image ? `<img src="${jersey.image}" alt="${jersey.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="no-image" style="display:none;height:200px;">${jersey.fallback}</div>` : `<div class="no-image" style="height:200px;">${jersey.fallback}</div>`}
+                    <div class="name">${jersey.name}</div>
+                    <button class="remove-btn" onclick="unvote('${jersey.id}')">Remove</button>
+                </div>
+            `).join('');
+        }
+        
+        function renderDeniedGrid() {
+            const grid = document.getElementById('denied-grid');
+            const denied = getDeniedJerseys();
+            
+            if (denied.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#8892b0;padding:40px;">No denied jerseys yet.</p>';
+                return;
+            }
+            
+            grid.innerHTML = denied.map(jersey => `
+                <div class="jersey-card denied">
+                    ${jersey.image ? `<img src="${jersey.image}" alt="${jersey.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="no-image" style="display:none;height:200px;">${jersey.fallback}</div>` : `<div class="no-image" style="height:200px;">${jersey.fallback}</div>`}
+                    <div class="name" style="color:#ff4444;">${jersey.name}</div>
+                    <button class="remove-btn" onclick="unvote('${jersey.id}')">Restore</button>
+                </div>
+            `).join('');
+        }
+        
+        function unvote(id) {
+            delete votes[id];
+            localStorage.setItem('jerseyVotes', JSON.stringify(votes));
+            updateCounts();
+            
+            if (!document.getElementById('approved-view').classList.contains('hidden')) {
+                renderApprovedGrid();
+            } else if (!document.getElementById('denied-view').classList.contains('hidden')) {
+                renderDeniedGrid();
+            }
+            
+            showJersey(0);
+        }
+        
+        // Init
+        updateCounts();
+        showJersey(0);
+
+        // Auto-refresh every 30 seconds for near real-time sync
+        setInterval(function() {
+            if (typeof loadData === 'function') loadData();
+            else if (typeof renderInventory === 'function') renderInventory();
+            else if (typeof renderTrips === 'function') renderTrips(currentFilter || 'all');
+            else if (typeof renderCrew === 'function') renderCrew();
+            else if (typeof showJersey === 'function') showJersey(currentIndex || 0);
+        }, 30000);
+        
+        // Also refresh when user comes back to the tab
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                if (typeof loadData === 'function') loadData();
+                else if (typeof renderInventory === 'function') renderInventory();
+                else if (typeof renderTrips === 'function') renderTrips(currentFilter || 'all');
+                else if (typeof renderCrew === 'function') renderCrew();
+                else if (typeof showJersey === 'function') showJersey(currentIndex || 0);
+            }
+        });
+    </script>
+</body>
+</html>

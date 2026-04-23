@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Stars Sports Merch — Command Center V2</title>
+    <meta name="description" content="Future Stars Sports Merch operations dashboard. Tournament inventory, crew management, and trip planning.">
+    <meta property="og:title" content="Future Stars Sports Merch — Command Center">
+    <meta property="og:description" content="Operations dashboard for tournament merchandise management">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --neon-gold: #ffd700;
+            --neon-blue: #00d4ff;
+            --neon-purple: #b829dd;
+            --neon-green: #00ff88;
+            --neon-red: #ff4444;
+            --neon-orange: #ff8c00;
+            --dark-bg: #050810;
+            --card-bg: rgba(255,255,255,0.02);
+            --glass: rgba(255,255,255,0.03);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background with stars */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(5,8,16,0.98) 0%, rgba(5,8,16,0.9) 100%);
+            padding: 40px 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,212,255,0.15);
+            backdrop-filter: blur(20px);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            text-shadow: 0 0 60px rgba(0,212,255,0.4);
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+        
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            color: var(--neon-blue);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            opacity: 0.7;
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.5em;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Navigation */
+        .nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(0,212,255,0.1);
+            transition: all 0.3s;
+        }
+        
+        .nav.hidden {
+            display: none;
+        }
+        
+        .nav-btn {
+            position: relative;
+            padding: 16px 32px;
+            background: transparent;
+            border: 2px solid rgba(0,212,255,0.2);
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,212,255,0.15), transparent);
+            transition: left 0.6s;
+        }
+        
+        .nav-btn:hover::before { left: 100%; }
+        
+        .nav-btn:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0,212,255,0.3), inset 0 0 30px rgba(0,212,255,0.05);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+        
+        .nav-btn.active {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            box-shadow: 0 0 30px rgba(255,215,0,0.2), inset 0 0 20px rgba(255,215,0,0.05);
+        }
+        
+        /* Main Content */
+        .main {
+            position: relative;
+            z-index: 5;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            letter-spacing: 5px;
+            position: relative;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4em;
+            color: #8892b0;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .last-updated {
+            font-size: 0.9em;
+            color: var(--neon-green);
+            margin-top: 15px;
+            opacity: 0.8;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(184,41,221,0.1));
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.2);
+        }
+        
+        /* Stats */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(0,212,255,0.3);
+            box-shadow: 0 20px 50px rgba(0,212,255,0.1);
+        }
+        
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            min-height: 1.2em;
+        }
+        
+        .stat-number.loading {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            -webkit-background-clip: text;
+            border-radius: 8px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .stat-label {
+            color: #8892b0;
+            font-size: 1em;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        
+        /* Section titles */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: var(--neon-gold);
+            margin: 60px 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            letter-spacing: 3px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--neon-gold), transparent);
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.08);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-gold));
+            opacity: 0.5;
+        }
+        
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0,212,255,0.03) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        
+        .card:hover::after {
+            opacity: 1;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(0,212,255,0.2);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 50px rgba(0,212,255,0.08);
+        }
+        
+        .card-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4em;
+            color: var(--neon-gold);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        
+        .card-desc {
+            color: #8892b0;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+        
+        .card-arrow {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            font-size: 1.8em;
+            color: var(--neon-blue);
+            transition: all 0.3s;
+            opacity: 0.5;
+        }
+        
+        .card:hover .card-arrow {
+            transform: translateX(8px);
+            opacity: 1;
+        }
+        
+        /* Status panel */
+        .status-panel {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.08);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 60px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        
+        .status-item:hover {
+            background: rgba(0,0,0,0.3);
+            transform: translateX(8px);
+            border-color: rgba(0,212,255,0.1);
+        }
+        
+        .status-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            flex-shrink: 0;
+            border: 1px solid;
+        }
+        
+        .status-icon.online {
+            background: rgba(0,255,136,0.08);
+            border-color: rgba(0,255,136,0.2);
+            color: var(--neon-green);
+        }
+        
+        .status-icon.warning {
+            background: rgba(255,215,0,0.08);
+            border-color: rgba(255,215,0,0.2);
+            color: var(--neon-gold);
+        }
+        
+        .status-icon.offline {
+            background: rgba(255,68,68,0.08);
+            border-color: rgba(255,68,68,0.2);
+            color: var(--neon-red);
+        }
+        
+        .status-info h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            color: #fff;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        
+        .status-info p {
+            font-size: 0.95em;
+            color: #8892b0;
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
+            animation: pulse 2s infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.3); }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.4); }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(5,8,16,0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                padding: 80px 20px;
+            }
+            .nav.hidden { display: none; }
+            .nav-btn { width: 80%; text-align: center; }
+            .logo { font-size: 2.2em; }
+            .hero-title { font-size: 2.5em; }
+            .stat-number { font-size: 2.2em; }
+            .card-grid { grid-template-columns: 1fr; }
+            .quick-actions { flex-direction: column; align-items: center; }
+            .action-btn { width: 80%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="scanlines"></div>
+    
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    
+    <div class="header">
+        <div class="logo">🏆 FUTURE STARS</div>
+        <div class="tagline">Command Center V2</div>
+    </div>
+    
+    <div class="nav" id="nav">
+        <a href="index.html" class="nav-btn active">Dashboard</a>
+        <a href="inventory.html" class="nav-btn">Inventory</a>
+        <a href="trips.html" class="nav-btn">Trips</a>
+        <a href="team.html" class="nav-btn">Team</a>
+        <a href="jersey-gallery.html" class="nav-btn">Jerseys</a>
+    </div>
+    
+    <div class="main">
+        <div class="hero">
+            <div class="hero-title">WELCOME BACK</div>
+            <div class="hero-subtitle" id="hero-subtitle">
+                Loading operations data...
+            </div>
+            <div class="last-updated" id="last-updated">Last updated: --</div>
+            
+            <div class="quick-actions">
+                <a href="inventory.html" class="action-btn">+ Add Inventory</a>
+                <a href="trips.html" class="action-btn">+ New Trip</a>
+                <button class="action-btn" onclick="exportData()">📊 Export Report</button>
+                <button class="action-btn" onclick="refreshData()">🔄 Refresh</button>
+            </div>
+        </div>
+        
+        <div class="stats-bar" id="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number loading" id="stat-trips">--</div>
+                <div class="stat-label">Active Trips</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number loading" id="stat-revenue">--</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number loading" id="stat-profit">--</div>
+                <div class="stat-label">Total Profit</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number loading" id="stat-margin">--</div>
+                <div class="stat-label">Avg Margin</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number loading" id="stat-costs">--</div>
+                <div class="stat-label">Total Costs</div>
+            </div>
+        </div>
+        
+        <div class="section-title">🚀 Quick Access</div>
+        <div class="card-grid">
+            <a href="inventory.html" class="card">
+                <span class="card-icon">📦</span>
+                <div class="card-title">Inventory</div>
+                <div class="card-desc">
+                    Real-time stock levels with category filtering and search. 
+                    Ronaldo, Yamal, Mbappe, Messi jerseys plus tournament stock.
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+            
+            <a href="trips.html" class="card">
+                <span class="card-icon">🚐</span>
+                <div class="card-title">Active Missions</div>
+                <div class="card-desc">
+                    Weekend tournaments across multiple states. Soccer & baseball events. 
+                    Crew assignments, vehicle rentals, departure times all in one view.
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+            
+            <a href="team.html" class="card">
+                <span class="card-icon">👥</span>
+                <div class="card-title">Crew Directory</div>
+                <div class="card-desc">
+                    Active crew members. Leadership, operations, and weekend warriors. 
+                    Contact info, responsibilities, and trip assignments.
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+            
+            <a href="jersey-gallery.html" class="card">
+                <span class="card-icon">👕</span>
+                <div class="card-title">Jersey Gallery</div>
+                <div class="card-desc">
+                    View and approve jersey images. Help us match the right photos to each 
+                    product in our inventory. Your approval makes the site better!
+                </div>
+                <span class="card-arrow">→</span>
+            </a>
+        </div>
+        
+        <div class="section-title">🔌 System Status</div>
+        <div class="status-panel">
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-icon online">
+                        <span class="pulse"></span>
+                    </div>
+                    <div class="status-info">
+                        <h4>Cloudflare Pages</h4>
+                        <p>Online — futurestarsla.com</p>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon online" id="db-status">✅</div>
+                    <div class="status-info">
+                        <h4>Google Sheets</h4>
+                        <p id="db-text">Connecting...</p>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon online">✅</div>
+                    <div class="status-info">
+                        <h4>Trip Data</h4>
+                        <p id="trip-status-text">Loading...</p>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-icon warning" id="alert-status">⚠️</div>
+                    <div class="status-info">
+                        <h4>Profit Alerts</h4>
+                        <p id="alert-text">Checking margins...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-title">📅 Recent Tournaments</div>
+        <div class="status-panel">
+            <div class="status-grid" id="tournament-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Google Sheets Configuration
+        const SHEET_ID = '1XqPyWyUOLB6TFipZgt22esL78t_Typ6lDsB1sNxSIEQ';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        
+        // Mobile menu toggle
+        function toggleMenu() {
+            const nav = document.getElementById('nav');
+            nav.classList.toggle('hidden');
+        }
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('nav').classList.add('hidden');
+                }
+            });
+        });
+        
+        // Create stars
+        function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (2 + Math.random() * 2) + 's';
+                container.appendChild(star);
+            }
+        }
+        createStars();
+        
+        // Format currency
+        function formatCurrency(value) {
+            if (value >= 1000) {
+                return '$' + (value / 1000).toFixed(1) + 'K';
+            }
+            return '$' + value.toFixed(0);
+        }
+        
+        // Format percentage
+        function formatPercent(value) {
+            return (value * 100).toFixed(1) + '%';
+        }
+        
+        // Update stats display
+        function updateStats(data) {
+            document.getElementById('stat-trips').textContent = data.trips;
+            document.getElementById('stat-trips').classList.remove('loading');
+            
+            document.getElementById('stat-revenue').textContent = formatCurrency(data.totalRevenue);
+            document.getElementById('stat-revenue').classList.remove('loading');
+            
+            document.getElementById('stat-profit').textContent = formatCurrency(data.totalProfit);
+            document.getElementById('stat-profit').classList.remove('loading');
+            
+            document.getElementById('stat-margin').textContent = formatPercent(data.avgMargin);
+            document.getElementById('stat-margin').classList.remove('loading');
+            
+            document.getElementById('stat-costs').textContent = formatCurrency(data.totalCosts);
+            document.getElementById('stat-costs').classList.remove('loading');
+            
+            document.getElementById('hero-subtitle').textContent = 
+                `${data.trips} tournaments tracked. ${formatCurrency(data.totalRevenue)} revenue, ` +
+                `${formatCurrency(data.totalProfit)} profit. All systems operational.`;
+            
+            // Update trip status
+            document.getElementById('trip-status-text').textContent = 
+                `${data.trips} tournaments on record`;
+            
+            // Update alerts based on margin
+            const alertStatus = document.getElementById('alert-status');
+            const alertText = document.getElementById('alert-text');
+            if (data.avgMargin < 0.3) {
+                alertStatus.textContent = '⚠️';
+                alertStatus.className = 'status-icon warning';
+                alertText.textContent = 'Low margin alerts active';
+            } else if (data.avgMargin < 0.2) {
+                alertStatus.textContent = '❌';
+                alertStatus.className = 'status-icon offline';
+                alertText.textContent = 'Critical margin levels!';
+            } else {
+                alertStatus.textContent = '✅';
+                alertStatus.className = 'status-icon online';
+                alertText.textContent = 'Margins healthy';
+            }
+            
+            // Update recent tournaments
+            const grid = document.getElementById('tournament-grid');
+            grid.innerHTML = '';
+            data.recentTournaments.slice(0, 4).forEach(t => {
+                const margin = t.revenue > 0 ? (t.profit / t.revenue) : 0;
+                const marginClass = margin >= 0.4 ? 'online' : margin >= 0.2 ? 'warning' : 'offline';
+                
+                grid.innerHTML += `
+                    <div class="status-item">
+                        <div class="status-icon ${marginClass}">${margin >= 0.4 ? '✅' : margin >= 0.2 ? '⚠️' : '❌'}</div>
+                        <div class="status-info">
+                            <h4>${t.name}</h4>
+                            <p>${t.date} | Rev: ${formatCurrency(t.revenue)} | Profit: ${formatCurrency(t.profit)} | Margin: ${formatPercent(margin)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Fetch data from Google Sheets
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                if (!response.ok) throw new Error('Sheet not accessible');
+                
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+                
+                const rows = json.table.rows;
+                
+                // Parse tournament data
+                let totalRevenue = 0;
+                let totalProfit = 0;
+                let totalCosts = 0;
+                let tournamentCount = 0;
+                const recentTournaments = [];
+                
+                rows.forEach(row => {
+                    const cells = row.c;
+                    if (!cells || !cells[1] || !cells[1].v) return; // Skip empty rows
+                    
+                    const name = cells[1].v;
+                    const date = cells[0] ? cells[0].v : 'TBD';
+                    const revenue = cells[11] ? cells[11].v : 0;
+                    const profit = cells[12] ? cells[12].v : 0;
+                    const costTotal = cells[10] ? cells[10].v : 0;
+                    
+                    if (revenue > 0) {
+                        totalRevenue += revenue;
+                        totalProfit += profit;
+                        totalCosts += costTotal;
+                        tournamentCount++;
+                        
+                        recentTournaments.push({
+                            name: name,
+                            date: date,
+                            revenue: revenue,
+                            profit: profit,
+                            cost: costTotal
+                        });
+                    }
+                });
+                
+                const avgMargin = totalRevenue > 0 ? totalProfit / totalRevenue : 0;
+                
+                const data = {
+                    trips: tournamentCount,
+                    totalRevenue: totalRevenue,
+                    totalProfit: totalProfit,
+                    totalCosts: totalCosts,
+                    avgMargin: avgMargin,
+                    recentTournaments: recentTournaments
+                };
+                
+                document.getElementById('db-status').textContent = '✅';
+                document.getElementById('db-status').className = 'status-icon online';
+                document.getElementById('db-text').textContent = 'Connected — Live data';
+                
+                return data;
+            } catch (error) {
+                console.log('Sheet fetch failed:', error);
+                document.getElementById('db-status').textContent = '⚠️';
+                document.getElementById('db-status').className = 'status-icon warning';
+                document.getElementById('db-text').textContent = 'Using cached data';
+                
+                // Return fallback data
+                return {
+                    trips: 6,
+                    totalRevenue: 18283.16,
+                    totalProfit: 6995.37,
+                    totalCosts: 11287.79,
+                    avgMargin: 0.383,
+                    recentTournaments: [
+                        { name: 'Community Kick off (KY)', date: 'August 16-17', revenue: 3576, profit: 1208.65, cost: 2367.35 },
+                        { name: 'Collein Riley (PA)', date: 'August 16-17', revenue: 6030.23, profit: 2208.65, cost: 3821.58 },
+                        { name: 'Boilingbrook Labor Day Festival', date: 'August 30th-Sep 1st', revenue: 3857, profit: 539.08, cost: 3317.92 },
+                        { name: 'Texas Labor Day Cup', date: 'August 30th-Sep 1st', revenue: 2423.93, profit: 650.96, cost: 1772.97 }
+                    ]
+                };
+            }
+        }
+        
+        // Load all data
+        async function loadData() {
+            const data = await fetchSheetData();
+            updateStats(data);
+            document.getElementById('last-updated').textContent = 
+                'Last updated: ' + new Date().toLocaleString();
+        }
+        
+        // Refresh button
+        function refreshData() {
+            document.querySelectorAll('.stat-number').forEach(el => el.classList.add('loading'));
+            document.getElementById('hero-subtitle').textContent = 'Refreshing data...';
+            loadData();
+        }
+        
+        // Export data
+        function exportData() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                stats: {
+                    trips: document.getElementById('stat-trips').textContent,
+                    revenue: document.getElementById('stat-revenue').textContent,
+                    profit: document.getElementById('stat-profit').textContent,
+                    margin: document.getElementById('stat-margin').textContent,
+                    costs: document.getElementById('stat-costs').textContent
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fs-operations-report-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initial load with retry
+        loadData();
+        
+        // Retry once after 3 seconds if sheet failed
+        setTimeout(() => {
+            if (document.getElementById('db-text').textContent.includes('cached')) {
+                console.log('Retrying sheet connection...');
+                loadData();
+            }
+        }, 3000);
+        
+        // Auto-refresh every 30 seconds for near real-time sync
+        setInterval(loadData, 30000);
+        
+        // Also refresh when user comes back to the tab
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) loadData();
+        });
+    </script>
+</body>
+</html>

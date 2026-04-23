@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Active tournament missions and crew assignments for Future Stars Sports Merch. Soccer and baseball events across multiple states.">
+    <meta property="og:title" content="FS Sports Merch — Active Missions">
+    <meta property="og:description" content="Tournament missions and crew assignment tracking">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://docs.google.com; img-src 'self' https: data:; frame-src 'none';">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>FS Sports Merch — Active Crew Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --neon-gold: #ffd700;
+            --neon-blue: #00d4ff;
+            --neon-purple: #b829dd;
+            --neon-green: #00ff88;
+            --neon-red: #ff4444;
+            --dark-bg: #050810;
+            --card-bg: rgba(255,255,255,0.03);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Security notice */
+        .security-banner {
+            background: linear-gradient(90deg, rgba(255,68,68,0.1), rgba(255,68,68,0.05));
+            border: 1px solid rgba(255,68,68,0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9em;
+            color: #ff6b6b;
+        }
+        .security-banner .lock-icon {
+            font-size: 1.5em;
+        }
+        .security-banner strong {
+            color: #ff4444;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        /* Animated background grid */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-grid::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 60%);
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(10,14,39,0.95) 0%, rgba(10,14,39,0.8) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,212,255,0.2);
+            backdrop-filter: blur(20px);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold) 0%, var(--neon-blue) 50%, var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(0,212,255,0.3);
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            color: var(--neon-blue);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        /* Mobile menu toggle */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.5em;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        /* Navigation */
+        .nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+        
+        .nav-btn {
+            position: relative;
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid rgba(0,212,255,0.3);
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,212,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0,212,255,0.3), inset 0 0 20px rgba(0,212,255,0.1);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+        
+        .nav-btn.active {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+            box-shadow: 0 0 20px rgba(255,215,0,0.2);
+        }
+        
+        /* Main Content */
+        .main {
+            position: relative;
+            z-index: 5;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0,212,255,0.4);
+            box-shadow: 0 10px 40px rgba(0,212,255,0.1);
+        }
+        
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            color: #8892b0;
+            font-size: 0.9em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: var(--neon-gold);
+            margin: 40px 0 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            letter-spacing: 2px;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--neon-gold), transparent);
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(0,212,255,0.05);
+            border: 1px solid rgba(0,212,255,0.2);
+            color: var(--neon-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(0,212,255,0.15);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0,212,255,0.2);
+        }
+        
+        /* Trip Cards */
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+        }
+        
+        .trip-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0,212,255,0.1);
+            border-radius: 20px;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: card-enter 0.6s ease-out backwards;
+        }
+        
+        @keyframes card-enter {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .trip-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(0,212,255,0.3);
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.4),
+                0 0 40px rgba(0,212,255,0.1);
+        }
+        
+        .trip-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-gold));
+            opacity: 0.7;
+        }
+        
+        .trip-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .trip-id {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75em;
+            color: var(--neon-blue);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        
+        .trip-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+        
+        .trip-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: rgba(0,212,255,0.08);
+            border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: var(--neon-blue);
+        }
+        
+        .meta-badge.sport-soccer {
+            background: rgba(0,255,136,0.08);
+            border-color: rgba(0,255,136,0.2);
+            color: var(--neon-green);
+        }
+        
+        .meta-badge.sport-baseball {
+            background: rgba(255,68,68,0.08);
+            border-color: rgba(255,68,68,0.2);
+            color: var(--neon-red);
+        }
+        
+        .trip-body {
+            padding: 20px 25px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #8892b0;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-value {
+            color: #fff;
+            font-weight: 600;
+            text-align: right;
+            font-size: 0.95em;
+        }
+        
+        .detail-value.highlight {
+            color: var(--neon-gold);
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .trip-footer {
+            padding: 15px 25px 25px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        /* Animated Buttons */
+        .btn {
+            position: relative;
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.4s;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn:hover {
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px rgba(0,212,255,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-gold {
+            border-color: var(--neon-gold);
+            color: var(--neon-gold);
+        }
+        
+        .btn-gold::before {
+            background: var(--neon-gold);
+        }
+        
+        .btn-gold:hover {
+            box-shadow: 0 0 30px rgba(255,215,0,0.4);
+        }
+        
+        .btn-green {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        
+        .btn-green::before {
+            background: var(--neon-green);
+        }
+        
+        .btn-green:hover {
+            box-shadow: 0 0 30px rgba(0,255,136,0.4);
+        }
+        
+        /* Status indicators */
+        .status-pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        .status-active { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+        .status-pending { background: var(--neon-gold); box-shadow: 0 0 10px var(--neon-gold); }
+        .status-warning { background: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
+        
+        /* Loading animation */
+        .loading-container {
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .loading-ring {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(0,212,255,0.1);
+            border-top-color: var(--neon-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 4px;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Mobile menu */
+        .menu-toggle { display: none; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(5,8,16,0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                padding: 80px 20px;
+            }
+            .nav.hidden { display: none; }
+            .nav-btn { width: 80%; text-align: center; }
+            .logo { font-size: 2em; }
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { font-size: 1.8em; }
+            .trips-grid { grid-template-columns: 1fr; }
+            .stat-number { font-size: 2em; }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.5); }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <div class="header">
+        <div class="logo">🏆 FUTURE STARS</div>
+        <div class="tagline">Active Crew Command Center</div>
+    </div>
+    
+    <div class="nav" id="nav">
+        <a href="index.html" class="nav-btn">Dashboard</a>
+        <a href="inventory.html" class="nav-btn">Inventory</a>
+        <a href="trips.html" class="nav-btn active">Trips</a>
+        <a href="team.html" class="nav-btn">Team</a>
+        <a href="jersey-gallery.html" class="nav-btn">Jersey Gallery</a>
+        <a href="export-data.html" class="nav-btn">Export</a>
+
+    </div>
+    
+    <div class="main">
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-number" id="stat-total">23</div>
+                <div class="stat-label">Total Trips</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-soccer">11</div>
+                <div class="stat-label">Soccer Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-baseball">12</div>
+                <div class="stat-label">Baseball Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-states">12</div>
+                <div class="stat-label">States Covered</div>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="security-banner">
+            <span class="lock-icon">🔒</span>
+            <div>
+                <strong>INTERNAL USE ONLY</strong> — This page contains sensitive crew data including personal contact information. 
+                Do not share, screenshot, or distribute. Data is embedded locally and does not sync to external services.
+            </div>
+        </div>
+        
+        <div class="section-title">🚐 Active Missions</div>
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterTrips('all')">All Missions</button>
+            <button class="filter-btn" onclick="filterTrips('soccer')">⚽ Soccer</button>
+            <button class="filter-btn" onclick="filterTrips('baseball')">⚾ Baseball</button>
+            <button class="filter-btn" onclick="filterTrips('van')">🚐 Van Rental</button>
+            <button class="filter-btn" onclick="filterTrips('car')">🚗 Car Rental</button>
+            <button class="filter-btn" onclick="filterTrips('personal')">👤 Personal Vehicle</button>
+        </div>
+        
+        <!-- Trips Grid -->
+        <div class="trips-grid" id="trips-container">
+            <div class="loading-container">
+                <div class="loading-ring"></div>
+                <div class="loading-text">LOADING MISSIONS...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Google Sheets Configuration
+        const SHEET_ID = '1XqPyWyUOLB6TFipZgt22esL78t_Typ6lDsB1sNxSIEQ';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        
+        // Fetch tournament data from Google Sheets
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(SHEET_URL);
+                if (!response.ok) throw new Error('Sheet not accessible');
+                
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+                
+                const rows = json.table.rows;
+                const tournaments = [];
+                
+                rows.forEach(row => {
+                    const cells = row.c;
+                    if (!cells || !cells[1] || !cells[1].v) return;
+                    
+                    tournaments.push({
+                        name: cells[1].v,
+                        date: cells[0] ? cells[0].v : 'TBD',
+                        revenue: cells[11] ? cells[11].v : 0,
+                        profit: cells[12] ? cells[12].v : 0
+                    });
+                });
+                
+                console.log('Sheet data loaded:', tournaments.length, 'tournaments');
+                return tournaments;
+            } catch (error) {
+                console.log('Sheet fetch failed:', error);
+                return [];
+            }
+        }
+        
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const nav = document.getElementById('nav');
+            nav.classList.toggle('hidden');
+        }
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('nav').classList.add('hidden');
+                }
+            });
+        });
+        // CSV Data embedded directly
+        const crewData = [
+            {
+                id: "1349",
+                name: "Players Cup Showcase & All Star Classic",
+                type: "Soccer",
+                members: "Aaron Bostick, Eli Alviso",
+                state: "MS",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/24/2026 11:00am",
+                rentalNote: "3 trips riding! Inventory drop (Tyler Collins (337) 889-9502)",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "10:00 am",
+                returnDay: "MONDAY",
+                returnTime: "10:00 am",
+                driver: "Aaron",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1350",
+                name: "Rumble in the Rockies",
+                type: "Soccer",
+                members: "Haden Goudeau",
+                state: "MT",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/22/2026 8:00pm",
+                rentalNote: "Idaho Riding JoJo / Picture-Pros Riding",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "WEDNESDAY",
+                pickupTime: "4:00 pm",
+                returnDay: "TUESDAY",
+                returnTime: "4:00 pm",
+                driver: "Haden",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1352",
+                name: "Quad City Spring Shootout (NO PUMA)",
+                type: "Soccer",
+                members: "Tristan Patin",
+                state: "IL",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "SUV,T",
+                departure: "4/23/2026 8:00pm",
+                rentalNote: "Hitman Riding - Dylan W (337) 806-4236",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "THURSDAY",
+                pickupTime: "4:00 pm",
+                returnDay: "MONDAY",
+                returnTime: "4:00 pm",
+                driver: "Tristan",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1353",
+                name: "SPRINGFEST CUP 2026",
+                type: "Soccer",
+                members: "Mason Tillman",
+                state: "MS",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "3 trips riding / Riding with Spring Slam (AR) - CT (337) 371-8094",
+                rentalLocation: "",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1354",
+                name: "Scenic City Cup",
+                type: "Soccer",
+                members: "Semaj Hayes, Kiaron Rudd",
+                state: "TN",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/23/2026 8:00pm",
+                rentalNote: "Beckley (WV) Riding (Christian Chandler (337) 210-6582)",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "THURSDAY",
+                pickupTime: "4:00 pm",
+                returnDay: "MONDAY",
+                returnTime: "4:00 pm",
+                driver: "Kiaron",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1356",
+                name: "40th Annual PVSC Spring Classic",
+                type: "Soccer",
+                members: "JoJo Breeland",
+                state: "ID",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "Car,F",
+                departure: "4/22/2026 8:00pm",
+                rentalNote: "Riding with (MT) Haden",
+                rentalLocation: "Airport Car",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1357",
+                name: "Appalachian Champions Cup",
+                type: "Soccer",
+                members: "Christian Chandler",
+                state: "WV",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Car,F",
+                departure: "4/23/2026 8:00pm",
+                rentalNote: "Riding with Chattanooga (TN) Semaj / Kiaron",
+                rentalLocation: "Airport Car",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1358",
+                name: "Capital City Cup",
+                type: "Soccer",
+                members: "Adam Chelette",
+                state: "NE",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Car,F",
+                departure: "4/23/2026 8:00pm",
+                rentalNote: "Riding with Brennin (MO)",
+                rentalLocation: "Airport Car",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1359",
+                name: "Coast Spring Classic 9v9, 7v7",
+                type: "Soccer",
+                members: "Marlon Torres, Nick Leblanc",
+                state: "SC",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "SUV,T",
+                departure: "4/23/2026 8:00pm",
+                rentalNote: "",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "THURSDAY",
+                pickupTime: "4:00 pm",
+                returnDay: "MONDAY",
+                returnTime: "4:00 pm",
+                driver: "Marlon",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1361",
+                name: "Midwest Champions Invitational",
+                type: "Soccer",
+                members: "Brennin Caulfield",
+                state: "MO",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "SUV,T",
+                departure: "4/23/2026 8:00pm",
+                rentalNote: "(NE) Riding - Adam",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "THURSDAY",
+                pickupTime: "4:00 pm",
+                returnDay: "MONDAY",
+                returnTime: "4:00 pm",
+                driver: "Brennin",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1362",
+                name: "Biloxi Super Regional",
+                type: "Baseball",
+                members: "Mike Garcille",
+                state: "MS",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Car,F",
+                departure: "4/24/2026 11:00am",
+                rentalNote: "",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "10:00 am",
+                returnDay: "MONDAY",
+                returnTime: "10:00 am",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1363",
+                name: "Acadiana Crawfish Super Regional",
+                type: "Baseball",
+                members: "Zoriahn Davis, Misty Suire",
+                state: "LA",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Personal Vehicle",
+                departure: "4/24/2026 6:00pm",
+                rentalNote: "",
+                rentalLocation: "",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1364",
+                name: "NCS Rip City Championship",
+                type: "Baseball",
+                members: "Andrew DeRouen",
+                state: "AL",
+                start: "4/25/2026",
+                end: "4/25/2026",
+                vehicle: "Van,R",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "SE Top Gun - Riding / Reed Bachemin (985)-520-2367",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "8:00 am",
+                returnDay: "MONDAY",
+                returnTime: "8:00 am",
+                driver: "Andrew",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1365",
+                name: "NCS Southeast 'TOP GUN' SUPER NIT",
+                type: "Baseball",
+                members: "Reed Bachemin, Sehonam Kuada",
+                state: "AL",
+                start: "4/25/2026",
+                end: "4/25/2026",
+                vehicle: "",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "Riding With NCS Rip City Championship - Andrew Derouen",
+                rentalLocation: "",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1367",
+                name: "North LA Show",
+                type: "Baseball",
+                members: "Michael Flash, Taylor St. Julien, Hunner Lemaire",
+                state: "LA",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/24/2026 12:00pm",
+                rentalNote: "3 Sites Riding",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "10:00 am",
+                returnDay: "MONDAY",
+                returnTime: "10:00 am",
+                driver: "Hunner",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1368",
+                name: "Spring Slam",
+                type: "Baseball",
+                members: "Jarmail Perry, Ashton Lavergne",
+                state: "AR",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "3 Sites riding! SpringFest Cup (MS) - Riding / Mason Tillman (225) 454-8892",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "8:00 am",
+                returnDay: "MONDAY",
+                returnTime: "8:00 am",
+                driver: "CT",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1369",
+                name: "Hitmen Fields Hitfest",
+                type: "Baseball",
+                members: "Dylan Waguespack",
+                state: "IL",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "",
+                departure: "4/23/2026 6:00pm",
+                rentalNote: "Riding with Quad City Spring Shootout / Tristian Patin (337) 342-4924",
+                rentalLocation: "",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1370",
+                name: "Double Decker Doozy",
+                type: "Baseball",
+                members: "Aidan Allemand, Terrell Normand",
+                state: "MS",
+                start: "4/24/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "Inventory drop Hammond! Christian Wright (601)-597-1403",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "8:00 am",
+                returnDay: "MONDAY",
+                returnTime: "8:00 am",
+                driver: "Aidan",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1371",
+                name: "Touch'Em ALL",
+                type: "Baseball",
+                members: "Carley Godeaux",
+                state: "AL",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "SUV,Q4",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "8:00 am",
+                returnDay: "MONDAY",
+                returnTime: "8:00 am",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1372",
+                name: "Hammond America Spring Championship",
+                type: "Baseball",
+                members: "Christian Wright",
+                state: "LA",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Personal Vehicle",
+                departure: "4/24/2026 2:00pm",
+                rentalNote: "Inventory drop from Double Decker Aidan (337) 450-0515",
+                rentalLocation: "",
+                pickupDay: "",
+                pickupTime: "",
+                returnDay: "",
+                returnTime: "",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1373",
+                name: "Spring Swing Classic",
+                type: "Baseball",
+                members: "Robert Batarseh",
+                state: "LA",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Car,Q4",
+                departure: "4/24/2026 12:00pm",
+                rentalNote: "",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "10:00 am",
+                returnDay: "MONDAY",
+                returnTime: "10:00 am",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1374",
+                name: "Battle at 17 Springs - Team Belt for the WINNERS",
+                type: "Baseball",
+                members: "Aquanis Spikes",
+                state: "AL",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Car,Q4",
+                departure: "4/24/2026 9:00am",
+                rentalNote: "",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "8:00 am",
+                returnDay: "MONDAY",
+                returnTime: "8:00 am",
+                driver: "",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            },
+            {
+                id: "1375",
+                name: "Southeast Spring Shootout",
+                type: "Baseball",
+                members: "Tyler Collins, Issa El Issa, Andrew Swearengin, Evan Allen",
+                state: "LA",
+                start: "4/25/2026",
+                end: "4/26/2026",
+                vehicle: "Van,R",
+                departure: "4/24/2026 1:00pm",
+                rentalNote: "3 sites riding!",
+                rentalLocation: "Hertz Pinhook",
+                pickupDay: "FRIDAY",
+                pickupTime: "10:00 am",
+                returnDay: "MONDAY",
+                returnTime: "10:00 am",
+                driver: "Andrew",
+                confirmation: "",
+                sites: "",
+                setups: ""
+            }
+        ];
+        
+        let currentFilter = 'all';
+        
+        function renderTrips(filter = 'all') {
+            const container = document.getElementById('trips-container');
+            let filtered = crewData;
+            
+            if (filter === 'soccer') filtered = crewData.filter(t => t.type === 'Soccer');
+            else if (filter === 'baseball') filtered = crewData.filter(t => t.type === 'Baseball');
+            else if (filter === 'van') filtered = crewData.filter(t => t.vehicle.includes('Van'));
+            else if (filter === 'car') filtered = crewData.filter(t => t.vehicle.includes('Car'));
+            else if (filter === 'personal') filtered = crewData.filter(t => t.vehicle.includes('Personal'));
+            
+            container.innerHTML = filtered.map((trip, index) => `
+                <div class="trip-card" style="animation-delay: ${index * 0.05}s">
+                    <div class="trip-header">
+                        <div class="trip-id">MISSION #${trip.id}</div>
+                        <div class="trip-title">${trip.name}</div>
+                        <div class="trip-meta">
+                            <span class="meta-badge sport-${trip.type.toLowerCase()}">
+                                ${trip.type === 'Soccer' ? '⚽' : '⚾'} ${trip.type}
+                            </span>
+                            <span class="meta-badge">📍 ${trip.state}</span>
+                            <span class="meta-badge">📅 ${trip.start} - ${trip.end}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-body">
+                        <div class="detail-row">
+                            <span class="detail-label">👥 Crew</span>
+                            <span class="detail-value">${trip.members}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">🚗 Vehicle</span>
+                            <span class="detail-value highlight">${trip.vehicle || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">🕐 Departure</span>
+                            <span class="detail-value">${trip.departure}</span>
+                        </div>
+                        ${trip.rentalLocation ? `
+                        <div class="detail-row">
+                            <span class="detail-label">🏢 Rental</span>
+                            <span class="detail-value">${trip.rentalLocation}</span>
+                        </div>
+                        ` : ''}
+                        ${trip.pickupDay ? `
+                        <div class="detail-row">
+                            <span class="detail-label">📋 Pickup</span>
+                            <span class="detail-value">${trip.pickupDay} ${trip.pickupTime}</span>
+                        </div>
+                        ` : ''}
+                        ${trip.returnDay ? `
+                        <div class="detail-row">
+                            <span class="detail-label">🔙 Return</span>
+                            <span class="detail-value">${trip.returnDay} ${trip.returnTime}</span>
+                        </div>
+                        ` : ''}
+                        ${trip.driver ? `
+                        <div class="detail-row">
+                            <span class="detail-label">🎫 Driver</span>
+                            <span class="detail-value">${trip.driver}</span>
+                        </div>
+                        ` : ''}
+                        ${trip.rentalNote ? `
+                        <div class="detail-row">
+                            <span class="detail-label">📝 Notes</span>
+                            <span class="detail-value" style="font-size: 0.85em; color: #8892b0;">${trip.rentalNote.replace(/\(\d{3}\)[\s-]?\d{3}[\s-]?\d{4}/g, '[REDACTED]')}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="trip-footer">
+                        <button class="btn btn-green" onclick="copyTripInfo('${trip.id}')">
+                            📋 Copy Info
+                        </button>
+                        <button class="btn" onclick="showRoute('${trip.state}')">
+                            🗺️ Route
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function filterTrips(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTrips(type);
+        }
+        
+        function copyTripInfo(id) {
+            const trip = crewData.find(t => t.id === id);
+            // Sanitize: remove phone numbers before copying
+            const sanitizedNote = trip.rentalNote ? trip.rentalNote.replace(/\(\d{3}\)[\s-]?\d{3}[\s-]?\d{4}/g, '[PHONE REDACTED]') : '';
+            const text = `Mission #${trip.id}: ${trip.name}
+Crew: ${trip.members}
+Location: ${trip.state}
+Dates: ${trip.start} - ${trip.end}
+Vehicle: ${trip.vehicle}
+Departure: ${trip.departure}
+${sanitizedNote ? 'Notes: ' + sanitizedNote : ''}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Mission info copied (phone numbers redacted)!');
+            });
+        }
+        
+        function showRoute(state) {
+            window.open(`https://www.google.com/maps/search/?api=1&query=${state}+sports+tournament`, '_blank');
+        }
+        
+        // Initial render
+        renderTrips();
+
+        // Auto-refresh every 30 seconds for near real-time sync
+        setInterval(function() {
+            if (typeof loadData === 'function') loadData();
+            else if (typeof renderInventory === 'function') renderInventory();
+            else if (typeof renderTrips === 'function') renderTrips(currentFilter || 'all');
+            else if (typeof renderCrew === 'function') renderCrew();
+            else if (typeof showJersey === 'function') showJersey(currentIndex || 0);
+        }, 30000);
+        
+        // Also refresh when user comes back to the tab
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                if (typeof loadData === 'function') loadData();
+                else if (typeof renderInventory === 'function') renderInventory();
+                else if (typeof renderTrips === 'function') renderTrips(currentFilter || 'all');
+                else if (typeof renderCrew === 'function') renderCrew();
+                else if (typeof showJersey === 'function') showJersey(currentIndex || 0);
+            }
+        });
+    </script>
+</body>
+</html>
