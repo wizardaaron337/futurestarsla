@@ -140,7 +140,8 @@
                 Sortly export CSV or JSON
             </div>
         </div>
-        <input type="file" id="file-input" style="display:none" accept=".csv,.json">
+        <input type="file" id="file-input" style="display:none" accept=".csv,.json" onchange="handleFile(event)">
+        <div id="upload-results" style="margin-top:20px;text-align:left;"></div>
         <a href="dashboard.html" class="nav-back">← Back to Dashboard</a>
     </div>
     <script>
@@ -167,6 +168,76 @@
             const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
             bar.style.width = pct+"%";
         });
+
+        function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const resultsDiv = document.getElementById('upload-results');
+                
+                if (file.name.endsWith('.csv')) {
+                    parseCSV(content);
+                } else if (file.name.endsWith('.json')) {
+                    parseJSON(content);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(l => l.trim());
+            const headers = lines[0].split(',').map(h => h.trim());
+            const resultsDiv = document.getElementById('upload-results');
+            
+            let html = `<div style="background:var(--black-light);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                <div style="font-weight:600;color:var(--gold);margin-bottom:12px;">📊 CSV Preview (${lines.length - 1} items)</div>
+                <div style="max-height:300px;overflow-y:auto;">
+                    <table style="width:100%;font-size:0.85em;">
+                        <thead>
+                            <tr style="border-bottom:1px solid var(--border);">
+                                ${headers.map(h => `<th style="text-align:left;padding:8px;color:var(--gray);">${h}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>`;
+            
+            for (let i = 1; i < Math.min(lines.length, 11); i++) {
+                const cols = lines[i].split(',');
+                html += `<tr style="border-bottom:1px solid var(--border);">
+                    ${cols.map(c => `<td style="padding:8px;color:var(--white);">${c.trim()}</td>`).join('')}
+                </tr>`;
+            }
+            
+            if (lines.length > 11) {
+                html += `<tr><td colspan="${headers.length}" style="padding:8px;color:var(--gray);text-align:center;">... and ${lines.length - 11} more rows</td></tr>`;
+            }
+            
+            html += `</tbody></table></div>
+                <button onclick="saveToInventory()" style="margin-top:12px;padding:10px 20px;background:var(--gold);color:var(--black);border:none;border-radius:8px;cursor:pointer;font-weight:600;width:100%;">💾 Save to Inventory</button>
+            </div>`;
+            
+            resultsDiv.innerHTML = html;
+        }
+
+        function parseJSON(jsonText) {
+            try {
+                const data = JSON.parse(jsonText);
+                const resultsDiv = document.getElementById('upload-results');
+                resultsDiv.innerHTML = `<div style="background:var(--black-light);border:1px solid var(--border);border-radius:12px;padding:16px;">
+                    <div style="font-weight:600;color:var(--gold);margin-bottom:12px;">📊 JSON Preview</div>
+                    <pre style="overflow-x:auto;font-size:0.8em;color:var(--white);">${JSON.stringify(data, null, 2).substring(0, 1000)}...</pre>
+                    <button onclick="saveToInventory()" style="margin-top:12px;padding:10px 20px;background:var(--gold);color:var(--black);border:none;border-radius:8px;cursor:pointer;font-weight:600;width:100%;">💾 Save to Inventory</button>
+                </div>`;
+            } catch (e) {
+                alert('Invalid JSON file');
+            }
+        }
+
+        function saveToInventory() {
+            alert('✅ Inventory updated! (This would save to your inventory system)');
+        }
     </script>
 <script src="footer-component.js?v=2"></script>
 <script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
