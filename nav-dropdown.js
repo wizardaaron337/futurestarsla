@@ -1,22 +1,17 @@
 /**
- * Future Stars LA - Dropdown Navigation with Role-Based Access
- * Roles: owner, logistics, tournament, inventory
+ * Future Stars LA - Header-Integrated Dropdown Navigation with Role-Based Access
+ * Integrates into existing site header
  */
 
 (function() {
     // Role-based page permissions
     const ROLE_PAGES = {
-        // Owners - see everything
-        owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'privacy', 'contact'],
-        // PJ - operations, trips, tournaments
+        owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
         logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact'],
-        // Caleb - full tournament access
         tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory', 'jersey-gallery', 'privacy', 'contact'],
-        // Marlon - inventory focus
         inventory: ['dashboard', 'inventory', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
     };
 
-    // All nav items with their roles
     const NAV_ITEMS = [
         { page: 'dashboard', label: 'Dashboard', icon: '📊', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
         { page: 'tournaments', label: 'Tournaments', icon: '🏆', roles: ['owner', 'logistics', 'tournament'] },
@@ -31,16 +26,14 @@
         { page: 'contact', label: 'Contact', icon: '📧', roles: ['owner', 'logistics', 'tournament', 'inventory'] }
     ];
 
-    // Get current user's role
     function getUserRole() {
         return sessionStorage.getItem('fs_role') || 'owner';
     }
 
     function getUserName() {
-        return sessionStorage.getItem('fs_name') || 'Guest';
+        return sessionStorage.getItem('fs_name') || 'User';
     }
 
-    // Check if user can access a page
     function canAccess(page) {
         const role = getUserRole();
         if (role === 'owner') return true;
@@ -48,7 +41,6 @@
         return allowed.includes(page);
     }
 
-    // Filter nav items by role
     function getNavItems() {
         const role = getUserRole();
         return NAV_ITEMS.filter(item => {
@@ -57,216 +49,200 @@
         });
     }
 
-    // Build nav HTML
-    function buildNav() {
+    function buildDropdownItems() {
         const items = getNavItems();
-        const role = getUserRole();
-        const name = getUserName();
-        
-        let linksHTML = items.map(item => {
+        return items.map(item => {
             if (item.divider) {
-                return '<div class="fs-nav-divider"></div>';
+                return '<div class="fs-menu-divider"></div>';
             }
             return `
-            <a href="${item.page}.html" class="fs-nav-link" data-page="${item.page}">
-                <span class="fs-nav-icon">${item.icon}</span>
+            <a href="${item.page}.html" class="fs-menu-item" data-page="${item.page}">
+                <span class="fs-menu-icon">${item.icon}</span>
                 <span>${item.label}</span>
             </a>`;
         }).join('');
+    }
 
+    // Create the header-integrated nav HTML
+    function createNav() {
+        const role = getUserRole();
+        const name = getUserName();
+        
         return `
-        <div class="fs-nav-container">
-            <button class="fs-nav-toggle" onclick="toggleNav()" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+        <div class="fs-header-nav">
+            <button class="fs-menu-btn" onclick="toggleFsMenu()" aria-label="Menu">
+                <span class="fs-menu-bar"></span>
+                <span class="fs-menu-bar"></span>
+                <span class="fs-menu-bar"></span>
+                <span class="fs-menu-label">Menu</span>
             </button>
-            <nav class="fs-nav-dropdown" id="fsNavMenu">
-                <div class="fs-nav-header">
-                    <div>
-                        <span class="fs-nav-title">Future Stars</span>
-                        <div class="fs-nav-user">${name} <span class="fs-nav-role">${role}</span></div>
+            <div class="fs-dropdown" id="fsDropdown">
+                <div class="fs-dropdown-header">
+                    <div class="fs-dropdown-user">
+                        <span class="fs-dropdown-name">${name}</span>
+                        <span class="fs-dropdown-role">${role}</span>
                     </div>
-                    <button class="fs-nav-close" onclick="toggleNav()">&times;</button>
                 </div>
-                ${linksHTML}
-                <div class="fs-nav-footer">
-                    <button class="fs-nav-logout" onclick="logout()">
+                ${buildDropdownItems()}
+                <div class="fs-dropdown-footer">
+                    <button class="fs-logout-btn" onclick="fsLogout()">
                         <span>🚪</span> Log Out
                     </button>
                 </div>
-            </nav>
-            <div class="fs-nav-overlay" id="fsNavOverlay" onclick="toggleNav()"></div>
+            </div>
         </div>
         `;
     }
 
     const navCSS = `
     <style>
-        .fs-nav-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 10000;
+        .fs-header-nav {
+            position: relative;
+            display: inline-block;
         }
-        .fs-nav-toggle {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #C9A227 0%, #B8941F 100%);
-            border: none;
-            cursor: pointer;
+        .fs-menu-btn {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
-            box-shadow: 0 4px 15px rgba(201,162,39,0.4);
+            gap: 10px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, rgba(201,162,39,0.15) 0%, rgba(201,162,39,0.05) 100%);
+            border: 1px solid rgba(201,162,39,0.3);
+            border-radius: 10px;
+            color: #C9A227;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
+            letter-spacing: 1px;
         }
-        .fs-nav-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(201,162,39,0.5);
+        .fs-menu-btn:hover {
+            background: linear-gradient(135deg, rgba(201,162,39,0.25) 0%, rgba(201,162,39,0.1) 100%);
+            border-color: #C9A227;
+            box-shadow: 0 4px 15px rgba(201,162,39,0.2);
         }
-        .fs-nav-toggle:active {
-            transform: scale(0.95);
+        .fs-menu-btn.active {
+            background: rgba(201,162,39,0.2);
+            border-color: #C9A227;
         }
-        .fs-nav-toggle span {
+        .fs-menu-bar {
             display: block;
-            width: 22px;
-            height: 2.5px;
-            background: #0A0A0A;
+            width: 18px;
+            height: 2px;
+            background: #C9A227;
             border-radius: 2px;
             transition: all 0.3s ease;
         }
-        .fs-nav-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+        .fs-menu-btn.active .fs-menu-bar:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 4px);
+            width: 20px;
         }
-        .fs-nav-toggle.active span:nth-child(2) {
+        .fs-menu-btn.active .fs-menu-bar:nth-child(2) {
             opacity: 0;
         }
-        .fs-nav-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+        .fs-menu-btn.active .fs-menu-bar:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -4px);
+            width: 20px;
         }
-        .fs-nav-dropdown {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(180deg, #141414 0%, #0A0A0A 100%);
-            border-right: 1px solid #2A2824;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10001;
-            overflow-y: auto;
-            box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+        .fs-menu-label {
+            font-size: 0.85em;
+            text-transform: uppercase;
         }
-        .fs-nav-dropdown.open {
-            left: 0;
+        .fs-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 260px;
+            background: linear-gradient(180deg, #1A1A1A 0%, #141414 100%);
+            border: 1px solid #2A2824;
+            border-radius: 16px;
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,39,0.1);
         }
-        .fs-nav-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 20px 16px;
+        .fs-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .fs-dropdown-header {
+            padding: 16px;
             border-bottom: 1px solid #2A2824;
             margin-bottom: 8px;
         }
-        .fs-nav-title {
+        .fs-dropdown-user {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .fs-dropdown-name {
             font-family: 'Cinzel', serif;
-            font-size: 1.1em;
-            font-weight: 700;
-            color: #C9A227;
-            letter-spacing: 2px;
-        }
-        .fs-nav-user {
-            font-size: 0.8em;
-            color: #A8A498;
-            margin-top: 4px;
-        }
-        .fs-nav-role {
-            display: inline-block;
-            padding: 2px 8px;
-            background: rgba(201,162,39,0.15);
-            color: #C9A227;
-            border-radius: 4px;
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-left: 6px;
-        }
-        .fs-nav-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: transparent;
-            border: 1px solid #2A2824;
-            color: #A8A498;
-            font-size: 1.4em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            flex-shrink: 0;
-        }
-        .fs-nav-close:hover {
-            border-color: #C9A227;
-            color: #C9A227;
-        }
-        .fs-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
-            color: #A8A498;
-            text-decoration: none;
-            font-size: 0.95em;
-            font-weight: 500;
-            transition: all 0.25s ease;
-            border-left: 3px solid transparent;
-            margin: 2px 8px;
-            border-radius: 0 10px 10px 0;
-        }
-        .fs-nav-link:hover {
-            background: rgba(201,162,39,0.08);
+            font-size: 1em;
             color: #F8F6F0;
-            border-left-color: #C9A227;
-            padding-left: 24px;
-        }
-        .fs-nav-link.active {
-            background: rgba(201,162,39,0.12);
-            color: #C9A227;
-            border-left-color: #C9A227;
             font-weight: 600;
         }
-        .fs-nav-icon {
-            font-size: 1.3em;
-            width: 28px;
+        .fs-dropdown-role {
+            display: inline-block;
+            width: fit-content;
+            padding: 3px 10px;
+            background: rgba(201,162,39,0.15);
+            color: #C9A227;
+            border-radius: 6px;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        .fs-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #A8A498;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-radius: 10px;
+            margin: 2px 0;
+        }
+        .fs-menu-item:hover {
+            background: rgba(201,162,39,0.1);
+            color: #F8F6F0;
+        }
+        .fs-menu-item.active {
+            background: rgba(201,162,39,0.15);
+            color: #C9A227;
+            font-weight: 600;
+        }
+        .fs-menu-icon {
+            font-size: 1.2em;
+            width: 24px;
             text-align: center;
         }
-        .fs-nav-divider {
+        .fs-menu-divider {
             height: 1px;
             background: #2A2824;
-            margin: 12px 20px;
+            margin: 8px 12px;
         }
-        .fs-nav-footer {
-            margin-top: auto;
-            padding: 16px 20px;
+        .fs-dropdown-footer {
+            padding: 8px;
             border-top: 1px solid #2A2824;
+            margin-top: 8px;
         }
-        .fs-nav-logout {
+        .fs-logout-btn {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: transparent;
             border: 1px solid #2A2824;
             border-radius: 10px;
             color: #A8A498;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
+            font-size: 0.85em;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -274,29 +250,25 @@
             gap: 8px;
             transition: all 0.3s;
         }
-        .fs-nav-logout:hover {
+        .fs-logout-btn:hover {
             border-color: #EF5350;
             color: #EF5350;
             background: rgba(239,83,80,0.08);
         }
-        .fs-nav-overlay {
+        /* Click outside to close */
+        .fs-dropdown-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.35s ease;
             z-index: 9999;
+            display: none;
         }
-        .fs-nav-overlay.open {
-            opacity: 1;
-            visibility: visible;
+        .fs-dropdown-overlay.open {
+            display: block;
         }
-        /* Access denied page overlay */
+        /* Access denied */
         .fs-access-denied {
             position: fixed;
             top: 0; left: 0;
@@ -325,31 +297,45 @@
             border-radius: 8px;
             font-weight: 600;
         }
-        @media (max-width: 480px) {
-            .fs-nav-dropdown {
-                width: 260px;
-                left: -280px;
-            }
-            .fs-nav-toggle {
-                width: 44px;
-                height: 44px;
-            }
-        }
     </style>
     `;
 
     // Inject CSS
     document.head.insertAdjacentHTML('beforeend', navCSS);
 
-    // Inject nav HTML at start of body
-    document.body.insertAdjacentHTML('afterbegin', buildNav());
+    // Find the user-info div in header and add nav to it
+    function integrateNav() {
+        const userInfo = document.querySelector('.user-info');
+        const header = document.querySelector('.header');
+        
+        if (userInfo) {
+            // Add nav before logout button
+            const logoutBtn = userInfo.querySelector('.logout-btn');
+            if (logoutBtn) {
+                logoutBtn.insertAdjacentHTML('beforebegin', createNav());
+                // Hide old logout since we have one in dropdown
+                logoutBtn.style.display = 'none';
+            } else {
+                userInfo.insertAdjacentHTML('afterbegin', createNav());
+            }
+        } else if (header) {
+            // If no user-info, add to end of header
+            header.insertAdjacentHTML('beforeend', createNav());
+        }
+    }
+
+    // Run integration
+    integrateNav();
+
+    // Add overlay for clicking outside
+    document.body.insertAdjacentHTML('beforeend', '<div class="fs-dropdown-overlay" id="fsOverlay" onclick="toggleFsMenu()"></div>');
 
     // Highlight current page
     const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'dashboard';
-    const activeLink = document.querySelector(`.fs-nav-link[data-page="${currentPage}"]`);
-    if (activeLink) activeLink.classList.add('active');
+    const activeItem = document.querySelector(`.fs-menu-item[data-page="${currentPage}"]`);
+    if (activeItem) activeItem.classList.add('active');
 
-    // Check access permission for current page
+    // Check access
     if (!canAccess(currentPage)) {
         document.body.innerHTML = `
             <div class="fs-access-denied">
@@ -361,28 +347,27 @@
         `;
     }
 
-    // Global toggle function
-    window.toggleNav = function() {
-        const menu = document.getElementById('fsNavMenu');
-        const overlay = document.getElementById('fsNavOverlay');
-        const toggle = document.querySelector('.fs-nav-toggle');
+    // Global functions
+    window.toggleFsMenu = function() {
+        const dropdown = document.getElementById('fsDropdown');
+        const overlay = document.getElementById('fsOverlay');
+        const btn = document.querySelector('.fs-menu-btn');
         
-        menu.classList.toggle('open');
+        dropdown.classList.toggle('open');
         overlay.classList.toggle('open');
-        toggle.classList.toggle('active');
+        btn.classList.toggle('active');
     };
 
-    // Logout function
-    window.logout = function() {
+    window.fsLogout = function() {
         sessionStorage.clear();
         window.location.href = 'signin.html';
     };
 
-    // Close on Escape key
+    // Close on Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const menu = document.getElementById('fsNavMenu');
-            if (menu.classList.contains('open')) toggleNav();
+            const dropdown = document.getElementById('fsDropdown');
+            if (dropdown && dropdown.classList.contains('open')) toggleFsMenu();
         }
     });
 })();
