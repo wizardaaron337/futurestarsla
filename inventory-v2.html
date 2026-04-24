@@ -571,6 +571,11 @@
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div id="modal-content"></div>
+            <div id="photo-section" style="margin:16px 0;padding:16px;background:var(--black-light);border-radius:8px;display:none;">
+                <label style="display:block;font-size:0.8em;color:var(--gray);margin-bottom:8px;">📸 Photo Proof (Packed Box)</label>
+                <input type="file" id="photo-input" accept="image/*" capture="environment" onchange="uploadPhoto()" style="color:var(--white);">
+                <div id="photo-preview" style="margin-top:12px;"></div>
+            </div>
             <div class="modal-actions">
                 <button class="btn btn-primary" onclick="markShipped()">Mark as Shipped</button>
                 <button class="btn btn-secondary" onclick="printTrip()">🖨️ Print</button>
@@ -725,7 +730,38 @@
                     `).join('')}
                 </div>
             `;
+            
+            // Show photo section
+            const photoSection = document.getElementById('photo-section');
+            const photoPreview = document.getElementById('photo-preview');
+            photoSection.style.display = 'block';
+            
+            // Load existing photo if any
+            const savedPhoto = localStorage.getItem('fs_photo_' + id);
+            if (savedPhoto) {
+                photoPreview.innerHTML = `<img src="${savedPhoto}" style="max-width:100%;border-radius:8px;border:2px solid var(--gold);">`;
+            } else {
+                photoPreview.innerHTML = '';
+            }
+            
             document.getElementById('trip-modal').classList.add('active');
+        }
+
+        function uploadPhoto() {
+            const input = document.getElementById('photo-input');
+            const file = input.files[0];
+            if (!file || !currentTripId) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoData = e.target.result;
+                localStorage.setItem('fs_photo_' + currentTripId, photoData);
+                document.getElementById('photo-preview').innerHTML = `
+                    <img src="${photoData}" style="max-width:100%;border-radius:8px;border:2px solid var(--gold);">
+                    <p style="color:var(--green);font-size:0.85em;margin-top:8px;">✅ Photo saved</p>
+                `;
+            };
+            reader.readAsDataURL(file);
         }
 
         function closeModal() {
