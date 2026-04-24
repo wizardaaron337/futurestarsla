@@ -45,7 +45,7 @@
     </style>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="login.html";}</script>
+    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="signin.html";}</script>
     <div class="header">
         <div class="logo">🏆 FUTURE STARS</div>
         <div class="user-info">
@@ -163,7 +163,7 @@
             }
         }
 
-        function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
+        function logout() { sessionStorage.clear(); window.location.href = 'signin.html'; }
 
         load();
         setInterval(load, 30000);

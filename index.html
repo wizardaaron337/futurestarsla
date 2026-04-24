@@ -42,7 +42,7 @@
 </head>
 <body>
     <script>
-        if(!sessionStorage.getItem("fs_auth")){window.location.href="login.html";}
+        if(!sessionStorage.getItem("fs_auth")){window.location.href="signin.html";}
         const ROLE = sessionStorage.getItem('fs_role');
         const NAME = sessionStorage.getItem('fs_name');
     </script>
@@ -172,7 +172,7 @@
             `;
         }
 
-        function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
+        function logout() { sessionStorage.clear(); window.location.href = 'signin.html'; }
         function refresh() { location.reload(); }
     </script>
 </body>
