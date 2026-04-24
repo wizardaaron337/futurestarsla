@@ -42,15 +42,21 @@
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
         <a href="dashboard.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
-        <nav class="nav">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="tournaments.html">Tournaments</a>
-            <a href="inventory.html">Inventory</a>
-            <a href="trips.html">Trips</a>
-            <a href="trip-planner.html">Planner</a>
-            <a href="team.html">Team</a>
-            <a href="jersey-gallery.html" class="active">Jerseys</a>
-        </nav>
+        <nav class="nav" id="main-nav"></nav>
+        <script>
+            (function() {
+                const role = sessionStorage.getItem('fs_role');
+                const nav = document.getElementById('main-nav');
+                if (!nav || !role) return;
+                const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
+                const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker' };
+                const current = 'jersey-gallery';
+                nav.innerHTML = (links[role] || links.owner).map(p => {
+                    const cls = p === current ? 'active' : '';
+                    return `<a href="${p === 'tracker' ? 'trip-tracker' : p === 'planner' ? 'pj-planner' : p}.html" class="${cls}">${labels[p]}</a>`;
+                }).join('');
+            })();
+        </script>
     </div>
     <div class="main">
         <div class="section">
