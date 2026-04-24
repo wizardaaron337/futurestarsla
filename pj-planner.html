@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PJ Trip Planner AI — Future Stars</title>
+    <title>PJ Trip Planner — Future Stars</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animations.css?v=2">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -22,15 +23,13 @@
             --green: #4CAF50;
             --red: #EF5350;
             --blue: #64B5F6;
-            --purple: #B829DD;
         }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--black);
             color: var(--white);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-size: 15px;
         }
         .header {
             display: flex;
@@ -39,6 +38,9 @@
             padding: 16px 30px;
             background: var(--black-light);
             border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .logo-link {
             display: flex;
@@ -101,41 +103,259 @@
         .nav a:hover { color: var(--white); background: var(--black-hover); }
         .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
 
-        /* Main Layout */
         .main {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
-            width: 100%;
-            padding: 20px;
-            gap: 20px;
-            height: calc(100vh - 130px);
+            padding: 40px 30px;
+        }
+        .welcome {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .subtitle { color: var(--gray); margin-bottom: 35px; font-size: 1em; }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(201,162,39,0.3);
+        }
+        .btn-secondary {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            color: var(--white);
+        }
+        .btn-secondary:hover { border-color: var(--gold); }
+        .btn-danger {
+            background: rgba(239,83,80,0.1);
+            border: 1px solid rgba(239,83,80,0.3);
+            color: var(--red);
+        }
+        .btn-danger:hover { background: rgba(239,83,80,0.2); }
+        .btn-success {
+            background: linear-gradient(135deg, var(--green), #388E3C);
+            color: var(--white);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76,175,80,0.3);
         }
 
-        /* Sidebar - Trip List */
-        .sidebar {
+        /* Plan Cards Grid */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .plan-card {
             background: var(--black-card);
             border: 1px solid var(--border);
             border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
-        .sidebar-header {
-            padding: 20px;
+        .plan-card:hover {
+            border-color: var(--gold-dark);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .plan-card:hover::before { opacity: 1; }
+        .plan-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            gap: 12px;
+        }
+        .plan-card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+            color: var(--gold);
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+        .plan-card-status {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7em;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .status-planned {
+            background: rgba(100,181,246,0.1);
+            color: var(--blue);
+            border: 1px solid rgba(100,181,246,0.2);
+        }
+        .status-booked {
+            background: rgba(76,175,80,0.1);
+            color: var(--green);
+            border: 1px solid rgba(76,175,80,0.2);
+        }
+        .plan-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .meta-tag {
+            padding: 4px 10px;
+            background: rgba(201,162,39,0.06);
+            border: 1px solid rgba(201,162,39,0.12);
+            border-radius: 6px;
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+        .plan-cost-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.88em;
             border-bottom: 1px solid var(--border);
         }
-        .sidebar-header h2 {
+        .plan-cost-row:last-child { border-bottom: none; }
+        .cost-label { color: var(--gray); }
+        .cost-value {
             font-family: 'Cinzel', serif;
-            font-size: 1.1em;
             color: var(--gold);
+            font-weight: 700;
+        }
+        .plan-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            margin-top: 12px;
+            border-top: 2px solid var(--gold);
+        }
+        .total-label {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.85em;
+            letter-spacing: 2px;
+        }
+        .total-value {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 20px;
+            padding-right: 40px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.8em;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--white); }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .form-section h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.95em;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             margin-bottom: 12px;
         }
-        .search-box {
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--gray);
+            font-size: 0.85em;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px;
             background: var(--black-light);
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -143,226 +363,111 @@
             font-family: 'Inter', sans-serif;
             font-size: 0.9em;
             outline: none;
-        }
-        .search-box:focus { border-color: var(--gold); }
-        .search-box::placeholder { color: var(--gray-dark); }
-        .trip-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-        .trip-item {
-            padding: 14px;
-            background: var(--black-light);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
             transition: all 0.2s;
         }
-        .trip-item:hover {
-            border-color: var(--gold-dark);
-            transform: translateX(4px);
-        }
-        .trip-item.active {
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: var(--gold);
-            background: rgba(201,162,39,0.08);
+            box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
         }
-        .trip-item-name {
-            font-weight: 600;
-            font-size: 0.9em;
-            margin-bottom: 4px;
-            color: var(--white);
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
         }
-        .trip-item-meta {
-            font-size: 0.8em;
-            color: var(--gray);
-            display: flex;
-            gap: 10px;
-        }
-        .trip-item-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7em;
-            font-weight: 600;
-        }
-        .badge-locked { background: rgba(76,175,80,0.1); color: var(--green); }
-        .badge-pending { background: rgba(255,152,0,0.1); color: #FF9800; }
 
-        /* Chat Area */
-        .chat-container {
+        /* Detail View */
+        .detail-view {
             background: var(--black-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            padding: 30px;
         }
-        .chat-header {
-            padding: 20px;
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
-        .chat-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .detail-title {
+            font-family: 'Cinzel', serif;
             font-size: 1.4em;
-        }
-        .chat-title {
-            font-family: 'Cinzel', serif;
             color: var(--gold);
-            font-size: 1em;
+            margin-bottom: 6px;
         }
-        .chat-subtitle {
+        .detail-subtitle {
             color: var(--gray);
-            font-size: 0.8em;
+            font-size: 0.9em;
         }
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+        .detail-section {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
         }
-        .message {
-            max-width: 80%;
-            padding: 14px 18px;
-            border-radius: 14px;
-            font-size: 0.95em;
-            line-height: 1.6;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .message-user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            border-bottom-right-radius: 4px;
-        }
-        .message-bot {
-            align-self: flex-start;
-            background: var(--black-light);
-            border: 1px solid var(--border);
-            color: var(--white);
-            border-bottom-left-radius: 4px;
-        }
-        .message-time {
-            font-size: 0.7em;
-            opacity: 0.6;
-            margin-top: 6px;
-        }
-        .chat-input-area {
-            padding: 16px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input {
-            flex: 1;
-            padding: 12px 16px;
-            background: var(--black-light);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95em;
-            outline: none;
-        }
-        .chat-input:focus { border-color: var(--gold); }
-        .chat-send {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            border: none;
-            border-radius: 12px;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .chat-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(201,162,39,0.3);
-        }
-
-        /* Quick Actions */
-        .quick-actions {
-            display: flex;
-            gap: 8px;
-            padding: 0 20px 10px;
-            flex-wrap: wrap;
-        }
-        .quick-btn {
-            padding: 8px 14px;
-            background: rgba(201,162,39,0.08);
-            border: 1px solid rgba(201,162,39,0.2);
-            border-radius: 8px;
-            color: var(--gold);
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-        .quick-btn:hover {
-            background: rgba(201,162,39,0.15);
-            transform: translateY(-1px);
-        }
-
-        /* Trip Detail Cards in Chat */
-        .trip-detail-card {
-            background: var(--black);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 10px;
-        }
-        .trip-detail-card h4 {
+        .detail-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .detail-section h4 {
             font-family: 'Cinzel', serif;
             color: var(--gold);
             font-size: 0.9em;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .detail-row {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.85em;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.9em;
         }
-        .detail-row:last-child { border-bottom: none; }
-        .detail-label { color: var(--gray); }
-        .detail-value { color: var(--white); font-weight: 500; }
-
-        /* Links in chat */
-        .chat-link {
+        .detail-row .label { color: var(--gray); }
+        .detail-row .value { color: var(--white); font-weight: 500; }
+        .detail-row .price {
+            font-family: 'Cinzel', serif;
             color: var(--gold);
-            text-decoration: underline;
-            cursor: pointer;
+            font-weight: 700;
         }
-        .chat-link:hover { color: var(--gold-light); }
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
 
-        @media (max-width: 1024px) {
-            .main { grid-template-columns: 1fr; height: auto; }
-            .sidebar { max-height: 400px; }
+        /* Status badge selector */
+        .status-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
+        .status-option {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--black-light);
+            color: var(--gray);
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-option:hover { border-color: var(--gold); color: var(--white); }
+        .status-option.active {
+            border-color: var(--gold);
+            background: rgba(201,162,39,0.1);
+            color: var(--gold);
+        }
+
         @media (max-width: 768px) {
             .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
             .nav { padding: 10px 20px; }
+            .main { padding: 30px 20px; }
+            .plans-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .detail-header { flex-direction: column; gap: 12px; }
         }
     </style>
-    <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
     <div class="progress-bar" id="progress-bar"></div>
@@ -381,34 +486,136 @@
     <nav class="nav" id="main-nav"></nav>
 
     <div class="main">
-        <!-- Sidebar: Trip List -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>🚐 Trips to Plan</h2>
-                <input type="text" class="search-box" id="trip-search" placeholder="Search trips..." oninput="filterTrips()">
-            </div>
-            <div class="trip-list" id="trip-list"></div>
+        <div class="welcome">Trip Planner</div>
+        <div class="subtitle" id="subtitle">Create and manage trip plans</div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="openCreateModal()">+ New Trip Plan</button>
+            <button class="btn btn-secondary" onclick="showActive()">Active Plans</button>
+            <button class="btn btn-secondary" onclick="showAll()">All Plans</button>
         </div>
 
-        <!-- Chat Area -->
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="chat-avatar">🤖</div>
-                <div>
-                    <div class="chat-title">PJ's Trip Planner AI</div>
-                    <div class="chat-subtitle">I help plan hotels, cars & routes</div>
+        <div id="plans-container"></div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div class="modal-overlay" id="edit-modal" onclick="if(event.target===this)closeEditModal()">
+        <div class="modal">
+            <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            <h2 id="modal-title">New Trip Plan</h2>
+            <input type="hidden" id="edit-id">
+
+            <div class="form-section">
+                <h3>📍 Trip Info</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Trip Name</label>
+                        <input type="text" id="trip-name" placeholder="e.g., Lafayette Tournament">
+                    </div>
+                    <div class="form-group">
+                        <label>Location (City, State)</label>
+                        <input type="text" id="trip-location" placeholder="e.g., Lafayette, LA">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dates</label>
+                        <input type="text" id="trip-dates" placeholder="e.g., May 15-16, 2026">
+                    </div>
+                    <div class="form-group">
+                        <label>Crew Members</label>
+                        <input type="text" id="trip-crew" placeholder="e.g., PJ, Caleb">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="status-selector">
+                        <div class="status-option active" data-status="planned" onclick="selectStatus(this)">Planned</div>
+                        <div class="status-option" data-status="booked" onclick="selectStatus(this)">Booked</div>
+                        <div class="status-option" data-status="ready" onclick="selectStatus(this)">Ready</div>
+                        <div class="status-option" data-status="completed" onclick="selectStatus(this)">Completed</div>
+                    </div>
                 </div>
             </div>
-            <div class="chat-messages" id="chat-messages"></div>
-            <div class="quick-actions" id="quick-actions"></div>
-            <div class="chat-input-area">
-                <input type="text" class="chat-input" id="chat-input" placeholder="Ask me anything about trip planning..." onkeypress="if(event.key==='Enter')sendMessage()">
-                <button class="chat-send" onclick="sendMessage()">Send</button>
+
+            <div class="form-section">
+                <h3>🏨 Hotel</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Hotel Name</label>
+                        <input type="text" id="hotel-name" placeholder="e.g., Hampton Inn & Suites">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="hotel-address" placeholder="e.g., 6085 Industrial Pkwy">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nights</label>
+                        <input type="number" id="hotel-nights" placeholder="2" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Rate/Night ($)</label>
+                        <input type="number" id="hotel-rate" placeholder="105" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirmation #</label>
+                    <input type="text" id="hotel-confirmation" placeholder="Optional">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>🚗 Car Rental</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" id="car-company" placeholder="e.g., Hertz">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="car-address" placeholder="e.g., 1122 Aviation Rd">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Days</label>
+                        <input type="number" id="car-days" placeholder="2" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Rate/Day ($)</label>
+                        <input type="number" id="car-rate" placeholder="57" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirmation #</label>
+                    <input type="text" id="car-confirmation" placeholder="Optional">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>📝 Notes</h3>
+                <div class="form-group">
+                    <textarea id="trip-notes" placeholder="Add any notes about this trip..."></textarea>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="savePlan()">Save Plan</button>
+                <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn btn-danger" id="delete-btn" style="display:none; margin-left:auto;" onclick="deleteCurrentPlan()">Delete</button>
             </div>
         </div>
     </div>
 
-    <script src="crew-data.js"></script>
+    <!-- View Detail Modal -->
+    <div class="modal-overlay" id="view-modal" onclick="if(event.target===this)closeViewModal()">
+        <div class="modal" id="view-modal-content">
+            <!-- Filled dynamically -->
+        </div>
+    </div>
+
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
@@ -419,7 +626,7 @@
             const nav = document.getElementById('main-nav');
             if (!nav || !role) return;
             const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
-            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker' };
             const current = 'planner';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';
@@ -427,404 +634,298 @@
             }).join('');
         })();
 
-        let selectedTrip = null;
-        let chatHistory = [];
+        const STORAGE_KEY = 'fs_pj_plans';
+        let currentFilter = 'active';
+        let editingId = null;
 
-        // Hotel & car booking links by state
-        const BOOKING_LINKS = {
-            'hotels': 'https://www.booking.com/searchresults.html?ss=',
-            'expedia': 'https://www.expedia.com/Hotel-Search?destination=',
-            'cars': 'https://www.enterprise.com/en/car-rental/locations/us/',
-            'hertz': 'https://www.hertz.com/rentacar/location/',
-            'maps': 'https://www.google.com/maps/search/?api=1&query='
-        };
-
-        // Common tournament cities by state
-        const STATE_CITIES = {
-            'TX': ['Dallas', 'Houston', 'Austin', 'San Antonio', 'Frisco'],
-            'FL': ['Orlando', 'Tampa', 'Miami', 'Jacksonville', 'Kissimmee'],
-            'CA': ['Los Angeles', 'San Diego', 'Sacramento', 'Irvine'],
-            'IL': ['Chicago', 'Rockford', 'Peoria', 'Springfield'],
-            'PA': ['Philadelphia', 'Pittsburgh', 'Harrisburg'],
-            'KY': ['Louisville', 'Lexington', 'Bowling Green'],
-            'TN': ['Nashville', 'Memphis', 'Knoxville'],
-            'GA': ['Atlanta', 'Savannah', 'Augusta'],
-            'NC': ['Charlotte', 'Raleigh', 'Greensboro'],
-            'OH': ['Columbus', 'Cleveland', 'Cincinnati'],
-            'IN': ['Indianapolis', 'Fort Wayne', 'Bloomington'],
-            'MO': ['St. Louis', 'Kansas City', 'Springfield'],
-            'AZ': ['Phoenix', 'Tucson', 'Scottsdale'],
-            'CO': ['Denver', 'Colorado Springs', 'Aurora'],
-            'NV': ['Las Vegas', 'Reno', 'Henderson'],
-            'LA': ['New Orleans', 'Baton Rouge', 'Shreveport', 'Lafayette'],
-            'OK': ['Oklahoma City', 'Tulsa', 'Norman'],
-            'AL': ['Birmingham', 'Montgomery', 'Mobile'],
-            'SC': ['Columbia', 'Charleston', 'Greenville'],
-            'VA': ['Virginia Beach', 'Richmond', 'Norfolk'],
-            'MS': ['Jackson', 'Gulfport', 'Biloxi'],
-            'AR': ['Little Rock', 'Fayetteville', 'Fort Smith']
-        };
-
-        function init() {
-            renderTripList();
-            addBotMessage("Hey PJ! 👋 I'm your trip planning assistant.\n\nSelect a trip from the left, or ask me:\n• Find hotels near [tournament]\n• Car rental in [city]\n• Drive time from New Orleans to [city]\n• Best route for [tournament]\n• Plan my trip to [state]");
-            renderQuickActions();
+        function getPlans() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        }
+        function savePlans(plans) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(plans));
+            render();
         }
 
-        function renderTripList() {
-            const list = document.getElementById('trip-list');
-            const search = document.getElementById('trip-search').value.toLowerCase();
+        function render() {
+            const plans = getPlans();
+            const container = document.getElementById('plans-container');
+            const now = new Date();
             
-            const trips = CREW_TRIPS.filter(t => {
-                if (search) {
-                    return t.name.toLowerCase().includes(search) || 
-                           (t.state && t.state.toLowerCase().includes(search));
-                }
-                return true;
-            }).slice(0, 50); // Show top 50
-
-            list.innerHTML = trips.map(trip => `
-                <div class="trip-item ${selectedTrip?.id === trip.id ? 'active' : ''}" onclick="selectTrip('${trip.id}')">
-                    <div class="trip-item-name">${trip.name}</div>
-                    <div class="trip-item-meta">
-                        <span>${trip.state || '—'}</span>
-                        <span>${trip.month || '—'}</span>
-                        <span class="trip-item-badge ${trip.status === 'LOCKED IN' ? 'badge-locked' : 'badge-pending'}">${trip.status || 'PENDING'}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filterTrips() {
-            renderTripList();
-        }
-
-        function selectTrip(tripId) {
-            selectedTrip = CREW_TRIPS.find(t => t.id === tripId);
-            renderTripList();
-            
-            if (selectedTrip) {
-                addBotMessage(`📍 **${selectedTrip.name}**\n\nState: ${selectedTrip.state || 'TBD'}\nDates: ${selectedTrip.startDate || 'TBD'} ${selectedTrip.endDate ? '- ' + selectedTrip.endDate : ''}\nCrew: ${selectedTrip.crew || 'Not assigned'}\n\nWhat do you need for this trip?`);
-                renderQuickActions(selectedTrip);
+            let filtered = plans;
+            if (currentFilter === 'active') {
+                filtered = plans.filter(p => p.status !== 'completed');
             }
-        }
 
-        function renderQuickActions(trip = null) {
-            const container = document.getElementById('quick-actions');
-            if (!trip) {
+            // Sort by created date (newest first)
+            filtered.sort((a,b) => b.created - a.created);
+
+            document.getElementById('subtitle').textContent = 
+                `${filtered.length} trip plan${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
                 container.innerHTML = `
-                    <button class="quick-btn" onclick="quickAsk('Show me trips needing hotels')">🏨 Need Hotels</button>
-                    <button class="quick-btn" onclick="quickAsk('Show me trips needing cars')">🚗 Need Cars</button>
-                    <button class="quick-btn" onclick="quickAsk('Show me this months trips')">📅 This Month</button>
-                    <button class="quick-btn" onclick="quickAsk('Drive times from NOLA')">🛣️ Drive Times</button>
+                    <div style="text-align:center; padding:80px 20px; color:var(--gray);">
+                        <div style="font-size:3em; margin-bottom:16px;">📋</div>
+                        <h3 style="font-family:Cinzel,serif; color:var(--gold); margin-bottom:10px;">No trip plans yet</h3>
+                        <p>Click "New Trip Plan" to create your first plan</p>
+                    </div>
                 `;
                 return;
             }
 
-            const state = trip.state;
-            const city = trip.name.split('(')[0].trim();
+            container.innerHTML = '<div class="plans-grid">' + filtered.map(plan => {
+                const hotelTotal = (plan.hotel?.nights || 0) * (plan.hotel?.rate || 0);
+                const carTotal = (plan.car?.days || 0) * (plan.car?.rate || 0);
+                const total = hotelTotal + carTotal;
+                
+                const statusClass = plan.status === 'booked' ? 'status-booked' : 'status-planned';
+                const statusLabel = plan.status ? plan.status.toUpperCase() : 'PLANNED';
+
+                return `
+                    <div class="plan-card" onclick="viewPlan(${plan.id})">
+                        <div class="plan-card-header">
+                            <div class="plan-card-title">${plan.name || 'Untitled'}</div>
+                            <div class="plan-card-status ${statusClass}">${statusLabel}</div>
+                        </div>
+                        <div class="plan-card-meta">
+                            <span class="meta-tag">${plan.location || '—'}</span>
+                            <span class="meta-tag">${plan.dates || '—'}</span>
+                            ${plan.crew ? `<span class="meta-tag">${plan.crew}</span>` : ''}
+                        </div>
+                        <div class="plan-cost-row">
+                            <span class="cost-label">🏨 Hotel</span>
+                            <span class="cost-value">$${hotelTotal}</span>
+                        </div>
+                        <div class="plan-cost-row">
+                            <span class="cost-label">🚗 Car</span>
+                            <span class="cost-value">$${carTotal}</span>
+                        </div>
+                        <div class="plan-total">
+                            <span class="total-label">TOTAL</span>
+                            <span class="total-value">$${total}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('') + '</div>';
+        }
+
+        function openCreateModal() {
+            editingId = null;
+            document.getElementById('modal-title').textContent = 'New Trip Plan';
+            document.getElementById('edit-id').value = '';
+            document.getElementById('delete-btn').style.display = 'none';
             
-            container.innerHTML = `
-                <button class="quick-btn" onclick="quickAsk('Find hotels near ${city} ${state}')">🏨 Hotels</button>
-                <button class="quick-btn" onclick="quickAsk('Car rental in ${state}')">🚗 Car Rental</button>
-                <button class="quick-btn" onclick="quickAsk('Drive time from New Orleans to ${state}')">🛣️ Drive Time</button>
-                <button class="quick-btn" onclick="quickAsk('Map ${city} ${state}')">🗺️ Map</button>
-                <button class="quick-btn" onclick="quickAsk('Gas stations on route to ${state}')">⛽ Gas Stops</button>
-            `;
-        }
-
-        function quickAsk(text) {
-            document.getElementById('chat-input').value = text;
-            sendMessage();
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            addUserMessage(text);
-            input.value = '';
-
-            // Process the message
-            setTimeout(() => processQuery(text), 500);
-        }
-
-        function addUserMessage(text) {
-            const container = document.getElementById('chat-messages');
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            container.innerHTML += `
-                <div class="message message-user">
-                    ${escapeHtml(text)}
-                    <div class="message-time">${time}</div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-            chatHistory.push({role: 'user', text});
-        }
-
-        function addBotMessage(text) {
-            const container = document.getElementById('chat-messages');
-            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            container.innerHTML += `
-                <div class="message message-bot">
-                    ${text}
-                    <div class="message-time">${time}</div>
-                </div>
-            `;
-            container.scrollTop = container.scrollHeight;
-            chatHistory.push({role: 'bot', text});
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function processQuery(text) {
-            const lower = text.toLowerCase();
+            // Clear all inputs
+            document.querySelectorAll('#edit-modal input:not([type="hidden"]), #edit-modal textarea').forEach(i => i.value = '');
+            document.querySelectorAll('.status-option').forEach(s => s.classList.remove('active'));
+            document.querySelector('.status-option[data-status="planned"]').classList.add('active');
             
-            // Hotel search
-            if (lower.includes('hotel') || lower.includes('stay') || lower.includes('sleep')) {
-                handleHotelQuery(text);
-            }
-            // Car rental
-            else if (lower.includes('car') || lower.includes('rental') || lower.includes('rent')) {
-                handleCarQuery(text);
-            }
-            // Drive time / route
-            else if (lower.includes('drive') || lower.includes('time') || lower.includes('route') || lower.includes('hour')) {
-                handleRouteQuery(text);
-            }
-            // Map
-            else if (lower.includes('map') || lower.includes('location') || lower.includes('where')) {
-                handleMapQuery(text);
-            }
-            // Trip list queries
-            else if (lower.includes('trip') || lower.includes('show me') || lower.includes('this month')) {
-                handleTripListQuery(text);
-            }
-            // Gas
-            else if (lower.includes('gas') || lower.includes('station')) {
-                handleGasQuery(text);
-            }
-            // General help
-            else {
-                addBotMessage("I can help you with:\n\n🏨 **Hotels** - Find and book hotels near tournaments\n🚗 **Car Rentals** - Enterprise, Hertz locations\n🛣️ **Drive Times** - From NOLA to any tournament\n🗺️ **Maps** - Tournament locations\n⛽ **Gas Stops** - Along your route\n\nJust ask! Example: *'Find hotels near Dallas TX'*");
-            }
+            document.getElementById('edit-modal').classList.add('active');
         }
 
-        function handleHotelQuery(text) {
-            const state = extractState(text);
-            const city = extractCity(text) || (selectedTrip ? selectedTrip.name.split('(')[0].trim() : null);
+        function openEditModal(id) {
+            const plans = getPlans();
+            const plan = plans.find(p => p.id === id);
+            if (!plan) return;
             
-            if (!state && !city) {
-                addBotMessage("Which tournament or city are you looking for hotels in?\n\nExample: *'Find hotels near Dallas TX'* or *'Hotels for Boilingbrook'*");
-                return;
-            }
-
-            const searchLocation = city ? `${city}, ${state || ''}` : state;
-            const bookingUrl = BOOKING_LINKS.hotels + encodeURIComponent(searchLocation);
-            const expediaUrl = BOOKING_LINKS.expedia + encodeURIComponent(searchLocation);
-
-            let response = `🏨 **Hotels near ${searchLocation}**\n\n`;
+            editingId = id;
+            document.getElementById('modal-title').textContent = 'Edit Trip Plan';
+            document.getElementById('edit-id').value = id;
+            document.getElementById('delete-btn').style.display = 'block';
             
-            // Add nearby cities if we know the state
-            if (state && STATE_CITIES[state]) {
-                response += `Major cities in ${state}:\n`;
-                STATE_CITIES[state].forEach(c => {
-                    response += `• ${c}\n`;
-                });
-                response += '\n';
-            }
-
-            response += `**Quick Links:**\n`;
-            response += `• <a href="${bookingUrl}" target="_blank" class="chat-link">Booking.com</a>\n`;
-            response += `• <a href="${expediaUrl}" target="_blank" class="chat-link">Expedia</a>\n\n`;
-            response += `📋 **Suggested next steps:**\n`;
-            response += `1. Compare 3 hotels near venue on Booking.com\n`;
-            response += `2. Check cancellation policy before booking\n`;
-            response += `3. Book within 24 hours to lock rate`;
-
-            addBotMessage(response);
+            document.getElementById('trip-name').value = plan.name || '';
+            document.getElementById('trip-location').value = plan.location || '';
+            document.getElementById('trip-dates').value = plan.dates || '';
+            document.getElementById('trip-crew').value = plan.crew || '';
+            document.getElementById('trip-notes').value = plan.notes || '';
+            
+            document.getElementById('hotel-name').value = plan.hotel?.name || '';
+            document.getElementById('hotel-address').value = plan.hotel?.address || '';
+            document.getElementById('hotel-nights').value = plan.hotel?.nights || '';
+            document.getElementById('hotel-rate').value = plan.hotel?.rate || '';
+            document.getElementById('hotel-confirmation').value = plan.hotel?.confirmation || '';
+            
+            document.getElementById('car-company').value = plan.car?.company || '';
+            document.getElementById('car-address').value = plan.car?.address || '';
+            document.getElementById('car-days').value = plan.car?.days || '';
+            document.getElementById('car-rate').value = plan.car?.rate || '';
+            document.getElementById('car-confirmation').value = plan.car?.confirmation || '';
+            
+            document.querySelectorAll('.status-option').forEach(s => s.classList.remove('active'));
+            const statusOpt = document.querySelector(`.status-option[data-status="${plan.status}"]`);
+            if (statusOpt) statusOpt.classList.add('active');
+            
+            document.getElementById('edit-modal').classList.add('active');
         }
 
-        function handleCarQuery(text) {
-            const state = extractState(text);
-            
-            if (!state) {
-                addBotMessage("Which state do you need a car in?\n\nExample: *'Car rental in TX'* or *'Need a car for Florida trip'*");
-                return;
-            }
-
-            const enterpriseUrl = BOOKING_LINKS.cars + state.toLowerCase();
-            
-            let response = `🚗 **Car Rental in ${state}**\n\n`;
-            response += `**Enterprise Locations:**\n`;
-            response += `• <a href="${enterpriseUrl}" target="_blank" class="chat-link">Find Enterprise in ${state}</a>\n\n`;
-            response += `**Other Options:**\n`;
-            response += `• <a href="https://www.hertz.com" target="_blank" class="chat-link">Hertz</a>\n`;
-            response += `• <a href="https://www.budget.com" target="_blank" class="chat-link">Budget</a>\n`;
-            response += `• <a href="https://www.avis.com" target="_blank" class="chat-link">Avis</a>\n\n`;
-            response += `📋 **Suggested next steps:**\n`;
-            response += `1. Reserve SUV/van (gear needs space)\n`;
-            response += `2. Confirm unlimited mileage included\n`;
-            response += `3. Pick up morning of departure`;
-
-            addBotMessage(response);
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+            editingId = null;
         }
 
-        function handleRouteQuery(text) {
-            const state = extractState(text);
-            const city = extractCity(text);
-            
-            if (!state && !city) {
-                addBotMessage("Where are you driving to?\n\nExample: *'Drive time from NOLA to Dallas'* or *'How long to Texas?'*");
-                return;
-            }
+        function selectStatus(el) {
+            document.querySelectorAll('.status-option').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-            const destination = city || STATE_CITIES[state]?.[0] || state;
-            const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(destination);
-            
-            // Rough drive times from New Orleans
-            const driveTimes = {
-                'TX': '7-9 hours',
-                'FL': '8-10 hours',
-                'GA': '6-7 hours',
-                'AL': '4-5 hours',
-                'MS': '2-3 hours',
-                'TN': '7-8 hours',
-                'NC': '10-12 hours',
-                'SC': '9-10 hours',
-                'LA': '1-4 hours',
-                'AR': '7-8 hours',
-                'OK': '9-10 hours',
-                'MO': '10-11 hours',
-                'KY': '9-10 hours',
-                'IL': '12-13 hours',
-                'IN': '11-12 hours',
-                'OH': '13-14 hours',
-                'PA': '16-17 hours',
-                'CA': '26-28 hours',
-                'AZ': '20-22 hours',
-                'NV': '28-30 hours',
-                'CO': '18-20 hours'
+        function getSelectedStatus() {
+            const active = document.querySelector('.status-option.active');
+            return active ? active.dataset.status : 'planned';
+        }
+
+        function savePlan() {
+            const plan = {
+                id: editingId || Date.now(),
+                name: document.getElementById('trip-name').value || 'Untitled Trip',
+                location: document.getElementById('trip-location').value || '',
+                dates: document.getElementById('trip-dates').value || '',
+                crew: document.getElementById('trip-crew').value || '',
+                status: getSelectedStatus(),
+                notes: document.getElementById('trip-notes').value || '',
+                hotel: {
+                    name: document.getElementById('hotel-name').value || '',
+                    address: document.getElementById('hotel-address').value || '',
+                    nights: parseInt(document.getElementById('hotel-nights').value) || 0,
+                    rate: parseFloat(document.getElementById('hotel-rate').value) || 0,
+                    confirmation: document.getElementById('hotel-confirmation').value || ''
+                },
+                car: {
+                    company: document.getElementById('car-company').value || '',
+                    address: document.getElementById('car-address').value || '',
+                    days: parseInt(document.getElementById('car-days').value) || 0,
+                    rate: parseFloat(document.getElementById('car-rate').value) || 0,
+                    confirmation: document.getElementById('car-confirmation').value || ''
+                },
+                created: editingId ? (getPlans().find(p => p.id === editingId)?.created || Date.now()) : Date.now()
             };
 
-            const time = driveTimes[state] || '10-15 hours (estimate)';
-
-            let response = `🛣️ **Route: New Orleans → ${destination}**\n\n`;
-            response += `**Estimated Drive Time:** ${time}\n\n`;
-            response += `**Map:** <a href="${mapsUrl}" target="_blank" class="chat-link">Open in Google Maps</a>\n\n`;
-            response += `📋 **Suggested next steps:**\n`;
-            response += `1. Leave NOLA by 5:30 AM\n`;
-            response += `2. First gas stop at 3-hour mark\n`;
-            response += `3. Check weather night before\n`;
-            response += `4. Text crew departure time`;
-
-            addBotMessage(response);
+            const plans = getPlans();
+            if (editingId) {
+                const idx = plans.findIndex(p => p.id === editingId);
+                if (idx >= 0) plans[idx] = plan;
+            } else {
+                plans.push(plan);
+            }
+            savePlans(plans);
+            closeEditModal();
         }
 
-        function handleMapQuery(text) {
-            const state = extractState(text);
-            const city = extractCity(text) || (selectedTrip ? selectedTrip.name.split('(')[0].trim() : null);
-            
-            if (!state && !city) {
-                addBotMessage("What location do you want to see on the map?\n\nExample: *'Map Dallas TX'* or *'Where is the Orlando tournament?'*");
-                return;
-            }
-
-            const search = city ? `${city} ${state || ''}` : state;
-            const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(search);
-
-            addBotMessage(`🗺️ **${search}**\n\n<a href="${mapsUrl}" target="_blank" class="chat-link">Open in Google Maps</a>\n\nYou can search for nearby hotels, restaurants, and gas stations from there.`);
+        function deleteCurrentPlan() {
+            if (!editingId) return;
+            if (!confirm('Delete this trip plan?')) return;
+            const plans = getPlans().filter(p => p.id !== editingId);
+            savePlans(plans);
+            closeEditModal();
+            closeViewModal();
         }
 
-        function handleTripListQuery(text) {
-            const lower = text.toLowerCase();
-            let filtered = CREW_TRIPS;
+        function viewPlan(id) {
+            const plans = getPlans();
+            const plan = plans.find(p => p.id === id);
+            if (!plan) return;
 
-            if (lower.includes('this month') || lower.includes('current')) {
-                const currentMonth = new Date().toLocaleString('default', { month: 'long' });
-                filtered = CREW_TRIPS.filter(t => t.month && t.month.toLowerCase() === currentMonth.toLowerCase());
-            } else if (lower.includes('next month')) {
-                // Simple next month logic
-                filtered = CREW_TRIPS.filter(t => t.month).slice(0, 10);
-            } else if (lower.includes('need') || lower.includes('pending')) {
-                filtered = CREW_TRIPS.filter(t => !t.status || t.status !== 'LOCKED IN');
-            } else if (lower.includes('locked')) {
-                filtered = CREW_TRIPS.filter(t => t.status === 'LOCKED IN');
-            }
+            const hotelTotal = (plan.hotel?.nights || 0) * (plan.hotel?.rate || 0);
+            const carTotal = (plan.car?.days || 0) * (plan.car?.rate || 0);
+            const total = hotelTotal + carTotal;
 
-            if (filtered.length === 0) {
-                addBotMessage("No trips found matching that criteria.");
-                return;
-            }
-
-            let response = `📅 **Trips (${filtered.length} found)**\n\n`;
-            filtered.slice(0, 15).forEach(t => {
-                response += `• **${t.name}** — ${t.state || '—'} — ${t.month || '—'} ${t.status === 'LOCKED IN' ? '✅' : '⏳'}\n`;
-            });
-            if (filtered.length > 15) {
-                response += `\n... and ${filtered.length - 15} more`;
-            }
-
-            addBotMessage(response);
-        }
-
-        function handleGasQuery(text) {
-            const state = extractState(text);
-            const city = extractCity(text) || (selectedTrip ? selectedTrip.name.split('(')[0].trim() : null);
-            
-            if (!state && !city) {
-                addBotMessage("Which route do you want gas stops for?\n\nExample: *'Gas stations on the way to Texas'*");
-                return;
-            }
-
-            const search = city ? `${city} ${state || ''} gas stations` : `${state} gas stations interstate`;
-            const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(search);
-
-            addBotMessage(`⛽ **Gas Stops**\n\n<a href="${mapsUrl}" target="_blank" class="chat-link">Find gas stations on route</a>\n\n📋 **Suggested next steps:**\n1. Download GasBuddy for cheapest stops\n2. Target Love's or Pilot (clean, big parking)\n3. Fill up at half tank — don't push it`);
-        }
-
-        function extractState(text) {
-            const stateMatch = text.match(/\b([A-Z]{2})\b/);
-            if (stateMatch) return stateMatch[1];
-            
-            // Check for state names
-            const stateNames = {
-                'texas': 'TX', 'florida': 'FL', 'california': 'CA', 'illinois': 'IL',
-                'pennsylvania': 'PA', 'kentucky': 'KY', 'tennessee': 'TN',
-                'georgia': 'GA', 'north carolina': 'NC', 'ohio': 'OH',
-                'indiana': 'IN', 'missouri': 'MO', 'arizona': 'AZ',
-                'colorado': 'CO', 'nevada': 'NV', 'louisiana': 'LA',
-                'oklahoma': 'OK', 'alabama': 'AL', 'south carolina': 'SC',
-                'virginia': 'VA', 'mississippi': 'MS', 'arkansas': 'AR'
+            const statusColors = {
+                planned: 'var(--blue)',
+                booked: 'var(--green)',
+                ready: 'var(--gold)',
+                completed: 'var(--gray)'
             };
-            
-            const lower = text.toLowerCase();
-            for (const [name, code] of Object.entries(stateNames)) {
-                if (lower.includes(name)) return code;
+
+            let html = `
+                <button class="modal-close" onclick="closeViewModal()">&times;</button>
+                <div class="detail-view">
+                    <div class="detail-header">
+                        <div>
+                            <div class="detail-title">${plan.name || 'Untitled'}</div>
+                            <div class="detail-subtitle">${plan.location || '—'} • ${plan.dates || '—'}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-family:Cinzel,serif; color:${statusColors[plan.status] || 'var(--gray)'}; font-size:0.85em; letter-spacing:2px; text-transform:uppercase;">${plan.status || 'planned'}</div>
+                            <div style="font-family:Cinzel,serif; color:var(--gold); font-size:1.6em; font-weight:700; margin-top:4px;">$${total}</div>
+                        </div>
+                    </div>
+            `;
+
+            html += `
+                <div class="detail-section">
+                    <h4>📍 Trip Info</h4>
+                    <div class="detail-row"><span class="label">Location</span><span class="value">${plan.location || '—'}</span></div>
+                    <div class="detail-row"><span class="label">Dates</span><span class="value">${plan.dates || '—'}</span></div>
+                    <div class="detail-row"><span class="label">Crew</span><span class="value">${plan.crew || '—'}</span></div>
+                </div>
+            `;
+
+            if (plan.hotel?.name) {
+                html += `
+                    <div class="detail-section">
+                        <h4>🏨 Hotel</h4>
+                        <div class="detail-row"><span class="label">Name</span><span class="value">${plan.hotel.name}</span></div>
+                        <div class="detail-row"><span class="label">Address</span><span class="value">${plan.hotel.address || '—'}</span></div>
+                        <div class="detail-row"><span class="label">Stay</span><span class="value">${plan.hotel.nights} nights @ $${plan.hotel.rate}/night</span></div>
+                        ${plan.hotel.confirmation ? `<div class="detail-row"><span class="label">Confirmation</span><span class="value">${plan.hotel.confirmation}</span></div>` : ''}
+                        <div class="detail-row" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><span class="label">Hotel Total</span><span class="price">$${hotelTotal}</span></div>
+                    </div>
+                `;
             }
-            
-            // If a trip is selected, use its state
-            if (selectedTrip && selectedTrip.state) return selectedTrip.state;
-            
-            return null;
+
+            if (plan.car?.company) {
+                html += `
+                    <div class="detail-section">
+                        <h4>🚗 Car Rental</h4>
+                        <div class="detail-row"><span class="label">Company</span><span class="value">${plan.car.company}</span></div>
+                        <div class="detail-row"><span class="label">Address</span><span class="value">${plan.car.address || '—'}</span></div>
+                        <div class="detail-row"><span class="label">Rental</span><span class="value">${plan.car.days} days @ $${plan.car.rate}/day</span></div>
+                        ${plan.car.confirmation ? `<div class="detail-row"><span class="label">Confirmation</span><span class="value">${plan.car.confirmation}</span></div>` : ''}
+                        <div class="detail-row" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><span class="label">Car Total</span><span class="price">$${carTotal}</span></div>
+                    </div>
+                `;
+            }
+
+            if (plan.notes) {
+                html += `
+                    <div class="detail-section">
+                        <h4>📝 Notes</h4>
+                        <p style="color:var(--gray); line-height:1.7; font-size:0.9em; white-space:pre-wrap;">${plan.notes}</p>
+                    </div>
+                `;
+            }
+
+            html += `
+                    <div class="detail-actions">
+                        <button class="btn btn-primary" onclick="closeViewModal(); openEditModal(${plan.id});">✏️ Edit Plan</button>
+                        <button class="btn btn-success" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(plan.location || '')}', '_blank')">🗺️ Open Map</button>
+                        <button class="btn btn-danger" style="margin-left:auto;" onclick="deletePlan(${plan.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('view-modal-content').innerHTML = html;
+            document.getElementById('view-modal').classList.add('active');
         }
 
-        function extractCity(text) {
-            // Try to extract a city name - simple approach
-            const commonCities = ['Dallas', 'Houston', 'Austin', 'Orlando', 'Tampa', 'Miami', 
-                'Chicago', 'Philadelphia', 'Atlanta', 'Nashville', 'Memphis',
-                'Denver', 'Phoenix', 'Vegas', 'Louisville', 'Lexington'];
-            
-            const lower = text.toLowerCase();
-            for (const city of commonCities) {
-                if (lower.includes(city.toLowerCase())) return city;
-            }
-            return null;
+        function closeViewModal() {
+            document.getElementById('view-modal').classList.remove('active');
+        }
+
+        function deletePlan(id) {
+            if (!confirm('Delete this trip plan?')) return;
+            const plans = getPlans().filter(p => p.id !== id);
+            savePlans(plans);
+            closeViewModal();
+        }
+
+        function showActive() {
+            currentFilter = 'active';
+            render();
+        }
+
+        function showAll() {
+            currentFilter = 'all';
+            render();
         }
 
         function logout() {
@@ -832,11 +933,18 @@
             window.location.href = 'signin.html';
         }
 
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+                closeViewModal();
+            }
+        });
+
         // Init
-        init();
+        render();
     </script>
     <script>
-        // Particles & Progress Bar
         (function(){
             const container = document.getElementById("particles");
             if (!container) return;
