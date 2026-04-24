@@ -3,53 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Login — Future Stars</title>
+    <title>Future Stars - Sign In</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --gold: #ffd700; --blue: #00d4ff; --green: #00ff88; --red: #ff4444; --bg: #050810; }
         body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-box { background: rgba(255,255,255,0.03); border: 2px solid rgba(0,212,255,0.2); border-radius: 24px; padding: 50px; width: 100%; max-width: 480px; text-align: center; }
+        .box { background: rgba(255,255,255,0.03); border: 2px solid rgba(0,212,255,0.2); border-radius: 24px; padding: 50px; width: 100%; max-width: 480px; text-align: center; }
         .logo { font-family: 'Orbitron'; font-size: 2.5em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
         .tagline { color: #8892b0; margin-bottom: 40px; font-size: 1.2em; }
-        .crew-select { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-        .crew-select > :nth-child(5) { grid-column: 1 / -1; justify-self: center; width: 50%; }
-        .hint { color: #8892b0; font-size: 0.9em; margin-top: 10px; }
-        .crew-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; user-select: none; }
-        .crew-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-2px); }
-        .crew-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.2); transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-
-        .btn { width: 100%; padding: 18px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 12px; font-family: 'Orbitron'; font-size: 1.2em; letter-spacing: 2px; cursor: pointer; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
-        .error { color: var(--red); margin-top: 20px; font-size: 1.1em; display: none; }
-        .error.show { display: block; }
-        .success { color: var(--green); margin-top: 20px; font-size: 1.1em; display: none; }
-        .success.show { display: block; }
+        .names { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
+        .names > :nth-child(5) { grid-column: 1 / -1; justify-self: center; width: 50%; }
+        .name-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; }
+        .name-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); }
+        .name-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+        .go-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 12px; font-family: 'Orbitron'; font-size: 1.2em; cursor: pointer; }
+        .go-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
+        .msg { margin-top: 20px; font-size: 1.1em; }
+        .msg.error { color: var(--red); }
+        .msg.success { color: var(--green); }
     </style>
 </head>
 <body>
-    <div class="login-box">
+    <div class="box">
         <div class="logo">🏆 FUTURE STARS</div>
-        <p class="tagline">Select Your Name</p>
-        <div class="crew-select">
-            <button class="crew-btn" onclick="selectCrew('jr')">👑 JR</button>
-            <button class="crew-btn" onclick="selectCrew('lane')">👑 Lane</button>
-            <button class="crew-btn" onclick="selectCrew('pj')">🚐 PJ</button>
-            <button class="crew-btn" onclick="selectCrew('caleb')">📞 Caleb</button>
-            <button class="crew-btn" onclick="selectCrew('marlon')">📦 Marlon</button>
+        <p class="tagline">Who are you?</p>
+        <div class="names">
+            <button class="name-btn" onclick="pick('jr')">👑 JR</button>
+            <button class="name-btn" onclick="pick('lane')">👑 Lane</button>
+            <button class="name-btn" onclick="pick('pj')">🚐 PJ</button>
+            <button class="name-btn" onclick="pick('caleb')">📞 Caleb</button>
+            <button class="name-btn" onclick="pick('marlon')">📦 Marlon</button>
         </div>
-        <button class="btn" onclick="login()">ENTER</button>
-        <div class="error" id="error"></div>
-        <div class="success" id="success"></div>
-        <p class="hint">Click your name, then click ENTER</p>
+        <button class="go-btn" onclick="go()">GO</button>
+        <div class="msg" id="msg"></div>
     </div>
     <script>
-        // Prevent caching issues
-        const CACHE_BUST = Date.now();
-        
         const CREW = {
             'jr': { role: 'owner', name: 'JR' },
             'lane': { role: 'owner', name: 'Lane' },
@@ -57,55 +46,28 @@
             'caleb': { role: 'tournament', name: 'Caleb' },
             'marlon': { role: 'inventory', name: 'Marlon' }
         };
-        
-        let selectedCrew = null;
-        const errorDiv = document.getElementById('error');
-        const successDiv = document.getElementById('success');
+        let picked = null;
+        const msg = document.getElementById('msg');
 
-        function selectCrew(crew) {
-            selectedCrew = crew;
-            console.log('Selected:', crew);
-            
-            // Visual feedback
-            document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
+        function pick(who) {
+            picked = who;
+            document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
-            
-            // Hide messages
-            errorDiv.classList.remove('show');
-            successDiv.classList.remove('show');
+            msg.textContent = '';
         }
 
-        function login() {
-            console.log('Login clicked, selected:', selectedCrew);
-            
-            if (!selectedCrew) { 
-                showError('Please click on your name first!');
-                return; 
+        function go() {
+            if (!picked) {
+                msg.className = 'msg error';
+                msg.textContent = 'Click your name first!';
+                return;
             }
-            
-            showSuccess('Login successful! Redirecting...');
-            
-            // Store auth data
-            sessionStorage.setItem('fs_auth', selectedCrew);
-            sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
-            sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
-            
-            // Redirect with cache buster
-            setTimeout(() => {
-                window.location.href = 'index.html?v=' + CACHE_BUST;
-            }, 500);
-        }
-        
-        function showError(msg) {
-            errorDiv.textContent = msg;
-            errorDiv.classList.add('show');
-            successDiv.classList.remove('show');
-        }
-        
-        function showSuccess(msg) {
-            successDiv.textContent = msg;
-            successDiv.classList.add('show');
-            errorDiv.classList.remove('show');
+            msg.className = 'msg success';
+            msg.textContent = 'Logging in...';
+            sessionStorage.setItem('fs_auth', picked);
+            sessionStorage.setItem('fs_role', CREW[picked].role);
+            sessionStorage.setItem('fs_name', CREW[picked].name);
+            setTimeout(() => window.location.href = 'dashboard.html', 500);
         }
     </script>
 </body>
