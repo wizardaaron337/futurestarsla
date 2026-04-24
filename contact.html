@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — Future Stars</title>
+    <meta name="description" content="Contact Future Stars Sports Co">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animations.css?v=2">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
+            --black: #0A0A0A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
+            --green: #4CAF50;
+            --red: #EF5350;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            font-size: 15px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 20px rgba(201,162,39,0.2);
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+        .nav {
+            display: flex;
+            gap: 4px;
+            padding: 12px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .nav a {
+            padding: 10px 20px;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .nav a:hover { color: var(--white); background: var(--black-hover); }
+        .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
+        .main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 30px;
+        }
+        .welcome {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: var(--gray);
+            margin-bottom: 40px;
+            font-size: 1em;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .info-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .info-card-icon {
+            font-size: 2em;
+            margin-bottom: 12px;
+        }
+        .info-card-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .info-card-text {
+            color: var(--gray);
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .info-card-text a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .info-card-text a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+        }
+        .form-container h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--gray);
+            font-size: 0.85em;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border: none;
+            border-radius: 10px;
+            color: var(--black);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201,162,39,0.3);
+        }
+        .success-message {
+            display: none;
+            background: rgba(76,175,80,0.1);
+            border: 1px solid rgba(76,175,80,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .success-message.show { display: block; }
+        .success-message h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+        .success-message p {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .main { padding: 30px 20px; }
+            .welcome { font-size: 1.6em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="particles" id="particles"></div>
+    <div class="header">
+        <a href="dashboard.html" class="logo-link">
+            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+            <span class="logo-text">FUTURE STARS</span>
+        </a>
+    </div>
+    <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="tournaments.html">Tournaments</a>
+        <a href="inventory.html">Inventory</a>
+        <a href="trips.html">Trips</a>
+        <a href="team.html">Team</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="contact.html" class="active">Contact</a>
+    </nav>
+    <div class="main">
+        <div class="welcome">Contact Us</div>
+        <div class="subtitle">Get in touch with the Future Stars team</div>
+        
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-card-icon">📧</div>
+                    <div class="info-card-title">EMAIL</div>
+                    <div class="info-card-text">
+                        General: <a href="mailto:info@futurestarsla.com">info@futurestarsla.com</a><br>
+                        Support: <a href="mailto:support@futurestarsla.com">support@futurestarsla.com</a><br>
+                        Orders: <a href="mailto:orders@futurestarsla.com">orders@futurestarsla.com</a>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">📱</div>
+                    <div class="info-card-title">PHONE</div>
+                    <div class="info-card-text">
+                        Main: (504) 555-0100<br>
+                        Support: (504) 555-0101<br>
+                        Mon-Fri 9AM-6PM CST
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">📍</div>
+                    <div class="info-card-title">LOCATION</div>
+                    <div class="info-card-text">
+                        Future Stars Sports Co<br>
+                        New Orleans, Louisiana<br>
+                        United States
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <h3>Send a Message</h3>
+                <form id="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label>Your Name *</label>
+                        <input type="text" id="c-name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="c-email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <select id="c-subject">
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="order">Order Question</option>
+                            <option value="partnership">Partnership</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message *</label>
+                        <textarea id="c-message" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+                <div class="success-message" id="success-msg">
+                    <h4>✅ Message Sent!</h4>
+                    <p>Thank you for reaching out. We'll get back to you within 24 hours.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="footer-component.js?v=2"></script>
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('c-name').value;
+            const email = document.getElementById('c-email').value;
+            const subject = document.getElementById('c-subject').value;
+            const message = document.getElementById('c-message').value;
+            
+            // Store locally (in real app, send to server)
+            const inquiries = JSON.parse(localStorage.getItem('fs_contact_inquiries') || '[]');
+            inquiries.push({
+                id: Date.now(),
+                name, email, subject, message,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('fs_contact_inquiries', JSON.stringify(inquiries));
+            
+            // Show success
+            document.getElementById('contact-form').reset();
+            document.getElementById('success-msg').classList.add('show');
+            setTimeout(() => {
+                document.getElementById('success-msg').classList.remove('show');
+            }, 5000);
+        }
+        
+        // Particles
+        (function(){
+            const container = document.getElementById("particles");
+            if (!container) return;
+            for(let i=0;i<25;i++){
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.left = Math.random()*100+"vw";
+                p.style.animationDelay = Math.random()*15+"s";
+                p.style.animationDuration = (10+Math.random()*10)+"s";
+                p.style.width = (2+Math.random()*3)+"px";
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener("scroll", function(){
+            const bar = document.getElementById("progress-bar");
+            if (!bar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            bar.style.width = pct+"%";
+        });
+    </script>
+</body>
+</html>

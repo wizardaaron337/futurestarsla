@@ -41,7 +41,8 @@
           <div style="font-family: 'Cinzel', serif; color: var(--white); font-size: 0.85em; margin-bottom: 12px; letter-spacing: 1px;">SUPPORT</div>
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <a href="privacy.html" style="color: var(--gray); text-decoration: none; font-size: 0.85em; transition: color 0.2s;">Privacy Policy</a>
-            <a href="#" onclick="alert('Contact: support@futurestarsla.com'); return false;" style="color: var(--gray); text-decoration: none; font-size: 0.85em; transition: color 0.2s;">Contact Support</a>
+            <a href="contact.html" style="color: var(--gray); text-decoration: none; font-size: 0.85em; transition: color 0.2s;">Contact Us</a>
+            <a href="#" onclick="alert('Contact: support@futurestarsla.com'); return false;" style="color: var(--gray); text-decoration: none; font-size: 0.85em; transition: color 0.2s;">Support</a>
             <span style="color: var(--gray); font-size: 0.85em;">Version 2.0</span>
           </div>
         </div>

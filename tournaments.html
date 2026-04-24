@@ -195,6 +195,30 @@
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 16px;
         }
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            animation: skeleton-pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes skeleton-pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .skeleton-line {
+            height: 16px;
+            background: var(--black-hover);
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        .skeleton-line.short { width: 60%; }
+        .skeleton-line.medium { width: 80%; }
+        .skeleton-line.long { width: 100%; }
+        .skeleton-line.title { height: 22px; width: 70%; margin-bottom: 16px; }
+        .skeleton-tags { display: flex; gap: 8px; margin-bottom: 16px; }
+        .skeleton-tag { width: 60px; height: 24px; background: var(--black-hover); border-radius: 6px; }
         .tournament-card {
             background: var(--black-card);
             border: 1px solid var(--border);
@@ -384,7 +408,15 @@
             </select>
         </div>
 
-        <div class="tournaments-grid" id="grid"></div>
+        <div class="tournaments-grid" id="grid">
+            <!-- Skeleton loading state -->
+            <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-tags"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-tags"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-tags"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-tags"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-tags"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+            <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-tags"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+        </div>
     </div>
 
     <script src="tournament-data.js"></script>
@@ -501,5 +533,6 @@
         });
     </script>
 <script src="footer-component.js?v=2"></script>
+<script src="keyboard-shortcuts.js?v=2"></script>
 </body>
 </html>
