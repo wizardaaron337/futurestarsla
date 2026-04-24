@@ -1,972 +1,1061 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PJ Trip Planner — Future Stars</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="animations.css?v=2">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --gold: #C9A227;
-            --gold-light: #E8C84B;
-            --gold-dark: #B8941F;
-            --black: #0A0A0A;
-            --black-light: #141414;
-            --black-card: #1A1A1A;
-            --black-hover: #242424;
-            --white: #F8F6F0;
-            --gray: #A8A498;
-            --gray-dark: #6B665C;
-            --border: #2A2824;
-            --green: #4CAF50;
-            --red: #EF5350;
-            --blue: #64B5F6;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--black);
-            color: var(--white);
-            min-height: 100vh;
-            font-size: 15px;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 30px;
-            background: var(--black-light);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-        .logo-img {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold-dark);
-            box-shadow: 0 0 20px rgba(201,162,39,0.2);
-        }
-        .logo-text {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 3px;
-        }
-        .user-info { display: flex; align-items: center; gap: 20px; }
-        .user-name {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.85em;
-            letter-spacing: 2px;
-        }
-        .logout-btn {
-            padding: 8px 18px;
-            background: transparent;
-            border: 1px solid var(--gray-dark);
-            color: var(--gray);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .nav {
-            display: flex;
-            gap: 4px;
-            padding: 12px 30px;
-            background: var(--black-light);
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .nav a {
-            padding: 10px 20px;
-            color: var(--gray);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.85em;
-            font-weight: 500;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-        }
-        .nav a:hover { color: var(--white); background: var(--black-hover); }
-        .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PJ Trip Maker — Future Stars</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="animations.css?v=3">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#C9A227;--gold-light:#E8C84B;--gold-dark:#B8941F;--gold-10:rgba(201,162,39,0.1);--gold-20:rgba(201,162,39,0.2);
+  --black:#0A0A0A;--black-light:#141414;--black-card:#1A1A1A;--black-hover:#242424;
+  --white:#F8F6F0;--gray:#A8A498;--gray-dark:#6B665C;--border:#2A2824;
+  --green:#4CAF50;--red:#EF5350;--blue:#64B5F6;--orange:#FF9800;--purple:#B829DD;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);min-height:100vh;font-size:15px;}
+::selection{background:rgba(201,162,39,0.3);color:var(--white);}
 
-        .main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 30px;
-        }
-        .welcome {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 6px;
-            letter-spacing: 1px;
-        }
-        .subtitle { color: var(--gray); margin-bottom: 35px; font-size: 1em; }
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 30px;background:var(--black-light);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.logo-link{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-dark);box-shadow:0 0 20px rgba(201,162,39,0.2);}
+.logo-text{font-family:'Cinzel',serif;font-size:1.3em;font-weight:700;color:var(--gold);letter-spacing:3px;}
+.user-info{display:flex;align-items:center;gap:20px;}
+.user-name{font-family:'Cinzel',serif;color:var(--gold);font-size:.85em;letter-spacing:2px;}
+.logout-btn{padding:8px 18px;background:transparent;border:1px solid var(--gray-dark);color:var(--gray);border-radius:8px;font-family:'Inter',sans-serif;font-size:.8em;cursor:pointer;transition:all .3s;}
+.logout-btn:hover{border-color:var(--gold);color:var(--gold);}
 
-        /* Controls */
-        .controls {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(201,162,39,0.3);
-        }
-        .btn-secondary {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            color: var(--white);
-        }
-        .btn-secondary:hover { border-color: var(--gold); }
-        .btn-danger {
-            background: rgba(239,83,80,0.1);
-            border: 1px solid rgba(239,83,80,0.3);
-            color: var(--red);
-        }
-        .btn-danger:hover { background: rgba(239,83,80,0.2); }
-        .btn-success {
-            background: linear-gradient(135deg, var(--green), #388E3C);
-            color: var(--white);
-        }
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(76,175,80,0.3);
-        }
+/* Nav */
+.nav{display:flex;gap:4px;padding:12px 30px;background:var(--black-light);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.nav a{padding:10px 20px;color:var(--gray);text-decoration:none;border-radius:8px;font-size:.85em;font-weight:500;transition:all .3s;letter-spacing:.5px;}
+.nav a:hover{color:var(--white);background:var(--black-hover);}
+.nav a.active{color:var(--gold);background:var(--gold-10);}
 
-        /* Plan Cards Grid */
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-        .plan-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .plan-card:hover {
-            border-color: var(--gold-dark);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-        }
-        .plan-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .plan-card:hover::before { opacity: 1; }
-        .plan-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 14px;
-            gap: 12px;
-        }
-        .plan-card-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1em;
-            color: var(--gold);
-            letter-spacing: 1px;
-            line-height: 1.3;
-        }
-        .plan-card-status {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.7em;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .status-planned {
-            background: rgba(100,181,246,0.1);
-            color: var(--blue);
-            border: 1px solid rgba(100,181,246,0.2);
-        }
-        .status-booked {
-            background: rgba(76,175,80,0.1);
-            color: var(--green);
-            border: 1px solid rgba(76,175,80,0.2);
-        }
-        .plan-card-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .meta-tag {
-            padding: 4px 10px;
-            background: rgba(201,162,39,0.06);
-            border: 1px solid rgba(201,162,39,0.12);
-            border-radius: 6px;
-            font-size: 0.8em;
-            color: var(--gray);
-        }
-        .plan-cost-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            font-size: 0.88em;
-            border-bottom: 1px solid var(--border);
-        }
-        .plan-cost-row:last-child { border-bottom: none; }
-        .cost-label { color: var(--gray); }
-        .cost-value {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-weight: 700;
-        }
-        .plan-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 12px;
-            margin-top: 12px;
-            border-top: 2px solid var(--gold);
-        }
-        .total-label {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.85em;
-            letter-spacing: 2px;
-        }
-        .total-value {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 1.3em;
-            font-weight: 700;
-        }
+/* Main */
+.main{max-width:1400px;margin:0 auto;padding:40px 30px;}
+.page-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px;flex-wrap:wrap;gap:16px;}
+.welcome{font-family:'Cinzel',serif;font-size:2.2em;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.subtitle{color:var(--gray);font-size:1em;}
 
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 700px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal h2 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            margin-bottom: 20px;
-            padding-right: 40px;
-        }
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 1.8em;
-            cursor: pointer;
-        }
-        .modal-close:hover { color: var(--white); }
+/* Controls Bar */
+.controls-bar{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;align-items:center;}
+.search-box{flex:1;min-width:260px;padding:12px 18px;background:var(--black-card);border:1px solid var(--border);border-radius:12px;color:var(--white);font-family:'Inter',sans-serif;font-size:.95em;outline:none;transition:all .2s;}
+.search-box:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,0.1);}
+.search-box::placeholder{color:var(--gray-dark);}
+.filter-select{padding:12px 16px;background:var(--black-card);border:1px solid var(--border);border-radius:12px;color:var(--white);font-family:'Inter',sans-serif;font-size:.9em;outline:none;cursor:pointer;transition:all .2s;}
+.filter-select:focus{border-color:var(--gold);}
 
-        /* Form Styles */
-        .form-section {
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .form-section h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.95em;
-            margin-bottom: 14px;
-            letter-spacing: 1px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .form-group {
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            color: var(--gray);
-            font-size: 0.85em;
-            margin-bottom: 6px;
-        }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            background: var(--black-light);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-            outline: none;
-            transition: all 0.2s;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(201,162,39,0.1);
-        }
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
+/* Buttons */
+.btn{padding:12px 24px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.9em;font-weight:600;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);box-shadow:0 4px 15px rgba(201,162,39,0.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,162,39,0.4);}
+.btn-secondary{background:var(--black-card);border:1px solid var(--border);color:var(--white);}
+.btn-secondary:hover{border-color:var(--gold);}
+.btn-danger{background:rgba(239,83,80,0.1);border:1px solid rgba(239,83,80,0.3);color:var(--red);}
+.btn-danger:hover{background:rgba(239,83,80,0.2);}
+.btn-success{background:linear-gradient(135deg,var(--green),#388E3C);color:var(--white);box-shadow:0 4px 15px rgba(76,175,80,0.3);}
+.btn-success:hover{transform:translateY(-2px);}
+.btn-sm{padding:8px 16px;font-size:.8em;}
+.btn-icon{padding:8px;border-radius:8px;background:transparent;border:1px solid var(--border);color:var(--gray);cursor:pointer;transition:all .2s;}
+.btn-icon:hover{border-color:var(--gold);color:var(--gold);}
 
-        /* Detail View */
-        .detail-view {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-        }
-        .detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .detail-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.4em;
-            color: var(--gold);
-            margin-bottom: 6px;
-        }
-        .detail-subtitle {
-            color: var(--gray);
-            font-size: 0.9em;
-        }
-        .detail-section {
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .detail-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .detail-section h4 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.9em;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 0.9em;
-        }
-        .detail-row .label { color: var(--gray); }
-        .detail-row .value { color: var(--white); font-weight: 500; }
-        .detail-row .price {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-weight: 700;
-        }
-        .detail-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
+/* View Toggle */
+.view-toggle{display:flex;gap:4px;background:var(--black-card);padding:4px;border-radius:10px;border:1px solid var(--border);}
+.view-toggle button{padding:8px 14px;border-radius:6px;border:none;background:transparent;color:var(--gray);font-size:.85em;cursor:pointer;transition:all .2s;}
+.view-toggle button.active{background:var(--gold-10);color:var(--gold);}
+.view-toggle button:hover:not(.active){color:var(--white);}
 
-        /* Status badge selector */
-        .status-selector {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .status-option {
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--black-light);
-            color: var(--gray);
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .status-option:hover { border-color: var(--gold); color: var(--white); }
-        .status-option.active {
-            border-color: var(--gold);
-            background: rgba(201,162,39,0.1);
-            color: var(--gold);
-        }
+/* Folder Cards */
+.folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:40px;}
+.folder-card{background:var(--black-card);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.folder-card:hover{border-color:var(--gold-dark);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.5);}
+.folder-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;opacity:.8;transition:opacity .3s;}
+.folder-card:hover::before{opacity:1;}
+.folder-card.drag-over{border-color:var(--gold);background:var(--gold-10);transform:scale(1.02);}
+.folder-color-bar{position:absolute;top:0;left:0;right:0;height:4px;}
+.folder-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.folder-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4em;background:var(--black-light);border:1px solid var(--border);}
+.folder-title{font-family:'Cinzel',serif;font-size:.95em;color:var(--white);letter-spacing:1px;margin-bottom:2px;}
+.folder-meta{font-size:.78em;color:var(--gray);}
+.folder-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.folder-stat{text-align:center;}
+.folder-stat-value{font-family:'Cinzel',serif;font-size:1.3em;color:var(--gold);font-weight:700;}
+.folder-stat-label{font-size:.7em;color:var(--gray);text-transform:uppercase;letter-spacing:1px;}
+.folder-actions{display:flex;gap:6px;margin-top:12px;opacity:0;transition:opacity .2s;}
+.folder-card:hover .folder-actions{opacity:1;}
 
-        @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
-            .nav { padding: 10px 20px; }
-            .main { padding: 30px 20px; }
-            .plans-grid { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
-            .detail-header { flex-direction: column; gap: 12px; }
-        }
-    </style>
+/* Share Badge */
+.share-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:.7em;font-weight:600;}
+.share-public{background:rgba(76,175,80,0.1);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
+.share-private{background:rgba(168,164,152,0.1);color:var(--gray);border:1px solid rgba(168,164,152,0.2);}
+
+/* Trip Cards (inside folder view) */
+.trips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;}
+.trip-card{background:var(--black-card);border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .3s;position:relative;cursor:grab;}
+.trip-card:hover{border-color:var(--gold-dark);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
+.trip-card.dragging{opacity:.5;cursor:grabbing;}
+.trip-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px;}
+.trip-card-title{font-family:'Cinzel',serif;font-size:.95em;color:var(--white);letter-spacing:1px;line-height:1.3;flex:1;}
+.trip-card-type{padding:4px 10px;border-radius:6px;font-size:.7em;font-weight:600;letter-spacing:.5px;border:1px solid;white-space:nowrap;}
+.trip-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.trip-tag{padding:3px 10px;background:var(--black-light);border:1px solid var(--border);border-radius:6px;font-size:.78em;color:var(--gray);}
+.trip-tag i{color:var(--gold);margin-right:4px;}
+.trip-desc{color:var(--gray);font-size:.85em;line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.trip-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);}
+.trip-budget{font-family:'Cinzel',serif;color:var(--gold);font-size:1.1em;font-weight:700;}
+.trip-travelers{font-size:.8em;color:var(--gray);}
+.trip-actions{display:flex;gap:6px;}
+
+/* Type colors */
+.type-roadtrip{color:var(--blue);border-color:rgba(100,181,246,.3);background:rgba(100,181,246,.08);}
+.type-family{color:var(--green);border-color:rgba(76,175,80,.3);background:rgba(76,175,80,.08);}
+.type-business{color:var(--gold);border-color:rgba(201,162,39,.3);background:rgba(201,162,39,.08);}
+.type-adventure{color:var(--orange);border-color:rgba(255,152,0,.3);background:rgba(255,152,0,.08);}
+.type-tournament{color:var(--purple);border-color:rgba(184,41,221,.3);background:rgba(184,41,221,.08);}
+.type-other{color:var(--gray);border-color:rgba(168,164,152,.3);background:rgba(168,164,152,.08);}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--black-card);border:1px solid var(--border);border-radius:20px;padding:30px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;position:relative;animation:modalIn .3s ease;}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal h2{font-family:'Cinzel',serif;color:var(--gold);margin-bottom:20px;padding-right:40px;font-size:1.3em;}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--gray);font-size:1.8em;cursor:pointer;transition:color .2s;}
+.modal-close:hover{color:var(--white);}
+
+/* Forms */
+.form-section{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.form-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.form-section h3{font-family:'Cinzel',serif;color:var(--gold);font-size:.9em;margin-bottom:14px;letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;color:var(--gray);font-size:.85em;margin-bottom:6px;font-weight:500;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px;background:var(--black-light);border:1px solid var(--border);border-radius:10px;color:var(--white);font-family:'Inter',sans-serif;font-size:.9em;outline:none;transition:all .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.1);}
+.form-group input::placeholder{color:var(--gray-dark);}
+.form-group textarea{min-height:80px;resize:vertical;}
+.form-group input[type="date"]{color-scheme:dark;}
+
+/* Color picker */
+.color-picker{display:flex;gap:8px;flex-wrap:wrap;}
+.color-option{width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;position:relative;}
+.color-option:hover{transform:scale(1.15);}
+.color-option.active{border-color:var(--white);box-shadow:0 0 0 2px var(--gold);}
+.color-option.active::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:14px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.8);}
+
+/* Share modal content */
+.share-url{display:flex;gap:8px;margin:16px 0;}
+.share-url input{flex:1;padding:12px;background:var(--black-light);border:1px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Inter',monospace;font-size:.85em;}
+.share-options{margin:16px 0;padding:16px;background:var(--black-light);border-radius:12px;}
+.share-options label{display:flex;align-items:center;gap:10px;margin-bottom:10px;color:var(--gray);font-size:.9em;cursor:pointer;}
+.share-options input[type="checkbox"]{width:18px;height:18px;accent-color:var(--gold);}
+
+/* Detail View (inside modal) */
+.detail-view{padding:10px 0;}
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px;}
+.detail-title{font-family:'Cinzel',serif;font-size:1.5em;color:var(--gold);margin-bottom:6px;}
+.detail-subtitle{color:var(--gray);font-size:.9em;}
+.detail-section{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.detail-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.detail-section h4{font-family:'Cinzel',serif;color:var(--gold);font-size:.85em;margin-bottom:12px;letter-spacing:1px;display:flex;align-items:center;gap:8px;}
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:.9em;}
+.detail-row .label{color:var(--gray);}
+.detail-row .value{color:var(--white);font-weight:500;}
+.detail-row .price{font-family:'Cinzel',serif;color:var(--gold);font-weight:700;}
+.detail-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:80px 20px;color:var(--gray);}
+.empty-state-icon{font-size:4em;margin-bottom:16px;}
+.empty-state h3{font-family:'Cinzel',serif;color:var(--gold);margin-bottom:10px;font-size:1.3em;}
+
+/* Toast */
+.toast{position:fixed;bottom:30px;right:30px;padding:16px 24px;background:var(--black-card);border:1px solid var(--gold);border-radius:12px;color:var(--white);font-family:'Inter',sans-serif;z-index:10000;animation:toastIn .3s ease,toastOut .3s ease 2.7s forwards;box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px;}
+@keyframes toastIn{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes toastOut{from{transform:translateX(0);opacity:1;}to{transform:translateX(100px);opacity:0;}}
+
+/* Breadcrumb */
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:20px;color:var(--gray);font-size:.85em;flex-wrap:wrap;}
+.breadcrumb a{color:var(--gold);text-decoration:none;transition:opacity .2s;}
+.breadcrumb a:hover{opacity:.8;text-decoration:underline;}
+.breadcrumb-sep{color:var(--gray-dark);}
+
+/* Tags input */
+.tags-input{display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:var(--black-light);border:1px solid var(--border);border-radius:10px;min-height:44px;}
+.tags-input:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.1);}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--gold-10);border:1px solid var(--gold-20);border-radius:6px;font-size:.8em;color:var(--gold);}
+.tag button{background:none;border:none;color:var(--gold);cursor:pointer;font-size:1.1em;padding:0;margin-left:2px;}
+.tag button:hover{color:var(--red);}
+.tags-input input{flex:1;min-width:80px;background:transparent;border:none;color:var(--white);font-family:'Inter',sans-serif;font-size:.9em;outline:none;padding:4px;}
+
+/* Budget display */
+.budget-bar{height:8px;background:var(--black-light);border-radius:4px;margin-top:6px;overflow:hidden;}
+.budget-bar-fill{height:100%;border-radius:4px;transition:width .5s ease;}
+
+/* Responsive */
+@media(max-width:768px){
+  .header{flex-direction:column;gap:15px;padding:15px 20px;}
+  .nav{padding:10px 20px;}
+  .main{padding:30px 20px;}
+  .page-header{flex-direction:column;align-items:flex-start;}
+  .welcome{font-size:1.6em;}
+  .folders-grid,.trips-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .controls-bar{flex-direction:column;align-items:stretch;}
+  .search-box{width:100%;}
+  .folder-actions{opacity:1;}
+}
+@media(max-width:480px){
+  html{font-size:14px;}
+  .modal{padding:20px;}
+}
+</style>
 </head>
 <body>
-    <div class="progress-bar" id="progress-bar"></div>
-    <div class="particles" id="particles"></div>
-    <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
-    <div class="header">
-        <a href="dashboard.html" class="logo-link">
-            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-            <span class="logo-text">FUTURE STARS</span>
-        </a>
-        <div class="user-info">
-            <span class="user-name" id="user-name"></span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
+<div class="progress-bar" id="progress-bar"></div>
+<div class="particles" id="particles"></div>
+<script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
+
+<div class="header">
+  <a href="dashboard.html" class="logo-link">
+    <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+    <span class="logo-text">FUTURE STARS</span>
+  </a>
+  <div class="user-info">
+    <span class="user-name" id="user-name"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
+<nav class="nav" id="main-nav"></nav>
+
+<div class="main" id="app">
+  <!-- Dynamic content -->
+</div>
+
+<!-- Create/Edit Trip Modal -->
+<div class="modal-overlay" id="trip-modal" onclick="if(event.target===this)closeTripModal()"></div>
+
+<!-- Create/Edit Folder Modal -->
+<div class="modal-overlay" id="folder-modal" onclick="if(event.target===this)closeFolderModal()"></div>
+
+<!-- Share Modal -->
+<div class="modal-overlay" id="share-modal" onclick="if(event.target===this)closeShareModal()"></div>
+
+<!-- View Trip Modal -->
+<div class="modal-overlay" id="view-modal" onclick="if(event.target===this)closeViewModal()"></div>
+
+<script>
+const NAME=sessionStorage.getItem('fs_name')||'User';
+document.getElementById('user-name').textContent=NAME.toUpperCase();
+
+// Nav
+(function(){
+  const role=sessionStorage.getItem('fs_role');
+  const nav=document.getElementById('main-nav');
+  if(!nav||!role)return;
+  const links={owner:['dashboard','tournaments','inventory','trips','planner','team','tracker'],inventory:['dashboard','inventory','team','tracker'],logistics:['dashboard','trips','planner','team','tracker'],tournament:['dashboard','tournaments','team']};
+  const labels={dashboard:'Dashboard',tournaments:'Tournaments',inventory:'Inventory',trips:'Trips',planner:'Planner',team:'Team',tracker:'Tracker'};
+  const current='planner';
+  nav.innerHTML=(links[role]||links.owner).map(p=>{
+    const cls=p===current?'active':'';
+    return`<a href="${p==='planner'?'pj-planner':p==='tracker'?'trip-tracker':p}.html" class="${cls}">${labels[p]}</a>`;
+  }).join('');
+})();
+
+/* ═════════════════════════════════════════
+   DATA STORE
+   ═════════════════════════════════════════ */
+const DB={folders:'fs_folders',trips:'fs_trips'};
+
+function getFolders(){return JSON.parse(localStorage.getItem(DB.folders)||'[]');}
+function getTrips(){return JSON.parse(localStorage.getItem(DB.trips)||'[]');}
+function saveFolders(f){localStorage.setItem(DB.folders,JSON.stringify(f));}
+function saveTrips(t){localStorage.setItem(DB.trips,JSON.stringify(t));}
+
+const FOLDER_COLORS={
+  gold:'#C9A227',blue:'#64B5F6',green:'#4CAF50',red:'#EF5350',
+  purple:'#B829DD',orange:'#FF9800',teal:'#009688',pink:'#E91E63'
+};
+
+// Seed data if empty
+function seedData(){
+  let folders=getFolders();
+  let trips=getTrips();
+  if(folders.length===0){
+    folders=[
+      {id:'folder-1',name:'Spring 2026',desc:'Spring tournament season',color:'gold',icon:'🌸',public:false,password:'',created:Date.now(),updated:Date.now()},
+      {id:'folder-2',name:'Summer Road Trips',desc:'Long haul summer tours',color:'blue',icon:'☀️',public:true,password:'',created:Date.now(),updated:Date.now()},
+      {id:'folder-3',name:'Fall Baseball',desc:'Baseball tournaments',color:'green',icon:'⚾',public:false,password:'',created:Date.now(),updated:Date.now()}
+    ];
+    saveFolders(folders);
+  }
+  if(trips.length===0){
+    trips=[
+      {id:'trip-1',folderId:'folder-1',name:'Lafayette Tournament',destination:'Lafayette, LA',startDate:'2026-05-15',endDate:'2026-05-17',desc:'Weekend soccer tournament with crew',travelers:3,budget:500,type:'tournament',tags:['soccer','louisiana'],notes:'Hotel booked. Need car rental.',created:Date.now(),updated:Date.now()},
+      {id:'trip-2',folderId:'folder-2',name:'Texas Road Trip',destination:'Dallas, TX',startDate:'2026-06-10',endDate:'2026-06-14',desc:'Multi-city tour hitting Dallas and Houston',travelers:4,budget:1200,type:'roadtrip',tags:['texas','long-haul'],notes:'',created:Date.now(),updated:Date.now()},
+      {id:'trip-3',folderId:'folder-3',name:'Boilingbrook Classic',destination:'Chicago, IL',startDate:'2026-09-05',endDate:'2026-09-07',desc:'Labor Day baseball tournament',travelers:2,budget:800,type:'tournament',tags:['baseball','illinois'],notes:'',created:Date.now(),updated:Date.now()}
+    ];
+    saveTrips(trips);
+  }
+}
+
+/* ═════════════════════════════════════════
+   STATE
+   ═════════════════════════════════════════ */
+let currentFolderId=null;
+let searchQuery='';
+let filterType='all';
+let viewMode='grid';
+
+/* ═════════════════════════════════════════
+   RENDER: FOLDER LIST
+   ═════════════════════════════════════════ */
+function renderFolderList(){
+  const folders=getFolders().sort((a,b)=>b.updated-a.updated);
+  const trips=getTrips();
+  const app=document.getElementById('app');
+
+  let html=`
+    <div class="page-header">
+      <div>
+        <div class="welcome">Trip Maker</div>
+        <div class="subtitle">${folders.length} folder${folders.length!==1?'s':''} • ${trips.length} trip${trips.length!==1?'s':''}</div>
+      </div>
     </div>
-    <nav class="nav" id="main-nav"></nav>
-
-    <div class="main">
-        <div class="welcome">Trip Planner</div>
-        <div class="subtitle" id="subtitle">Create and manage trip plans</div>
-
-        <div class="controls">
-            <button class="btn btn-primary" onclick="openCreateModal()">+ New Trip Plan</button>
-            <button class="btn btn-secondary" onclick="showActive()">Active Plans</button>
-            <button class="btn btn-secondary" onclick="showAll()">All Plans</button>
-        </div>
-
-        <div id="plans-container"></div>
+    <div class="controls-bar">
+      <input type="text" class="search-box" placeholder="Search folders..." value="${searchQuery}" oninput="searchQuery=this.value;renderFolderList();">
+      <button class="btn btn-primary" onclick="openFolderModal()">+ New Folder</button>
     </div>
+  `;
 
-    <!-- Create/Edit Modal -->
-    <div class="modal-overlay" id="edit-modal" onclick="if(event.target===this)closeEditModal()">
-        <div class="modal">
-            <button class="modal-close" onclick="closeEditModal()">&times;</button>
-            <h2 id="modal-title">New Trip Plan</h2>
-            <input type="hidden" id="edit-id">
+  let displayFolders=folders;
+  if(searchQuery){
+    const q=searchQuery.toLowerCase();
+    displayFolders=folders.filter(f=>f.name.toLowerCase().includes(q)||(f.desc||'').toLowerCase().includes(q));
+  }
 
-            <div class="form-section">
-                <h3>📍 Trip Info</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Trip Name</label>
-                        <input type="text" id="trip-name" placeholder="e.g., Lafayette Tournament">
-                    </div>
-                    <div class="form-group">
-                        <label>Location (City, State)</label>
-                        <input type="text" id="trip-location" placeholder="e.g., Lafayette, LA">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Dates</label>
-                        <input type="text" id="trip-dates" placeholder="e.g., May 15-16, 2026">
-                    </div>
-                    <div class="form-group">
-                        <label>Crew Members</label>
-                        <input type="text" id="trip-crew" placeholder="e.g., PJ, Caleb">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <div class="status-selector">
-                        <div class="status-option active" data-status="planned" onclick="selectStatus(this)">Planned</div>
-                        <div class="status-option" data-status="booked" onclick="selectStatus(this)">Booked</div>
-                        <div class="status-option" data-status="ready" onclick="selectStatus(this)">Ready</div>
-                        <div class="status-option" data-status="completed" onclick="selectStatus(this)">Completed</div>
-                    </div>
-                </div>
-            </div>
+  if(displayFolders.length===0){
+    html+=`
+      <div class="empty-state">
+        <div class="empty-state-icon">📁</div>
+        <h3>${searchQuery?'No folders match your search':'No folders yet'}</h3>
+        <p>${searchQuery?'Try a different search term':'Create your first folder to start organizing trips'}</p>
+      </div>
+    `;
+    app.innerHTML=html;
+    return;
+  }
 
-            <div class="form-section">
-                <h3>🏨 Hotel</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Hotel Name</label>
-                        <input type="text" id="hotel-name" placeholder="e.g., Hampton Inn & Suites">
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" id="hotel-address" placeholder="e.g., 6085 Industrial Pkwy">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nights</label>
-                        <input type="number" id="hotel-nights" placeholder="2" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Rate/Night ($)</label>
-                        <input type="number" id="hotel-rate" placeholder="105" min="0">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Confirmation #</label>
-                    <input type="text" id="hotel-confirmation" placeholder="Optional">
-                </div>
-            </div>
+  html+=`<div class="folders-grid">`;
+  html+=displayFolders.map(folder=>{
+    const folderTrips=trips.filter(t=>t.folderId===folder.id);
+    const color=FOLDER_COLORS[folder.color]||FOLDER_COLORS.gold;
+    const shareBadge=folder.public
+      ?`<span class="share-badge share-public">🌐 Public</span>`
+      :`<span class="share-badge share-private">🔒 Private</span>`;
 
-            <div class="form-section">
-                <h3>🚗 Car Rental</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Company</label>
-                        <input type="text" id="car-company" placeholder="e.g., Hertz">
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" id="car-address" placeholder="e.g., 1122 Aviation Rd">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Days</label>
-                        <input type="number" id="car-days" placeholder="2" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Rate/Day ($)</label>
-                        <input type="number" id="car-rate" placeholder="57" min="0">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Confirmation #</label>
-                    <input type="text" id="car-confirmation" placeholder="Optional">
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3>📝 Notes</h3>
-                <div class="form-group">
-                    <textarea id="trip-notes" placeholder="Add any notes about this trip..."></textarea>
-                </div>
-            </div>
-
-            <div style="display:flex; gap:10px; flex-wrap: wrap;">
-                <button class="btn btn-primary" onclick="savePlan()">Save Plan</button>
-                <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
-                <button class="btn btn-danger" id="delete-btn" style="display:none; margin-left:auto;" onclick="deleteCurrentPlan()">Delete</button>
-            </div>
+    return`
+      <div class="folder-card" 
+           onclick="openFolder('${folder.id}')"
+           ondragover="event.preventDefault();this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="handleDrop(event,'${folder.id}')"
+           style="--folder-color:${color}">
+        <div class="folder-color-bar" style="background:${color}"></div>
+        <div class="folder-header">
+          <div class="folder-icon" style="border-color:${color}33">${folder.icon||'📁'}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="folder-title" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">${folder.name}${shareBadge}</div>
+            <div class="folder-meta">${folder.desc||'No description'}</div>
+          </div>
         </div>
-    </div>
-
-    <!-- View Detail Modal -->
-    <div class="modal-overlay" id="view-modal" onclick="if(event.target===this)closeViewModal()">
-        <div class="modal" id="view-modal-content">
-            <!-- Filled dynamically -->
+        <div class="folder-stats">
+          <div class="folder-stat">
+            <div class="folder-stat-value">${folderTrips.length}</div>
+            <div class="folder-stat-label">Trips</div>
+          </div>
+          <div class="folder-stat">
+            <div class="folder-stat-value">${formatDate(folder.updated)}</div>
+            <div class="folder-stat-label">Updated</div>
+          </div>
         </div>
+        <div class="folder-actions" onclick="event.stopPropagation()">
+          <button class="btn-icon" onclick="openShareModal('${folder.id}')" title="Share">🔗</button>
+          <button class="btn-icon" onclick="openFolderModal('${folder.id}')" title="Edit">✏️</button>
+          <button class="btn-icon" onclick="deleteFolder('${folder.id}')" title="Delete">🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  html+=`</div>`;
+
+  app.innerHTML=html;
+}
+
+/* ═════════════════════════════════════════
+   RENDER: FOLDER VIEW (TRIPS INSIDE)
+   ═════════════════════════════════════════ */
+function renderFolderView(folderId){
+  const folder=getFolders().find(f=>f.id===folderId);
+  if(!folder){currentFolderId=null;renderFolderList();return;}
+  currentFolderId=folderId;
+
+  const allTrips=getTrips();
+  let folderTrips=allTrips.filter(t=>t.folderId===folderId).sort((a,b)=>b.updated-a.updated);
+
+  // Apply filters
+  if(searchQuery){
+    const q=searchQuery.toLowerCase();
+    folderTrips=folderTrips.filter(t=>t.name.toLowerCase().includes(q)||t.destination.toLowerCase().includes(q)||(t.tags||[]).some(tag=>tag.toLowerCase().includes(q)));
+  }
+  if(filterType!=='all'){
+    folderTrips=folderTrips.filter(t=>t.type===filterType);
+  }
+
+  const app=document.getElementById('app');
+
+  let html=`
+    <div class="breadcrumb">
+      <a href="#" onclick="currentFolderId=null;renderFolderList();return false;">Trip Maker</a>
+      <span class="breadcrumb-sep">›</span>
+      <span style="color:var(--white);">${folder.name}</span>
     </div>
+    <div class="page-header">
+      <div>
+        <div class="welcome">${folder.icon||'📁'} ${folder.name}</div>
+        <div class="subtitle">${folder.desc||''} • ${folderTrips.length} trip${folderTrips.length!==1?'s':''}</div>
+      </div>
+    </div>
+    <div class="controls-bar">
+      <button class="btn btn-primary" onclick="openTripModal()">+ Create New Trip</button>
+      <input type="text" class="search-box" style="flex:0 1 300px;" placeholder="Search trips..." value="${searchQuery}" oninput="searchQuery=this.value;renderFolderView('${folderId}');">
+      <select class="filter-select" onchange="filterType=this.value;renderFolderView('${folderId}');">
+        <option value="all" ${filterType==='all'?'selected':''}>All Types</option>
+        <option value="roadtrip" ${filterType==='roadtrip'?'selected':''}>Road Trip</option>
+        <option value="family" ${filterType==='family'?'selected':''}>Family</option>
+        <option value="business" ${filterType==='business'?'selected':''}>Business</option>
+        <option value="adventure" ${filterType==='adventure'?'selected':''}>Adventure</option>
+        <option value="tournament" ${filterType==='tournament'?'selected':''}>Tournament</option>
+      </select>
+      <div class="view-toggle">
+        <button class="${viewMode==='grid'?'active':''}" onclick="viewMode='grid';renderFolderView('${folderId}');">⊞ Grid</button>
+        <button class="${viewMode==='list'?'active':''}" onclick="viewMode='list';renderFolderView('${folderId}');">☰ List</button>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="openShareModal('${folder.id}')">🔗 Share</button>
+      <button class="btn btn-secondary btn-sm" onclick="openFolderModal('${folder.id}')">✏️ Edit Folder</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteFolder('${folder.id}')">🗑️ Delete</button>
+    </div>
+  `;
 
-    <script>
-        const NAME = sessionStorage.getItem('fs_name') || 'User';
-        document.getElementById('user-name').textContent = NAME.toUpperCase();
+  if(folderTrips.length===0){
+    html+=`
+      <div class="empty-state">
+        <div class="empty-state-icon">✈️</div>
+        <h3>${searchQuery||filterType!=='all'?'No matching trips':'No trips in this folder yet'}</h3>
+        <p>${searchQuery||filterType!=='all'?'Adjust your search or filters':'Click "Create New Trip" to add your first trip'}</p>
+      </div>
+    `;
+    app.innerHTML=html;
+    return;
+  }
 
-        // Nav
-        (function() {
-            const role = sessionStorage.getItem('fs_role');
-            const nav = document.getElementById('main-nav');
-            if (!nav || !role) return;
-            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
-            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker' };
-            const current = 'planner';
-            nav.innerHTML = (links[role] || links.owner).map(p => {
-                const cls = p === current ? 'active' : '';
-                return `<a href="${p === 'planner' ? 'pj-planner' : p === 'tracker' ? 'trip-tracker' : p}.html" class="${cls}">${labels[p]}</a>`;
-            }).join('');
-        })();
+  if(viewMode==='grid'){
+    html+=`<div class="trips-grid">`;
+    html+=folderTrips.map(trip=>renderTripCard(trip)).join('');
+    html+=`</div>`;
+  }else{
+    html+=`<div style="display:flex;flex-direction:column;gap:12px;">`;
+    html+=folderTrips.map(trip=>renderTripListItem(trip)).join('');
+    html+=`</div>`;
+  }
 
-        const STORAGE_KEY = 'fs_pj_plans';
-        let currentFilter = 'active';
-        let editingId = null;
+  app.innerHTML=html;
+}
 
-        function getPlans() {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        }
-        function savePlans(plans) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(plans));
-            render();
-        }
+function renderTripCard(trip){
+  const typeClass='type-'+(trip.type||'other');
+  const typeLabel=(trip.type||'other').charAt(0).toUpperCase()+(trip.type||'other').slice(1);
+  const days=countDays(trip.startDate,trip.endDate);
+  const tags=(trip.tags||[]).map(tag=>`<span class="trip-tag">#${tag}</span>`).join('');
 
-        function render() {
-            const plans = getPlans();
-            const container = document.getElementById('plans-container');
-            const now = new Date();
-            
-            let filtered = plans;
-            if (currentFilter === 'active') {
-                filtered = plans.filter(p => p.status !== 'completed');
-            }
+  return`
+    <div class="trip-card" draggable="true" ondragstart="handleDragStart(event,'${trip.id}')" ondragend="handleDragEnd(event)">
+      <div class="trip-card-header">
+        <div class="trip-card-title">${trip.name}</div>
+        <span class="trip-card-type ${typeClass}">${typeLabel}</span>
+      </div>
+      <div class="trip-meta">
+        <span class="trip-tag">📍 ${trip.destination}</span>
+        <span class="trip-tag">📅 ${formatDateShort(trip.startDate)}${days>1?' - '+formatDateShort(trip.endDate):''}</span>
+        <span class="trip-tag">👥 ${trip.travelers||1}</span>
+        ${days>0?`<span class="trip-tag">🕐 ${days} day${days!==1?'s':''}</span>`:''}
+      </div>
+      ${trip.desc?`<div class="trip-desc">${trip.desc}</div>`:''}
+      ${tags?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">${tags}</div>`:''}
+      <div class="trip-footer">
+        <div>
+          <div class="trip-budget">$${trip.budget||0}</div>
+          <div class="budget-bar"><div class="budget-bar-fill" style="width:${Math.min((trip.budget||0)/2000*100,100)}%;background:linear-gradient(90deg,var(--gold),var(--gold-light));"></div></div>
+        </div>
+        <div class="trip-actions" onclick="event.stopPropagation()">
+          <button class="btn-icon" onclick="viewTrip('${trip.id}')" title="View">👁️</button>
+          <button class="btn-icon" onclick="openTripModal('${trip.id}')" title="Edit">✏️</button>
+          <button class="btn-icon" onclick="deleteTrip('${trip.id}')" title="Delete">🗑️</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
-            // Sort by created date (newest first)
-            filtered.sort((a,b) => b.created - a.created);
+function renderTripListItem(trip){
+  const typeClass='type-'+(trip.type||'other');
+  const typeLabel=(trip.type||'other').charAt(0).toUpperCase()+(trip.type||'other').slice(1);
+  const days=countDays(trip.startDate,trip.endDate);
 
-            document.getElementById('subtitle').textContent = 
-                `${filtered.length} trip plan${filtered.length !== 1 ? 's' : ''}`;
+  return`
+    <div class="trip-card" style="display:flex;align-items:center;gap:16px;padding:16px 22px;" draggable="true" ondragstart="handleDragStart(event,'${trip.id}')" ondragend="handleDragEnd(event)" onclick="viewTrip('${trip.id}')">
+      <div style="font-size:1.5em;">✈️</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
+          <span style="font-family:Cinzel,serif;color:var(--white);font-size:.95em;">${trip.name}</span>
+          <span class="trip-card-type ${typeClass}" style="font-size:.65em;">${typeLabel}</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:.8em;color:var(--gray);">
+          <span>📍 ${trip.destination}</span>
+          <span>📅 ${formatDateShort(trip.startDate)}${days>1?' - '+formatDateShort(trip.endDate):''}</span>
+          <span>👥 ${trip.travelers||1}</span>
+          <span>💰 $${trip.budget||0}</span>
+        </div>
+      </div>
+      <div class="trip-actions" onclick="event.stopPropagation()">
+        <button class="btn-icon" onclick="openTripModal('${trip.id}')" title="Edit">✏️</button>
+        <button class="btn-icon" onclick="deleteTrip('${trip.id}')" title="Delete">🗑️</button>
+      </div>
+    </div>
+  `;
+}
 
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align:center; padding:80px 20px; color:var(--gray);">
-                        <div style="font-size:3em; margin-bottom:16px;">📋</div>
-                        <h3 style="font-family:Cinzel,serif; color:var(--gold); margin-bottom:10px;">No trip plans yet</h3>
-                        <p>Click "New Trip Plan" to create your first plan</p>
-                    </div>
-                `;
-                return;
-            }
+/* ═════════════════════════════════════════
+   MODALS
+   ═════════════════════════════════════════ */
 
-            container.innerHTML = '<div class="plans-grid">' + filtered.map(plan => {
-                const hotelTotal = (plan.hotel?.nights || 0) * (plan.hotel?.rate || 0);
-                const carTotal = (plan.car?.days || 0) * (plan.car?.rate || 0);
-                const total = hotelTotal + carTotal;
-                
-                const statusClass = plan.status === 'booked' ? 'status-booked' : 'status-planned';
-                const statusLabel = plan.status ? plan.status.toUpperCase() : 'PLANNED';
+// Trip Modal
+let editingTripId=null;
+let tripTags=[];
 
-                return `
-                    <div class="plan-card" onclick="viewPlan(${plan.id})">
-                        <div class="plan-card-header">
-                            <div class="plan-card-title">${plan.name || 'Untitled'}</div>
-                            <div class="plan-card-status ${statusClass}">${statusLabel}</div>
-                        </div>
-                        <div class="plan-card-meta">
-                            <span class="meta-tag">${plan.location || '—'}</span>
-                            <span class="meta-tag">${plan.dates || '—'}</span>
-                            ${plan.crew ? `<span class="meta-tag">${plan.crew}</span>` : ''}
-                        </div>
-                        <div class="plan-cost-row">
-                            <span class="cost-label">🏨 Hotel</span>
-                            <span class="cost-value">$${hotelTotal}</span>
-                        </div>
-                        <div class="plan-cost-row">
-                            <span class="cost-label">🚗 Car</span>
-                            <span class="cost-value">$${carTotal}</span>
-                        </div>
-                        <div class="plan-total">
-                            <span class="total-label">TOTAL</span>
-                            <span class="total-value">$${total}</span>
-                        </div>
-                    </div>
-                `;
-            }).join('') + '</div>';
-        }
+function openTripModal(tripId){
+  editingTripId=tripId||null;
+  tripTags=[];
+  const modal=document.getElementById('trip-modal');
+  let trip={};
+  if(tripId){
+    trip=getTrips().find(t=>t.id===tripId)||{};
+    tripTags=trip.tags||[];
+  }
 
-        function openCreateModal() {
-            editingId = null;
-            document.getElementById('modal-title').textContent = 'New Trip Plan';
-            document.getElementById('edit-id').value = '';
-            document.getElementById('delete-btn').style.display = 'none';
-            
-            // Clear all inputs
-            document.querySelectorAll('#edit-modal input:not([type="hidden"]), #edit-modal textarea').forEach(i => i.value = '');
-            document.querySelectorAll('.status-option').forEach(s => s.classList.remove('active'));
-            document.querySelector('.status-option[data-status="planned"]').classList.add('active');
-            
-            document.getElementById('edit-modal').classList.add('active');
-        }
+  modal.innerHTML=`
+    <div class="modal">
+      <button class="modal-close" onclick="closeTripModal()">&times;</button>
+      <h2>${tripId?'Edit Trip':'Create New Trip'}</h2>
+      <div class="form-section">
+        <h3>📍 Trip Details</h3>
+        <div class="form-group">
+          <label>Trip Name *</label>
+          <input type="text" id="t-name" placeholder="e.g., Lafayette Tournament" value="${trip.name||''}">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Destination *</label>
+            <input type="text" id="t-dest" placeholder="e.g., Lafayette, LA" value="${trip.destination||''}">
+          </div>
+          <div class="form-group">
+            <label>Trip Type</label>
+            <select id="t-type">
+              <option value="tournament" ${trip.type==='tournament'?'selected':''}>Tournament</option>
+              <option value="roadtrip" ${trip.type==='roadtrip'?'selected':''}>Road Trip</option>
+              <option value="family" ${trip.type==='family'?'selected':''}>Family Vacation</option>
+              <option value="business" ${trip.type==='business'?'selected':''}>Business</option>
+              <option value="adventure" ${trip.type==='adventure'?'selected':''}>Adventure</option>
+              <option value="other" ${trip.type==='other'||!trip.type?'selected':''}>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date *</label>
+            <input type="date" id="t-start" value="${trip.startDate||''}">
+          </div>
+          <div class="form-group">
+            <label>End Date *</label>
+            <input type="date" id="t-end" value="${trip.endDate||''}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Travelers</label>
+            <input type="number" id="t-travelers" min="1" placeholder="3" value="${trip.travelers||''}">
+          </div>
+          <div class="form-group">
+            <label>Budget Estimate ($)</label>
+            <input type="number" id="t-budget" min="0" placeholder="500" value="${trip.budget||''}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tags</label>
+          <div class="tags-input" id="tags-container" onclick="document.getElementById('tag-input').focus()">
+            ${tripTags.map(tag=>`<span class="tag">${tag}<button onclick="removeTag('${tag}')">&times;</button></span>`).join('')}
+            <input type="text" id="tag-input" placeholder="Add tag + Enter" onkeydown="handleTagInput(event)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="t-desc" placeholder="Trip details, itinerary notes...">${trip.desc||''}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="t-notes" placeholder="Private notes, confirmations, reminders...">${trip.notes||''}</textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="saveTrip()">${tripId?'Update Trip':'Create Trip'}</button>
+        <button class="btn btn-secondary" onclick="closeTripModal()">Cancel</button>
+        ${tripId?'<button class="btn btn-danger" style="margin-left:auto;" onclick="deleteCurrentTrip()">Delete Trip</button>':''}
+      </div>
+    </div>
+  `;
+  modal.classList.add('active');
+}
 
-        function openEditModal(id) {
-            const plans = getPlans();
-            const plan = plans.find(p => p.id === id);
-            if (!plan) return;
-            
-            editingId = id;
-            document.getElementById('modal-title').textContent = 'Edit Trip Plan';
-            document.getElementById('edit-id').value = id;
-            document.getElementById('delete-btn').style.display = 'block';
-            
-            document.getElementById('trip-name').value = plan.name || '';
-            document.getElementById('trip-location').value = plan.location || '';
-            document.getElementById('trip-dates').value = plan.dates || '';
-            document.getElementById('trip-crew').value = plan.crew || '';
-            document.getElementById('trip-notes').value = plan.notes || '';
-            
-            document.getElementById('hotel-name').value = plan.hotel?.name || '';
-            document.getElementById('hotel-address').value = plan.hotel?.address || '';
-            document.getElementById('hotel-nights').value = plan.hotel?.nights || '';
-            document.getElementById('hotel-rate').value = plan.hotel?.rate || '';
-            document.getElementById('hotel-confirmation').value = plan.hotel?.confirmation || '';
-            
-            document.getElementById('car-company').value = plan.car?.company || '';
-            document.getElementById('car-address').value = plan.car?.address || '';
-            document.getElementById('car-days').value = plan.car?.days || '';
-            document.getElementById('car-rate').value = plan.car?.rate || '';
-            document.getElementById('car-confirmation').value = plan.car?.confirmation || '';
-            
-            document.querySelectorAll('.status-option').forEach(s => s.classList.remove('active'));
-            const statusOpt = document.querySelector(`.status-option[data-status="${plan.status}"]`);
-            if (statusOpt) statusOpt.classList.add('active');
-            
-            document.getElementById('edit-modal').classList.add('active');
-        }
+function closeTripModal(){document.getElementById('trip-modal').classList.remove('active');editingTripId=null;tripTags=[];}
 
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.remove('active');
-            editingId = null;
-        }
+function handleTagInput(e){
+  const input=document.getElementById('tag-input');
+  if(e.key==='Enter'||e.key===','){
+    e.preventDefault();
+    const tag=input.value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'');
+    if(tag&&!tripTags.includes(tag)){
+      tripTags.push(tag);
+      updateTagDisplay();
+    }
+    input.value='';
+  }else if(e.key==='Backspace'&&input.value===''&&tripTags.length>0){
+    tripTags.pop();
+    updateTagDisplay();
+  }
+}
 
-        function selectStatus(el) {
-            document.querySelectorAll('.status-option').forEach(s => s.classList.remove('active'));
-            el.classList.add('active');
-        }
+function removeTag(tag){
+  tripTags=tripTags.filter(t=>t!==tag);
+  updateTagDisplay();
+}
 
-        function getSelectedStatus() {
-            const active = document.querySelector('.status-option.active');
-            return active ? active.dataset.status : 'planned';
-        }
+function updateTagDisplay(){
+  const container=document.getElementById('tags-container');
+  const input=document.getElementById('tag-input');
+  container.innerHTML=tripTags.map(tag=>`<span class="tag">${tag}<button onclick="removeTag('${tag}')">&times;</button></span>`).join('')+`<input type="text" id="tag-input" placeholder="Add tag + Enter" onkeydown="handleTagInput(event)">`;
+  document.getElementById('tag-input').focus();
+}
 
-        function savePlan() {
-            const plan = {
-                id: editingId || Date.now(),
-                name: document.getElementById('trip-name').value || 'Untitled Trip',
-                location: document.getElementById('trip-location').value || '',
-                dates: document.getElementById('trip-dates').value || '',
-                crew: document.getElementById('trip-crew').value || '',
-                status: getSelectedStatus(),
-                notes: document.getElementById('trip-notes').value || '',
-                hotel: {
-                    name: document.getElementById('hotel-name').value || '',
-                    address: document.getElementById('hotel-address').value || '',
-                    nights: parseInt(document.getElementById('hotel-nights').value) || 0,
-                    rate: parseFloat(document.getElementById('hotel-rate').value) || 0,
-                    confirmation: document.getElementById('hotel-confirmation').value || ''
-                },
-                car: {
-                    company: document.getElementById('car-company').value || '',
-                    address: document.getElementById('car-address').value || '',
-                    days: parseInt(document.getElementById('car-days').value) || 0,
-                    rate: parseFloat(document.getElementById('car-rate').value) || 0,
-                    confirmation: document.getElementById('car-confirmation').value || ''
-                },
-                created: editingId ? (getPlans().find(p => p.id === editingId)?.created || Date.now()) : Date.now()
-            };
+function saveTrip(){
+  const name=document.getElementById('t-name').value.trim();
+  const dest=document.getElementById('t-dest').value.trim();
+  const start=document.getElementById('t-start').value;
+  const end=document.getElementById('t-end').value;
+  if(!name||!dest||!start||!end){showToast('Please fill in all required fields');return;}
 
-            const plans = getPlans();
-            if (editingId) {
-                const idx = plans.findIndex(p => p.id === editingId);
-                if (idx >= 0) plans[idx] = plan;
-            } else {
-                plans.push(plan);
-            }
-            savePlans(plans);
-            closeEditModal();
-        }
+  const trip={
+    id:editingTripId||'trip-'+Date.now(),
+    folderId:currentFolderId||'folder-1',
+    name,destination:dest,
+    startDate:start,endDate:end,
+    type:document.getElementById('t-type').value,
+    travelers:parseInt(document.getElementById('t-travelers').value)||1,
+    budget:parseFloat(document.getElementById('t-budget').value)||0,
+    tags:[...tripTags],
+    desc:document.getElementById('t-desc').value,
+    notes:document.getElementById('t-notes').value,
+    created:editingTripId?(getTrips().find(t=>t.id===editingTripId)?.created||Date.now()):Date.now(),
+    updated:Date.now()
+  };
 
-        function deleteCurrentPlan() {
-            if (!editingId) return;
-            if (!confirm('Delete this trip plan?')) return;
-            const plans = getPlans().filter(p => p.id !== editingId);
-            savePlans(plans);
-            closeEditModal();
-            closeViewModal();
-        }
+  const trips=getTrips();
+  if(editingTripId){
+    const idx=trips.findIndex(t=>t.id===editingTripId);
+    if(idx>=0)trips[idx]=trip;
+  }else{
+    trips.push(trip);
+  }
+  saveTrips(trips);
+  updateFolderTimestamp(trip.folderId);
+  closeTripModal();
+  showToast(editingTripId?'Trip updated!':'Trip created!');
+  if(currentFolderId)renderFolderView(currentFolderId);else renderFolderList();
+}
 
-        function viewPlan(id) {
-            const plans = getPlans();
-            const plan = plans.find(p => p.id === id);
-            if (!plan) return;
+function deleteTrip(id){
+  if(!confirm('Delete this trip?'))return;
+  const trips=getTrips().filter(t=>t.id!==id);
+  saveTrips(trips);
+  showToast('Trip deleted');
+  if(currentFolderId)renderFolderView(currentFolderId);else renderFolderList();
+}
 
-            const hotelTotal = (plan.hotel?.nights || 0) * (plan.hotel?.rate || 0);
-            const carTotal = (plan.car?.days || 0) * (plan.car?.rate || 0);
-            const total = hotelTotal + carTotal;
+function deleteCurrentTrip(){
+  if(editingTripId)deleteTrip(editingTripId);
+  closeTripModal();
+}
 
-            const statusColors = {
-                planned: 'var(--blue)',
-                booked: 'var(--green)',
-                ready: 'var(--gold)',
-                completed: 'var(--gray)'
-            };
+// Folder Modal
+let editingFolderId=null;
 
-            let html = `
-                <button class="modal-close" onclick="closeViewModal()">&times;</button>
-                <div class="detail-view">
-                    <div class="detail-header">
-                        <div>
-                            <div class="detail-title">${plan.name || 'Untitled'}</div>
-                            <div class="detail-subtitle">${plan.location || '—'} • ${plan.dates || '—'}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-family:Cinzel,serif; color:${statusColors[plan.status] || 'var(--gray)'}; font-size:0.85em; letter-spacing:2px; text-transform:uppercase;">${plan.status || 'planned'}</div>
-                            <div style="font-family:Cinzel,serif; color:var(--gold); font-size:1.6em; font-weight:700; margin-top:4px;">$${total}</div>
-                        </div>
-                    </div>
-            `;
+function openFolderModal(folderId){
+  editingFolderId=folderId||null;
+  const modal=document.getElementById('folder-modal');
+  let folder={color:'gold',icon:'📁',public:false};
+  if(folderId){folder=getFolders().find(f=>f.id===folderId)||folder;}
 
-            html += `
-                <div class="detail-section">
-                    <h4>📍 Trip Info</h4>
-                    <div class="detail-row"><span class="label">Location</span><span class="value">${plan.location || '—'}</span></div>
-                    <div class="detail-row"><span class="label">Dates</span><span class="value">${plan.dates || '—'}</span></div>
-                    <div class="detail-row"><span class="label">Crew</span><span class="value">${plan.crew || '—'}</span></div>
-                </div>
-            `;
+  const colorOptions=Object.entries(FOLDER_COLORS).map(([key,color])=>`
+    <div class="color-option ${folder.color===key?'active':''}" style="background:${color}" data-color="${key}" onclick="selectFolderColor(this)"></div>
+  `).join('');
 
-            if (plan.hotel?.name) {
-                html += `
-                    <div class="detail-section">
-                        <h4>🏨 Hotel</h4>
-                        <div class="detail-row"><span class="label">Name</span><span class="value">${plan.hotel.name}</span></div>
-                        <div class="detail-row"><span class="label">Address</span><span class="value">${plan.hotel.address || '—'}</span></div>
-                        <div class="detail-row"><span class="label">Stay</span><span class="value">${plan.hotel.nights} nights @ $${plan.hotel.rate}/night</span></div>
-                        ${plan.hotel.confirmation ? `<div class="detail-row"><span class="label">Confirmation</span><span class="value">${plan.hotel.confirmation}</span></div>` : ''}
-                        <div class="detail-row" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><span class="label">Hotel Total</span><span class="price">$${hotelTotal}</span></div>
-                    </div>
-                `;
-            }
+  modal.innerHTML=`
+    <div class="modal">
+      <button class="modal-close" onclick="closeFolderModal()">&times;</button>
+      <h2>${folderId?'Edit Folder':'New Folder'}</h2>
+      <div class="form-group">
+        <label>Folder Name *</label>
+        <input type="text" id="f-name" placeholder="e.g., Spring 2026" value="${folder.name||''}">
+      </div>
+      <div class="form-group">
+        <label>Icon</label>
+        <input type="text" id="f-icon" placeholder="Emoji icon e.g. 📁" value="${folder.icon||'📁'}">
+      </div>
+      <div class="form-group">
+        <label>Color</label>
+        <div class="color-picker">${colorOptions}</div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="f-desc" placeholder="What's this folder for?">${folder.desc||''}</textarea>
+      </div>
+      <div class="form-group">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+          <input type="checkbox" id="f-public" ${folder.public?'checked':''}>
+          <span>Make this folder public (shareable)</span>
+        </label>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="saveFolder()">${folderId?'Update Folder':'Create Folder'}</button>
+        <button class="btn btn-secondary" onclick="closeFolderModal()">Cancel</button>
+        ${folderId?'<button class="btn btn-danger" style="margin-left:auto;" onclick="deleteCurrentFolder()">Delete Folder</button>':''}
+      </div>
+    </div>
+  `;
+  modal.classList.add('active');
+}
 
-            if (plan.car?.company) {
-                html += `
-                    <div class="detail-section">
-                        <h4>🚗 Car Rental</h4>
-                        <div class="detail-row"><span class="label">Company</span><span class="value">${plan.car.company}</span></div>
-                        <div class="detail-row"><span class="label">Address</span><span class="value">${plan.car.address || '—'}</span></div>
-                        <div class="detail-row"><span class="label">Rental</span><span class="value">${plan.car.days} days @ $${plan.car.rate}/day</span></div>
-                        ${plan.car.confirmation ? `<div class="detail-row"><span class="label">Confirmation</span><span class="value">${plan.car.confirmation}</span></div>` : ''}
-                        <div class="detail-row" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><span class="label">Car Total</span><span class="price">$${carTotal}</span></div>
-                    </div>
-                `;
-            }
+function closeFolderModal(){document.getElementById('folder-modal').classList.remove('active');editingFolderId=null;}
 
-            if (plan.notes) {
-                html += `
-                    <div class="detail-section">
-                        <h4>📝 Notes</h4>
-                        <p style="color:var(--gray); line-height:1.7; font-size:0.9em; white-space:pre-wrap;">${plan.notes}</p>
-                    </div>
-                `;
-            }
+let selectedFolderColor='gold';
+function selectFolderColor(el){
+  document.querySelectorAll('.color-option').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  selectedFolderColor=el.dataset.color;
+}
 
-            html += `
-                    <div class="detail-actions">
-                        <button class="btn btn-primary" onclick="closeViewModal(); openEditModal(${plan.id});">✏️ Edit Plan</button>
-                        <button class="btn btn-success" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(plan.location || '')}', '_blank')">🗺️ Open Map</button>
-                        <button class="btn btn-danger" style="margin-left:auto;" onclick="deletePlan(${plan.id})">🗑️ Delete</button>
-                    </div>
-                </div>
-            `;
+function saveFolder(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){showToast('Folder name is required');return;}
 
-            document.getElementById('view-modal-content').innerHTML = html;
-            document.getElementById('view-modal').classList.add('active');
-        }
+  const folder={
+    id:editingFolderId||'folder-'+Date.now(),
+    name,
+    icon:document.getElementById('f-icon').value||'📁',
+    color:selectedFolderColor,
+    desc:document.getElementById('f-desc').value,
+    public:document.getElementById('f-public').checked,
+    password:'',
+    created:editingFolderId?(getFolders().find(f=>f.id===editingFolderId)?.created||Date.now()):Date.now(),
+    updated:Date.now()
+  };
 
-        function closeViewModal() {
-            document.getElementById('view-modal').classList.remove('active');
-        }
+  const folders=getFolders();
+  if(editingFolderId){
+    const idx=folders.findIndex(f=>f.id===editingFolderId);
+    if(idx>=0){folder.public=folders[idx].public;folder.password=folders[idx].password||'';folders[idx]=folder;}
+  }else{
+    folders.push(folder);
+  }
+  saveFolders(folders);
+  closeFolderModal();
+  showToast(editingFolderId?'Folder updated!':'Folder created!');
+  renderFolderList();
+}
 
-        function deletePlan(id) {
-            if (!confirm('Delete this trip plan?')) return;
-            const plans = getPlans().filter(p => p.id !== id);
-            savePlans(plans);
-            closeViewModal();
-        }
+function deleteFolder(id){
+  if(!confirm('Delete this folder? All trips inside will also be deleted.'))return;
+  const trips=getTrips().filter(t=>t.folderId!==id);
+  saveTrips(trips);
+  const folders=getFolders().filter(f=>f.id!==id);
+  saveFolders(folders);
+  showToast('Folder deleted');
+  if(currentFolderId===id){currentFolderId=null;renderFolderList();}else renderFolderList();
+}
 
-        function showActive() {
-            currentFilter = 'active';
-            render();
-        }
+function deleteCurrentFolder(){
+  if(editingFolderId)deleteFolder(editingFolderId);
+  closeFolderModal();
+}
 
-        function showAll() {
-            currentFilter = 'all';
-            render();
-        }
+// Share Modal
+function openShareModal(folderId){
+  const folder=getFolders().find(f=>f.id===folderId);
+  if(!folder)return;
+  const modal=document.getElementById('share-modal');
+  const shareUrl=`https://futurestarsla.com/shared-folder.html?f=${btoa(folderId).replace(/=/g,'')}`;
 
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = 'signin.html';
-        }
+  modal.innerHTML=`
+    <div class="modal">
+      <button class="modal-close" onclick="closeShareModal()">&times;</button>
+      <h2>🔗 Share "${folder.name}"</h2>
+      <div class="form-group">
+        <label>Share Link</label>
+        <div class="share-url">
+          <input type="text" value="${shareUrl}" readonly id="share-url-input">
+          <button class="btn btn-primary btn-sm" onclick="copyShareUrl()">Copy</button>
+        </div>
+      </div>
+      <div class="share-options">
+        <label>
+          <input type="checkbox" id="share-public-toggle" ${folder.public?'checked':''} onchange="togglePublic('${folderId}',this.checked)">
+          <span>Anyone with link can view</span>
+        </label>
+        <label>
+          <input type="checkbox" id="share-password-toggle" ${folder.password?'checked':''} onchange="togglePassword('${folderId}',this.checked)">
+          <span>Password protect</span>
+        </label>
+        <div id="password-field" style="display:${folder.password?'block':'none'};margin-top:10px;">
+          <input type="text" id="share-password" placeholder="Enter password" value="${folder.password||''}" style="width:100%;padding:10px;background:var(--black-light);border:1px solid var(--border);border-radius:8px;color:var(--white);">
+          <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="setPassword('${folderId}')">Set Password</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary" onclick="closeShareModal()">Done</button>
+    </div>
+  `;
+  modal.classList.add('active');
+}
 
-        // Keyboard support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeEditModal();
-                closeViewModal();
-            }
-        });
+function closeShareModal(){document.getElementById('share-modal').classList.remove('active');}
 
-        // Init
-        render();
-    </script>
-    <script>
-        (function(){
-            const container = document.getElementById("particles");
-            if (!container) return;
-            for(let i=0;i<25;i++){
-                const p = document.createElement("div");
-                p.className = "particle";
-                p.style.left = Math.random()*100+"vw";
-                p.style.animationDelay = Math.random()*15+"s";
-                p.style.animationDuration = (10+Math.random()*10)+"s";
-                p.style.width = (2+Math.random()*3)+"px";
-                p.style.height = p.style.width;
-                container.appendChild(p);
-            }
-        })();
-        window.addEventListener("scroll", function(){
-            const bar = document.getElementById("progress-bar");
-            if (!bar) return;
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
-            bar.style.width = pct+"%";
-        });
-    </script>
+function copyShareUrl(){
+  const input=document.getElementById('share-url-input');
+  input.select();
+  document.execCommand('copy');
+  showToast('Link copied to clipboard!');
+}
+
+function togglePublic(folderId,isPublic){
+  const folders=getFolders();
+  const f=folders.find(x=>x.id===folderId);
+  if(f){f.public=isPublic;f.updated=Date.now();saveFolders(folders);showToast(isPublic?'Folder is now public':'Folder is now private');}
+}
+
+function togglePassword(folderId,hasPassword){
+  document.getElementById('password-field').style.display=hasPassword?'block':'none';
+  if(!hasPassword){
+    const folders=getFolders();
+    const f=folders.find(x=>x.id===folderId);
+    if(f){f.password='';f.updated=Date.now();saveFolders(folders);showToast('Password removed');}
+  }
+}
+
+function setPassword(folderId){
+  const pwd=document.getElementById('share-password').value.trim();
+  const folders=getFolders();
+  const f=folders.find(x=>x.id===folderId);
+  if(f){f.password=pwd;f.updated=Date.now();saveFolders(folders);showToast('Password set');}
+}
+
+// View Trip Detail
+function viewTrip(tripId){
+  const trip=getTrips().find(t=>t.id===tripId);
+  if(!trip)return;
+  const folder=getFolders().find(f=>f.id===trip.folderId);
+  const days=countDays(trip.startDate,trip.endDate);
+  const modal=document.getElementById('view-modal');
+
+  const typeColors={roadtrip:'var(--blue)',family:'var(--green)',business:'var(--gold)',adventure:'var(--orange)',tournament:'var(--purple)',other:'var(--gray)'};
+
+  let html=`
+    <div class="modal">
+      <button class="modal-close" onclick="closeViewModal()">&times;</button>
+      <div class="detail-view">
+        <div class="detail-header">
+          <div>
+            <div class="detail-title">${trip.name}</div>
+            <div class="detail-subtitle">${folder?folder.name:'No folder'} • ${trip.destination}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:${typeColors[trip.type]||'var(--gray)'};font-size:.85em;text-transform:uppercase;letter-spacing:2px;">${trip.type||'Other'}</div>
+            <div style="font-family:Cinzel,serif;color:var(--gold);font-size:1.8em;font-weight:700;">$${trip.budget||0}</div>
+          </div>
+        </div>
+  `;
+
+  html+=`
+    <div class="detail-section">
+      <h4>📍 Trip Info</h4>
+      <div class="detail-row"><span class="label">Destination</span><span class="value">${trip.destination}</span></div>
+      <div class="detail-row"><span class="label">Dates</span><span class="value">${formatDate(trip.startDate)} - ${formatDate(trip.endDate)} (${days} days)</span></div>
+      <div class="detail-row"><span class="label">Travelers</span><span class="value">${trip.travelers||1} people</span></div>
+    </div>
+  `;
+
+  if(trip.tags&&trip.tags.length){
+    html+=`
+      <div class="detail-section">
+        <h4>🏷️ Tags</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${trip.tags.map(t=>`<span class="trip-tag">#${t}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  if(trip.desc){
+    html+=`
+      <div class="detail-section">
+        <h4>📝 Description</h4>
+        <p style="color:var(--gray);line-height:1.7;font-size:.9em;">${trip.desc}</p>
+      </div>
+    `;
+  }
+
+  if(trip.notes){
+    html+=`
+      <div class="detail-section">
+        <h4>🔒 Private Notes</h4>
+        <p style="color:var(--gray);line-height:1.7;font-size:.9em;white-space:pre-wrap;">${trip.notes}</p>
+      </div>
+    `;
+  }
+
+  html+=`
+        <div class="detail-actions">
+          <button class="btn btn-primary" onclick="closeViewModal();openTripModal('${trip.id}');">✏️ Edit Trip</button>
+          <button class="btn btn-success" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trip.destination)}','_blank')">🗺️ Open Map</button>
+          <button class="btn btn-danger" style="margin-left:auto;" onclick="closeViewModal();deleteTrip('${trip.id}');">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.innerHTML=html;
+  modal.classList.add('active');
+}
+
+function closeViewModal(){document.getElementById('view-modal').classList.remove('active');}
+
+/* ═════════════════════════════════════════
+   DRAG & DROP
+   ═════════════════════════════════════════ */
+let draggedTripId=null;
+
+function handleDragStart(e,tripId){draggedTripId=tripId;e.dataTransfer.effectAllowed='move';e.target.classList.add('dragging');}
+function handleDragEnd(e){e.target.classList.remove('dragging');draggedTripId=null;}
+function handleDrop(e,folderId){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(!draggedTripId)return;
+  const trips=getTrips();
+  const trip=trips.find(t=>t.id===draggedTripId);
+  if(trip&&trip.folderId!==folderId){
+    trip.folderId=folderId;
+    trip.updated=Date.now();
+    saveTrips(trips);
+    updateFolderTimestamp(folderId);
+    updateFolderTimestamp(trip.folderId);
+    showToast('Trip moved to folder');
+    renderFolderList();
+  }
+}
+
+/* ═════════════════════════════════════════
+   UTILITIES
+   ═════════════════════════════════════════ */
+function formatDate(d){
+  if(!d)return'—';
+  const date=new Date(d+'T00:00:00');
+  return date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function formatDateShort(d){
+  if(!d)return'—';
+  const date=new Date(d+'T00:00:00');
+  return date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+function countDays(start,end){
+  if(!start||!end)return 0;
+  const s=new Date(start+'T00:00:00');
+  const e=new Date(end+'T00:00:00');
+  const diff=Math.ceil((e-s)/(1000*60*60*24));
+  return diff>0?diff+1:0;
+}
+function updateFolderTimestamp(folderId){
+  const folders=getFolders();
+  const f=folders.find(x=>x.id===folderId);
+  if(f){f.updated=Date.now();saveFolders(folders);}
+}
+function showToast(msg){
+  const existing=document.querySelector('.toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.className='toast';
+  toast.innerHTML=`✅ ${msg}`;
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),3000);
+}
+function logout(){sessionStorage.clear();window.location.href='signin.html';}
+
+/* ═════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+   ═════════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    closeTripModal();closeFolderModal();closeShareModal();closeViewModal();
+  }
+});
+
+/* ═════════════════════════════════════════
+   INIT
+   ═════════════════════════════════════════ */
+seedData();
+renderFolderList();
+
+// Particles & Progress Bar
+(function(){
+  const container=document.getElementById("particles");
+  if(!container)return;
+  for(let i=0;i<25;i++){
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDelay=Math.random()*15+"s";
+    p.style.animationDuration=(10+Math.random()*10)+"s";
+    p.style.width=(2+Math.random()*3)+"px";
+    p.style.height=p.style.width;
+    container.appendChild(p);
+  }
+})();
+window.addEventListener("scroll",()=>{
+  const bar=document.getElementById("progress-bar");
+  if(!bar)return;
+  const scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+  const scrollHeight=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+  bar.style.width=scrollHeight>0?(scrollTop/scrollHeight)*100+"%":"0%";
+});
+</script>
 </body>
 </html>
