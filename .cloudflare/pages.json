@@ -1,6 +1,0 @@
-{
-  "build": {
-    "command": "echo 'Static site'",
-    "destination_dir": "."
-  }
-}
