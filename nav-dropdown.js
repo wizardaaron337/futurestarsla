@@ -1,15 +1,34 @@
 /**
  * Future Stars LA - Header-Integrated Dropdown Navigation with Role-Based Access
- * Integrates into existing site header
+ * Works on all pages - shows for authenticated users, hides for public pages
  */
 
 (function() {
+    // Check if user is authenticated
+    const isAuth = sessionStorage.getItem('fs_auth') && sessionStorage.getItem('fs_pin_verified') === 'true';
+    const userRole = sessionStorage.getItem('fs_role') || 'owner';
+    const userName = sessionStorage.getItem('fs_name') || 'User';
+
+    // Pages that don't need auth
+    const PUBLIC_PAGES = ['index', 'signin', 'login', 'sign-in', 'enter', 'direct-deploy', 'test'];
+    const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+    const isPublicPage = PUBLIC_PAGES.includes(currentPage);
+
+    // If not authenticated and not on a public page, redirect to signin
+    if (!isAuth && !isPublicPage && currentPage !== 'pin') {
+        window.location.href = 'signin.html';
+        return;
+    }
+
+    // Don't show nav on public pages
+    if (!isAuth) return;
+
     // Role-based page permissions
     const ROLE_PAGES = {
-        owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
-        logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact'],
-        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory', 'jersey-gallery', 'privacy', 'contact'],
-        inventory: ['dashboard', 'inventory', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
+        owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact', 'inventory-v2'],
+        logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
+        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory', 'jersey-gallery', 'privacy', 'contact', 'inventory-v2'],
+        inventory: ['dashboard', 'inventory', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact', 'inventory-v2']
     };
 
     const NAV_ITEMS = [
@@ -26,48 +45,31 @@
         { page: 'contact', label: 'Contact', icon: '📧', roles: ['owner', 'logistics', 'tournament', 'inventory'] }
     ];
 
-    function getUserRole() {
-        return sessionStorage.getItem('fs_role') || 'owner';
-    }
-
-    function getUserName() {
-        return sessionStorage.getItem('fs_name') || 'User';
-    }
-
     function canAccess(page) {
-        const role = getUserRole();
-        if (role === 'owner') return true;
-        const allowed = ROLE_PAGES[role] || ROLE_PAGES.inventory;
+        if (userRole === 'owner') return true;
+        const allowed = ROLE_PAGES[userRole] || ROLE_PAGES.inventory;
         return allowed.includes(page);
     }
 
     function getNavItems() {
-        const role = getUserRole();
         return NAV_ITEMS.filter(item => {
             if (item.divider) return true;
-            return item.roles.includes(role);
+            return item.roles.includes(userRole);
         });
     }
 
     function buildDropdownItems() {
         const items = getNavItems();
         return items.map(item => {
-            if (item.divider) {
-                return '<div class="fs-menu-divider"></div>';
-            }
-            return `
-            <a href="${item.page}.html" class="fs-menu-item" data-page="${item.page}">
+            if (item.divider) return '<div class="fs-menu-divider"></div>';
+            return `<a href="${item.page}.html" class="fs-menu-item" data-page="${item.page}">
                 <span class="fs-menu-icon">${item.icon}</span>
                 <span>${item.label}</span>
             </a>`;
         }).join('');
     }
 
-    // Create the header-integrated nav HTML
     function createNav() {
-        const role = getUserRole();
-        const name = getUserName();
-        
         return `
         <div class="fs-header-nav">
             <button class="fs-menu-btn" onclick="toggleFsMenu()" aria-label="Menu">
@@ -79,8 +81,8 @@
             <div class="fs-dropdown" id="fsDropdown">
                 <div class="fs-dropdown-header">
                     <div class="fs-dropdown-user">
-                        <span class="fs-dropdown-name">${name}</span>
-                        <span class="fs-dropdown-role">${role}</span>
+                        <span class="fs-dropdown-name">${userName}</span>
+                        <span class="fs-dropdown-role">${userRole}</span>
                     </div>
                 </div>
                 ${buildDropdownItems()}
@@ -192,7 +194,7 @@
             background: rgba(201,162,39,0.15);
             color: #C9A227;
             border-radius: 6px;
-            font-size: 0.7em;
+            font-size: 0.75em;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
@@ -255,7 +257,6 @@
             color: #EF5350;
             background: rgba(239,83,80,0.08);
         }
-        /* Click outside to close */
         .fs-dropdown-overlay {
             position: fixed;
             top: 0;
@@ -268,7 +269,6 @@
         .fs-dropdown-overlay.open {
             display: block;
         }
-        /* Access denied */
         .fs-access-denied {
             position: fixed;
             top: 0; left: 0;
@@ -300,55 +300,52 @@
     </style>
     `;
 
-    // Inject CSS
-    document.head.insertAdjacentHTML('beforeend', navCSS);
-
-    // Find the user-info div in header and add nav to it
     function integrateNav() {
+        // Inject CSS
+        document.head.insertAdjacentHTML('beforeend', navCSS);
+
+        // Find user-info or header
         const userInfo = document.querySelector('.user-info');
         const header = document.querySelector('.header');
         
         if (userInfo) {
-            // Add nav before logout button
             const logoutBtn = userInfo.querySelector('.logout-btn');
             if (logoutBtn) {
                 logoutBtn.insertAdjacentHTML('beforebegin', createNav());
-                // Hide old logout since we have one in dropdown
                 logoutBtn.style.display = 'none';
             } else {
                 userInfo.insertAdjacentHTML('afterbegin', createNav());
             }
         } else if (header) {
-            // If no user-info, add to end of header
             header.insertAdjacentHTML('beforeend', createNav());
+        }
+
+        // Add overlay
+        document.body.insertAdjacentHTML('beforeend', '<div class="fs-dropdown-overlay" id="fsOverlay" onclick="toggleFsMenu()"></div>');
+
+        // Highlight current page
+        const activeItem = document.querySelector(`.fs-menu-item[data-page="${currentPage}"]`);
+        if (activeItem) activeItem.classList.add('active');
+
+        // Check access (skip for certain pages)
+        const skipCheck = ['dashboard', 'team', 'privacy', 'contact', 'index'];
+        if (!skipCheck.includes(currentPage) && !canAccess(currentPage)) {
+            document.body.innerHTML = `
+                <div class="fs-access-denied">
+                    <h2>🚫 Access Denied</h2>
+                    <p>You don't have permission to view this page.</p>
+                    <p>Role: <strong>${userRole}</strong></p>
+                    <a href="dashboard.html">Go to Dashboard</a>
+                </div>
+            `;
         }
     }
 
-    // Run integration when DOM is ready
+    // Run when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', integrateNav);
     } else {
         integrateNav();
-    }
-
-    // Add overlay for clicking outside
-    document.body.insertAdjacentHTML('beforeend', '<div class="fs-dropdown-overlay" id="fsOverlay" onclick="toggleFsMenu()"></div>');
-
-    // Highlight current page
-    const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'dashboard';
-    const activeItem = document.querySelector(`.fs-menu-item[data-page="${currentPage}"]`);
-    if (activeItem) activeItem.classList.add('active');
-
-    // Check access
-    if (!canAccess(currentPage)) {
-        document.body.innerHTML = `
-            <div class="fs-access-denied">
-                <h2>🚫 Access Denied</h2>
-                <p>You don't have permission to view this page.</p>
-                <p>Role: <strong>${getUserRole()}</strong></p>
-                <a href="dashboard.html">Go to Dashboard</a>
-            </div>
-        `;
     }
 
     // Global functions
@@ -356,10 +353,9 @@
         const dropdown = document.getElementById('fsDropdown');
         const overlay = document.getElementById('fsOverlay');
         const btn = document.querySelector('.fs-menu-btn');
-        
-        dropdown.classList.toggle('open');
-        overlay.classList.toggle('open');
-        btn.classList.toggle('active');
+        if (dropdown) dropdown.classList.toggle('open');
+        if (overlay) overlay.classList.toggle('open');
+        if (btn) btn.classList.toggle('active');
     };
 
     window.fsLogout = function() {
