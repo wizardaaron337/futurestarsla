@@ -2,6 +2,23 @@
    FUTURE STARS — GLOBAL ANIMATIONS
    ═══════════════════════════════════════ */
 
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Selection Color */
+::selection {
+    background: rgba(201,162,39,0.3);
+    color: var(--white);
+}
+
+/* Focus States */
+*:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
 /* Floating Particles */
 .particles {
     position: fixed;
@@ -47,6 +64,18 @@
     opacity: 0;
 }
 
+/* Staggered Children */
+.stagger-children > * {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+
 /* Stat Pulse Glow */
 @keyframes statPulse {
     0%, 100% { text-shadow: 0 0 5px rgba(201,162,39,0.2); }
@@ -56,7 +85,7 @@
     animation: statPulse 3s ease-in-out infinite;
 }
 
-/* Shimmer */
+/* Shimmer Loading Effect */
 @keyframes shimmer {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
@@ -96,6 +125,23 @@
     box-shadow: 0 2px 10px rgba(201,162,39,0.2);
 }
 
+/* Secondary Button */
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    color: var(--gold);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn-secondary:hover {
+    background: rgba(201,162,39,0.1);
+    transform: translateY(-2px);
+}
+
 /* Spinner */
 @keyframes spin {
     to { transform: rotate(360deg); }
@@ -119,11 +165,77 @@
     border-color: rgba(201,162,39,0.3);
 }
 
-/* Glow Border Animation for Nav Active */
+/* Glow Border Animation */
 @keyframes glowBorder {
     0%, 100% { border-color: rgba(201,162,39,0.2); }
     50% { border-color: rgba(201,162,39,0.5); }
 }
 .nav-glow {
     animation: glowBorder 2s ease-in-out infinite;
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, var(--black-card) 25%, rgba(201,162,39,0.05) 50%, var(--black-card) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 16px 24px;
+    background: var(--black-card);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    z-index: 10000;
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+@keyframes toastIn {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes toastOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100px); opacity: 0; }
+}
+
+/* Modal Backdrop Blur */
+.modal-backdrop {
+    backdrop-filter: blur(8px);
+}
+
+/* Input Focus Glow */
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.15);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--black-light);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    html { font-size: 14px; }
+}
+@media (max-width: 480px) {
+    html { font-size: 13px; }
 }
