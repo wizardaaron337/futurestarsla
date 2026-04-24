@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Login — Future Stars</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #ffd700; --blue: #00d4ff; --red: #ff4444; --bg: #050810; }
+        :root { --gold: #ffd700; --blue: #00d4ff; --green: #00ff88; --red: #ff4444; --bg: #050810; }
         body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-box { background: rgba(255,255,255,0.03); border: 2px solid rgba(0,212,255,0.2); border-radius: 24px; padding: 50px; width: 100%; max-width: 480px; text-align: center; }
         .logo { font-family: 'Orbitron'; font-size: 2.5em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
@@ -23,6 +26,8 @@
         .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
         .error { color: var(--red); margin-top: 20px; font-size: 1.1em; display: none; }
         .error.show { display: block; }
+        .success { color: var(--green); margin-top: 20px; font-size: 1.1em; display: none; }
+        .success.show { display: block; }
     </style>
 </head>
 <body>
@@ -38,9 +43,13 @@
         </div>
         <button class="btn" onclick="login()">ENTER</button>
         <div class="error" id="error"></div>
-        <p class="hint">Just select your name and click ENTER</p>
+        <div class="success" id="success"></div>
+        <p class="hint">Click your name, then click ENTER</p>
     </div>
     <script>
+        // Prevent caching issues
+        const CACHE_BUST = Date.now();
+        
         const CREW = {
             'jr': { role: 'owner', name: 'JR' },
             'lane': { role: 'owner', name: 'Lane' },
@@ -48,39 +57,55 @@
             'caleb': { role: 'tournament', name: 'Caleb' },
             'marlon': { role: 'inventory', name: 'Marlon' }
         };
+        
         let selectedCrew = null;
+        const errorDiv = document.getElementById('error');
+        const successDiv = document.getElementById('success');
 
         function selectCrew(crew) {
             selectedCrew = crew;
-            console.log('Selected crew:', crew);
+            console.log('Selected:', crew);
+            
+            // Visual feedback
             document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
-            document.getElementById('error').classList.remove('show');
+            
+            // Hide messages
+            errorDiv.classList.remove('show');
+            successDiv.classList.remove('show');
         }
 
         function login() {
-            const error = document.getElementById('error');
-            
-            console.log('Login clicked, selectedCrew:', selectedCrew);
+            console.log('Login clicked, selected:', selectedCrew);
             
             if (!selectedCrew) { 
-                error.textContent = 'Please click on your name first!'; 
-                error.style.color = '#ff4444';
-                error.classList.add('show'); 
+                showError('Please click on your name first!');
                 return; 
             }
             
-            error.textContent = 'Login successful! Redirecting...';
-            error.style.color = '#00ff88';
-            error.classList.add('show');
+            showSuccess('Login successful! Redirecting...');
             
+            // Store auth data
             sessionStorage.setItem('fs_auth', selectedCrew);
             sessionStorage.setItem('fs_role', CREW[selectedCrew].role);
             sessionStorage.setItem('fs_name', CREW[selectedCrew].name);
             
+            // Redirect with cache buster
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'index.html?v=' + CACHE_BUST;
             }, 500);
+        }
+        
+        function showError(msg) {
+            errorDiv.textContent = msg;
+            errorDiv.classList.add('show');
+            successDiv.classList.remove('show');
+        }
+        
+        function showSuccess(msg) {
+            successDiv.textContent = msg;
+            successDiv.classList.add('show');
+            errorDiv.classList.remove('show');
         }
     </script>
 </body>
