@@ -326,8 +326,8 @@
             const role = sessionStorage.getItem('fs_role');
             const nav = document.getElementById('main-nav');
             if (!nav || !role) return;
-            const links = { owner: ['dashboard','departments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
-            const labels = { dashboard:'Dashboard', departments:'Departments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
+            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
             const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';
@@ -462,7 +462,8 @@
             { key: 'saka', label: 'Saka', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
             { key: 'vini', label: 'Vini Jr', icon: '🇧🇷' },
             { key: 'gimenez', label: 'Gimenez', icon: '🇲🇽' },
-            { key: 'trips', label: 'Out on Trips', icon: '🚐' }
+            { key: 'trips', label: 'Out on Trips', icon: '🚐' },
+            { key: 'packing', label: 'Soccer Packing', icon: '📊' }
         ];
 
         let activeCat = 'all';
@@ -493,6 +494,10 @@
             const container = document.getElementById('inventory-content');
             if (activeCat === 'trips') {
                 renderTripsView(container);
+                return;
+            }
+            if (activeCat === 'packing') {
+                renderPackingView(container);
                 return;
             }
             const items = getItemsForCat(activeCat);
@@ -579,6 +584,73 @@
             `;
         }
 
+        function renderPackingView(container) {
+            if (typeof SOCCER_PACKING === 'undefined') {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);">Loading packing data...</div>';
+                return;
+            }
+            const { sizes, totals, jerseyNames } = SOCCER_PACKING;
+            const sizeLabels = Object.keys(sizes).filter(s => s !== 'SIZE');
+            
+            let html = '<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:0.85em;">';
+            html += '<thead><tr style="border-bottom:2px solid var(--gold);">';
+            html += '<th style="padding:12px;text-align:left;color:var(--gold);font-family:Cinzel,serif;">Size</th>';
+            jerseyNames.forEach(name => {
+                if (name !== 'Total Jerseys') {
+                    html += `<th style="padding:12px;text-align:center;color:var(--gold);font-family:Cinzel,serif;min-width:70px;">${name}</th>`;
+                }
+            });
+            html += '<th style="padding:12px;text-align:center;color:var(--gold);font-family:Cinzel,serif;">Total</th>';
+            html += '</tr></thead><tbody>';
+            
+            sizeLabels.forEach(size => {
+                html += `<tr style="border-bottom:1px solid var(--border);">`;
+                html += `<td style="padding:10px;color:var(--white);font-weight:600;">${size}</td>`;
+                let rowTotal = 0;
+                jerseyNames.forEach(name => {
+                    if (name === 'Total Jerseys') return;
+                    const qty = sizes[size][name] || 0;
+                    rowTotal += qty;
+                    const color = qty === 0 ? 'var(--gray-dark)' : qty < 10 ? 'var(--red)' : qty < 30 ? 'var(--orange)' : 'var(--white)';
+                    html += `<td style="padding:10px;text-align:center;color:${color};">${qty || '—'}</td>`;
+                });
+                html += `<td style="padding:10px;text-align:center;color:var(--gold);font-weight:700;">${rowTotal}</td>`;
+                html += '</tr>';
+            });
+            
+            // Totals row
+            html += `<tr style="border-top:2px solid var(--gold);background:rgba(201,162,39,0.05);">`;
+            html += `<td style="padding:10px;color:var(--gold);font-weight:700;font-family:Cinzel,serif;">TOTALS</td>`;
+            let grandTotal = 0;
+            jerseyNames.forEach(name => {
+                if (name === 'Total Jerseys') return;
+                const t = totals[name] || 0;
+                grandTotal += t;
+                html += `<td style="padding:10px;text-align:center;color:var(--gold);font-weight:700;">${t}</td>`;
+            });
+            html += `<td style="padding:10px;text-align:center;color:var(--gold);font-weight:700;font-size:1.1em;">${grandTotal}</td>`;
+            html += '</tr></tbody></table></div>';
+            
+            // Add summary cards
+            html += '<div style="margin-top:30px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;">';
+            const topJerseys = Object.entries(totals)
+                .filter(([k]) => k !== 'Total Jerseys')
+                .sort((a,b) => b[1] - a[1])
+                .slice(0, 8);
+            topJerseys.forEach(([name, total]) => {
+                html += `
+                    <div style="background:var(--black-card);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;">
+                        <div style="font-family:Cinzel,serif;color:var(--gold);font-size:0.85em;margin-bottom:6px;">${name}</div>
+                        <div style="font-size:1.8em;font-weight:700;color:var(--white);">${total}</div>
+                        <div style="font-size:0.75em;color:var(--gray);">units</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
         function renderTripsView(container) {
             const dates = INVENTORY.tournaments;
             if (!dates || Object.keys(dates).length === 0) {
@@ -641,5 +713,6 @@
 
         init();
     </script>
+    <script src="soccer-packing.js"></script>
 </body>
 </html>
