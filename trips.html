@@ -418,6 +418,18 @@
             margin-bottom: 10px;
         }
 
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: var(--black-card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px; animation: skeleton-pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes skeleton-pulse { 0%,100%{opacity:.4;} 50%{opacity:.8;} }
+        .skeleton-line { height: 16px; background: var(--black-hover); border-radius: 6px; margin-bottom: 12px; }
+        .skeleton-line.short { width: 60%; } .skeleton-line.medium { width: 80%; }
+        .skeleton-line.long { width: 100%; } .skeleton-line.title { height: 22px; width: 70%; margin-bottom: 16px; }
+        .skeleton-meta { display: flex; gap: 8px; margin-bottom: 16px; }
+        .skeleton-tag { width: 60px; height: 24px; background: var(--black-hover); border-radius: 6px; }
+
         @media (max-width: 768px) {
             .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
             .nav { padding: 10px 20px; }
@@ -428,6 +440,7 @@
             .finance-row { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
@@ -493,7 +506,11 @@
             </label>
         </div>
 
-        <div class="trips-grid" id="grid"></div>
+        <div class="trips-grid" id="grid">
+                <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-meta"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+                <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-meta"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+                <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-meta"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
+            </div>
     </div>
 
     <!-- Trip Detail Modal -->
@@ -805,7 +822,11 @@
             bar.style.width = pct+"%";
         });
     </script>
-<script src="footer-component.js?v=2"></script>
-<script src="keyboard-shortcuts.js?v=2"></script>
+<script src="export-utils.js?v=2"></script>
+    <script src="footer-component.js?v=2"></script>
+<script src="dark-mode.js?v=2"></script>
+    <script src="keyboard-shortcuts.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>

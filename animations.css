@@ -232,9 +232,77 @@ input:focus, select:focus, textarea:focus {
     background: var(--gold);
 }
 
+/* Print Styles */
+@media print {
+    .header, .nav, .logout-btn, .controls, .btn, .trip-actions, .folder-actions, .modal-overlay, .particles, .progress-bar, #theme-toggle { display: none !important; }
+    body { background: white !important; color: black !important; }
+    .main { padding: 20px !important; max-width: 100% !important; }
+    .plan-card, .trip-card, .folder-card, .tournament-card { break-inside: avoid; border: 1px solid #ddd !important; box-shadow: none !important; }
+    .welcome { color: #000 !important; }
+    .subtitle { color: #666 !important; }
+    .detail-view { border: 1px solid #ddd !important; }
+    a { text-decoration: none !important; color: #000 !important; }
+    .detail-title { color: #000 !important; }
+    .total-price { color: #000 !important; }
+    .cost-value { color: #000 !important; }
+    .plan-card-title { color: #000 !important; }
+    .info-card { border: 1px solid #ddd !important; }
+}
+
+/* Light Mode */
+[data-theme="light"] {
+    --black: #F5F5F0;
+    --black-light: #E8E8E0;
+    --black-card: #FFFFFF;
+    --black-hover: #F0F0E8;
+    --white: #1A1A1A;
+    --gray: #5A5A5A;
+    --gray-dark: #8A8A8A;
+    --border: #D0D0C8;
+}
+[data-theme="light"] body {
+    background: var(--black);
+    color: var(--white);
+}
+[data-theme="light"] .particle {
+    background: var(--gold-dark);
+}
+[data-theme="light"] ::-webkit-scrollbar-track {
+    background: var(--black-light);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: var(--gray-dark);
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-size: 1.4em;
+    cursor: pointer;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+}
+#theme-toggle:hover {
+    transform: scale(1.1);
+    border-color: var(--gold);
+}
+
 /* Responsive Typography */
 @media (max-width: 768px) {
     html { font-size: 14px; }
+    #theme-toggle { bottom: 20px; left: 20px; width: 40px; height: 40px; font-size: 1.2em; }
 }
 @media (max-width: 480px) {
     html { font-size: 13px; }

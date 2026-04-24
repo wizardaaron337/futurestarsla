@@ -41,6 +41,7 @@
         .btn-reject { background: rgba(255,68,68,0.15); color: var(--red); }
         @media (max-width: 768px) { .header { flex-direction: column; gap: 10px; } .gallery { grid-template-columns: repeat(2, 1fr); } }
     </style>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
@@ -154,5 +155,7 @@
         });
     </script>
 <script src="footer-component.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>

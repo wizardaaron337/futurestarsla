@@ -298,6 +298,7 @@
             .cards { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
@@ -433,6 +434,9 @@
         }
     </script>
 <script src="footer-component.js?v=2"></script>
-<script src="keyboard-shortcuts.js?v=2"></script>
+<script src="dark-mode.js?v=2"></script>
+    <script src="keyboard-shortcuts.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>

@@ -6,6 +6,7 @@
     <title>Privacy Policy — Future Stars</title>
     <meta name="description" content="Future Stars Sports Co Privacy Policy">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="animations.css?v=2">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -198,5 +199,7 @@
             bar.style.width = pct+"%";
         });
     </script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>

@@ -321,6 +321,7 @@
             .cat-tabs { overflow-x: auto; flex-wrap: nowrap; }
         }
     </style>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
@@ -357,7 +358,12 @@
         </div>
 
         <div class="cat-tabs" id="cat-tabs"></div>
-        <div id="inventory-content"></div>
+        <div id="inventory-content">
+                <div class="skeleton-grid">
+                    <div class="skeleton-box"></div><div class="skeleton-box"></div><div class="skeleton-box"></div>
+                    <div class="skeleton-box"></div><div class="skeleton-box"></div><div class="skeleton-box"></div>
+                </div>
+            </div>
     </div>
 
     <script>
@@ -817,7 +823,11 @@
             bar.style.width = pct+"%";
         });
     </script>
-<script src="footer-component.js?v=2"></script>
-<script src="keyboard-shortcuts.js?v=2"></script>
+<script src="export-utils.js?v=2"></script>
+    <script src="footer-component.js?v=2"></script>
+<script src="dark-mode.js?v=2"></script>
+    <script src="keyboard-shortcuts.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>

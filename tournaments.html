@@ -343,6 +343,7 @@
             .welcome { font-size: 1.6em; }
         }
     </style>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
@@ -532,7 +533,11 @@
             bar.style.width = pct+"%";
         });
     </script>
-<script src="footer-component.js?v=2"></script>
-<script src="keyboard-shortcuts.js?v=2"></script>
+<script src="export-utils.js?v=2"></script>
+    <script src="footer-component.js?v=2"></script>
+<script src="dark-mode.js?v=2"></script>
+    <script src="keyboard-shortcuts.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>

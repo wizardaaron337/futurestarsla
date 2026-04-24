@@ -12,7 +12,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PJ Trip Maker — Future Stars</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="animations.css?v=3">
+<link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="animations.css?v=3">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
@@ -1064,7 +1065,11 @@ window.addEventListener("scroll",()=>{
   bar.style.width=scrollHeight>0?(scrollTop/scrollHeight)*100+"%":"0%";
 });
 </script>
-<script src="footer-component.js?v=2"></script>
-<script src="keyboard-shortcuts.js?v=2"></script>
+<script src="export-utils.js?v=2"></script>
+    <script src="footer-component.js?v=2"></script>
+<script src="dark-mode.js?v=2"></script>
+    <script src="keyboard-shortcuts.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>
