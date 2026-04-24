@@ -422,8 +422,8 @@
             const role = sessionStorage.getItem('fs_role');
             const nav = document.getElementById('main-nav');
             if (!nav || !role) return;
-            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
-            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
+            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','trips','team'] };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker' };
             const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';
