@@ -8,52 +8,139 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --gold: #ffd700; --blue: #00d4ff; --green: #00ff88; --red: #ff4444; --bg: #050810; --card: rgba(255,255,255,0.03); }
-        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; font-size: 18px; line-height: 1.6; }
+        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; font-size: 18px; }
         .header { display: flex; align-items: center; justify-content: space-between; padding: 20px 30px; background: rgba(5,8,16,0.95); border-bottom: 2px solid rgba(0,212,255,0.15); position: sticky; top: 0; z-index: 100; }
         .logo { font-family: 'Orbitron'; font-size: 2.2em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .user-info { display: flex; align-items: center; gap: 15px; }
-        .user-name { font-family: 'Orbitron'; color: var(--gold); font-size: 1.1em; }
-        .logout-btn { padding: 10px 20px; border: 2px solid var(--red); color: var(--red); background: transparent; border-radius: 8px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.9em; }
-        .nav { display: flex; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
+        .nav { display: flex; gap: 12px; flex-wrap: wrap; }
         .nav a { padding: 14px 24px; border: 2px solid rgba(0,212,255,0.25); color: var(--blue); text-decoration: none; border-radius: 10px; font-size: 1.1em; font-family: 'Orbitron'; transition: all 0.3s; }
         .nav a:hover, .nav a.active { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.08); transform: translateY(-2px); }
-        .main { max-width: 1400px; margin: 0 auto; padding: 40px 30px; }
+        .main { max-width: 1000px; margin: 0 auto; padding: 40px 30px; }
         .welcome { font-family: 'Orbitron'; font-size: 2em; color: var(--gold); margin-bottom: 10px; }
-        .planner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .panel { background: var(--card); border: 2px solid rgba(0,212,255,0.1); border-radius: 16px; padding: 30px; }
-        .panel-title { font-family: 'Orbitron'; font-size: 1.3em; color: var(--gold); margin-bottom: 20px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; color: #8892b0; margin-bottom: 8px; font-family: 'Orbitron'; font-size: 0.9em; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 2px solid rgba(0,212,255,0.2); border-radius: 10px; color: #fff; font-family: 'Rajdhani'; font-size: 1.1em; outline: none; }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue); }
-        .form-group textarea { min-height: 100px; resize: vertical; }
-        .btn { padding: 16px 32px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 10px; font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
-        .btn-success { border-color: var(--green); color: var(--green); background: rgba(0,255,136,0.1); }
-        .checklist { list-style: none; }
-        .checklist li { padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s; }
-        .checklist li:hover { background: rgba(0,212,255,0.05); }
-        .checklist li.checked { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); }
-        .checklist li.checked::before { content: '✅'; }
-        .checklist li:not(.checked)::before { content: '⬜'; }
-        .trip-card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid var(--blue); }
-        .trip-card-title { font-family: 'Orbitron'; color: var(--blue); font-size: 1.1em; margin-bottom: 10px; }
-        .trip-card-info { color: #8892b0; line-height: 1.8; }
-        .trip-card-info strong { color: #fff; }
-        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 0.85em; font-family: 'Orbitron'; }
-        .status-planned { background: rgba(0,212,255,0.1); color: var(--blue); border: 1px solid rgba(0,212,255,0.2); }
-        .status-ready { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
-        @media (max-width: 768px) { .planner-grid { grid-template-columns: 1fr; } }
+        .subtitle { color: #8892b0; margin-bottom: 40px; font-size: 1.1em; }
+
+        .search-box {
+            background: var(--card);
+            border: 2px solid rgba(0,212,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { color: var(--blue); font-family: 'Orbitron'; font-size: 0.9em; margin-bottom: 10px; letter-spacing: 1px; }
+        .form-group input, .form-group select {
+            padding: 16px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(0,212,255,0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Rajdhani';
+            font-size: 1.2em;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+        .form-group input::placeholder { color: #555; }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 20px;
+            border: 2px solid;
+            border-radius: 12px;
+            font-family: 'Orbitron';
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .btn-hotel { border-color: var(--blue); color: var(--blue); background: rgba(0,212,255,0.1); }
+        .btn-hotel:hover { background: rgba(0,212,255,0.2); box-shadow: 0 15px 40px rgba(0,212,255,0.2); }
+        .btn-car { border-color: var(--green); color: var(--green); background: rgba(0,255,136,0.1); }
+        .btn-car:hover { background: rgba(0,255,136,0.2); box-shadow: 0 15px 40px rgba(0,255,136,0.2); }
+
+        .results {
+            margin-top: 40px;
+        }
+        .results-title {
+            font-family: 'Orbitron';
+            font-size: 1.2em;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .results-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+        .site-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .site-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+        .site-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            background: rgba(255,215,0,0.03);
+        }
+        .site-icon { font-size: 2.5em; margin-bottom: 12px; }
+        .site-name { font-family: 'Orbitron'; font-size: 0.95em; color: var(--gold); margin-bottom: 6px; }
+        .site-desc { color: #8892b0; font-size: 0.9em; }
+
+        .tips {
+            background: rgba(0,212,255,0.03);
+            border: 1px solid rgba(0,212,255,0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .tips-title { font-family: 'Orbitron'; color: var(--blue); margin-bottom: 15px; }
+        .tips-list { list-style: none; }
+        .tips-list li { padding: 10px 0; color: #8892b0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .tips-list li:last-child { border-bottom: none; }
+        .tips-list li::before { content: '💡 '; color: var(--gold); }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .btn-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 15px; }
+        }
     </style>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="signin.html";}</script>
+    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="sign-in.html";}</script>
     <div class="header">
         <div class="logo">🏆 FUTURE STARS</div>
-        <div class="user-info">
-            <span class="user-name" id="user-name"></span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
         <nav class="nav">
             <a href="dashboard.html">Dashboard</a>
             <a href="departments.html">Departments</a>
@@ -61,187 +148,251 @@
             <a href="trips.html">Trips</a>
             <a href="trip-planner.html" class="active">Planner</a>
             <a href="team.html">Team</a>
-
         </nav>
     </div>
+
     <div class="main">
         <div class="welcome">🚐 Trip Planner</div>
-        <p style="color: #8892b0; margin-bottom: 30px;">Plan tournament trips — hotels, vehicles, crew, and more</p>
-        
-        <div class="planner-grid">
-            <div class="panel">
-                <div class="panel-title">📋 NEW TRIP PLAN</div>
-                <form id="plan-form">
-                    <div class="form-group">
-                        <label>Tournament</label>
-                        <select id="tournament-select">
-                            <option value="">Select tournament...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Hotel Name & Details</label>
-                        <input type="text" id="hotel" placeholder="e.g., Hampton Inn, 2 rooms, $120/night">
-                    </div>
-                    <div class="form-group">
-                        <label>Vehicle Rental</label>
-                        <input type="text" id="vehicle" placeholder="e.g., Chevy Tahoe, Enterprise, $80/day">
-                    </div>
-                    <div class="form-group">
-                        <label>Crew Members</label>
-                        <input type="text" id="crew" placeholder="e.g., Caleb, Marlon">
-                    </div>
-                    <div class="form-group">
-                        <label>Notes</label>
-                        <textarea id="notes" placeholder="Any special instructions..."></textarea>
-                    </div>
-                    <button type="submit" class="btn">CREATE PLAN</button>
-                </form>
+        <div class="subtitle">Enter where you're going. We'll find hotels and cars.</div>
+
+        <div class="search-box">
+            <div class="form-row">
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>📍 LOCATION</label>
+                    <input type="text" id="location" placeholder="e.g. Lafayette, LA or Atlanta airport">
+                </div>
             </div>
-            
-            <div class="panel">
-                <div class="panel-title">✅ PLANNING CHECKLIST</div>
-                <ul class="checklist" id="checklist">
-                    <li onclick="toggleCheck(this)">Hotel booked with confirmation</li>
-                    <li onclick="toggleCheck(this)">Vehicle rented with confirmation</li>
-                    <li onclick="toggleCheck(this)">Crew confirmed and notified</li>
-                    <li onclick="toggleCheck(this)">Inventory packed and checked</li>
-                    <li onclick="toggleCheck(this)">Kickback confirmed with director</li>
-                    <li onclick="toggleCheck(this)">Weather forecast checked</li>
-                    <li onclick="toggleCheck(this)">Route planned (GPS ready)</li>
-                    <li onclick="toggleCheck(this)">Emergency contacts saved</li>
-                    <li onclick="toggleCheck(this)">Cash/change prepared</li>
-                    <li onclick="toggleCheck(this)">Square reader charged</li>
-                </ul>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>📅 CHECK IN</label>
+                    <input type="date" id="checkin">
+                </div>
+                <div class="form-group">
+                    <label>📅 CHECK OUT</label>
+                    <input type="date" id="checkout">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>👥 PEOPLE</label>
+                    <select id="guests">
+                        <option value="1">1 person</option>
+                        <option value="2" selected>2 people</option>
+                        <option value="3">3 people</option>
+                        <option value="4">4 people</option>
+                        <option value="5">5+ people</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>🏨 ROOMS</label>
+                    <select id="rooms">
+                        <option value="1" selected>1 room</option>
+                        <option value="2">2 rooms</option>
+                        <option value="3">3 rooms</option>
+                    </select>
+                </div>
+            </div>
+            <div class="btn-grid">
+                <button class="btn btn-hotel" onclick="searchHotels()">
+                    🏨 FIND HOTELS
+                </button>
+                <button class="btn btn-car" onclick="searchCars()">
+                    🚗 FIND CARS
+                </button>
             </div>
         </div>
-        
-        <div style="margin-top: 40px;">
-            <div class="panel-title">📅 PLANNED TRIPS</div>
-            <div id="planned-trips"></div>
+
+        <div class="results" id="hotel-results" style="display:none;">
+            <div class="results-title">🏨 HOTEL SEARCH</div>
+            <div class="site-grid">
+                <a class="site-card" id="link-booking" target="_blank">
+                    <div class="site-icon">🏨</div>
+                    <div class="site-name">Booking.com</div>
+                    <div class="site-desc">Best prices, free cancellation</div>
+                </a>
+                <a class="site-card" id="link-hotels" target="_blank">
+                    <div class="site-icon">🌟</div>
+                    <div class="site-name">Hotels.com</div>
+                    <div class="site-desc">Rewards program, price match</div>
+                </a>
+                <a class="site-card" id="link-kayak" target="_blank">
+                    <div class="site-icon">✈️</div>
+                    <div class="site-name">Kayak</div>
+                    <div class="site-desc">Compare across sites</div>
+                </a>
+                <a class="site-card" id="link-google" target="_blank">
+                    <div class="site-icon">🔍</div>
+                    <div class="site-name">Google Hotels</div>
+                    <div class="site-desc">Map view, reviews</div>
+                </a>
+                <a class="site-card" id="link-expedia" target="_blank">
+                    <div class="site-icon">🌐</div>
+                    <div class="site-name">Expedia</div>
+                    <div class="site-desc">Bundle deals</div>
+                </a>
+                <a class="site-card" id="link-priceline" target="_blank">
+                    <div class="site-icon">💰</div>
+                    <div class="site-name">Priceline</div>
+                    <div class="site-desc">Express deals</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="results" id="car-results" style="display:none;">
+            <div class="results-title">🚗 CAR RENTAL SEARCH</div>
+            <div class="site-grid">
+                <a class="site-card" id="link-enterprise" target="_blank">
+                    <div class="site-icon">🚙</div>
+                    <div class="site-name">Enterprise</div>
+                    <div class="site-desc">Pick you up, wide selection</div>
+                </a>
+                <a class="site-card" id="link-hertz" target="_blank">
+                    <div class="site-icon">🚗</div>
+                    <div class="site-name">Hertz</div>
+                    <div class="site-desc">Airport locations, Gold rewards</div>
+                </a>
+                <a class="site-card" id="link-avis" target="_blank">
+                    <div class="site-icon">🚕</div>
+                    <div class="site-name">Avis</div>
+                    <div class="site-desc">Preferred service</div>
+                </a>
+                <a class="site-card" id="link-budget" target="_blank">
+                    <div class="site-icon">💵</div>
+                    <div class="site-name">Budget</div>
+                    <div class="site-desc">Best rates</div>
+                </a>
+                <a class="site-card" id="link-national" target="_blank">
+                    <div class="site-icon">⭐</div>
+                    <div class="site-name">National</div>
+                    <div class="site-desc">Emerald Club, fast checkout</div>
+                </a>
+                <a class="site-card" id="link-kayak-car" target="_blank">
+                    <div class="site-icon">🔍</div>
+                    <div class="site-name">Kayak Cars</div>
+                    <div class="site-desc">Compare all brands</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="tips">
+            <div class="tips-title">💡 PJ'S TRAVEL TIPS</div>
+            <ul class="tips-list">
+                <li>Book hotels 2+ weeks out for better rates. Last minute = $$$.</li>
+                <li>Airport car rentals usually cheaper than downtown.</li>
+                <li>Check if hotel has free parking before booking.</li>
+                <li>Marriott/Hilton chains = consistent quality for crew.</li>
+                <li>Screenshot your confirmations — cell service dies at fields.</li>
+                <li>Always get a confirmation number. "I called" doesn't count.</li>
+            </ul>
         </div>
     </div>
-    
+
     <script>
-        const NAME = sessionStorage.getItem('fs_name') || 'User';
-        document.getElementById('user-name').textContent = NAME;
-        
-        // Tournament data (sync with bot)
-        const TOURNAMENTS = [
-            {"name": "Community Kick off (KY)", "month": "August", "startDate": "16-17", "state": "KY", "crew": "Caleb"},
-            {"name": "Collein Riley (PA)", "month": "August", "startDate": "16-17", "state": "PA", "crew": "Caleb"},
-            {"name": "Boilingbrook Labor Day Festival", "month": "August", "startDate": "30-Sep 1", "state": "IL", "crew": "PJ"},
-            {"name": "Texas Labor Day Cup", "month": "August", "startDate": "30-Sep 1", "state": "TX", "crew": ""},
-            {"name": "Labor Day Kick-off Classic", "month": "August", "startDate": "30-Sep 1", "state": "", "crew": "Marlon"},
-            {"name": "Cajun Classic", "month": "September", "startDate": "TBD", "state": "LA", "crew": "Caleb"},
-            {"name": "Queen City Cup", "month": "September", "startDate": "TBD", "state": "NC", "crew": "PJ"},
-            {"name": "Quad City Fall Shootout", "month": "September", "startDate": "TBD", "state": "IA", "crew": ""},
-            {"name": "Montana Surf Challenge", "month": "September", "startDate": "TBD", "state": "MT", "crew": "Caleb"},
-            {"name": "Give N Go Charity Event", "month": "September", "startDate": "TBD", "state": "", "crew": "Marlon"}
-        ];
-        
-        // Populate tournament select
-        const select = document.getElementById('tournament-select');
-        TOURNAMENTS.forEach(t => {
-            const option = document.createElement('option');
-            option.value = t.name;
-            option.textContent = `${t.name} — ${t.month} ${t.startDate}`;
-            select.appendChild(option);
-        });
-        
-        // Toggle checklist
-        function toggleCheck(el) {
-            el.classList.toggle('checked');
-            saveChecklist();
+        // Set default dates (today + tomorrow)
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('checkin').valueAsDate = today;
+        document.getElementById('checkout').valueAsDate = tomorrow;
+
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
         }
-        
-        // Save/load checklist
-        function saveChecklist() {
-            const items = document.querySelectorAll('.checklist li');
-            const checked = Array.from(items).map(li => li.classList.contains('checked'));
-            localStorage.setItem('trip_checklist', JSON.stringify(checked));
+
+        function formatDateSlash(dateStr) {
+            const d = new Date(dateStr);
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${m}/${day}/${y}`;
         }
-        
-        function loadChecklist() {
-            const saved = localStorage.getItem('trip_checklist');
-            if (saved) {
-                const checked = JSON.parse(saved);
-                const items = document.querySelectorAll('.checklist li');
-                items.forEach((li, i) => {
-                    if (checked[i]) li.classList.add('checked');
-                });
-            }
+
+        function getParams() {
+            const loc = document.getElementById('location').value.trim();
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const guests = document.getElementById('guests').value;
+            const rooms = document.getElementById('rooms').value;
+            return { loc, checkin, checkout, guests, rooms };
         }
-        
-        // Trip plans storage
-        let tripPlans = JSON.parse(localStorage.getItem('trip_plans') || '[]');
-        
-        function savePlans() {
-            localStorage.setItem('trip_plans', JSON.stringify(tripPlans));
-            displayPlans();
+
+        function searchHotels() {
+            const { loc, checkin, checkout, guests, rooms } = getParams();
+            if (!loc) { alert('Enter a location first'); return; }
+
+            const ci = formatDate(checkin);
+            const co = formatDate(checkout);
+            const ciSlash = formatDateSlash(checkin);
+            const coSlash = formatDateSlash(checkout);
+
+            // Booking.com
+            document.getElementById('link-booking').href =
+                `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(loc)}&checkin=${ci}&checkout=${co}&group_adults=${guests}&no_rooms=${rooms}`;
+
+            // Hotels.com
+            document.getElementById('link-hotels').href =
+                `https://www.hotels.com/search.do?q-destination=${encodeURIComponent(loc)}&q-check-in=${ci}&q-check-out=${co}&q-rooms=${rooms}&q-adults=${guests}`;
+
+            // Kayak
+            document.getElementById('link-kayak').href =
+                `https://www.kayak.com/hotels/${encodeURIComponent(loc)}/${ci}/${co}/${guests}adults?sort=rank_a`;
+
+            // Google Hotels
+            document.getElementById('link-google').href =
+                `https://www.google.com/travel/search?q=hotels+in+${encodeURIComponent(loc)}&hrf=CgUIp--xEiA${encodeURIComponent(loc)}`;
+
+            // Expedia
+            document.getElementById('link-expedia').href =
+                `https://www.expedia.com/Hotel-Search?destination=${encodeURIComponent(loc)}&startDate=${ci}&endDate=${co}&adults=${guests}&rooms=${rooms}`;
+
+            // Priceline
+            document.getElementById('link-priceline').href =
+                `https://www.priceline.com/hotels/search/?destination=${encodeURIComponent(loc)}&checkIn=${ci}&checkOut=${co}&rooms=${rooms}&adults=${guests}`;
+
+            document.getElementById('hotel-results').style.display = 'block';
+            document.getElementById('hotel-results').scrollIntoView({ behavior: 'smooth' });
         }
-        
-        function displayPlans() {
-            const container = document.getElementById('planned-trips');
-            if (tripPlans.length === 0) {
-                container.innerHTML = '<p style="color: #8892b0;">No trips planned yet. Create one above!</p>';
-                return;
-            }
-            
-            container.innerHTML = tripPlans.map((plan, i) => `
-                <div class="trip-card">
-                    <div class="trip-card-title">${plan.tournament}</div>
-                    <div class="trip-card-info">
-                        <strong>Hotel:</strong> ${plan.hotel || 'Not set'}<br>
-                        <strong>Vehicle:</strong> ${plan.vehicle || 'Not set'}<br>
-                        <strong>Crew:</strong> ${plan.crew || 'Not set'}<br>
-                        <strong>Notes:</strong> ${plan.notes || 'None'}<br>
-                        <span class="status-badge ${plan.ready ? 'status-ready' : 'status-planned'}">${plan.ready ? 'READY TO GO' : 'PLANNING'}</span>
-                    </div>
-                    <button onclick="deletePlan(${i})" style="margin-top: 15px; padding: 8px 16px; background: rgba(255,68,68,0.1); border: 1px solid var(--red); color: var(--red); border-radius: 6px; cursor: pointer;">Delete</button>
-                </div>
-            `).join('');
+
+        function searchCars() {
+            const { loc, checkin, checkout } = getParams();
+            if (!loc) { alert('Enter a location first'); return; }
+
+            const ci = formatDate(checkin);
+            const co = formatDate(checkout);
+            const ciSlash = formatDateSlash(checkin);
+            const coSlash = formatDateSlash(checkout);
+
+            // Enterprise
+            document.getElementById('link-enterprise').href =
+                `https://www.enterprise.com/en/car-rental/locations/us.html?search=${encodeURIComponent(loc)}`;
+
+            // Hertz
+            document.getElementById('link-hertz').href =
+                `https://www.hertz.com/rentacar/reservation/?pickupDate=${ciSlash}&dropoffDate=${coSlash}&pickupLocation=${encodeURIComponent(loc)}`;
+
+            // Avis
+            document.getElementById('link-avis').href =
+                `https://www.avis.com/en/locations/us?search=${encodeURIComponent(loc)}`;
+
+            // Budget
+            document.getElementById('link-budget').href =
+                `https://www.budget.com/en/locations/us?search=${encodeURIComponent(loc)}`;
+
+            // National
+            document.getElementById('link-national').href =
+                `https://www.nationalcar.com/en/car-rental/locations/us.html?search=${encodeURIComponent(loc)}`;
+
+            // Kayak Cars
+            document.getElementById('link-kayak-car').href =
+                `https://www.kayak.com/cars/${encodeURIComponent(loc)}/${ci}/${co}`;
+
+            document.getElementById('car-results').style.display = 'block';
+            document.getElementById('car-results').scrollIntoView({ behavior: 'smooth' });
         }
-        
-        function deletePlan(index) {
-            tripPlans.splice(index, 1);
-            savePlans();
-        }
-        
-        // Form submit
-        document.getElementById('plan-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const plan = {
-                tournament: document.getElementById('tournament-select').value,
-                hotel: document.getElementById('hotel').value,
-                vehicle: document.getElementById('vehicle').value,
-                crew: document.getElementById('crew').value,
-                notes: document.getElementById('notes').value,
-                ready: false,
-                created: new Date().toISOString()
-            };
-            
-            if (!plan.tournament) {
-                alert('Please select a tournament');
-                return;
-            }
-            
-            tripPlans.push(plan);
-            savePlans();
-            
-            // Reset form
-            e.target.reset();
-            alert('Trip plan created!');
-        });
-        
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = 'signin.html';
-        }
-        
-        // Init
-        loadChecklist();
-        displayPlans();
     </script>
 </body>
 </html>
