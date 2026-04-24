@@ -4,14 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enter Code — Future Stars</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;500;700&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animations.css?v=2">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #C9A227; --gold-light: #E8C84B; --green: #4CAF50; --red: #EF5350; --black: #0A0A0A; }
+        :root {
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
+            --black: #0A0A0A;
+            --black-card: #1A1A1A;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
+            --green: #4CAF50;
+            --red: #EF5350;
+        }
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--bg);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -19,37 +32,47 @@
             padding: 20px;
         }
         .box {
-            background: rgba(255,255,255,0.03);
-            border: 2px solid rgba(0,212,255,0.2);
+            background: var(--black-card);
+            border: 1px solid var(--border);
             border-radius: 24px;
             padding: 40px 30px;
             width: 100%;
             max-width: 400px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
-        .logo {
-            font-family: 'Orbitron';
-            font-size: 2em;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--gold), var(--blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 30px rgba(201,162,39,0.2);
+            margin-bottom: 15px;
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 6px;
         }
         .tagline {
-            color: #8892b0;
+            color: var(--gray);
             margin-bottom: 30px;
-            font-size: 1.1em;
+            font-size: 1em;
         }
         .user-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 8px 20px;
-            background: rgba(255,215,0,0.08);
-            border: 1px solid rgba(255,215,0,0.2);
+            background: rgba(201,162,39,0.08);
+            border: 1px solid rgba(201,162,39,0.2);
             border-radius: 30px;
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             color: var(--gold);
             font-size: 0.9em;
             margin-bottom: 25px;
@@ -66,14 +89,14 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            border: 2px solid rgba(255,215,0,0.3);
+            border: 2px solid rgba(201,162,39,0.3);
             background: transparent;
             transition: all 0.2s;
         }
         .dot.filled {
             background: var(--gold);
             border-color: var(--gold);
-            box-shadow: 0 0 12px rgba(255,215,0,0.4);
+            box-shadow: 0 0 12px rgba(201,162,39,0.4);
         }
         .dot.error {
             border-color: var(--red);
@@ -96,11 +119,11 @@
         }
         .key {
             padding: 20px;
-            background: rgba(0,212,255,0.06);
-            border: 1px solid rgba(0,212,255,0.15);
+            background: rgba(201,162,39,0.06);
+            border: 1px solid rgba(201,162,39,0.15);
             border-radius: 14px;
-            color: var(--blue);
-            font-family: 'Orbitron';
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
             font-size: 1.4em;
             font-weight: 700;
             cursor: pointer;
@@ -108,66 +131,51 @@
             user-select: none;
         }
         .key:hover {
-            background: rgba(0,212,255,0.12);
-            border-color: var(--blue);
+            background: rgba(201,162,39,0.12);
+            border-color: var(--gold);
             transform: translateY(-2px);
         }
         .key:active {
             transform: translateY(0) scale(0.95);
         }
-        .key.wide {
-            grid-column: span 1;
-        }
         .key.clear {
             color: var(--red);
-            border-color: rgba(255,68,68,0.2);
-            background: rgba(255,68,68,0.06);
+            border-color: rgba(239,83,80,0.2);
+            background: rgba(239,83,80,0.06);
         }
         .key.clear:hover {
-            background: rgba(255,68,68,0.12);
+            background: rgba(239,83,80,0.12);
             border-color: var(--red);
         }
         .key.back {
-            color: #8892b0;
-            border-color: rgba(136,146,176,0.2);
-            background: rgba(136,146,176,0.06);
+            color: var(--gray);
+            border-color: rgba(168,164,152,0.2);
+            background: rgba(168,164,152,0.06);
         }
         .key.back:hover {
-            background: rgba(136,146,176,0.12);
-            border-color: #8892b0;
+            background: rgba(168,164,152,0.12);
+            border-color: var(--gray);
         }
 
         .actions {
             display: flex;
             gap: 10px;
         }
-        .btn {
+        .btn-back {
             flex: 1;
             padding: 14px;
+            background: transparent;
+            border: 1px solid var(--gray-dark);
+            color: var(--gray);
             border-radius: 10px;
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 0.9em;
             cursor: pointer;
             transition: all 0.2s;
-            border: none;
-        }
-        .btn-back {
-            background: transparent;
-            border: 1px solid rgba(136,146,176,0.3);
-            color: #8892b0;
         }
         .btn-back:hover {
-            border-color: #8892b0;
-            color: #fff;
-        }
-        .btn-enter {
-            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2));
-            border: 2px solid var(--blue);
-            color: var(--blue);
-        }
-        .btn-enter:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,212,255,0.2);
+            border-color: var(--gray);
+            color: var(--white);
         }
 
         .msg {
@@ -181,16 +189,16 @@
         @media (max-width: 420px) {
             .box { padding: 30px 20px; }
             .key { padding: 16px; font-size: 1.2em; }
-            .logo { font-size: 1.6em; }
+            .logo-text { font-size: 1.2em; }
         }
     </style>
-    <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
     <div class="progress-bar" id="progress-bar"></div>
     <div class="particles" id="particles"></div>
     <div class="box">
-        <div class="logo">🏆 FUTURE STARS</div>
+        <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+        <div class="logo-text">FUTURE STARS</div>
         <p class="tagline">Enter your access code</p>
         <div class="user-badge" id="user-badge">👤 <span id="user-name">User</span></div>
 
@@ -217,20 +225,15 @@
         </div>
 
         <div class="actions">
-            <button class="btn btn-back" onclick="goBack()">← Back</button>
-            <button class="btn btn-enter" onclick="submit()">ENTER</button>
+            <button class="btn-back" onclick="goBack()">← Back</button>
+            <button class="btn-3d" onclick="submit()">ENTER</button>
         </div>
 
         <div class="msg" id="msg"></div>
     </div>
 
     <script>
-        // ═══════════════════════════════════════
-        // CHANGE THE ACCESS CODE BELOW
-        // ═══════════════════════════════════════
-        const ACCESS_PIN = '2026';  // ← Change this to your desired 4-digit code
-        // ═══════════════════════════════════════
-
+        const ACCESS_PIN = '2026';
         const name = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = name;
 
@@ -243,36 +246,27 @@
                 document.getElementById('dot-' + i).classList.remove('error');
             }
         }
-
         function press(digit) {
             if (pin.length >= 4) return;
             msg.textContent = '';
             pin += digit;
             updateDots();
-            if (pin.length === 4) {
-                setTimeout(submit, 200);
-            }
+            if (pin.length === 4) setTimeout(submit, 200);
         }
-
         function backspace() {
             pin = pin.slice(0, -1);
             msg.textContent = '';
             updateDots();
         }
-
         function clearAll() {
             pin = '';
             msg.textContent = '';
             updateDots();
         }
-
         function goBack() {
-            sessionStorage.removeItem('fs_auth');
-            sessionStorage.removeItem('fs_role');
-            sessionStorage.removeItem('fs_name');
+            sessionStorage.clear();
             window.location.href = 'signin.html';
         }
-
         function submit() {
             if (pin.length < 4) {
                 msg.className = 'msg error';
@@ -287,26 +281,17 @@
             } else {
                 msg.className = 'msg error';
                 msg.textContent = 'Wrong code — try again';
-                for (let i = 0; i < 4; i++) {
-                    document.getElementById('dot-' + i).classList.add('error');
-                }
-                setTimeout(() => {
-                    pin = '';
-                    updateDots();
-                    msg.textContent = '';
-                }, 1200);
+                for (let i = 0; i < 4; i++) document.getElementById('dot-' + i).classList.add('error');
+                setTimeout(() => { pin = ''; updateDots(); msg.textContent = ''; }, 1200);
             }
         }
-
-        // Keyboard support
         document.addEventListener('keydown', (e) => {
             if (e.key >= '0' && e.key <= '9') press(e.key);
             else if (e.key === 'Backspace') backspace();
             else if (e.key === 'Enter') submit();
             else if (e.key === 'Escape') goBack();
         });
-    </script>
-    <script>
+
         // Particles & Progress Bar
         (function(){
             const container = document.getElementById("particles");

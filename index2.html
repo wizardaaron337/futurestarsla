@@ -1,40 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Future Stars - Sign In</title>
-    <style>
-        body { font-family: Arial; background: #0A0A0A; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { text-align: center; }
-        h1 { color: #C9A227; }
-        button { padding: 15px 30px; margin: 10px; font-size: 18px; cursor: pointer; background: #C9A227; border: none; border-radius: 8px; color: #000; }
-        button:hover { background: #C9A227; }
-    </style>
+    <meta http-equiv="refresh" content="0; url=signin.html">
+    <title>Future Stars</title>
 </head>
 <body>
-    <div class="box">
-        <h1>🏆 FUTURE STARS</h1>
-        <p>Click your name to login:</p>
-        <button onclick="login('jr')">JR</button>
-        <button onclick="login('lane')">Lane</button>
-        <button onclick="login('pj')">PJ</button>
-        <button onclick="login('caleb')">Caleb</button>
-        <button onclick="login('marlon')">Marlon</button>
-    </div>
-    <script>
-        const CREW = {
-            'jr': { role: 'owner', name: 'JR' },
-            'lane': { role: 'owner', name: 'Lane' },
-            'pj': { role: 'logistics', name: 'PJ' },
-            'caleb': { role: 'tournament', name: 'Caleb' },
-            'marlon': { role: 'inventory', name: 'Marlon' }
-        };
-        function login(who) {
-            sessionStorage.setItem('fs_auth', who);
-            sessionStorage.setItem('fs_role', CREW[who].role);
-            sessionStorage.setItem('fs_name', CREW[who].name);
-            window.location.href = 'pin.html';
-        }
-    </script>
+    <p>Redirecting to <a href="signin.html">Sign In</a>...</p>
 </body>
 </html>

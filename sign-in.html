@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Stars — Sign In</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>Sign In — Future Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="animations.css?v=2">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --gold: #D4AF37;
-            --gold-light: #F4D03F;
-            --gold-dark: #B8960C;
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
             --black: #0A0A0A;
             --black-light: #141414;
             --black-card: #1A1A1A;
-            --white: #FFFFFF;
-            --gray: #888888;
-            --gray-dark: #444444;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -26,30 +28,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: radial-gradient(circle at 20% 50%, rgba(212,175,55,0.03) 0%, transparent 50%),
-                              radial-gradient(circle at 80% 20%, rgba(212,175,55,0.02) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 20% 50%, rgba(201,162,39,0.04) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(201,162,39,0.03) 0%, transparent 50%);
+            padding: 20px;
         }
         .container {
             text-align: center;
             max-width: 480px;
             width: 100%;
             padding: 40px;
+            position: relative;
+            z-index: 1;
         }
-        .logo-mark {
+        .logo-img {
             width: 80px;
             height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
             border: 2px solid var(--gold);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            font-size: 2.5em;
-            background: linear-gradient(135deg, rgba(212,175,55,0.1), transparent);
+            box-shadow: 0 0 30px rgba(201,162,39,0.2);
+            margin: 0 auto 25px;
+            display: block;
         }
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2em;
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
             font-weight: 700;
             color: var(--gold);
             letter-spacing: 4px;
@@ -91,37 +94,19 @@
         }
         .crew-btn:hover {
             border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(212,175,55,0.08), var(--black-card));
+            background: linear-gradient(135deg, rgba(201,162,39,0.08), var(--black-card));
             transform: translateY(-2px);
         }
         .crew-btn.selected {
             border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
-            box-shadow: 0 0 30px rgba(212,175,55,0.1);
+            background: linear-gradient(135deg, rgba(201,162,39,0.15), rgba(201,162,39,0.05));
+            box-shadow: 0 0 30px rgba(201,162,39,0.1);
         }
         .crew-btn .role {
             font-size: 0.75em;
             color: var(--gray);
             display: block;
             margin-top: 4px;
-        }
-        .go-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            border: none;
-            color: var(--black);
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 2px;
-        }
-        .go-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(212,175,55,0.3);
         }
         #msg { margin-top: 20px; font-size: 0.95em; }
         @media (max-width: 480px) {
@@ -131,8 +116,10 @@
     </style>
 </head>
 <body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="particles" id="particles"></div>
     <div class="container">
-        <div class="logo-mark">🏆</div>
+        <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
         <h1>FUTURE STARS</h1>
         <div class="subtitle">Select Your Name</div>
         <div class="crew-grid">
@@ -152,7 +139,7 @@
                 <div>📦 Marlon<span class="role">Inventory</span></div>
             </button>
         </div>
-        <button class="go-btn" onclick="go()">ENTER</button>
+        <button class="btn-3d" onclick="go()" style="width:100%;">ENTER</button>
         <div id="msg"></div>
     </div>
     <script>
@@ -175,7 +162,7 @@
         function go() {
             const msg = document.getElementById('msg');
             if (!picked) {
-                msg.style.color = '#ff4444';
+                msg.style.color = '#EF5350';
                 msg.textContent = 'Select your name first';
                 return;
             }
@@ -186,6 +173,30 @@
             sessionStorage.setItem('fs_name', CREW[picked].name);
             setTimeout(() => window.location.href = 'pin.html', 400);
         }
+
+        // Particles & Progress Bar
+        (function(){
+            const container = document.getElementById("particles");
+            if (!container) return;
+            for(let i=0;i<25;i++){
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.left = Math.random()*100+"vw";
+                p.style.animationDelay = Math.random()*15+"s";
+                p.style.animationDuration = (10+Math.random()*10)+"s";
+                p.style.width = (2+Math.random()*3)+"px";
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener("scroll", function(){
+            const bar = document.getElementById("progress-bar");
+            if (!bar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            bar.style.width = pct+"%";
+        });
     </script>
 </body>
 </html>
