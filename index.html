@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars Sports Co</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="auth-config.js?v=2"></script>
+    <script src="nav-dropdown.js?v=2" defer></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -210,8 +212,9 @@
         <h1>FUTURE STARS</h1>
         <div class="subtitle">Sports Co</div>
         <p class="hero-tagline">Championship sports merchandise. Tournament operations. Inventory management.</p>
+        <div id="auth-status" style="margin-bottom:16px;font-size:0.9em;color:var(--gray);"></div>
         <div class="actions">
-            <a href="signin.html" class="btn-main">Sign In</a>
+            <a href="signin.html" class="btn-main" id="signin-btn">Sign In</a>
             <a href="dashboard.html" class="btn-secondary">Dashboard</a>
         </div>
     </div>
@@ -253,5 +256,20 @@
     <div class="footer">
         Future Stars Sports Co &copy; 2026
     </div>
+    <script>
+        (function() {
+            const authStatus = document.getElementById('auth-status');
+            const signinBtn = document.getElementById('signin-btn');
+            const name = sessionStorage.getItem('fs_name');
+            const verified = sessionStorage.getItem('fs_pin_verified') === 'true';
+            
+            if (name && verified) {
+                authStatus.innerHTML = '<span style="color:#C9A227;">👤 Logged in as ' + name + '</span>';
+                signinBtn.textContent = 'Switch User';
+            } else {
+                authStatus.textContent = 'Not logged in';
+            }
+        })();
+    </script>
 </body>
 </html>
