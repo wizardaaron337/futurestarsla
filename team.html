@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team — Future Stars</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --gold: #D4AF37;
-            --gold-light: #F4D03F;
-            --gold-dark: #B8960C;
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
             --gold-glow: rgba(212,175,55,0.15);
             --black: #0A0A0A;
-            --black-light: #111111;
-            --black-card: #161616;
-            --black-hover: #1E1E1E;
-            --white: #FFFFFF;
-            --gray: #999999;
-            --gray-dark: #555555;
-            --border: #2A2A2A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --black-hover: #242424;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -40,14 +40,26 @@
             z-index: 100;
         }
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 20px rgba(201,162,39,0.2);
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
             font-weight: 700;
             color: var(--gold);
             letter-spacing: 3px;
-            text-decoration: none;
         }
-        .logo span { color: var(--white); font-weight: 300; }
         .nav {
             display: flex;
             gap: 4px;
@@ -74,7 +86,7 @@
             padding: 40px 30px;
         }
         .welcome {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1.8em;
             color: var(--gold);
             margin-bottom: 8px;
@@ -88,7 +100,7 @@
             margin-bottom: 40px;
         }
         .section-title {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 0.9em;
             color: var(--gold);
             margin-bottom: 20px;
@@ -136,7 +148,7 @@
             flex-shrink: 0;
         }
         .member-info h3 {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1em;
             color: var(--white);
             margin-bottom: 4px;
@@ -155,7 +167,7 @@
             color: var(--gold);
             border-radius: 6px;
             font-size: 0.75em;
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             letter-spacing: 2px;
             margin-top: 8px;
         }
@@ -175,7 +187,7 @@
 <body>
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
-        <a href="dashboard.html" class="logo">FUTURE <span>STARS</span></a>
+        <a href="dashboard.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
     </div>
     <nav class="nav" id="main-nav"></nav>
     <script>

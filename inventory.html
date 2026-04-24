@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars — Inventory</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --gold: #D4AF37;
-            --gold-light: #F4D03F;
-            --gold-dark: #B8960C;
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
             --black: #0A0A0A;
-            --black-light: #111111;
-            --black-card: #161616;
-            --black-hover: #1E1E1E;
-            --white: #FFFFFF;
-            --gray: #999999;
-            --gray-dark: #555555;
-            --border: #2A2A2A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --black-hover: #242424;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
             --green: #4CAF50;
             --red: #EF5350;
             --orange: #FF9800;
@@ -42,14 +42,26 @@
             z-index: 100;
         }
         .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 20px rgba(201,162,39,0.2);
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
             font-weight: 700;
             color: var(--gold);
             letter-spacing: 3px;
-            text-decoration: none;
         }
-        .logo span { color: var(--white); font-weight: 300; }
         .nav {
             display: flex;
             gap: 4px;
@@ -95,7 +107,7 @@
             transform: translateY(-3px);
         }
         .stat-value {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 2em;
             font-weight: 700;
             color: var(--gold);
@@ -162,13 +174,13 @@
             margin-bottom: 16px;
         }
         .jersey-name {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 0.95em;
             color: var(--gold);
             letter-spacing: 1px;
         }
         .jersey-total {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1.5em;
             color: var(--white);
         }
@@ -192,7 +204,7 @@
         .size-box.low { border-color: rgba(239,83,80,0.3); }
         .size-box.medium { border-color: rgba(255,152,0,0.3); }
         .size-label {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 0.75em;
             color: var(--gray);
             margin-bottom: 4px;
@@ -206,7 +218,7 @@
         .size-box.medium .size-qty { color: var(--orange); }
 
         .section-title {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1.1em;
             color: var(--gold);
             margin: 30px 0 20px;
@@ -223,7 +235,7 @@
         }
         .trip-label {
             display: block;
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 0.8em;
             color: var(--gold);
             margin-bottom: 12px;
@@ -243,7 +255,7 @@
         }
         .trip-select:focus { border-color: var(--gold); }
         .trip-summary {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1em;
             color: var(--gold);
             margin-bottom: 20px;
@@ -260,7 +272,7 @@
             margin-bottom: 12px;
         }
         .tournament-name {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 0.9em;
             color: var(--white);
             margin-bottom: 12px;
@@ -306,7 +318,7 @@
 <body>
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
-        <a href="dashboard.html" class="logo">FUTURE <span>STARS</span></a>
+        <a href="dashboard.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
     </div>
     <nav class="nav" id="main-nav"></nav>
     <script>

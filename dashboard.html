@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars — Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --gold: #D4AF37;
-            --gold-light: #F4D03F;
-            --gold-dark: #B8960C;
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
             --black: #0A0A0A;
-            --black-light: #111111;
-            --black-card: #161616;
-            --black-hover: #1E1E1E;
-            --white: #FFFFFF;
-            --gray: #999999;
-            --gray-dark: #555555;
-            --border: #2A2A2A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --black-hover: #242424;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -35,17 +35,29 @@
             background: var(--black-light);
             border-bottom: 1px solid var(--border);
         }
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 20px rgba(201,162,39,0.2);
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
             font-weight: 700;
             color: var(--gold);
             letter-spacing: 3px;
-            text-decoration: none;
         }
-        .logo span { color: var(--white); font-weight: 300; }
         .user-info { display: flex; align-items: center; gap: 20px; }
-        .user-name { font-family: 'Orbitron'; color: var(--gold); font-size: 0.9em; letter-spacing: 1px; }
+        .user-name { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.85em; letter-spacing: 2px; }
         .logout-btn {
             padding: 8px 18px;
             background: transparent;
@@ -80,10 +92,11 @@
         .nav a.active { color: var(--gold); background: rgba(212,175,55,0.08); }
         .main { max-width: 1400px; margin: 0 auto; padding: 40px 30px; }
         .welcome {
-            font-family: 'Orbitron';
-            font-size: 1.8em;
-            color: var(--white);
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            color: var(--gold);
             margin-bottom: 6px;
+            letter-spacing: 1px;
         }
         .welcome span { color: var(--gold); }
         .role-line {
@@ -112,7 +125,7 @@
         }
         .stat-icon { font-size: 2em; margin-bottom: 12px; }
         .stat-value {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 2em;
             font-weight: 700;
             color: var(--gold);
@@ -125,9 +138,9 @@
             text-transform: uppercase;
         }
         .section-title {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1.1em;
-            color: var(--white);
+            color: var(--gold);
             margin-bottom: 20px;
             letter-spacing: 2px;
         }
@@ -167,7 +180,7 @@
             flex-shrink: 0;
         }
         .card-body h3 {
-            font-family: 'Orbitron';
+            font-family: 'Cinzel', serif;
             font-size: 1em;
             color: var(--gold);
             margin-bottom: 8px;
@@ -189,7 +202,7 @@
 <body>
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
-        <a href="dashboard.html" class="logo">FUTURE <span>STARS</span></a>
+        <a href="dashboard.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
         <div class="user-info">
             <span class="user-name" id="user-name"></span>
             <button class="logout-btn" onclick="logout()">Logout</button>

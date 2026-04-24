@@ -6,15 +6,15 @@
     <title>Future Stars - Enter</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #050810; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        body { font-family: Arial, sans-serif; background: #0A0A0A; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .box { text-align: center; max-width: 400px; width: 100%; padding: 40px; }
-        h1 { color: #ffd700; font-size: 2.5em; margin-bottom: 10px; }
+        h1 { color: #C9A227; font-size: 2.5em; margin-bottom: 10px; }
         p { color: #8892b0; margin-bottom: 30px; font-size: 1.2em; }
         .names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .names button:nth-child(5) { grid-column: 1 / -1; width: 50%; justify-self: center; }
-        button { padding: 15px; font-size: 1.1em; cursor: pointer; background: rgba(0,212,255,0.1); border: 2px solid #00d4ff; color: #00d4ff; border-radius: 8px; }
-        button:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; color: #ffd700; }
-        button.selected { background: rgba(255,215,0,0.3); border-color: #ffd700; color: #ffd700; }
+        button { padding: 15px; font-size: 1.1em; cursor: pointer; background: rgba(0,212,255,0.1); border: 2px solid #C9A227; color: #C9A227; border-radius: 8px; }
+        button:hover { background: rgba(255,215,0,0.2); border-color: #C9A227; color: #C9A227; }
+        button.selected { background: rgba(255,215,0,0.3); border-color: #C9A227; color: #C9A227; }
         .go { width: 100%; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); margin-top: 10px; }
         #msg { margin-top: 15px; font-size: 1em; }
     </style>
@@ -53,11 +53,11 @@
         function go() {
             const msg = document.getElementById('msg');
             if (!picked) {
-                msg.style.color = '#ff4444';
+                msg.style.color = '#EF5350';
                 msg.textContent = 'Click your name first!';
                 return;
             }
-            msg.style.color = '#00ff88';
+            msg.style.color = '#4CAF50';
             msg.textContent = 'Logging in...';
             sessionStorage.setItem('fs_auth', picked);
             sessionStorage.setItem('fs_role', CREW[picked].role);
