@@ -42,11 +42,11 @@
     </div>
     <script>
         const CREW = {
-            'jr': { pass: '2026', role: 'owner', name: 'JR' },
-            'lane': { pass: '2026', role: 'owner', name: 'Lane' },
-            'pj': { pass: '2026', role: 'logistics', name: 'PJ' },
-            'caleb': { pass: '2026', role: 'tournament', name: 'Caleb' },
-            'marlon': { pass: '2026', role: 'inventory', name: 'Marlon' }
+            'jr': { role: 'owner', name: 'JR' },
+            'lane': { role: 'owner', name: 'Lane' },
+            'pj': { role: 'logistics', name: 'PJ' },
+            'caleb': { role: 'tournament', name: 'Caleb' },
+            'marlon': { role: 'inventory', name: 'Marlon' }
         };
         let selectedCrew = null;
 
@@ -55,7 +55,6 @@
             console.log('Selected crew:', crew);
             document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             event.target.classList.add('selected');
-            // Hide error when selection is made
             document.getElementById('error').classList.remove('show');
         }
 
@@ -83,7 +82,6 @@
                 window.location.href = 'index.html';
             }, 500);
         }
-
     </script>
 </body>
 </html>
