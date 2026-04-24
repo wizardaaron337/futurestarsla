@@ -334,7 +334,7 @@
             const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';
-                return `<a href="${p}.html" class="${cls}">${labels[p]}</a>`;
+                `<a href="${p === 'planner' ? 'pj-planner' : p === 'tracker' ? 'trip-tracker' : p}.html" class="${cls}">${labels[p]}</a>`;
             }).join('');
         })();
     </script>
