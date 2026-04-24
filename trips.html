@@ -119,15 +119,15 @@
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin-bottom: 35px;
         }
         .stat {
             background: var(--black-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 22px;
+            padding: 18px 12px;
             text-align: center;
             transition: all 0.3s;
         }
@@ -137,14 +137,14 @@
         }
         .stat-value {
             font-family: 'Cinzel', serif;
-            font-size: 2em;
+            font-size: 1.6em;
             font-weight: 700;
             color: var(--gold);
             margin-bottom: 4px;
         }
         .stat-label {
             color: var(--gray);
-            font-size: 0.75em;
+            font-size: 0.7em;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -277,6 +277,29 @@
             color: var(--blue);
             border-radius: 4px;
         }
+        .finance-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .finance-item {
+            text-align: center;
+        }
+        .finance-value {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1em;
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .finance-label {
+            font-size: 0.7em;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
         .empty-state {
             text-align: center;
@@ -297,6 +320,7 @@
             .trips-grid { grid-template-columns: 1fr; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             .welcome { font-size: 1.6em; }
+            .finance-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -335,8 +359,10 @@
         <div class="stats" id="stats">
             <div class="stat"><div class="stat-value" id="st-total">--</div><div class="stat-label">Total Trips</div></div>
             <div class="stat"><div class="stat-value" id="st-locked">--</div><div class="stat-label">Locked In</div></div>
+            <div class="stat"><div class="stat-value" id="st-revenue">--</div><div class="stat-label">Revenue</div></div>
+            <div class="stat"><div class="stat-value" id="st-profit">--</div><div class="stat-label">Profit</div></div>
+            <div class="stat"><div class="stat-value" id="st-margin">--</div><div class="stat-label">Avg Margin</div></div>
             <div class="stat"><div class="stat-value" id="st-states">--</div><div class="stat-label">States</div></div>
-            <div class="stat"><div class="stat-value" id="st-crew">--</div><div class="stat-label">Crew Members</div></div>
         </div>
 
         <div class="controls">
@@ -359,9 +385,30 @@
     </div>
 
     <script src="crew-data.js"></script>
+    <script src="cost-data.js"></script>
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
+
+        // Build a lookup for cost data by tournament name (fuzzy match)
+        const costLookup = {};
+        if (typeof COST_DATA !== 'undefined') {
+            COST_DATA.forEach(c => {
+                costLookup[c.tournament.toLowerCase().replace(/[^a-z0-9]/g, '')] = c;
+            });
+        }
+
+        function findCost(tripName) {
+            if (!tripName || typeof COST_DATA === 'undefined') return null;
+            const key = tripName.toLowerCase().replace(/[^a-z0-9]/g, '');
+            // Exact match first
+            if (costLookup[key]) return costLookup[key];
+            // Partial match
+            for (const [k, v] of Object.entries(costLookup)) {
+                if (k.includes(key) || key.includes(k)) return v;
+            }
+            return null;
+        }
 
         // Populate filters
         const months = [...new Set(CREW_TRIPS.map(t => t.month).filter(Boolean))].sort();
@@ -369,23 +416,44 @@
         document.getElementById('filter-month').innerHTML = '<option value="">All Months</option>' + months.map(m => `<option value="${m}">${m}</option>`).join('');
         document.getElementById('filter-state').innerHTML = '<option value="">All States</option>' + states.map(s => `<option value="${s}">${s}</option>`).join('');
 
+        function formatMoney(n) {
+            if (!n || n === 0) return '$0';
+            if (n >= 1000) return '$' + (n/1000).toFixed(1) + 'K';
+            return '$' + Math.round(n);
+        }
+
         function updateStats() {
             const total = CREW_TRIPS.length;
             const locked = CREW_TRIPS.filter(t => t.status === 'LOCKED IN').length;
             const allStates = [...new Set(CREW_TRIPS.map(t => t.state).filter(Boolean))];
-            // Count unique crew members
             const allCrew = new Set();
             CREW_TRIPS.forEach(t => {
                 if (t.crew) {
                     t.crew.split(',').forEach(c => allCrew.add(c.trim()));
                 }
             });
-            
+
+            // Financial stats from cost data
+            let totalRev = 0, totalProfit = 0, marginCount = 0, totalMargin = 0;
+            if (typeof COST_DATA !== 'undefined') {
+                COST_DATA.forEach(c => {
+                    totalRev += c.revenue;
+                    totalProfit += c.profit;
+                    if (c.margin > 0) {
+                        totalMargin += c.margin;
+                        marginCount++;
+                    }
+                });
+            }
+            const avgMargin = marginCount > 0 ? (totalMargin / marginCount).toFixed(1) + '%' : '—';
+
             document.getElementById('st-total').textContent = total;
             document.getElementById('st-locked').textContent = locked;
+            document.getElementById('st-revenue').textContent = formatMoney(totalRev);
+            document.getElementById('st-profit').textContent = formatMoney(totalProfit);
+            document.getElementById('st-margin').textContent = avgMargin;
             document.getElementById('st-states').textContent = allStates.length;
-            document.getElementById('st-crew').textContent = allCrew.size;
-            document.getElementById('subtitle').textContent = `${total} trips across ${allStates.length} states — ${locked} locked in`;
+            document.getElementById('subtitle').textContent = `${total} trips across ${allStates.length} states — ${locked} locked in — ${formatMoney(totalRev)} revenue tracked`;
         }
 
         function render() {
@@ -418,6 +486,25 @@
                 const sportDisplay = t.sport === 'BB' || t.sport.toLowerCase() === 'baseball' ? 'Baseball' : 
                                      t.sport.toLowerCase() === 'soccer' ? 'Soccer' : t.sport;
                 
+                // Find matching cost data
+                const cost = findCost(t.name);
+                const financeHtml = cost && cost.revenue > 0 ? `
+                    <div class="finance-row">
+                        <div class="finance-item">
+                            <div class="finance-value">${formatMoney(cost.revenue)}</div>
+                            <div class="finance-label">Revenue</div>
+                        </div>
+                        <div class="finance-item">
+                            <div class="finance-value">${formatMoney(cost.profit)}</div>
+                            <div class="finance-label">Profit</div>
+                        </div>
+                        <div class="finance-item">
+                            <div class="finance-value">${cost.margin > 0 ? cost.margin.toFixed(1) + '%' : '—'}</div>
+                            <div class="finance-label">Margin</div>
+                        </div>
+                    </div>
+                ` : '';
+                
                 return `
                     <div class="trip-card">
                         <div class="trip-header">
@@ -436,6 +523,7 @@
                             ${t.leaveDate || t.leaveTime ? `<div>🚐 <strong>Leave:</strong> ${t.leaveDate || ''} ${t.leaveTime || ''}</div>` : ''}
                             ${t.rentalReturn ? `<div>🔙 <strong>Return:</strong> ${t.rentalReturn}</div>` : ''}
                         </div>
+                        ${financeHtml}
                         <div class="trip-footer">
                             <span class="crew-tag">${t.pexCard ? `<strong>PEX:</strong> ${t.pexCard}` : ''}</span>
                             ${t.leaveTimesSent ? `<span class="pex-tag">Times Sent</span>` : ''}

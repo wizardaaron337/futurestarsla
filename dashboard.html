@@ -27,6 +27,57 @@
             min-height: 100vh;
             font-size: 16px;
         }
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            z-index: 9999;
+            transition: width 0.1s;
+            width: 0%;
+        }
+        .spinner {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(201,162,39,0.1);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+        .main { position: relative; z-index: 1; }
+        .header { position: relative; z-index: 2; }
+        .nav { position: relative; z-index: 2; }
         .header {
             display: flex;
             align-items: center;
@@ -48,6 +99,11 @@
             object-fit: cover;
             border: 2px solid var(--gold-dark);
             box-shadow: 0 0 20px rgba(201,162,39,0.2);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.15); }
         }
         .logo-text {
             font-family: 'Cinzel', serif;
@@ -70,6 +126,30 @@
             transition: all 0.3s;
         }
         .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-3d {
+            background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+            border: none;
+            border-bottom: 4px solid var(--gold-dark);
+            border-radius: 12px;
+            color: var(--black);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            padding: 14px 28px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 6px 20px rgba(201,162,39,0.3);
+        }
+        .btn-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(201,162,39,0.4);
+        }
+        .btn-3d:active {
+            transform: translateY(2px);
+            border-bottom: 2px solid var(--gold-dark);
+            box-shadow: 0 2px 10px rgba(201,162,39,0.2);
+        }
         .nav {
             display: flex;
             gap: 4px;
@@ -89,7 +169,15 @@
             letter-spacing: 0.5px;
         }
         .nav a:hover { color: var(--white); background: var(--black-hover); }
-        .nav a.active { color: var(--gold); background: rgba(212,175,55,0.08); }
+        .nav a.active {
+            color: var(--gold);
+            background: rgba(212,175,55,0.08);
+            animation: navGlow 2s ease-in-out infinite;
+        }
+        @keyframes navGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(201,162,39,0.1); }
+            50% { box-shadow: 0 0 15px rgba(201,162,39,0.3), 0 0 0 1px rgba(201,162,39,0.15); }
+        }
         .main { max-width: 1400px; margin: 0 auto; padding: 40px 30px; }
         .welcome {
             font-family: 'Cinzel', serif;
@@ -120,8 +208,8 @@
         }
         .stat:hover {
             border-color: var(--gold-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(201,162,39,0.15), 0 0 0 1px rgba(201,162,39,0.1);
         }
         .stat-icon { font-size: 2em; margin-bottom: 12px; }
         .stat-value {
@@ -130,6 +218,11 @@
             font-weight: 700;
             color: var(--gold);
             margin-bottom: 6px;
+            animation: statPulse 3s ease-in-out infinite;
+        }
+        @keyframes statPulse {
+            0%, 100% { text-shadow: 0 0 5px rgba(201,162,39,0.2); }
+            50% { text-shadow: 0 0 20px rgba(201,162,39,0.5), 0 0 40px rgba(201,162,39,0.2); }
         }
         .stat-label {
             color: var(--gray);
@@ -163,9 +256,9 @@
             cursor: pointer;
         }
         .card:hover {
-            border-color: var(--gold-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border-color: rgba(201,162,39,0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(201,162,39,0.15), 0 0 0 1px rgba(201,162,39,0.1);
         }
         .card-icon {
             width: 60px;
@@ -200,7 +293,9 @@
     </style>
 </head>
 <body>
+    <div class="progress-bar" id="progress-bar"></div>
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
+    <div class="particles" id="particles"></div>
     <div class="header">
         <a href="dashboard.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
         <div class="user-info">
@@ -214,8 +309,8 @@
             const role = sessionStorage.getItem('fs_role');
             const nav = document.getElementById('main-nav');
             if (!nav || !role) return;
-            const links = { owner: ['dashboard','departments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
-            const labels = { dashboard:'Dashboard', departments:'Departments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
+            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','tournaments','team'] };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
             const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';
@@ -225,56 +320,56 @@
     </script>
 
     <div class="main">
-        <div class="welcome">Welcome, <span id="welcome-name">User</span></div>
-        <div class="role-line" id="role-line">Loading...</div>
+        <div class="welcome animate-in">Welcome, <span id="welcome-name">User</span></div>
+        <div class="role-line animate-in" style="animation-delay:0.1s" id="role-line">Loading...</div>
 
         <div class="stats">
-            <div class="stat">
+            <div class="stat animate-in" style="animation-delay:0.15s">
                 <div class="stat-icon">🏆</div>
-                <div class="stat-value">14</div>
+                <div class="stat-value" id="db-tournaments">588</div>
                 <div class="stat-label">Tournaments</div>
             </div>
-            <div class="stat">
+            <div class="stat animate-in" style="animation-delay:0.25s">
                 <div class="stat-icon">💰</div>
-                <div class="stat-value">$42K</div>
+                <div class="stat-value" id="db-revenue">$202K</div>
                 <div class="stat-label">Revenue</div>
             </div>
-            <div class="stat">
+            <div class="stat animate-in" style="animation-delay:0.35s">
                 <div class="stat-icon">📦</div>
-                <div class="stat-value">5.7K</div>
+                <div class="stat-value" id="db-units">7.9K</div>
                 <div class="stat-label">Units</div>
             </div>
-            <div class="stat">
+            <div class="stat animate-in" style="animation-delay:0.45s">
                 <div class="stat-icon">👥</div>
-                <div class="stat-value">5</div>
-                <div class="stat-label">Crew</div>
+                <div class="stat-value" id="db-crew">203</div>
+                <div class="stat-label">Trips</div>
             </div>
         </div>
 
-        <div class="section-title">QUICK ACCESS</div>
+        <div class="section-title animate-in" style="animation-delay:0.5s">QUICK ACCESS</div>
         <div class="cards">
-            <a href="inventory.html" class="card">
+            <a href="inventory.html" class="card animate-in" style="animation-delay:0.55s">
                 <div class="card-icon">📦</div>
                 <div class="card-body">
                     <h3>Inventory</h3>
                     <p>Baseball & soccer jerseys with size breakdowns. See what's in stock and what's out on trips.</p>
                 </div>
             </a>
-            <a href="trips.html" class="card">
+            <a href="trips.html" class="card animate-in" style="animation-delay:0.65s">
                 <div class="card-icon">🚐</div>
                 <div class="card-body">
                     <h3>Tournament Trips</h3>
                     <p>Track revenue, profit margins, crew assignments, and tournament status.</p>
                 </div>
             </a>
-            <a href="trip-planner.html" class="card">
+            <a href="trip-planner.html" class="card animate-in" style="animation-delay:0.75s">
                 <div class="card-icon">🏨</div>
                 <div class="card-body">
                     <h3>Trip Planner</h3>
                     <p>Find hotels and car rentals. Compare prices, select options, book directly.</p>
                 </div>
             </a>
-            <a href="team.html" class="card">
+            <a href="team.html" class="card animate-in" style="animation-delay:0.85s">
                 <div class="card-icon">👥</div>
                 <div class="card-body">
                     <h3>Crew</h3>
@@ -283,7 +378,42 @@
             </a>
         </div>
     </div>
+    <script src="cost-data.js"></script>
+    <script src="crew-data.js"></script>
     <script>
+        // Real stats
+        (function(){
+            let totalRev = 0, totalProfit = 0;
+            if (typeof COST_DATA !== 'undefined') {
+                COST_DATA.forEach(c => { totalRev += c.revenue; totalProfit += c.profit; });
+            }
+            const formatK = n => n >= 1000 ? '$' + (n/1000).toFixed(0) + 'K' : '$' + n;
+            document.getElementById('db-revenue').textContent = formatK(totalRev);
+            
+            let tripCount = 0;
+            if (typeof CREW_TRIPS !== 'undefined') tripCount = CREW_TRIPS.length;
+            document.getElementById('db-crew').textContent = tripCount;
+        })();
+        
+        (function(){
+            const container = document.getElementById('particles');
+            for(let i=0;i<25;i++){
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random()*100+'vw';
+                p.style.animationDelay = Math.random()*15+'s';
+                p.style.animationDuration = (10+Math.random()*10)+'s';
+                p.style.width = (2+Math.random()*3)+'px';
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener('scroll', function(){
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            document.getElementById('progress-bar').style.width = pct+'%';
+        });
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         const ROLE = sessionStorage.getItem('fs_role') || 'owner';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
