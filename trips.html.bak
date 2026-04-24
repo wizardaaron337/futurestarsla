@@ -12,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trips — Future Stars</title>
     <script src="nav-dropdown.js" defer></script>
-    <script src="fix-site.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -460,7 +459,20 @@
         </div>
     </div>
     <nav class="nav" id="main-nav"></nav>
-    
+    <script>
+        (function() {
+            const role = sessionStorage.getItem('fs_role');
+            const nav = document.getElementById('main-nav');
+            if (!nav || !role) return;
+            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
+            const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
+            nav.innerHTML = (links[role] || links.owner).map(p => {
+                const cls = p === current ? 'active' : '';
+                `<a href="${p === 'planner' ? 'pj-planner' : p === 'tracker' ? 'trip-tracker' : p}.html" class="${cls}">${labels[p]}</a>`;
+            }).join('');
+        })();
+    </script>
 
     <div class="main">
         <div class="welcome">Trip Schedule</div>

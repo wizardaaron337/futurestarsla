@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Future Stars Sports Co - Championship sports merchandise, tournament operations, and inventory management.">
+    <meta name="keywords" content="sports, merchandise, tournament, soccer, baseball, jerseys">
+    <meta name="author" content="Future Stars Sports Co">
+    <meta name="theme-color" content="#C9A227">
+    <meta property="og:title" content="Future Stars Sports Co">
+    <meta property="og:description" content="Elite sports merchandise for the next generation of champions.">
+    <meta property="og:type" content="website">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Tracker — Future Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
+            --black: #0A0A0A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --black-hover: #242424;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
+            --green: #4CAF50;
+            --red: #EF5350;
+            --orange: #FF9800;
+            --blue: #64B5F6;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            font-size: 15px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 20px rgba(201,162,39,0.2);
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+        .user-info { display: flex; align-items: center; gap: 20px; }
+        .user-name {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.85em;
+            letter-spacing: 2px;
+        }
+        .logout-btn {
+            padding: 8px 18px;
+            background: transparent;
+            border: 1px solid var(--gray-dark);
+            color: var(--gray);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .nav {
+            display: flex;
+            gap: 4px;
+            padding: 12px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .nav a {
+            padding: 10px 20px;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .nav a:hover { color: var(--white); background: var(--black-hover); }
+        .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        .welcome {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+        .subtitle { color: var(--gray); margin-bottom: 35px; font-size: 1em; }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0;
+        }
+        .tab {
+            padding: 14px 28px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--gray);
+            font-family: 'Cinzel', serif;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        .tab:hover { color: var(--white); }
+        .tab.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+        .tab .badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 8px;
+            background: var(--gold-dark);
+            color: var(--black);
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Trip Cards */
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 16px;
+        }
+        .trip-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        .trip-card:hover {
+            border-color: var(--gold-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .trip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            gap: 12px;
+        }
+        .trip-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95em;
+            color: var(--white);
+            letter-spacing: 1px;
+            line-height: 1.4;
+            flex: 1;
+        }
+        .trip-status {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.7em;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .status-upcoming { background: rgba(100,181,246,0.1); color: var(--blue); border: 1px solid rgba(100,181,246,0.2); }
+        .status-out { background: rgba(255,152,0,0.1); color: var(--orange); border: 1px solid rgba(255,152,0,0.2); }
+        .status-completed { background: rgba(76,175,80,0.1); color: var(--green); border: 1px solid rgba(76,175,80,0.2); }
+        .trip-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .meta-tag {
+            padding: 4px 10px;
+            background: rgba(201,162,39,0.06);
+            border: 1px solid rgba(201,162,39,0.12);
+            border-radius: 6px;
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+        .meta-tag.sport { color: var(--gold); border-color: rgba(201,162,39,0.2); }
+
+        /* Jersey Section */
+        .jersey-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .jersey-section h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85em;
+            color: var(--gold);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .jersey-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+        }
+        .jersey-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+        .jersey-name { color: var(--white); }
+        .jersey-qty {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(201,162,39,0.3); }
+        .btn-secondary {
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            color: var(--white);
+        }
+        .btn-secondary:hover { border-color: var(--gold); }
+        .btn-success {
+            background: linear-gradient(135deg, var(--green), #388E3C);
+            color: var(--white);
+        }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(76,175,80,0.3); }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        .modal-close {
+            float: right;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        .modal-close:hover { color: var(--white); }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            color: var(--gray);
+            font-size: 0.85em;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .jersey-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .jersey-input-row input[type="number"] {
+            width: 80px;
+            text-align: center;
+        }
+        .jersey-input-row .jersey-label {
+            flex: 1;
+            color: var(--white);
+            font-size: 0.9em;
+        }
+
+        /* Return Report */
+        .return-report {
+            background: rgba(76,175,80,0.05);
+            border: 1px solid rgba(76,175,80,0.15);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .return-report h5 {
+            font-family: 'Cinzel', serif;
+            color: var(--green);
+            margin-bottom: 10px;
+            font-size: 0.85em;
+        }
+        .return-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(76,175,80,0.1);
+            font-size: 0.85em;
+        }
+        .return-item:last-child { border-bottom: none; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
+            .nav { padding: 10px 20px; }
+            .main { padding: 30px 20px; }
+            .trips-grid { grid-template-columns: 1fr; }
+            .tabs { overflow-x: auto; }
+        }
+    </style>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="animations.css?v=2">
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="particles" id="particles"></div>
+    <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
+    <div class="header">
+        <a href="dashboard.html" class="logo-link">
+            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+            <span class="logo-text">FUTURE STARS</span>
+        </a>
+        <div class="user-info">
+            <span class="user-name" id="user-name"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <nav class="nav" id="main-nav"></nav>
+
+    <div class="main">
+        <div class="welcome">Trip Tracker</div>
+        <div class="subtitle" id="subtitle">Manage trips, track jerseys, report returns</div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('upcoming')" id="tab-upcoming">
+                Upcoming <span class="badge" id="count-upcoming">0</span>
+            </button>
+            <button class="tab" onclick="switchTab('out')" id="tab-out">
+                Out Now <span class="badge" id="count-out">0</span>
+            </button>
+            <button class="tab" onclick="switchTab('completed')" id="tab-completed">
+                Completed <span class="badge" id="count-completed">0</span>
+            </button>
+        </div>
+
+        <div id="content-upcoming" class="tab-content"></div>
+        <div id="content-out" class="tab-content" style="display:none;"></div>
+        <div id="content-completed" class="tab-content" style="display:none;"></div>
+    </div>
+
+    <!-- Pack Modal -->
+    <div class="modal-overlay" id="pack-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2>Pack Jerseys for Trip</h2>
+            <div id="pack-form"></div>
+            <div style="margin-top:20px; display:flex; gap:10px;">
+                <button class="btn btn-primary" onclick="savePack()">Save Packing List</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Check In Modal -->
+    <div class="modal-overlay" id="checkin-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2>Check In Returned Jerseys</h2>
+            <div id="checkin-form"></div>
+            <div style="margin-top:20px; display:flex; gap:10px;">
+                <button class="btn btn-success" onclick="saveCheckIn()">Complete Check-In</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="crew-data.js"></script>
+    <script>
+        const NAME = sessionStorage.getItem('fs_name') || 'User';
+        document.getElementById('user-name').textContent = NAME.toUpperCase();
+
+        // Nav
+        (function() {
+            const role = sessionStorage.getItem('fs_role');
+            const nav = document.getElementById('main-nav');
+            if (!nav || !role) return;
+            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
+            const current = 'tracker';
+            nav.innerHTML = (links[role] || links.owner).map(p => {
+                const cls = p === current ? 'active' : '';
+                return `<a href="${p === 'tracker' ? 'trip-tracker' : p}.html" class="${cls}">${labels[p]}</a>`;
+            }).join('');
+        })();
+
+        // Trip status storage
+        const STORAGE_KEY = 'fs_trip_status';
+        const PACKING_KEY = 'fs_trip_packing';
+        const RETURNS_KEY = 'fs_trip_returns';
+
+        function getTripData() {
+            const status = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            const packing = JSON.parse(localStorage.getItem(PACKING_KEY) || '{}');
+            const returns = JSON.parse(localStorage.getItem(RETURNS_KEY) || '{}');
+            return { status, packing, returns };
+        }
+
+        function setTripStatus(tripId, status) {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            data[tripId] = status;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            render();
+        }
+
+        function setTripPacking(tripId, jerseys) {
+            const data = JSON.parse(localStorage.getItem(PACKING_KEY) || '{}');
+            data[tripId] = jerseys;
+            localStorage.setItem(PACKING_KEY, JSON.stringify(data));
+        }
+
+        function setTripReturns(tripId, jerseys) {
+            const data = JSON.parse(localStorage.getItem(RETURNS_KEY) || '{}');
+            data[tripId] = jerseys;
+            localStorage.setItem(RETURNS_KEY, JSON.stringify(data));
+        }
+
+        let currentTripId = null;
+        let currentModal = null;
+
+        // Jersey catalog
+        const JERSEY_CATALOG = {
+            'Soccer': ['Ronaldo Blue','Ronaldo Red','Ronaldo White','Ronaldo Special','Ronaldo WC',
+                       'Messi Special','Messi PSG','Messi Tribute',
+                       'Yamal Special','Yamal Black','Yamal Barca','Yamal Kobe','Yamal Pink','Yamal Flower','Yamal Snake',
+                       'Neymar Yellow','Neymar Tribute',
+                       'France Mbappe','Pulisic AC Milan','Gimenez'],
+            'Baseball': ['Ohtahni Dodgers','Harper Phillies','Judge Yankees','Acuna Jr Braves',
+                        'Betts Dodgers','Tatis Jr','Turner Phillies','Whit Royals','Soto Mets',
+                        'De LaCruz Reds','Crews Nationals','Skenes Pirates','Holliday Orioles',
+                        'Trout Angels','Crow','Mariners','Freeman','Alverez','Henderson','Guerrero']
+        };
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById('content-' + tab).style.display = 'block';
+            render();
+        }
+
+        function getTripStatus(trip) {
+            const { status } = getTripData();
+            return status[trip.id] || 'upcoming';
+        }
+
+        function render() {
+            const { status, packing, returns } = getTripData();
+            const activeTab = document.querySelector('.tab.active').id.replace('tab-', '');
+
+            // Categorize trips
+            const upcoming = [];
+            const out = [];
+            const completed = [];
+
+            CREW_TRIPS.forEach(trip => {
+                const s = status[trip.id] || 'upcoming';
+                if (s === 'upcoming') upcoming.push(trip);
+                else if (s === 'out') out.push(trip);
+                else if (s === 'completed') completed.push(trip);
+            });
+
+            document.getElementById('count-upcoming').textContent = upcoming.length;
+            document.getElementById('count-out').textContent = out.length;
+            document.getElementById('count-completed').textContent = completed.length;
+
+            // Render active tab
+            if (activeTab === 'upcoming') renderTrips(upcoming, 'upcoming');
+            else if (activeTab === 'out') renderTrips(out, 'out');
+            else if (activeTab === 'completed') renderTrips(completed, 'completed');
+        }
+
+        function renderTrips(trips, type) {
+            const container = document.getElementById('content-' + type);
+            if (trips.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--gray);"><h3 style="font-family:Cinzel,serif; color:var(--gold); margin-bottom:10px;">No ${type} trips</h3></div>`;
+                return;
+            }
+
+            container.innerHTML = '<div class="trips-grid">' + trips.map(trip => {
+                const { packing: packingData, returns: returnsData } = getTripData();
+                const tripPacking = packingData[trip.id] || {};
+                const tripReturns = returnsData[trip.id] || {};
+                const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
+
+                let jerseyHtml = '';
+                let returnHtml = '';
+
+                if (Object.keys(tripPacking).length > 0) {
+                    jerseyHtml = `
+                        <div class="jersey-section">
+                            <h4>📦 Packed Jerseys</h4>
+                            <div class="jersey-grid">
+                                ${Object.entries(tripPacking).map(([name, qty]) => `
+                                    <div class="jersey-item">
+                                        <span class="jersey-name">${name}</span>
+                                        <span class="jersey-qty">${qty}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (Object.keys(tripReturns).length > 0) {
+                    returnHtml = `
+                        <div class="return-report">
+                            <h5>✅ Returned Jerseys</h5>
+                            ${Object.entries(tripReturns).map(([name, qty]) => `
+                                <div class="return-item">
+                                    <span>${name}</span>
+                                    <span style="color:var(--green); font-weight:600;">${qty}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                let actionsHtml = '';
+                if (type === 'upcoming') {
+                    actionsHtml = `
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="openPackModal('${trip.id}')">📦 Pack Jerseys</button>
+                            <button class="btn btn-success" onclick="markOut('${trip.id}')">🚐 Mark Out</button>
+                        </div>
+                    `;
+                } else if (type === 'out') {
+                    actionsHtml = `
+                        <div class="actions">
+                            <button class="btn btn-success" onclick="openCheckInModal('${trip.id}')">📥 Check In</button>
+                            <button class="btn btn-secondary" onclick="markCompleted('${trip.id}')">✅ Complete</button>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="trip-card">
+                        <div class="trip-header">
+                            <div class="trip-name">${trip.name}</div>
+                            <div class="trip-status status-${type}">${type.toUpperCase()}</div>
+                        </div>
+                        <div class="trip-meta">
+                            <span class="meta-tag sport">${sportType}</span>
+                            <span class="meta-tag">${trip.state || '—'}</span>
+                            <span class="meta-tag">${trip.month || '—'}</span>
+                            ${trip.crew ? `<span class="meta-tag">${trip.crew}</span>` : ''}
+                        </div>
+                        <div style="color:var(--gray); font-size:0.88em; line-height:1.7;">
+                            ${trip.startDate ? `<div>📅 ${trip.startDate}${trip.endDate ? ' — ' + trip.endDate : ''}</div>` : ''}
+                        </div>
+                        ${jerseyHtml}
+                        ${returnHtml}
+                        ${actionsHtml}
+                    </div>
+                `;
+            }).join('') + '</div>';
+        }
+
+        function markOut(tripId) {
+            setTripStatus(tripId, 'out');
+        }
+
+        function markCompleted(tripId) {
+            setTripStatus(tripId, 'completed');
+        }
+
+        function openPackModal(tripId) {
+            currentTripId = tripId;
+            currentModal = 'pack';
+            const trip = CREW_TRIPS.find(t => t.id === tripId);
+            const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
+            const jerseys = JERSEY_CATALOG[sportType] || JERSEY_CATALOG['Soccer'];
+
+            document.getElementById('pack-form').innerHTML = `
+                <p style="color:var(--gray); margin-bottom:16px;">Packing for: <strong style="color:var(--gold);">${trip.name}</strong></p>
+                ${jerseys.map(j => `
+                    <div class="jersey-input-row">
+                        <span class="jersey-label">${j}</span>
+                        <input type="number" id="pack-${j.replace(/\s+/g,'-')}" min="0" value="0" placeholder="0">
+                    </div>
+                `).join('')}
+            `;
+            document.getElementById('pack-modal').classList.add('active');
+        }
+
+        function savePack() {
+            const trip = CREW_TRIPS.find(t => t.id === currentTripId);
+            const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
+            const jerseys = JERSEY_CATALOG[sportType] || JERSEY_CATALOG['Soccer'];
+            const packed = {};
+
+            jerseys.forEach(j => {
+                const val = document.getElementById('pack-' + j.replace(/\s+/g,'-')).value;
+                if (val && parseInt(val) > 0) {
+                    packed[j] = parseInt(val);
+                }
+            });
+
+            setTripPacking(currentTripId, packed);
+            closeModal();
+            render();
+        }
+
+        function openCheckInModal(tripId) {
+            currentTripId = tripId;
+            currentModal = 'checkin';
+            const { packing: packingData } = getTripData();
+            const tripPacking = packingData[tripId] || {};
+
+            if (Object.keys(tripPacking).length === 0) {
+                alert('No packing list found for this trip');
+                return;
+            }
+
+            document.getElementById('checkin-form').innerHTML = `
+                <p style="color:var(--gray); margin-bottom:16px;">Report returned jerseys:</p>
+                ${Object.entries(tripPacking).map(([name, packedQty]) => `
+                    <div class="jersey-input-row">
+                        <span class="jersey-label">${name} <small style="color:var(--gray);">(packed: ${packedQty})</small></span>
+                        <input type="number" id="return-${name.replace(/\s+/g,'-')}" min="0" max="${packedQty}" value="${packedQty}" placeholder="0">
+                    </div>
+                `).join('')}
+            `;
+            document.getElementById('checkin-modal').classList.add('active');
+        }
+
+        function saveCheckIn() {
+            const { packing: packingData } = getTripData();
+            const tripPacking = packingData[currentTripId] || {};
+            const returned = {};
+
+            Object.keys(tripPacking).forEach(name => {
+                const val = document.getElementById('return-' + name.replace(/\s+/g,'-')).value;
+                if (val && parseInt(val) > 0) {
+                    returned[name] = parseInt(val);
+                }
+            });
+
+            setTripReturns(currentTripId, returned);
+            closeModal();
+            render();
+        }
+
+        function closeModal() {
+            document.getElementById('pack-modal').classList.remove('active');
+            document.getElementById('checkin-modal').classList.remove('active');
+            currentTripId = null;
+            currentModal = null;
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'signin.html';
+        }
+
+        // Init
+        render();
+    </script>
+    <script>
+        // Particles & Progress Bar
+        (function(){
+            const container = document.getElementById("particles");
+            if (!container) return;
+            for(let i=0;i<25;i++){
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.left = Math.random()*100+"vw";
+                p.style.animationDelay = Math.random()*15+"s";
+                p.style.animationDuration = (10+Math.random()*10)+"s";
+                p.style.width = (2+Math.random()*3)+"px";
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener("scroll", function(){
+            const bar = document.getElementById("progress-bar");
+            if (!bar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            bar.style.width = pct+"%";
+        });
+    </script>
+<script src="footer-component.js?v=2"></script>
+<script src="dark-mode.js?v=2"></script>
+    <script src="keyboard-shortcuts.js?v=2"></script>
+<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+</body>
+</html>
