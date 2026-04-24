@@ -562,7 +562,34 @@
             window.location.href = 'signin.html';
         }
 
+        // Add sample plan if none exist
+        function addSamplePlan() {
+            const plans = getPlans();
+            if (plans.length === 0) {
+                plans.push({
+                    id: Date.now(),
+                    name: 'Lafayette Tournament',
+                    location: 'Lafayette, LA',
+                    dates: 'Next Weekend',
+                    hotel: {
+                        name: 'Hampton Inn & Suites',
+                        address: '6085 Industrial Pkwy, Lafayette',
+                        nights: 2,
+                        rate: 105
+                    },
+                    car: {
+                        company: 'Hertz',
+                        address: '1122 Aviation Rd, Lafayette',
+                        days: 2,
+                        rate: 57
+                    }
+                });
+                savePlans(plans);
+            }
+        }
+
         // Init
+        addSamplePlan();
         render();
     </script>
     <script>
