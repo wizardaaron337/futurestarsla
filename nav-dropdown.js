@@ -1,29 +1,18 @@
 /**
- * Future Stars LA - Header-Integrated Dropdown Navigation with Role-Based Access
- * Works on all pages - shows for authenticated users, hides for public pages
+ * Future Stars LA - Universal Floating Navigation
+ * Fixed position menu button, always accessible on every page
  */
 
 (function() {
-    // Check if user is authenticated
+    // Only show nav for authenticated users
     const isAuth = sessionStorage.getItem('fs_auth') && sessionStorage.getItem('fs_pin_verified') === 'true';
-    const userRole = sessionStorage.getItem('fs_role') || 'owner';
-    const userName = sessionStorage.getItem('fs_name') || 'User';
-
-    // Pages that don't need auth
-    const PUBLIC_PAGES = ['index', 'signin', 'login', 'sign-in', 'enter', 'direct-deploy', 'test'];
-    const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-    const isPublicPage = PUBLIC_PAGES.includes(currentPage);
-
-    // If not authenticated and not on a public page, redirect to signin
-    if (!isAuth && !isPublicPage && currentPage !== 'pin') {
-        window.location.href = 'signin.html';
-        return;
-    }
-
-    // Don't show nav on public pages
     if (!isAuth) return;
 
-    // Role-based page permissions
+    const userRole = sessionStorage.getItem('fs_role') || 'owner';
+    const userName = sessionStorage.getItem('fs_name') || 'User';
+    const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'dashboard';
+
+    // Role-based permissions
     const ROLE_PAGES = {
         owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact', 'inventory-v2'],
         logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
@@ -58,193 +47,217 @@
         });
     }
 
-    function buildDropdownItems() {
-        const items = getNavItems();
-        return items.map(item => {
+    function buildMenuItems() {
+        return getNavItems().map(item => {
             if (item.divider) return '<div class="fs-menu-divider"></div>';
-            return `<a href="${item.page}.html" class="fs-menu-item" data-page="${item.page}">
+            const isActive = item.page === currentPage ? 'active' : '';
+            return `<a href="${item.page}.html" class="fs-menu-item ${isActive}">
                 <span class="fs-menu-icon">${item.icon}</span>
                 <span>${item.label}</span>
             </a>`;
         }).join('');
     }
 
-    function createNav() {
-        return `
-        <div class="fs-header-nav">
-            <button class="fs-menu-btn" onclick="toggleFsMenu()" aria-label="Menu">
-                <span class="fs-menu-bar"></span>
-                <span class="fs-menu-bar"></span>
-                <span class="fs-menu-bar"></span>
-                <span class="fs-menu-label">Menu</span>
-            </button>
-            <div class="fs-dropdown" id="fsDropdown">
-                <div class="fs-dropdown-header">
-                    <div class="fs-dropdown-user">
-                        <span class="fs-dropdown-name">${userName}</span>
-                        <span class="fs-dropdown-role">${userRole}</span>
-                    </div>
+    // Create the floating nav HTML
+    const navHTML = `
+    <div id="fs-floating-nav">
+        <button id="fs-menu-toggle" onclick="toggleFsMenu()" aria-label="Open menu">
+            <span class="fs-bar"></span>
+            <span class="fs-bar"></span>
+            <span class="fs-bar"></span>
+        </button>
+        <div id="fs-menu-panel">
+            <div class="fs-menu-header">
+                <div>
+                    <div class="fs-menu-brand">Future Stars</div>
+                    <div class="fs-menu-user">${userName} <span class="fs-role-badge">${userRole}</span></div>
                 </div>
-                ${buildDropdownItems()}
-                <div class="fs-dropdown-footer">
-                    <button class="fs-logout-btn" onclick="fsLogout()">
-                        <span>🚪</span> Log Out
-                    </button>
-                </div>
+                <button class="fs-menu-close" onclick="toggleFsMenu()">&times;</button>
+            </div>
+            <div class="fs-menu-scroll">
+                ${buildMenuItems()}
+            </div>
+            <div class="fs-menu-footer">
+                <button class="fs-logout" onclick="fsLogout()">🚪 Log Out</button>
             </div>
         </div>
-        `;
-    }
+        <div id="fs-menu-backdrop" onclick="toggleFsMenu()"></div>
+    </div>
+    `;
 
     const navCSS = `
-    <style>
-        .fs-header-nav {
-            position: relative;
-            display: inline-block;
-        }
-        .fs-menu-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 18px;
-            background: linear-gradient(135deg, rgba(201,162,39,0.15) 0%, rgba(201,162,39,0.05) 100%);
-            border: 1px solid rgba(201,162,39,0.3);
-            border-radius: 10px;
-            color: #C9A227;
+    <style id="fs-nav-styles">
+        #fs-floating-nav {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 99999;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-            font-weight: 600;
+        }
+        #fs-menu-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #C9A227 0%, #B8941F 100%);
+            border: none;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 4px 15px rgba(201,162,39,0.4);
             transition: all 0.3s ease;
-            letter-spacing: 1px;
         }
-        .fs-menu-btn:hover {
-            background: linear-gradient(135deg, rgba(201,162,39,0.25) 0%, rgba(201,162,39,0.1) 100%);
-            border-color: #C9A227;
-            box-shadow: 0 4px 15px rgba(201,162,39,0.2);
+        #fs-menu-toggle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(201,162,39,0.5);
         }
-        .fs-menu-btn.active {
-            background: rgba(201,162,39,0.2);
-            border-color: #C9A227;
+        #fs-menu-toggle:active {
+            transform: scale(0.95);
         }
-        .fs-menu-bar {
+        #fs-menu-toggle.open {
+            background: linear-gradient(135deg, #B8941F 0%, #8B6914 100%);
+        }
+        .fs-bar {
             display: block;
-            width: 18px;
-            height: 2px;
-            background: #C9A227;
+            width: 22px;
+            height: 2.5px;
+            background: #0A0A0A;
             border-radius: 2px;
             transition: all 0.3s ease;
         }
-        .fs-menu-btn.active .fs-menu-bar:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
-            width: 20px;
+        #fs-menu-toggle.open .fs-bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
         }
-        .fs-menu-btn.active .fs-menu-bar:nth-child(2) {
+        #fs-menu-toggle.open .fs-bar:nth-child(2) {
             opacity: 0;
         }
-        .fs-menu-btn.active .fs-menu-bar:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
-            width: 20px;
+        #fs-menu-toggle.open .fs-bar:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
         }
-        .fs-menu-label {
-            font-size: 0.85em;
-            text-transform: uppercase;
-        }
-        .fs-dropdown {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            width: 260px;
-            background: linear-gradient(180deg, #1A1A1A 0%, #141414 100%);
-            border: 1px solid #2A2824;
-            border-radius: 16px;
-            padding: 8px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10000;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,39,0.1);
-        }
-        .fs-dropdown.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .fs-dropdown-header {
-            padding: 16px;
-            border-bottom: 1px solid #2A2824;
-            margin-bottom: 8px;
-        }
-        .fs-dropdown-user {
+        #fs-menu-panel {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #141414 0%, #0A0A0A 100%);
+            border-left: 1px solid #2A2824;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100000;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.5);
         }
-        .fs-dropdown-name {
+        #fs-menu-panel.open {
+            right: 0;
+        }
+        .fs-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid #2A2824;
+            flex-shrink: 0;
+        }
+        .fs-menu-brand {
             font-family: 'Cinzel', serif;
-            font-size: 1em;
-            color: #F8F6F0;
-            font-weight: 600;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #C9A227;
+            letter-spacing: 2px;
         }
-        .fs-dropdown-role {
+        .fs-menu-user {
+            font-size: 0.8em;
+            color: #A8A498;
+            margin-top: 4px;
+        }
+        .fs-role-badge {
             display: inline-block;
-            width: fit-content;
-            padding: 3px 10px;
+            padding: 2px 8px;
             background: rgba(201,162,39,0.15);
             color: #C9A227;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 0.75em;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
+            letter-spacing: 1px;
+            margin-left: 6px;
+        }
+        .fs-menu-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid #2A2824;
+            color: #A8A498;
+            font-size: 1.4em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .fs-menu-close:hover {
+            border-color: #C9A227;
+            color: #C9A227;
+        }
+        .fs-menu-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
         }
         .fs-menu-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
+            gap: 14px;
+            padding: 14px 20px;
             color: #A8A498;
             text-decoration: none;
-            font-size: 0.9em;
+            font-size: 0.95em;
             font-weight: 500;
-            transition: all 0.2s ease;
-            border-radius: 10px;
-            margin: 2px 0;
+            transition: all 0.25s ease;
+            border-left: 3px solid transparent;
+            margin: 2px 8px;
+            border-radius: 0 10px 10px 0;
         }
         .fs-menu-item:hover {
-            background: rgba(201,162,39,0.1);
+            background: rgba(201,162,39,0.08);
             color: #F8F6F0;
+            border-left-color: #C9A227;
+            padding-left: 24px;
         }
         .fs-menu-item.active {
-            background: rgba(201,162,39,0.15);
+            background: rgba(201,162,39,0.12);
             color: #C9A227;
+            border-left-color: #C9A227;
             font-weight: 600;
         }
         .fs-menu-icon {
-            font-size: 1.2em;
-            width: 24px;
+            font-size: 1.3em;
+            width: 28px;
             text-align: center;
         }
         .fs-menu-divider {
             height: 1px;
             background: #2A2824;
-            margin: 8px 12px;
+            margin: 12px 20px;
         }
-        .fs-dropdown-footer {
-            padding: 8px;
+        .fs-menu-footer {
+            padding: 16px 20px;
             border-top: 1px solid #2A2824;
-            margin-top: 8px;
+            flex-shrink: 0;
         }
-        .fs-logout-btn {
+        .fs-logout {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: transparent;
             border: 1px solid #2A2824;
             border-radius: 10px;
             color: #A8A498;
             font-family: 'Inter', sans-serif;
-            font-size: 0.85em;
+            font-size: 0.9em;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -252,112 +265,69 @@
             gap: 8px;
             transition: all 0.3s;
         }
-        .fs-logout-btn:hover {
+        .fs-logout:hover {
             border-color: #EF5350;
             color: #EF5350;
             background: rgba(239,83,80,0.08);
         }
-        .fs-dropdown-overlay {
+        #fs-menu-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;
-            display: none;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+            z-index: 99998;
         }
-        .fs-dropdown-overlay.open {
-            display: block;
+        #fs-menu-backdrop.open {
+            opacity: 1;
+            visibility: visible;
         }
-        .fs-access-denied {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(10,10,10,0.95);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            gap: 20px;
-        }
-        .fs-access-denied h2 {
-            font-family: 'Cinzel', serif;
-            color: #EF5350;
-            font-size: 2em;
-        }
-        .fs-access-denied p {
-            color: #A8A498;
-        }
-        .fs-access-denied a {
-            padding: 12px 24px;
-            background: #C9A227;
-            color: #0A0A0A;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
+        @media (max-width: 480px) {
+            #fs-menu-panel {
+                width: 260px;
+                right: -280px;
+            }
+            #fs-menu-toggle {
+                width: 44px;
+                height: 44px;
+            }
         }
     </style>
     `;
 
-    function integrateNav() {
-        // Inject CSS
-        document.head.insertAdjacentHTML('beforeend', navCSS);
+    // Inject styles and HTML
+    document.head.insertAdjacentHTML('beforeend', navCSS);
+    document.body.insertAdjacentHTML('beforeend', navHTML);
 
-        // Find user-info or header
-        const userInfo = document.querySelector('.user-info');
-        const header = document.querySelector('.header');
-        
-        if (userInfo) {
-            const logoutBtn = userInfo.querySelector('.logout-btn');
-            if (logoutBtn) {
-                logoutBtn.insertAdjacentHTML('beforebegin', createNav());
-                logoutBtn.style.display = 'none';
-            } else {
-                userInfo.insertAdjacentHTML('afterbegin', createNav());
-            }
-        } else if (header) {
-            header.insertAdjacentHTML('beforeend', createNav());
-        }
-
-        // Add overlay
-        document.body.insertAdjacentHTML('beforeend', '<div class="fs-dropdown-overlay" id="fsOverlay" onclick="toggleFsMenu()"></div>');
-
-        // Highlight current page
-        const activeItem = document.querySelector(`.fs-menu-item[data-page="${currentPage}"]`);
-        if (activeItem) activeItem.classList.add('active');
-
-        // Check access (skip for certain pages)
-        const skipCheck = ['dashboard', 'team', 'privacy', 'contact', 'index'];
-        if (!skipCheck.includes(currentPage) && !canAccess(currentPage)) {
-            document.body.innerHTML = `
-                <div class="fs-access-denied">
-                    <h2>🚫 Access Denied</h2>
-                    <p>You don't have permission to view this page.</p>
-                    <p>Role: <strong>${userRole}</strong></p>
-                    <a href="dashboard.html">Go to Dashboard</a>
-                </div>
-            `;
-        }
-    }
-
-    // Run when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', integrateNav);
-    } else {
-        integrateNav();
-    }
-
-    // Global functions
+    // Global toggle function
     window.toggleFsMenu = function() {
-        const dropdown = document.getElementById('fsDropdown');
-        const overlay = document.getElementById('fsOverlay');
-        const btn = document.querySelector('.fs-menu-btn');
-        if (dropdown) dropdown.classList.toggle('open');
-        if (overlay) overlay.classList.toggle('open');
-        if (btn) btn.classList.toggle('active');
+        const panel = document.getElementById('fs-menu-panel');
+        const backdrop = document.getElementById('fs-menu-backdrop');
+        const toggle = document.getElementById('fs-menu-toggle');
+        
+        if (!panel) return;
+        
+        const isOpen = panel.classList.contains('open');
+        
+        if (isOpen) {
+            panel.classList.remove('open');
+            backdrop.classList.remove('open');
+            toggle.classList.remove('open');
+            document.body.style.overflow = '';
+        } else {
+            panel.classList.add('open');
+            backdrop.classList.add('open');
+            toggle.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
     };
 
+    // Logout function
     window.fsLogout = function() {
         sessionStorage.clear();
         window.location.href = 'signin.html';
@@ -366,8 +336,10 @@
     // Close on Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const dropdown = document.getElementById('fsDropdown');
-            if (dropdown && dropdown.classList.contains('open')) toggleFsMenu();
+            const panel = document.getElementById('fs-menu-panel');
+            if (panel && panel.classList.contains('open')) {
+                toggleFsMenu();
+            }
         }
     });
 })();
