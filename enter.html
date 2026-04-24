@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Stars - Enter</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #050810; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .box { text-align: center; max-width: 400px; width: 100%; padding: 40px; }
+        h1 { color: #ffd700; font-size: 2.5em; margin-bottom: 10px; }
+        p { color: #8892b0; margin-bottom: 30px; font-size: 1.2em; }
+        .names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .names button:nth-child(5) { grid-column: 1 / -1; width: 50%; justify-self: center; }
+        button { padding: 15px; font-size: 1.1em; cursor: pointer; background: rgba(0,212,255,0.1); border: 2px solid #00d4ff; color: #00d4ff; border-radius: 8px; }
+        button:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; color: #ffd700; }
+        button.selected { background: rgba(255,215,0,0.3); border-color: #ffd700; color: #ffd700; }
+        .go { width: 100%; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); margin-top: 10px; }
+        #msg { margin-top: 15px; font-size: 1em; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🏆 FUTURE STARS</h1>
+        <p>Who are you?</p>
+        <div class="names">
+            <button onclick="pick('jr', this)">👑 JR</button>
+            <button onclick="pick('lane', this)">👑 Lane</button>
+            <button onclick="pick('pj', this)">🚐 PJ</button>
+            <button onclick="pick('caleb', this)">📞 Caleb</button>
+            <button onclick="pick('marlon', this)">📦 Marlon</button>
+        </div>
+        <button class="go" onclick="go()">GO</button>
+        <div id="msg"></div>
+    </div>
+    <script>
+        const CREW = {
+            'jr': { role: 'owner', name: 'JR' },
+            'lane': { role: 'owner', name: 'Lane' },
+            'pj': { role: 'logistics', name: 'PJ' },
+            'caleb': { role: 'tournament', name: 'Caleb' },
+            'marlon': { role: 'inventory', name: 'Marlon' }
+        };
+        let picked = null;
+
+        function pick(who, btn) {
+            picked = who;
+            document.querySelectorAll('.names button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('msg').textContent = '';
+        }
+
+        function go() {
+            const msg = document.getElementById('msg');
+            if (!picked) {
+                msg.style.color = '#ff4444';
+                msg.textContent = 'Click your name first!';
+                return;
+            }
+            msg.style.color = '#00ff88';
+            msg.textContent = 'Logging in...';
+            sessionStorage.setItem('fs_auth', picked);
+            sessionStorage.setItem('fs_role', CREW[picked].role);
+            sessionStorage.setItem('fs_name', CREW[picked].name);
+            setTimeout(() => window.location.href = 'dashboard.html', 500);
+        }
+    </script>
+</body>
+</html>
