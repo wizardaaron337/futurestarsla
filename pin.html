@@ -207,8 +207,9 @@
     <div class="box">
         <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
         <div class="logo-text">FUTURE STARS</div>
-        <p class="tagline">Enter your access code</p>
+        <p class="tagline">Enter your PIN</p>
         <div class="user-badge" id="user-badge">👤 <span id="user-name">User</span></div>
+        <p id="pin-hint" style="font-size:0.8em;color:#6B665C;margin-bottom:16px;"></p>
 
         <div class="pin-display" id="pin-display">
             <div class="dot" id="dot-0"></div>
@@ -245,6 +246,12 @@
         const user = AUTH_CONFIG.getUser(username);
         const name = user ? user.name : (sessionStorage.getItem('fs_name') || 'User');
         document.getElementById('user-name').textContent = name;
+        
+        // Show PIN hint (first 2 chars + asterisks)
+        if (user && user.pin) {
+            const hint = user.pin.substring(0, 2) + '•'.repeat(user.pin.length - 2);
+            document.getElementById('pin-hint').textContent = 'Hint: ' + hint;
+        }
 
         let pin = '';
         const msg = document.getElementById('msg');
