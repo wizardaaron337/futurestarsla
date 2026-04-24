@@ -642,7 +642,10 @@
             response += `**Quick Links:**\n`;
             response += `• <a href="${bookingUrl}" target="_blank" class="chat-link">Booking.com</a>\n`;
             response += `• <a href="${expediaUrl}" target="_blank" class="chat-link">Expedia</a>\n\n`;
-            response += `💡 **Tip:** Book near the tournament venue. Check cancellation policies — tournaments sometimes change dates.`;
+            response += `📋 **Suggested next steps:**\n`;
+            response += `1. Compare 3 hotels near venue on Booking.com\n`;
+            response += `2. Check cancellation policy before booking\n`;
+            response += `3. Book within 24 hours to lock rate`;
 
             addBotMessage(response);
         }
@@ -664,7 +667,10 @@
             response += `• <a href="https://www.hertz.com" target="_blank" class="chat-link">Hertz</a>\n`;
             response += `• <a href="https://www.budget.com" target="_blank" class="chat-link">Budget</a>\n`;
             response += `• <a href="https://www.avis.com" target="_blank" class="chat-link">Avis</a>\n\n`;
-            response += `💡 **Tip:** Book SUVs or vans for gear transport. Check if unlimited mileage is included.`;
+            response += `📋 **Suggested next steps:**\n`;
+            response += `1. Reserve SUV/van (gear needs space)\n`;
+            response += `2. Confirm unlimited mileage included\n`;
+            response += `3. Pick up morning of departure`;
 
             addBotMessage(response);
         }
@@ -711,11 +717,11 @@
             let response = `🛣️ **Route: New Orleans → ${destination}**\n\n`;
             response += `**Estimated Drive Time:** ${time}\n\n`;
             response += `**Map:** <a href="${mapsUrl}" target="_blank" class="chat-link">Open in Google Maps</a>\n\n`;
-            response += `💡 **Tips:**\n`;
-            response += `• Leave early morning (5-6 AM) to avoid traffic\n`;
-            response += `• Plan gas stops every 3-4 hours\n`;
-            response += `• Check weather before leaving\n`;
-            response += `• Budget $50-100 for gas each way`;
+            response += `📋 **Suggested next steps:**\n`;
+            response += `1. Leave NOLA by 5:30 AM\n`;
+            response += `2. First gas stop at 3-hour mark\n`;
+            response += `3. Check weather night before\n`;
+            response += `4. Text crew departure time`;
 
             addBotMessage(response);
         }
@@ -779,7 +785,7 @@
             const search = city ? `${city} ${state || ''} gas stations` : `${state} gas stations interstate`;
             const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(search);
 
-            addBotMessage(`⛽ **Gas Stops**\n\n<a href="${mapsUrl}" target="_blank" class="chat-link">Find gas stations on route</a>\n\n**Tips:**\n• Love's and Pilot are clean, have parking\n• Fill up when you hit half tank\n• Download GasBuddy app for cheapest prices`);
+            addBotMessage(`⛽ **Gas Stops**\n\n<a href="${mapsUrl}" target="_blank" class="chat-link">Find gas stations on route</a>\n\n📋 **Suggested next steps:**\n1. Download GasBuddy for cheapest stops\n2. Target Love's or Pilot (clean, big parking)\n3. Fill up at half tank — don't push it`);
         }
 
         function extractState(text) {
