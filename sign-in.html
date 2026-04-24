@@ -3,38 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Future Stars - Sign In</title>
-    <!-- v2.2 cache-bust: 2026-04-23-20:07 -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <title>Future Stars — Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #050810; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .box { text-align: center; max-width: 400px; width: 100%; padding: 40px; }
-        h1 { color: #ffd700; font-size: 2.5em; margin-bottom: 10px; }
-        p { color: #8892b0; margin-bottom: 30px; font-size: 1.2em; }
-        .names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .names button:nth-child(5) { grid-column: 1 / -1; width: 50%; justify-self: center; }
-        button { padding: 15px; font-size: 1.1em; cursor: pointer; background: rgba(0,212,255,0.1); border: 2px solid #00d4ff; color: #00d4ff; border-radius: 8px; }
-        button:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; color: #ffd700; }
-        button.selected { background: rgba(255,215,0,0.3); border-color: #ffd700; color: #ffd700; }
-        .go { width: 100%; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); margin-top: 10px; }
-        #msg { margin-top: 15px; font-size: 1em; }
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4D03F;
+            --gold-dark: #B8960C;
+            --black: #0A0A0A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --white: #FFFFFF;
+            --gray: #888888;
+            --gray-dark: #444444;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(circle at 20% 50%, rgba(212,175,55,0.03) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(212,175,55,0.02) 0%, transparent 50%);
+        }
+        .container {
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            padding: 40px;
+        }
+        .logo-mark {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, rgba(212,175,55,0.1), transparent);
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: var(--gray);
+            font-size: 1em;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .crew-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .crew-grid button:last-child {
+            grid-column: 1 / -1;
+            width: 50%;
+            justify-self: center;
+        }
+        .crew-btn {
+            padding: 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background: var(--black-card);
+            border: 1px solid var(--gray-dark);
+            color: var(--white);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .crew-btn:hover {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(212,175,55,0.08), var(--black-card));
+            transform: translateY(-2px);
+        }
+        .crew-btn.selected {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
+            box-shadow: 0 0 30px rgba(212,175,55,0.1);
+        }
+        .crew-btn .role {
+            font-size: 0.75em;
+            color: var(--gray);
+            display: block;
+            margin-top: 4px;
+        }
+        .go-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            border: none;
+            color: var(--black);
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+        }
+        .go-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(212,175,55,0.3);
+        }
+        #msg { margin-top: 20px; font-size: 0.95em; }
+        @media (max-width: 480px) {
+            .crew-grid { grid-template-columns: 1fr; }
+            .crew-grid button:last-child { width: 100%; }
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>🏆 FUTURE STARS</h1>
-        <p>Who are you?</p>
-        <div class="names">
-            <button onclick="pick('jr', this)">👑 JR</button>
-            <button onclick="pick('lane', this)">👑 Lane</button>
-            <button onclick="pick('pj', this)">🚐 PJ</button>
-            <button onclick="pick('caleb', this)">📞 Caleb</button>
-            <button onclick="pick('marlon', this)">📦 Marlon</button>
+    <div class="container">
+        <div class="logo-mark">🏆</div>
+        <h1>FUTURE STARS</h1>
+        <div class="subtitle">Select Your Name</div>
+        <div class="crew-grid">
+            <button class="crew-btn" onclick="pick('jr', this)">
+                <div>👑 JR<span class="role">Owner</span></div>
+            </button>
+            <button class="crew-btn" onclick="pick('lane', this)">
+                <div>👑 Lane<span class="role">Owner</span></div>
+            </button>
+            <button class="crew-btn" onclick="pick('pj', this)">
+                <div>🚐 PJ<span class="role">Logistics</span></div>
+            </button>
+            <button class="crew-btn" onclick="pick('caleb', this)">
+                <div>📞 Caleb<span class="role">Tournament Lock</span></div>
+            </button>
+            <button class="crew-btn" onclick="pick('marlon', this)">
+                <div>📦 Marlon<span class="role">Inventory</span></div>
+            </button>
         </div>
-        <button class="go" onclick="go()">GO</button>
+        <button class="go-btn" onclick="go()">ENTER</button>
         <div id="msg"></div>
     </div>
     <script>
@@ -49,7 +167,7 @@
 
         function pick(who, btn) {
             picked = who;
-            document.querySelectorAll('.names button').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.crew-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             document.getElementById('msg').textContent = '';
         }
@@ -58,15 +176,15 @@
             const msg = document.getElementById('msg');
             if (!picked) {
                 msg.style.color = '#ff4444';
-                msg.textContent = 'Click your name first!';
+                msg.textContent = 'Select your name first';
                 return;
             }
-            msg.style.color = '#00ff88';
-            msg.textContent = 'Logging in...';
+            msg.style.color = 'var(--gold)';
+            msg.textContent = 'Loading...';
             sessionStorage.setItem('fs_auth', picked);
             sessionStorage.setItem('fs_role', CREW[picked].role);
             sessionStorage.setItem('fs_name', CREW[picked].name);
-            setTimeout(() => window.location.href = 'dashboard.html', 500);
+            setTimeout(() => window.location.href = 'pin.html', 400);
         }
     </script>
 </body>

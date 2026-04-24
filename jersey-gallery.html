@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="signin.html";}</script>
+    <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
         <div class="logo">🏆 FUTURE STARS</div>
         <nav class="nav">

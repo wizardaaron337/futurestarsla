@@ -4,23 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars — Inventory</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --gold: #ffd700;
-            --blue: #00d4ff;
-            --purple: #b829dd;
-            --green: #00ff88;
-            --red: #ff4444;
-            --orange: #ff8c00;
-            --bg: #050810;
-            --card: rgba(255,255,255,0.02);
+            --gold: #D4AF37;
+            --gold-light: #F4D03F;
+            --gold-dark: #B8960C;
+            --black: #0A0A0A;
+            --black-light: #111111;
+            --black-card: #161616;
+            --black-hover: #1E1E1E;
+            --white: #FFFFFF;
+            --gray: #999999;
+            --gray-dark: #555555;
+            --border: #2A2A2A;
+            --green: #4CAF50;
+            --red: #EF5350;
+            --orange: #FF9800;
         }
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--bg);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
             min-height: 100vh;
             font-size: 15px;
         }
@@ -28,92 +34,98 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px 25px;
-            background: rgba(5,8,16,0.95);
-            border-bottom: 1px solid rgba(0,212,255,0.1);
+            padding: 20px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.6em;
+            font-size: 1.4em;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--gold), var(--blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-        }
-        .nav { display: flex; gap: 8px; flex-wrap: wrap; }
-        .nav a {
-            padding: 8px 16px;
-            border: 1px solid rgba(0,212,255,0.2);
-            color: var(--blue);
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.9em;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            transition: all 0.2s;
-        }
-        .nav a:hover, .nav a.active {
-            border-color: var(--gold);
             color: var(--gold);
-            background: rgba(255,215,0,0.05);
+            letter-spacing: 3px;
+            text-decoration: none;
         }
+        .logo span { color: var(--white); font-weight: 300; }
+        .nav {
+            display: flex;
+            gap: 4px;
+            padding: 12px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .nav a {
+            padding: 10px 20px;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .nav a:hover { color: var(--white); background: var(--black-hover); }
+        .nav a.active { color: var(--gold); background: rgba(212,175,55,0.08); }
         .main {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 25px;
+            padding: 30px;
         }
+
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
         }
         .stat {
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.08);
-            border-radius: 12px;
-            padding: 18px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
             text-align: center;
+            transition: all 0.3s;
+        }
+        .stat:hover {
+            border-color: var(--gold-dark);
+            transform: translateY(-3px);
         }
         .stat-value {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron';
             font-size: 2em;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--gold), var(--blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 6px;
         }
         .stat-label {
-            color: #8892b0;
+            color: var(--gray);
             font-size: 0.8em;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 6px;
         }
 
-        /* Category Tabs */
         .cat-tabs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0,212,255,0.1);
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
         }
         .cat-tab {
-            padding: 10px 20px;
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.15);
-            color: var(--blue);
-            border-radius: 8px;
+            padding: 12px 24px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            color: var(--gray);
+            border-radius: 10px;
             cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85em;
-            letter-spacing: 1px;
+            font-family: 'Inter';
+            font-size: 0.9em;
+            font-weight: 500;
             transition: all 0.2s;
             white-space: nowrap;
         }
@@ -122,47 +134,47 @@
             color: var(--gold);
         }
         .cat-tab.active {
-            background: rgba(0,212,255,0.1);
-            border-color: var(--blue);
-            color: #fff;
+            background: rgba(212,175,55,0.1);
+            border-color: var(--gold);
+            color: var(--white);
         }
 
-        /* Jersey Cards */
         .jersey-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 16px;
         }
         .jersey-card {
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.08);
-            border-radius: 14px;
-            padding: 20px;
-            transition: all 0.2s;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
         }
         .jersey-card:hover {
-            border-color: rgba(0,212,255,0.2);
+            border-color: var(--gold-dark);
             transform: translateY(-2px);
         }
         .jersey-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
         .jersey-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1em;
+            font-family: 'Orbitron';
+            font-size: 0.95em;
             color: var(--gold);
+            letter-spacing: 1px;
         }
         .jersey-total {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
-            color: var(--green);
+            font-family: 'Orbitron';
+            font-size: 1.5em;
+            color: var(--white);
         }
         .jersey-total span {
-            font-size: 0.6em;
-            color: #8892b0;
+            font-size: 0.55em;
+            color: var(--gray);
         }
         .size-grid {
             display: grid;
@@ -170,74 +182,92 @@
             gap: 8px;
         }
         .size-box {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 10px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
             text-align: center;
+            transition: all 0.2s;
         }
-        .size-box.low {
-            border-color: rgba(255,68,68,0.3);
-            background: rgba(255,68,68,0.05);
-        }
-        .size-box.medium {
-            border-color: rgba(255,140,0,0.3);
-            background: rgba(255,140,0,0.05);
-        }
+        .size-box.low { border-color: rgba(239,83,80,0.3); }
+        .size-box.medium { border-color: rgba(255,152,0,0.3); }
         .size-label {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron';
             font-size: 0.75em;
-            color: var(--blue);
+            color: var(--gray);
             margin-bottom: 4px;
         }
         .size-qty {
             font-size: 1.2em;
             font-weight: 700;
-            color: #fff;
+            color: var(--white);
         }
         .size-box.low .size-qty { color: var(--red); }
         .size-box.medium .size-qty { color: var(--orange); }
 
         .section-title {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron';
             font-size: 1.1em;
             color: var(--gold);
-            margin: 25px 0 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin: 30px 0 20px;
             letter-spacing: 2px;
         }
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--gold), transparent);
-        }
 
-        /* Tournament Section */
-        .tournament-date {
-            font-family: 'Orbitron', sans-serif;
+        /* Trip dropdown */
+        .trip-dropdown-wrapper {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .trip-label {
+            display: block;
+            font-family: 'Orbitron';
+            font-size: 0.8em;
+            color: var(--gold);
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+        .trip-select {
+            width: 100%;
+            padding: 16px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--white);
+            font-family: 'Inter';
+            font-size: 1.1em;
+            outline: none;
+            cursor: pointer;
+        }
+        .trip-select:focus { border-color: var(--gold); }
+        .trip-summary {
+            font-family: 'Orbitron';
             font-size: 1em;
-            color: var(--blue);
-            margin: 20px 0 10px;
-            padding: 10px;
-            background: rgba(0,212,255,0.05);
-            border-radius: 8px;
-            border-left: 3px solid var(--blue);
+            color: var(--gold);
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--black);
+            border-radius: 10px;
+            border-left: 3px solid var(--gold);
         }
         .tournament-card {
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.06);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 12px;
         }
         .tournament-name {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron';
             font-size: 0.9em;
-            color: var(--gold);
-            margin-bottom: 10px;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .tournament-name span {
+            color: var(--gray);
+            font-size: 0.85em;
         }
         .tournament-items {
             display: flex;
@@ -245,94 +275,54 @@
             gap: 6px;
         }
         .tournament-item {
-            padding: 4px 10px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 6px;
+            padding: 5px 12px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             font-size: 0.85em;
+            color: var(--gray);
         }
         .tournament-item .qty {
-            color: var(--green);
+            color: var(--gold);
             font-weight: 700;
         }
+
         .last-update {
             text-align: right;
-            color: var(--green);
+            color: var(--gray);
             font-size: 0.85em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        /* Trip Dropdown */
-        .trip-dropdown-wrapper {
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.1);
-            border-radius: 14px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-        .trip-label {
-            display: block;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85em;
-            color: var(--blue);
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-        .trip-select {
-            width: 100%;
-            padding: 16px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(0,212,255,0.2);
-            border-radius: 10px;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2em;
-            outline: none;
-            cursor: pointer;
-        }
-        .trip-select:focus { border-color: var(--gold); }
-        .trip-select option {
-            background: #0a0f1a;
-            color: #fff;
-            padding: 10px;
-        }
-        .trip-summary {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1em;
-            color: var(--gold);
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(0,212,255,0.03);
-            border-radius: 10px;
-            border-left: 3px solid var(--gold);
-        }
         @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 10px; }
-            .nav { flex-wrap: wrap; justify-content: center; }
+            .header { flex-direction: column; gap: 15px; }
+            .nav { padding: 10px 20px; }
+            .main { padding: 20px; }
             .jersey-grid { grid-template-columns: 1fr; }
             .cat-tabs { overflow-x: auto; flex-wrap: nowrap; }
         }
     </style>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="sign-in.html";}</script>
+    <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
-        <div class="logo">🏆 FUTURE STARS</div>        <nav class="nav" id="main-nav"></nav>
-        <script>
-            (function() {
-                const role = sessionStorage.getItem('fs_role');
-                const nav = document.getElementById('main-nav');
-                if (!nav || !role) return;
-                const links = { owner: ['dashboard','departments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
-                const labels = { dashboard:'Dashboard', departments:'Departments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
-                const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
-                nav.innerHTML = (links[role] || links.owner).map(p => {
-                    const cls = p === current ? 'active' : '';
-                    return `<a href="${p}.html" class="${cls}">${labels[p]}</a>`;
-                }).join('');
-            })();
-        </script>
+        <a href="dashboard.html" class="logo">FUTURE <span>STARS</span></a>
     </div>
+    <nav class="nav" id="main-nav"></nav>
+    <script>
+        (function() {
+            const role = sessionStorage.getItem('fs_role');
+            const nav = document.getElementById('main-nav');
+            if (!nav || !role) return;
+            const links = { owner: ['dashboard','departments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
+            const labels = { dashboard:'Dashboard', departments:'Departments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
+            const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
+            nav.innerHTML = (links[role] || links.owner).map(p => {
+                const cls = p === current ? 'active' : '';
+                return `<a href="${p}.html" class="${cls}">${labels[p]}</a>`;
+            }).join('');
+        })();
+    </script>
 
     <div class="main">
         <div class="last-update" id="last-update">Loading inventory...</div>
@@ -349,7 +339,6 @@
     </div>
 
     <script>
-        // INVENTORY DATA FROM XLSX
         const INVENTORY = {
             "baseball": {
                 "Acuna Jr. Braves": {"total": 184, "sizes": {"YS": 42, "YM": 16, "YL": 49, "AS": 11, "YXL": 66}},
@@ -490,20 +479,15 @@
 
         function renderInventory() {
             const container = document.getElementById('inventory-content');
-
             if (activeCat === 'trips') {
                 renderTripsView(container);
                 return;
             }
-
             const items = getItemsForCat(activeCat);
-
             if (items.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:#8892b0;">No items found</div>';
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);">No items found</div>';
                 return;
             }
-
-            // Group by category for 'all' view
             if (activeCat === 'all') {
                 const groups = {};
                 items.forEach(item => {
@@ -511,7 +495,6 @@
                     if (!groups[group]) groups[group] = [];
                     groups[group].push(item);
                 });
-
                 container.innerHTML = Object.entries(groups).map(([groupName, groupItems]) => `
                     <div class="section-title">${getGroupIcon(groupName)} ${groupName}</div>
                     <div class="jersey-grid">
@@ -528,78 +511,26 @@
         }
 
         function getGroupIcon(name) {
-            if (name === 'Baseball') return '⚾';
-            if (name === 'Messi') return '🔟';
-            if (name === 'Ronaldo') return '⚽';
-            if (name === 'Neymar') return '🇧🇷';
-            if (name === 'Yamal') return '🔥';
-            if (name === 'Mbappe') return '🇫🇷';
-            if (name === 'Pulisic') return '🇺🇸';
-            if (name === 'SAKA') return '🏴󠁧󠁢󠁥󠁮󠁧󠁿';
-            if (name === 'Vini Jr') return '🇧🇷';
-            if (name === 'Gimenez') return '🇲🇽';
-            return '📦';
+            const icons = {'Baseball':'⚾','Messi':'🔟','Ronaldo':'⚽','Neymar':'🇧🇷','Yamal':'🔥','Mbappe':'🇫🇷','Pulisic':'🇺🇸','SAKA':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Vini Jr':'🇧🇷','Gimenez':'🇲🇽'};
+            return icons[name] || '📦';
         }
 
         function getItemsForCat(cat) {
             const items = [];
-
-            if (cat === 'trips') {
-                return []; // handled separately
-            }
-
+            if (cat === 'trips') return [];
             if (cat === 'all' || cat === 'baseball') {
                 Object.entries(INVENTORY.baseball).forEach(([name, info]) => {
                     items.push({ name, ...info, category: 'Baseball' });
                 });
             }
-
-            if (cat === 'all' || cat === 'messi') {
-                (INVENTORY.soccer.Messi || []).forEach(item => {
-                    items.push({ ...item, category: 'Messi' });
-                });
+            const soccerMap = { messi: 'Messi', ronaldo: 'Ronaldo', neymar: 'Neymar', yamal: 'Yamal', mbappe: 'Mbappe', pulisic: 'Pulisic', saka: 'SAKA', vini: 'Vini Jr', gimenez: 'Gimenez' };
+            for (const [key, player] of Object.entries(soccerMap)) {
+                if (cat === 'all' || cat === key) {
+                    (INVENTORY.soccer[player] || []).forEach(item => {
+                        items.push({ ...item, category: player });
+                    });
+                }
             }
-            if (cat === 'all' || cat === 'ronaldo') {
-                (INVENTORY.soccer.Ronaldo || []).forEach(item => {
-                    items.push({ ...item, category: 'Ronaldo' });
-                });
-            }
-            if (cat === 'all' || cat === 'neymar') {
-                (INVENTORY.soccer.Neymar || []).forEach(item => {
-                    items.push({ ...item, category: 'Neymar' });
-                });
-            }
-            if (cat === 'all' || cat === 'yamal') {
-                (INVENTORY.soccer.Yamal || []).forEach(item => {
-                    items.push({ ...item, category: 'Yamal' });
-                });
-            }
-            if (cat === 'all' || cat === 'mbappe') {
-                (INVENTORY.soccer.Mbappe || []).forEach(item => {
-                    items.push({ ...item, category: 'Mbappe' });
-                });
-            }
-            if (cat === 'all' || cat === 'pulisic') {
-                (INVENTORY.soccer.Pulisic || []).forEach(item => {
-                    items.push({ ...item, category: 'Pulisic' });
-                });
-            }
-            if (cat === 'all' || cat === 'saka') {
-                (INVENTORY.soccer.SAKA || []).forEach(item => {
-                    items.push({ ...item, category: 'SAKA' });
-                });
-            }
-            if (cat === 'all' || cat === 'vini') {
-                (INVENTORY.soccer['Vini Jr'] || []).forEach(item => {
-                    items.push({ ...item, category: 'Vini Jr' });
-                });
-            }
-            if (cat === 'all' || cat === 'gimenez') {
-                (INVENTORY.soccer.Gimenez || []).forEach(item => {
-                    items.push({ ...item, category: 'Gimenez' });
-                });
-            }
-
             return items;
         }
 
@@ -615,7 +546,6 @@
                     if (bi >= 0) return 1;
                     return a[0].localeCompare(b[0]);
                 });
-
             return `
                 <div class="jersey-card">
                     <div class="jersey-header">
@@ -637,47 +567,16 @@
             `;
         }
 
-        function renderTournaments(container) {
-            const dates = INVENTORY.tournaments;
-            if (!dates || Object.keys(dates).length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:#8892b0;">No tournament data</div>';
-                return;
-            }
-
-            let html = '';
-            for (const [date, tournaments] of Object.entries(dates)) {
-                html += `<div class="tournament-date">📅 ${date}</div>`;
-                for (const [name, items] of Object.entries(tournaments)) {
-                    const totalItems = items.reduce((s, i) => s + i.qty, 0);
-                    html += `
-                        <div class="tournament-card">
-                            <div class="tournament-name">${name} <span style="color:#8892b0;font-size:0.8em;">(${totalItems} items)</span></div>
-                            <div class="tournament-items">
-                                ${items.map(item => `
-                                    <div class="tournament-item">
-                                        <span class="qty">${Math.round(item.qty)}</span> ${item.name} (${item.size})
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            container.innerHTML = html;
-        }
-
         function renderTripsView(container) {
             const dates = INVENTORY.tournaments;
             if (!dates || Object.keys(dates).length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:#8892b0;">No tournament data</div>';
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);">No tournament data</div>';
                 return;
             }
-
             const dateKeys = Object.keys(dates).sort();
-            
-            let html = `
+            container.innerHTML = `
                 <div class="trip-dropdown-wrapper">
-                    <label class="trip-label">📅 SELECT TOURNAMENT DATE</label>
+                    <label class="trip-label">SELECT TOURNAMENT DATE</label>
                     <select class="trip-select" id="trip-date-select" onchange="renderTripDetails()">
                         <option value="">Choose a date...</option>
                         ${dateKeys.map(d => `<option value="${d}">${d}</option>`).join('')}
@@ -685,35 +584,23 @@
                 </div>
                 <div id="trip-details"></div>
             `;
-            container.innerHTML = html;
         }
 
         function renderTripDetails() {
             const select = document.getElementById('trip-date-select');
             const date = select.value;
             const container = document.getElementById('trip-details');
-            
-            if (!date) {
-                container.innerHTML = '';
-                return;
-            }
-
+            if (!date) { container.innerHTML = ''; return; }
             const tournaments = INVENTORY.tournaments[date];
-            if (!tournaments) {
-                container.innerHTML = '<div style="text-align:center;padding:20px;color:#8892b0;">No data for this date</div>';
-                return;
-            }
-
+            if (!tournaments) { container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--gray);">No data</div>'; return; }
             let html = '';
             let totalItems = 0;
-            
             for (const [name, items] of Object.entries(tournaments)) {
                 const tCount = items.reduce((s, i) => s + i.qty, 0);
                 totalItems += tCount;
-                
                 html += `
                     <div class="tournament-card">
-                        <div class="tournament-name">${name} <span style="color:#8892b0;font-size:0.8em;">(${tCount} items)</span></div>
+                        <div class="tournament-name">${name} <span>(${tCount} items)</span></div>
                         <div class="tournament-items">
                             ${items.map(item => `
                                 <div class="tournament-item">
@@ -724,28 +611,16 @@
                     </div>
                 `;
             }
-            
             html = `<div class="trip-summary">📦 ${totalItems} total items out on trips for ${date}</div>` + html;
             container.innerHTML = html;
         }
 
         function updateStats() {
             let total = 0, baseball = 0, soccer = 0, skus = 0;
-
-            Object.values(INVENTORY.baseball).forEach(item => {
-                total += item.total;
-                baseball += item.total;
-                skus++;
-            });
-
+            Object.values(INVENTORY.baseball).forEach(item => { total += item.total; baseball += item.total; skus++; });
             Object.values(INVENTORY.soccer).forEach(playerItems => {
-                playerItems.forEach(item => {
-                    total += item.total;
-                    soccer += item.total;
-                    skus++;
-                });
+                playerItems.forEach(item => { total += item.total; soccer += item.total; skus++; });
             });
-
             document.getElementById('st-total').textContent = total >= 1000 ? (total/1000).toFixed(1) + 'K' : total;
             document.getElementById('st-baseball').textContent = baseball >= 1000 ? (baseball/1000).toFixed(1) + 'K' : baseball;
             document.getElementById('st-soccer').textContent = soccer >= 1000 ? (soccer/1000).toFixed(1) + 'K' : soccer;
