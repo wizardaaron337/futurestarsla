@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PJ Trip Planner AI — Future Stars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A227;
+            --gold-light: #E8C84B;
+            --gold-dark: #B8941F;
+            --black: #0A0A0A;
+            --black-light: #141414;
+            --black-card: #1A1A1A;
+            --black-hover: #242424;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
+            --green: #4CAF50;
+            --red: #EF5350;
+            --blue: #64B5F6;
+            --purple: #B829DD;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 20px rgba(201,162,39,0.2);
+        }
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 3px;
+        }
+        .user-info { display: flex; align-items: center; gap: 20px; }
+        .user-name {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.85em;
+            letter-spacing: 2px;
+        }
+        .logout-btn {
+            padding: 8px 18px;
+            background: transparent;
+            border: 1px solid var(--gray-dark);
+            color: var(--gray);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .nav {
+            display: flex;
+            gap: 4px;
+            padding: 12px 30px;
+            background: var(--black-light);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .nav a {
+            padding: 10px 20px;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .nav a:hover { color: var(--white); background: var(--black-hover); }
+        .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
+
+        /* Main Layout */
+        .main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+            gap: 20px;
+            height: calc(100vh - 130px);
+        }
+
+        /* Sidebar - Trip List */
+        .sidebar {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1em;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+            outline: none;
+        }
+        .search-box:focus { border-color: var(--gold); }
+        .search-box::placeholder { color: var(--gray-dark); }
+        .trip-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .trip-item {
+            padding: 14px;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .trip-item:hover {
+            border-color: var(--gold-dark);
+            transform: translateX(4px);
+        }
+        .trip-item.active {
+            border-color: var(--gold);
+            background: rgba(201,162,39,0.08);
+        }
+        .trip-item-name {
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 4px;
+            color: var(--white);
+        }
+        .trip-item-meta {
+            font-size: 0.8em;
+            color: var(--gray);
+            display: flex;
+            gap: 10px;
+        }
+        .trip-item-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+        .badge-locked { background: rgba(76,175,80,0.1); color: var(--green); }
+        .badge-pending { background: rgba(255,152,0,0.1); color: #FF9800; }
+
+        /* Chat Area */
+        .chat-container {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+        }
+        .chat-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1em;
+        }
+        .chat-subtitle {
+            color: var(--gray);
+            font-size: 0.8em;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .message {
+            max-width: 80%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message-user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border-bottom-right-radius: 4px;
+        }
+        .message-bot {
+            align-self: flex-start;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            color: var(--white);
+            border-bottom-left-radius: 4px;
+        }
+        .message-time {
+            font-size: 0.7em;
+            opacity: 0.6;
+            margin-top: 6px;
+        }
+        .chat-input-area {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--black-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95em;
+            outline: none;
+        }
+        .chat-input:focus { border-color: var(--gold); }
+        .chat-send {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .chat-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(201,162,39,0.3);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            padding: 0 20px 10px;
+            flex-wrap: wrap;
+        }
+        .quick-btn {
+            padding: 8px 14px;
+            background: rgba(201,162,39,0.08);
+            border: 1px solid rgba(201,162,39,0.2);
+            border-radius: 8px;
+            color: var(--gold);
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .quick-btn:hover {
+            background: rgba(201,162,39,0.15);
+            transform: translateY(-1px);
+        }
+
+        /* Trip Detail Cards in Chat */
+        .trip-detail-card {
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 10px;
+        }
+        .trip-detail-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85em;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: var(--gray); }
+        .detail-value { color: var(--white); font-weight: 500; }
+
+        /* Links in chat */
+        .chat-link {
+            color: var(--gold);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .chat-link:hover { color: var(--gold-light); }
+
+        @media (max-width: 1024px) {
+            .main { grid-template-columns: 1fr; height: auto; }
+            .sidebar { max-height: 400px; }
+        }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
+            .nav { padding: 10px 20px; }
+        }
+    </style>
+    <link rel="stylesheet" href="animations.css?v=2">
+</head>
+<body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="particles" id="particles"></div>
+    <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
+    <div class="header">
+        <a href="dashboard.html" class="logo-link">
+            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+            <span class="logo-text">FUTURE STARS</span>
+        </a>
+        <div class="user-info">
+            <span class="user-name" id="user-name"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <nav class="nav" id="main-nav"></nav>
+
+    <div class="main">
+        <!-- Sidebar: Trip List -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🚐 Trips to Plan</h2>
+                <input type="text" class="search-box" id="trip-search" placeholder="Search trips..." oninput="filterTrips()">
+            </div>
+            <div class="trip-list" id="trip-list"></div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-avatar">🤖</div>
+                <div>
+                    <div class="chat-title">PJ's Trip Planner AI</div>
+                    <div class="chat-subtitle">I help plan hotels, cars & routes</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="quick-actions" id="quick-actions"></div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Ask me anything about trip planning..." onkeypress="if(event.key==='Enter')sendMessage()">
+                <button class="chat-send" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="crew-data.js"></script>
+    <script>
+        const NAME = sessionStorage.getItem('fs_name') || 'User';
+        document.getElementById('user-name').textContent = NAME.toUpperCase();
+
+        // Nav
+        (function() {
+            const role = sessionStorage.getItem('fs_role');
+            const nav = document.getElementById('main-nav');
+            if (!nav || !role) return;
+            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker' };
+            const current = 'planner';
+            nav.innerHTML = (links[role] || links.owner).map(p => {
+                const cls = p === current ? 'active' : '';
+                return `<a href="${p === 'planner' ? 'pj-planner' : p === 'tracker' ? 'trip-tracker' : p}.html" class="${cls}">${labels[p]}</a>`;
+            }).join('');
+        })();
+
+        let selectedTrip = null;
+        let chatHistory = [];
+
+        // Hotel & car booking links by state
+        const BOOKING_LINKS = {
+            'hotels': 'https://www.booking.com/searchresults.html?ss=',
+            'expedia': 'https://www.expedia.com/Hotel-Search?destination=',
+            'cars': 'https://www.enterprise.com/en/car-rental/locations/us/',
+            'hertz': 'https://www.hertz.com/rentacar/location/',
+            'maps': 'https://www.google.com/maps/search/?api=1&query='
+        };
+
+        // Common tournament cities by state
+        const STATE_CITIES = {
+            'TX': ['Dallas', 'Houston', 'Austin', 'San Antonio', 'Frisco'],
+            'FL': ['Orlando', 'Tampa', 'Miami', 'Jacksonville', 'Kissimmee'],
+            'CA': ['Los Angeles', 'San Diego', 'Sacramento', 'Irvine'],
+            'IL': ['Chicago', 'Rockford', 'Peoria', 'Springfield'],
+            'PA': ['Philadelphia', 'Pittsburgh', 'Harrisburg'],
+            'KY': ['Louisville', 'Lexington', 'Bowling Green'],
+            'TN': ['Nashville', 'Memphis', 'Knoxville'],
+            'GA': ['Atlanta', 'Savannah', 'Augusta'],
+            'NC': ['Charlotte', 'Raleigh', 'Greensboro'],
+            'OH': ['Columbus', 'Cleveland', 'Cincinnati'],
+            'IN': ['Indianapolis', 'Fort Wayne', 'Bloomington'],
+            'MO': ['St. Louis', 'Kansas City', 'Springfield'],
+            'AZ': ['Phoenix', 'Tucson', 'Scottsdale'],
+            'CO': ['Denver', 'Colorado Springs', 'Aurora'],
+            'NV': ['Las Vegas', 'Reno', 'Henderson'],
+            'LA': ['New Orleans', 'Baton Rouge', 'Shreveport', 'Lafayette'],
+            'OK': ['Oklahoma City', 'Tulsa', 'Norman'],
+            'AL': ['Birmingham', 'Montgomery', 'Mobile'],
+            'SC': ['Columbia', 'Charleston', 'Greenville'],
+            'VA': ['Virginia Beach', 'Richmond', 'Norfolk'],
+            'MS': ['Jackson', 'Gulfport', 'Biloxi'],
+            'AR': ['Little Rock', 'Fayetteville', 'Fort Smith']
+        };
+
+        function init() {
+            renderTripList();
+            addBotMessage("Hey PJ! 👋 I'm your trip planning assistant.\n\nSelect a trip from the left, or ask me:\n• Find hotels near [tournament]\n• Car rental in [city]\n• Drive time from New Orleans to [city]\n• Best route for [tournament]\n• Plan my trip to [state]");
+            renderQuickActions();
+        }
+
+        function renderTripList() {
+            const list = document.getElementById('trip-list');
+            const search = document.getElementById('trip-search').value.toLowerCase();
+            
+            const trips = CREW_TRIPS.filter(t => {
+                if (search) {
+                    return t.name.toLowerCase().includes(search) || 
+                           (t.state && t.state.toLowerCase().includes(search));
+                }
+                return true;
+            }).slice(0, 50); // Show top 50
+
+            list.innerHTML = trips.map(trip => `
+                <div class="trip-item ${selectedTrip?.id === trip.id ? 'active' : ''}" onclick="selectTrip('${trip.id}')">
+                    <div class="trip-item-name">${trip.name}</div>
+                    <div class="trip-item-meta">
+                        <span>${trip.state || '—'}</span>
+                        <span>${trip.month || '—'}</span>
+                        <span class="trip-item-badge ${trip.status === 'LOCKED IN' ? 'badge-locked' : 'badge-pending'}">${trip.status || 'PENDING'}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterTrips() {
+            renderTripList();
+        }
+
+        function selectTrip(tripId) {
+            selectedTrip = CREW_TRIPS.find(t => t.id === tripId);
+            renderTripList();
+            
+            if (selectedTrip) {
+                addBotMessage(`📍 **${selectedTrip.name}**\n\nState: ${selectedTrip.state || 'TBD'}\nDates: ${selectedTrip.startDate || 'TBD'} ${selectedTrip.endDate ? '- ' + selectedTrip.endDate : ''}\nCrew: ${selectedTrip.crew || 'Not assigned'}\n\nWhat do you need for this trip?`);
+                renderQuickActions(selectedTrip);
+            }
+        }
+
+        function renderQuickActions(trip = null) {
+            const container = document.getElementById('quick-actions');
+            if (!trip) {
+                container.innerHTML = `
+                    <button class="quick-btn" onclick="quickAsk('Show me trips needing hotels')">🏨 Need Hotels</button>
+                    <button class="quick-btn" onclick="quickAsk('Show me trips needing cars')">🚗 Need Cars</button>
+                    <button class="quick-btn" onclick="quickAsk('Show me this months trips')">📅 This Month</button>
+                    <button class="quick-btn" onclick="quickAsk('Drive times from NOLA')">🛣️ Drive Times</button>
+                `;
+                return;
+            }
+
+            const state = trip.state;
+            const city = trip.name.split('(')[0].trim();
+            
+            container.innerHTML = `
+                <button class="quick-btn" onclick="quickAsk('Find hotels near ${city} ${state}')">🏨 Hotels</button>
+                <button class="quick-btn" onclick="quickAsk('Car rental in ${state}')">🚗 Car Rental</button>
+                <button class="quick-btn" onclick="quickAsk('Drive time from New Orleans to ${state}')">🛣️ Drive Time</button>
+                <button class="quick-btn" onclick="quickAsk('Map ${city} ${state}')">🗺️ Map</button>
+                <button class="quick-btn" onclick="quickAsk('Gas stations on route to ${state}')">⛽ Gas Stops</button>
+            `;
+        }
+
+        function quickAsk(text) {
+            document.getElementById('chat-input').value = text;
+            sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            addUserMessage(text);
+            input.value = '';
+
+            // Process the message
+            setTimeout(() => processQuery(text), 500);
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chat-messages');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            container.innerHTML += `
+                <div class="message message-user">
+                    ${escapeHtml(text)}
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+            chatHistory.push({role: 'user', text});
+        }
+
+        function addBotMessage(text) {
+            const container = document.getElementById('chat-messages');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            container.innerHTML += `
+                <div class="message message-bot">
+                    ${text}
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+            chatHistory.push({role: 'bot', text});
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function processQuery(text) {
+            const lower = text.toLowerCase();
+            
+            // Hotel search
+            if (lower.includes('hotel') || lower.includes('stay') || lower.includes('sleep')) {
+                handleHotelQuery(text);
+            }
+            // Car rental
+            else if (lower.includes('car') || lower.includes('rental') || lower.includes('rent')) {
+                handleCarQuery(text);
+            }
+            // Drive time / route
+            else if (lower.includes('drive') || lower.includes('time') || lower.includes('route') || lower.includes('hour')) {
+                handleRouteQuery(text);
+            }
+            // Map
+            else if (lower.includes('map') || lower.includes('location') || lower.includes('where')) {
+                handleMapQuery(text);
+            }
+            // Trip list queries
+            else if (lower.includes('trip') || lower.includes('show me') || lower.includes('this month')) {
+                handleTripListQuery(text);
+            }
+            // Gas
+            else if (lower.includes('gas') || lower.includes('station')) {
+                handleGasQuery(text);
+            }
+            // General help
+            else {
+                addBotMessage("I can help you with:\n\n🏨 **Hotels** - Find and book hotels near tournaments\n🚗 **Car Rentals** - Enterprise, Hertz locations\n🛣️ **Drive Times** - From NOLA to any tournament\n🗺️ **Maps** - Tournament locations\n⛽ **Gas Stops** - Along your route\n\nJust ask! Example: *'Find hotels near Dallas TX'*");
+            }
+        }
+
+        function handleHotelQuery(text) {
+            const state = extractState(text);
+            const city = extractCity(text) || (selectedTrip ? selectedTrip.name.split('(')[0].trim() : null);
+            
+            if (!state && !city) {
+                addBotMessage("Which tournament or city are you looking for hotels in?\n\nExample: *'Find hotels near Dallas TX'* or *'Hotels for Boilingbrook'*");
+                return;
+            }
+
+            const searchLocation = city ? `${city}, ${state || ''}` : state;
+            const bookingUrl = BOOKING_LINKS.hotels + encodeURIComponent(searchLocation);
+            const expediaUrl = BOOKING_LINKS.expedia + encodeURIComponent(searchLocation);
+
+            let response = `🏨 **Hotels near ${searchLocation}**\n\n`;
+            
+            // Add nearby cities if we know the state
+            if (state && STATE_CITIES[state]) {
+                response += `Major cities in ${state}:\n`;
+                STATE_CITIES[state].forEach(c => {
+                    response += `• ${c}\n`;
+                });
+                response += '\n';
+            }
+
+            response += `**Quick Links:**\n`;
+            response += `• <a href="${bookingUrl}" target="_blank" class="chat-link">Booking.com</a>\n`;
+            response += `• <a href="${expediaUrl}" target="_blank" class="chat-link">Expedia</a>\n\n`;
+            response += `💡 **Tip:** Book near the tournament venue. Check cancellation policies — tournaments sometimes change dates.`;
+
+            addBotMessage(response);
+        }
+
+        function handleCarQuery(text) {
+            const state = extractState(text);
+            
+            if (!state) {
+                addBotMessage("Which state do you need a car in?\n\nExample: *'Car rental in TX'* or *'Need a car for Florida trip'*");
+                return;
+            }
+
+            const enterpriseUrl = BOOKING_LINKS.cars + state.toLowerCase();
+            
+            let response = `🚗 **Car Rental in ${state}**\n\n`;
+            response += `**Enterprise Locations:**\n`;
+            response += `• <a href="${enterpriseUrl}" target="_blank" class="chat-link">Find Enterprise in ${state}</a>\n\n`;
+            response += `**Other Options:**\n`;
+            response += `• <a href="https://www.hertz.com" target="_blank" class="chat-link">Hertz</a>\n`;
+            response += `• <a href="https://www.budget.com" target="_blank" class="chat-link">Budget</a>\n`;
+            response += `• <a href="https://www.avis.com" target="_blank" class="chat-link">Avis</a>\n\n`;
+            response += `💡 **Tip:** Book SUVs or vans for gear transport. Check if unlimited mileage is included.`;
+
+            addBotMessage(response);
+        }
+
+        function handleRouteQuery(text) {
+            const state = extractState(text);
+            const city = extractCity(text);
+            
+            if (!state && !city) {
+                addBotMessage("Where are you driving to?\n\nExample: *'Drive time from NOLA to Dallas'* or *'How long to Texas?'*");
+                return;
+            }
+
+            const destination = city || STATE_CITIES[state]?.[0] || state;
+            const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(destination);
+            
+            // Rough drive times from New Orleans
+            const driveTimes = {
+                'TX': '7-9 hours',
+                'FL': '8-10 hours',
+                'GA': '6-7 hours',
+                'AL': '4-5 hours',
+                'MS': '2-3 hours',
+                'TN': '7-8 hours',
+                'NC': '10-12 hours',
+                'SC': '9-10 hours',
+                'LA': '1-4 hours',
+                'AR': '7-8 hours',
+                'OK': '9-10 hours',
+                'MO': '10-11 hours',
+                'KY': '9-10 hours',
+                'IL': '12-13 hours',
+                'IN': '11-12 hours',
+                'OH': '13-14 hours',
+                'PA': '16-17 hours',
+                'CA': '26-28 hours',
+                'AZ': '20-22 hours',
+                'NV': '28-30 hours',
+                'CO': '18-20 hours'
+            };
+
+            const time = driveTimes[state] || '10-15 hours (estimate)';
+
+            let response = `🛣️ **Route: New Orleans → ${destination}**\n\n`;
+            response += `**Estimated Drive Time:** ${time}\n\n`;
+            response += `**Map:** <a href="${mapsUrl}" target="_blank" class="chat-link">Open in Google Maps</a>\n\n`;
+            response += `💡 **Tips:**\n`;
+            response += `• Leave early morning (5-6 AM) to avoid traffic\n`;
+            response += `• Plan gas stops every 3-4 hours\n`;
+            response += `• Check weather before leaving\n`;
+            response += `• Budget $50-100 for gas each way`;
+
+            addBotMessage(response);
+        }
+
+        function handleMapQuery(text) {
+            const state = extractState(text);
+            const city = extractCity(text) || (selectedTrip ? selectedTrip.name.split('(')[0].trim() : null);
+            
+            if (!state && !city) {
+                addBotMessage("What location do you want to see on the map?\n\nExample: *'Map Dallas TX'* or *'Where is the Orlando tournament?'*");
+                return;
+            }
+
+            const search = city ? `${city} ${state || ''}` : state;
+            const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(search);
+
+            addBotMessage(`🗺️ **${search}**\n\n<a href="${mapsUrl}" target="_blank" class="chat-link">Open in Google Maps</a>\n\nYou can search for nearby hotels, restaurants, and gas stations from there.`);
+        }
+
+        function handleTripListQuery(text) {
+            const lower = text.toLowerCase();
+            let filtered = CREW_TRIPS;
+
+            if (lower.includes('this month') || lower.includes('current')) {
+                const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+                filtered = CREW_TRIPS.filter(t => t.month && t.month.toLowerCase() === currentMonth.toLowerCase());
+            } else if (lower.includes('next month')) {
+                // Simple next month logic
+                filtered = CREW_TRIPS.filter(t => t.month).slice(0, 10);
+            } else if (lower.includes('need') || lower.includes('pending')) {
+                filtered = CREW_TRIPS.filter(t => !t.status || t.status !== 'LOCKED IN');
+            } else if (lower.includes('locked')) {
+                filtered = CREW_TRIPS.filter(t => t.status === 'LOCKED IN');
+            }
+
+            if (filtered.length === 0) {
+                addBotMessage("No trips found matching that criteria.");
+                return;
+            }
+
+            let response = `📅 **Trips (${filtered.length} found)**\n\n`;
+            filtered.slice(0, 15).forEach(t => {
+                response += `• **${t.name}** — ${t.state || '—'} — ${t.month || '—'} ${t.status === 'LOCKED IN' ? '✅' : '⏳'}\n`;
+            });
+            if (filtered.length > 15) {
+                response += `\n... and ${filtered.length - 15} more`;
+            }
+
+            addBotMessage(response);
+        }
+
+        function handleGasQuery(text) {
+            const state = extractState(text);
+            const city = extractCity(text) || (selectedTrip ? selectedTrip.name.split('(')[0].trim() : null);
+            
+            if (!state && !city) {
+                addBotMessage("Which route do you want gas stops for?\n\nExample: *'Gas stations on the way to Texas'*");
+                return;
+            }
+
+            const search = city ? `${city} ${state || ''} gas stations` : `${state} gas stations interstate`;
+            const mapsUrl = BOOKING_LINKS.maps + encodeURIComponent(search);
+
+            addBotMessage(`⛽ **Gas Stops**\n\n<a href="${mapsUrl}" target="_blank" class="chat-link">Find gas stations on route</a>\n\n**Tips:**\n• Love's and Pilot are clean, have parking\n• Fill up when you hit half tank\n• Download GasBuddy app for cheapest prices`);
+        }
+
+        function extractState(text) {
+            const stateMatch = text.match(/\b([A-Z]{2})\b/);
+            if (stateMatch) return stateMatch[1];
+            
+            // Check for state names
+            const stateNames = {
+                'texas': 'TX', 'florida': 'FL', 'california': 'CA', 'illinois': 'IL',
+                'pennsylvania': 'PA', 'kentucky': 'KY', 'tennessee': 'TN',
+                'georgia': 'GA', 'north carolina': 'NC', 'ohio': 'OH',
+                'indiana': 'IN', 'missouri': 'MO', 'arizona': 'AZ',
+                'colorado': 'CO', 'nevada': 'NV', 'louisiana': 'LA',
+                'oklahoma': 'OK', 'alabama': 'AL', 'south carolina': 'SC',
+                'virginia': 'VA', 'mississippi': 'MS', 'arkansas': 'AR'
+            };
+            
+            const lower = text.toLowerCase();
+            for (const [name, code] of Object.entries(stateNames)) {
+                if (lower.includes(name)) return code;
+            }
+            
+            // If a trip is selected, use its state
+            if (selectedTrip && selectedTrip.state) return selectedTrip.state;
+            
+            return null;
+        }
+
+        function extractCity(text) {
+            // Try to extract a city name - simple approach
+            const commonCities = ['Dallas', 'Houston', 'Austin', 'Orlando', 'Tampa', 'Miami', 
+                'Chicago', 'Philadelphia', 'Atlanta', 'Nashville', 'Memphis',
+                'Denver', 'Phoenix', 'Vegas', 'Louisville', 'Lexington'];
+            
+            const lower = text.toLowerCase();
+            for (const city of commonCities) {
+                if (lower.includes(city.toLowerCase())) return city;
+            }
+            return null;
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'signin.html';
+        }
+
+        // Init
+        init();
+    </script>
+    <script>
+        // Particles & Progress Bar
+        (function(){
+            const container = document.getElementById("particles");
+            if (!container) return;
+            for(let i=0;i<25;i++){
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.left = Math.random()*100+"vw";
+                p.style.animationDelay = Math.random()*15+"s";
+                p.style.animationDuration = (10+Math.random()*10)+"s";
+                p.style.width = (2+Math.random()*3)+"px";
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener("scroll", function(){
+            const bar = document.getElementById("progress-bar");
+            if (!bar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            bar.style.width = pct+"%";
+        });
+    </script>
+</body>
+</html>
