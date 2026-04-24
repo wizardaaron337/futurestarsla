@@ -261,6 +261,51 @@
             font-size: 0.85em;
             margin-bottom: 15px;
         }
+
+        /* Trip Dropdown */
+        .trip-dropdown-wrapper {
+            background: var(--card);
+            border: 1px solid rgba(0,212,255,0.1);
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .trip-label {
+            display: block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            color: var(--blue);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        .trip-select {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2em;
+            outline: none;
+            cursor: pointer;
+        }
+        .trip-select:focus { border-color: var(--gold); }
+        .trip-select option {
+            background: #0a0f1a;
+            color: #fff;
+            padding: 10px;
+        }
+        .trip-summary {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            color: var(--gold);
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0,212,255,0.03);
+            border-radius: 10px;
+            border-left: 3px solid var(--gold);
+        }
         @media (max-width: 768px) {
             .header { flex-direction: column; gap: 10px; }
             .nav { flex-wrap: wrap; justify-content: center; }
@@ -410,7 +455,7 @@
             { key: 'saka', label: 'Saka', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
             { key: 'vini', label: 'Vini Jr', icon: '🇧🇷' },
             { key: 'gimenez', label: 'Gimenez', icon: '🇲🇽' },
-            { key: 'tournaments', label: 'Packed', icon: '📦' }
+            { key: 'trips', label: 'Out on Trips', icon: '🚐' }
         ];
 
         let activeCat = 'all';
@@ -440,8 +485,8 @@
         function renderInventory() {
             const container = document.getElementById('inventory-content');
 
-            if (activeCat === 'tournaments') {
-                renderTournaments(container);
+            if (activeCat === 'trips') {
+                renderTripsView(container);
                 return;
             }
 
@@ -492,6 +537,10 @@
 
         function getItemsForCat(cat) {
             const items = [];
+
+            if (cat === 'trips') {
+                return []; // handled separately
+            }
 
             if (cat === 'all' || cat === 'baseball') {
                 Object.entries(INVENTORY.baseball).forEach(([name, info]) => {
@@ -608,6 +657,69 @@
                     `;
                 }
             }
+            container.innerHTML = html;
+        }
+
+        function renderTripsView(container) {
+            const dates = INVENTORY.tournaments;
+            if (!dates || Object.keys(dates).length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#8892b0;">No tournament data</div>';
+                return;
+            }
+
+            const dateKeys = Object.keys(dates).sort();
+            
+            let html = `
+                <div class="trip-dropdown-wrapper">
+                    <label class="trip-label">📅 SELECT TOURNAMENT DATE</label>
+                    <select class="trip-select" id="trip-date-select" onchange="renderTripDetails()">
+                        <option value="">Choose a date...</option>
+                        ${dateKeys.map(d => `<option value="${d}">${d}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="trip-details"></div>
+            `;
+            container.innerHTML = html;
+        }
+
+        function renderTripDetails() {
+            const select = document.getElementById('trip-date-select');
+            const date = select.value;
+            const container = document.getElementById('trip-details');
+            
+            if (!date) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const tournaments = INVENTORY.tournaments[date];
+            if (!tournaments) {
+                container.innerHTML = '<div style="text-align:center;padding:20px;color:#8892b0;">No data for this date</div>';
+                return;
+            }
+
+            let html = '';
+            let totalItems = 0;
+            
+            for (const [name, items] of Object.entries(tournaments)) {
+                const tCount = items.reduce((s, i) => s + i.qty, 0);
+                totalItems += tCount;
+                
+                html += `
+                    <div class="tournament-card">
+                        <div class="tournament-name">${name} <span style="color:#8892b0;font-size:0.8em;">(${tCount} items)</span></div>
+                        <div class="tournament-items">
+                            ${items.map(item => `
+                                <div class="tournament-item">
+                                    <span class="qty">${Math.round(item.qty)}</span> ${item.name} (${item.size})
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html = `<div class="trip-summary">📦 ${totalItems} total items out on trips for ${date}</div>` + html;
             container.innerHTML = html;
         }
 
