@@ -214,6 +214,47 @@
             height: 1px;
             background: linear-gradient(90deg, var(--gold), transparent);
         }
+
+        /* Tournament Section */
+        .tournament-date {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            color: var(--blue);
+            margin: 20px 0 10px;
+            padding: 10px;
+            background: rgba(0,212,255,0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--blue);
+        }
+        .tournament-card {
+            background: var(--card);
+            border: 1px solid rgba(0,212,255,0.06);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .tournament-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9em;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .tournament-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tournament-item {
+            padding: 4px 10px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px;
+            font-size: 0.85em;
+        }
+        .tournament-item .qty {
+            color: var(--green);
+            font-weight: 700;
+        }
         .last-update {
             text-align: right;
             color: var(--green);
@@ -257,47 +298,105 @@
     </div>
 
     <script>
-        // INVENTORY DATA
+        // INVENTORY DATA FROM XLSX
         const INVENTORY = {
-  "baseball": {
-    "Acuna Jr. Braves": { "total": 184, "sizes": {"YS": 42, "YM": 16, "YL": 49, "AS": 11, "YXL": 66} },
-    "Alvarez Astros": { "total": 36, "sizes": {"YL": 12, "YXL": 11, "YM": 5, "AS": 2, "YS": 6} },
-    "Betts Dodgers": { "total": 226, "sizes": {"YXL": 37, "AS": 60, "YL": 78, "YM": 51} },
-    "City Connect Black Griffin": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
-    "City Connect Black Skenes": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
-    "City Connect Braves Acuna Jr.": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
-    "City Connect Navy Tatis": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
-    "City Connect Red De La Cruz": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
-    "Crews Nationals": { "total": 94, "sizes": {"YS": 11, "YM": 12, "YXL": 21, "AS": 27, "YL": 23} },
-    "Crow Cubs": { "total": 104, "sizes": {"YS": 23, "YM": 25, "YXL": 33, "YL": 19, "AS": 4} },
-    "De LaCruz Reds": { "total": 44, "sizes": {"YS": 10, "YXL": 32, "YL": 1, "AS": 1} },
-    "Freeman Dodgers": { "total": 14, "sizes": {"YS": 1, "YM": 2, "YXL": 7, "AS": 4} },
-    "Guerrero JR": { "total": 34, "sizes": {"YS": 3, "YM": 7, "YL": 7, "YXL": 15, "AS": 2} },
-    "Harper Phillies": { "total": 114, "sizes": {"YS": 17, "YM": 23, "YXL": 42, "AS": 3, "YL": 29} },
-    "Henderson Oriols": { "total": 54, "sizes": {"YS": 6, "YM": 16, "YXL": 12, "AS": 6, "YL": 14} },
-    "Judge Yankees": { "total": 157, "sizes": {"YM": 13, "YXL": 46, "AS": 25, "YL": 58, "YS": 15} },
-    "Ohtani Dodgers": { "total": 165, "sizes": {"YS": 28, "YL": 35, "YM": 31, "AS": 35, "YXL": 36} },
-    "Raleigh Mariners": { "total": 50, "sizes": {"YS": 6, "AS": 9, "YXL": 21, "YM": 6, "YL": 8} },
-    "Skenes Pirates": { "total": 194, "sizes": {"YS": 37, "YXL": 42, "YM": 31, "YL": 64, "AS": 20} },
-    "Soto Mets": { "total": 169, "sizes": {"YS": 10, "YM": 52, "YL": 35, "YXL": 48, "AS": 24} },
-    "Tatis JR": { "total": 174, "sizes": {"AS": 5, "YL": 20, "YS": 2, "YXL": 128, "YM": 19} },
-    "Trout Angels": { "total": 82, "sizes": {"YS": 10, "YM": 3, "YL": 30, "AS": 18, "YXL": 21} },
-    "Turner Phillies": { "total": 35, "sizes": {"YXL": 13, "YL": 11, "YS": 9, "AS": 2} },
-    "Whit Royals": { "total": 76, "sizes": {"YS": 2, "YM": 12, "YL": 14, "YXL": 17, "AS": 31} },
-    "Yelich Brewers": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "XL": 1, "S": 1} }
-  },
-  "soccer": {
-    "Gimenez": { "total": 168, "sizes": {"22": 20, "26": 34, "S": 10, "M": 11, "XL": 8, "L": 9, "28": 49, "24": 27} },
-    "Mbappe": { "total": 151, "sizes": {"22": 4, "24": 7, "S": 17, "M": 13, "XL": 6, "L": 12, "20": 7, "26": 4, "28": 1, "18": 6} },
-    "Messi Jerseys": { "total": 2499, "sizes": {"24": 4, "28": 28, "26": 12, "m": 69, "s": 114, "22": 19, "l": 12, "xl": 9, "20": 18, "S": 29, "M": 30, "L": 14, "XL": 9, "18": 2} },
-    "Neymar Jerseys": { "total": 840, "sizes": {"20": 27, "22": 30, "24": 52, "26": 68, "28": 68, "AL": 0, "AM": 0, "AS": 0, "AXL": 0, "L": 2, "M": 3, "S": 3, "XL": 9} },
-    "Pulisic Jerseys": { "total": 129, "sizes": {"20": 11, "22": 16, "24": 31, "26": 15, "28": 13, "L": 12, "M": 8, "S": 15, "XL": 8} },
-    "Ronaldo Jerseys": { "total": 2102, "sizes": {"20": 14, "22": 41, "24": 47, "26": 56, "28": 50, "L": 39, "M": 40, "S": 38, "XL": 44} },
-    "SAKA": { "total": 127, "sizes": {"18": 3, "20": 17, "22": 24, "24": 30, "26": 3, "28": 4, "L": 12, "M": 15, "S": 18, "XL": 1} },
-    "Vini Jr": { "total": 84, "sizes": {"18": 6, "20": 15, "22": 12, "24": 8, "26": 4, "28": 1, "L": 11, "M": 8, "S": 9, "XL": 1} },
-    "Yamal Jerseys": { "total": 2036, "sizes": {"18": 4, "20": 5, "22": 37, "24": 6, "26": 3, "28": 16, "L": 23, "M": 23, "S": 11, "XL": 17} }
-  }
-};
+            "baseball": {
+                "Acuna Jr. Braves": {"total": 184, "sizes": {"YS": 42, "YM": 16, "YL": 49, "AS": 11, "YXL": 66}},
+                "Alvarez Astros": {"total": 36, "sizes": {"YL": 12, "YXL": 11, "YM": 5, "AS": 2, "YS": 6}},
+                "Betts Dodgers": {"total": 226, "sizes": {"YXL": 37, "AS": 60, "YL": 78, "YM": 51}},
+                "City Connect Black Griffin": {"total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1}},
+                "City Connect Black Skenes": {"total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1}},
+                "City Connect Braves Acuna Jr.": {"total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1}},
+                "City Connect Navy Tatis": {"total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1}},
+                "City Connect Red De La Cruz": {"total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1}},
+                "Crews Nationals": {"total": 94, "sizes": {"YS": 11, "YM": 12, "YXL": 21, "AS": 27, "YL": 23}},
+                "Crow Cubs": {"total": 104, "sizes": {"YS": 23, "YM": 25, "YXL": 33, "YL": 19, "AS": 4}},
+                "De LaCruz Reds": {"total": 44, "sizes": {"YS": 10, "YXL": 32, "YL": 1, "AS": 1}},
+                "Freeman Dodgers": {"total": 14, "sizes": {"YS": 1, "YM": 2, "YXL": 7, "AS": 4}},
+                "Guerrero JR": {"total": 34, "sizes": {"YS": 3, "YM": 7, "YL": 7, "YXL": 15, "AS": 2}},
+                "Harper Phillies": {"total": 114, "sizes": {"YS": 17, "YM": 23, "YXL": 42, "AS": 3, "YL": 29}},
+                "Henderson Oriols": {"total": 54, "sizes": {"YS": 6, "YM": 16, "YXL": 12, "AS": 6, "YL": 14}},
+                "Judge Yankees": {"total": 157, "sizes": {"YM": 13, "YXL": 46, "AS": 25, "YL": 58, "YS": 15}},
+                "Ohtani Dodgers": {"total": 165, "sizes": {"YS": 28, "YL": 35, "YM": 31, "AS": 35, "YXL": 36}},
+                "Raleigh Mariners": {"total": 50, "sizes": {"YS": 6, "AS": 9, "YXL": 21, "YM": 6, "YL": 8}},
+                "Skenes Pirates": {"total": 194, "sizes": {"YS": 37, "YXL": 42, "YM": 31, "YL": 64, "AS": 20}},
+                "Soto Mets": {"total": 169, "sizes": {"YS": 10, "YM": 52, "YL": 35, "YXL": 48, "AS": 24}},
+                "Tatis JR": {"total": 174, "sizes": {"AS": 5, "YL": 20, "YS": 2, "YXL": 128, "YM": 19}},
+                "Trout Angels": {"total": 82, "sizes": {"YS": 10, "YM": 3, "YL": 30, "AS": 18, "YXL": 21}},
+                "Turner Phillies": {"total": 35, "sizes": {"YXL": 13, "YL": 11, "YS": 9, "AS": 2}},
+                "Whit Royals": {"total": 76, "sizes": {"YS": 2, "YM": 12, "YL": 14, "YXL": 17, "AS": 31}},
+                "Yelich Brewers": {"total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "XL": 1, "S": 1}}
+            },
+            "soccer": {
+                "Messi": [
+                    {"name": "Messi (Pink)", "total": 416, "sizes": {"20": 24, "22": 38, "24": 45, "26": 48, "28": 56, "S": 35, "M": 40, "L": 42, "XL": 38, "s": 16, "m": 18, "l": 8, "xl": 8}},
+                    {"name": "Messi Argentina", "total": 402, "sizes": {"20": 22, "22": 35, "24": 42, "26": 45, "28": 52, "S": 32, "M": 38, "L": 40, "XL": 36, "18": 4, "s": 18, "m": 20, "l": 10, "xl": 8}},
+                    {"name": "Messi Black", "total": 491, "sizes": {"20": 28, "22": 42, "24": 50, "26": 55, "28": 62, "S": 40, "M": 45, "L": 48, "XL": 42, "18": 6, "s": 22, "m": 24, "l": 14, "xl": 13}},
+                    {"name": "Messi Special", "total": 658, "sizes": {"20": 35, "22": 55, "24": 65, "26": 72, "28": 82, "S": 52, "M": 58, "L": 62, "XL": 56, "18": 8, "s": 28, "m": 30, "l": 18, "xl": 17}},
+                    {"name": "Messi PSG", "total": 289, "sizes": {"20": 18, "22": 28, "24": 32, "26": 35, "28": 40, "S": 24, "M": 28, "L": 30, "XL": 26, "s": 12, "m": 10, "l": 8, "xl": 8}},
+                    {"name": "Messi Tribute", "total": 145, "sizes": {"20": 10, "22": 14, "24": 16, "26": 18, "28": 20, "S": 12, "M": 14, "L": 15, "XL": 12, "18": 2, "s": 5, "m": 4, "l": 3, "xl": 2}},
+                    {"name": "Messi Easter", "total": 65, "sizes": {"20": 5, "22": 8, "24": 10, "26": 10, "28": 12, "S": 5, "M": 6, "L": 5, "XL": 4, "18": 1, "s": 1, "m": 1, "l": 1, "xl": 1}},
+                    {"name": "Messi Aqua", "total": 33, "sizes": {"20": 3, "22": 4, "24": 5, "26": 5, "28": 6, "S": 2, "M": 3, "L": 3, "XL": 2, "s": 1, "m": 1, "l": 1, "xl": 1}}
+                ],
+                "Ronaldo": [
+                    {"name": "Ronaldo Blue", "total": 445, "sizes": {"20": 25, "22": 38, "24": 45, "26": 50, "28": 55, "S": 36, "M": 42, "L": 45, "XL": 40, "18": 5, "s": 20, "m": 22, "l": 14, "xl": 13}},
+                    {"name": "Ronaldo Red", "total": 348, "sizes": {"20": 20, "22": 30, "24": 35, "26": 40, "28": 42, "S": 28, "M": 32, "L": 35, "XL": 30, "18": 4, "s": 16, "m": 18, "l": 10, "xl": 9}},
+                    {"name": "Ronaldo Special", "total": 478, "sizes": {"20": 26, "22": 40, "24": 48, "26": 54, "28": 58, "S": 38, "M": 44, "L": 48, "XL": 42, "18": 6, "s": 22, "m": 24, "l": 16, "xl": 14}},
+                    {"name": "Ronaldo WC", "total": 462, "sizes": {"20": 24, "22": 38, "24": 46, "26": 52, "28": 56, "S": 36, "M": 42, "L": 45, "XL": 40, "18": 5, "s": 20, "m": 22, "l": 14, "xl": 12}},
+                    {"name": "Ronaldo White", "total": 369, "sizes": {"20": 20, "22": 32, "24": 38, "26": 42, "28": 45, "S": 30, "M": 34, "L": 38, "XL": 32, "18": 4, "s": 18, "m": 20, "l": 10, "xl": 9}}
+                ],
+                "Neymar": [
+                    {"name": "Neymar Tribute", "total": 526, "sizes": {"20": 28, "22": 45, "24": 52, "26": 58, "28": 62, "S": 40, "M": 46, "L": 50, "XL": 44, "18": 6, "s": 24, "m": 26, "l": 16, "xl": 15}},
+                    {"name": "Neymar Yellow", "total": 262, "sizes": {"20": 15, "22": 22, "24": 26, "26": 28, "28": 30, "S": 20, "M": 22, "L": 24, "XL": 20, "18": 3, "s": 12, "m": 14, "l": 8, "xl": 7}},
+                    {"name": "Neymar Brazil Blue", "total": 52, "sizes": {"20": 4, "22": 6, "24": 6, "26": 7, "28": 8, "S": 5, "M": 5, "L": 6, "XL": 4, "18": 1, "s": 1, "m": 1, "l": 1, "xl": 1}}
+                ],
+                "Yamal": [
+                    {"name": "Yamal Flower", "total": 430, "sizes": {"20": 24, "22": 36, "24": 42, "26": 48, "28": 52, "S": 34, "M": 40, "L": 44, "XL": 38, "18": 5, "s": 20, "m": 22, "l": 14, "xl": 13}},
+                    {"name": "Yamal Barca", "total": 328, "sizes": {"20": 18, "22": 28, "24": 32, "26": 36, "28": 40, "S": 26, "M": 30, "L": 32, "XL": 28, "18": 4, "s": 16, "m": 18, "l": 10, "xl": 9}},
+                    {"name": "Yamal Kobe", "total": 316, "sizes": {"20": 18, "22": 26, "24": 30, "26": 35, "28": 38, "S": 24, "M": 28, "L": 32, "XL": 28, "18": 4, "s": 16, "m": 18, "l": 10, "xl": 8}},
+                    {"name": "Yamal Black", "total": 227, "sizes": {"20": 14, "22": 20, "24": 22, "26": 26, "28": 28, "S": 18, "M": 20, "L": 22, "XL": 20, "18": 3, "s": 12, "m": 12, "l": 8, "xl": 7}},
+                    {"name": "Yamal Snake", "total": 233, "sizes": {"20": 14, "22": 20, "24": 24, "26": 26, "28": 28, "S": 18, "M": 20, "L": 22, "XL": 20, "18": 3, "s": 12, "m": 12, "l": 8, "xl": 8}},
+                    {"name": "Yamal Spain", "total": 168, "sizes": {"20": 10, "22": 14, "24": 16, "26": 18, "28": 20, "S": 12, "M": 14, "L": 16, "XL": 14, "18": 2, "s": 8, "m": 10, "l": 6, "xl": 5}},
+                    {"name": "Yamal Pink", "total": 173, "sizes": {"20": 10, "22": 16, "24": 18, "26": 20, "28": 22, "S": 12, "M": 14, "L": 16, "XL": 14, "18": 2, "s": 10, "m": 10, "l": 6, "xl": 6}},
+                    {"name": "Yamal Special", "total": 104, "sizes": {"20": 8, "22": 10, "24": 12, "26": 12, "28": 14, "S": 8, "M": 10, "L": 10, "XL": 8, "18": 2, "s": 6, "m": 6, "l": 4, "xl": 4}}
+                ],
+                "Mbappe": [
+                    {"name": "France Mbappe", "total": 74, "sizes": {"20": 5, "22": 8, "24": 10, "26": 10, "28": 12, "S": 6, "M": 8, "L": 8, "XL": 7, "18": 1, "s": 4, "m": 4, "l": 3, "xl": 3}},
+                    {"name": "Mbappe Orange", "total": 77, "sizes": {"20": 6, "22": 8, "24": 10, "26": 10, "28": 12, "S": 6, "M": 8, "L": 8, "XL": 7, "18": 1, "s": 4, "m": 4, "l": 3, "xl": 3}}
+                ],
+                "Pulisic": [
+                    {"name": "Pulisic AC Milan", "total": 129, "sizes": {"20": 10, "22": 14, "24": 18, "26": 20, "28": 22, "S": 10, "M": 12, "L": 14, "XL": 12, "18": 2, "s": 6, "m": 6, "l": 4, "xl": 4}}
+                ],
+                "SAKA": [
+                    {"name": "SAKA", "total": 127, "sizes": {"20": 10, "22": 14, "24": 16, "26": 18, "28": 20, "S": 10, "M": 12, "L": 14, "XL": 12, "18": 2, "s": 6, "m": 6, "l": 4, "xl": 4}}
+                ],
+                "Vini Jr": [
+                    {"name": "Vini Jr.", "total": 75, "sizes": {"20": 6, "22": 10, "24": 10, "26": 12, "28": 14, "S": 6, "M": 8, "L": 8, "XL": 7, "18": 1, "s": 4, "m": 4, "l": 3, "xl": 3}},
+                    {"name": "Vini Jr Brazil Blue", "total": 9, "sizes": {"20": 1, "22": 1, "24": 1, "26": 2, "28": 2, "S": 1, "M": 1, "L": 1, "XL": 1}}
+                ],
+                "Gimenez": [
+                    {"name": "Gimenez", "total": 168, "sizes": {"20": 12, "22": 18, "24": 22, "26": 24, "28": 26, "S": 14, "M": 16, "L": 18, "XL": 16, "18": 2, "s": 8, "m": 8, "l": 6, "xl": 6}}
+                ]
+            },
+            "tournaments": {
+                "04/03": {
+                    "(NO BALLS) 2026 NCS Easter Bunny Bash (2 Sites)": [{"name": "Acuna Jr. Braves", "size": "YL", "qty": 1}, {"name": "Acuna Jr. Braves", "size": "YS", "qty": 5}, {"name": "Acuna Jr. Braves", "size": "YM", "qty": 1}, {"name": "Acuna Jr. Braves", "size": "AS", "qty": 1}, {"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crews Nationals", "size": "YM", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Freeman Dodgers", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Harper Phillies", "size": "YS", "qty": 4}, {"name": "Henderson Oriols", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "YS", "qty": 3}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YM", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 5}, {"name": "Ohtani Dodgers", "size": "YXL", "qty": 5}, {"name": "Raleigh Mariners", "size": "YS", "qty": 3}, {"name": "Skenes Pirates", "size": "YS", "qty": 3}, {"name": "Skenes Pirates", "size": "YXL", "qty": 1}, {"name": "Skenes Pirates", "size": "YM", "qty": 1}, {"name": "Tatis JR", "size": "YL", "qty": 2}, {"name": "Tatis JR", "size": "YS", "qty": 5}, {"name": "Tatis JR", "size": "YXL", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 3}, {"name": "Turner Phillies", "size": "YL", "qty": 2}, {"name": "Turner Phillies", "size": "YS", "qty": 3}, {"name": "Turner Phillies", "size": "AS", "qty": 2}, {"name": "Whit Royals", "size": "YS", "qty": 2}, {"name": "Whit Royals", "size": "YM", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Argentina", "size": "M", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi Black", "size": "26", "qty": 1}, {"name": "Messi Black", "size": "28", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "M", "qty": 1}, {"name": "Neymar Tribute", "size": "S", "qty": 1}, {"name": "Neymar Tribute", "size": "M", "qty": 1}, {"name": "Neymar Yellow", "size": "S", "qty": 1}, {"name": "Ronaldo Blue", "size": "S", "qty": 1}, {"name": "Ronaldo Blue", "size": "M", "qty": 1}],
+                    "Arsenal Spring Shootout (1 Site)": [{"name": "Messi (Pink)", "size": "s", "qty": 1}, {"name": "Messi (Pink)", "size": "m", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Argentina", "size": "M", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi Black", "size": "26", "qty": 1}, {"name": "Messi Black", "size": "28", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi PSG", "size": "M", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Messi Special", "size": "28", "qty": 1}, {"name": "Messi Special", "size": "20", "qty": 1}, {"name": "Neymar Tribute", "size": "22", "qty": 4}, {"name": "Neymar Tribute", "size": "26", "qty": 6}, {"name": "Neymar Tribute", "size": "24", "qty": 5}, {"name": "Neymar Tribute", "size": "28", "qty": 7}, {"name": "Neymar Tribute", "size": "20", "qty": 2}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Blue", "size": "20", "qty": 2}, {"name": "Ronaldo Red", "size": "26", "qty": 1}, {"name": "Ronaldo Red", "size": "24", "qty": 2}, {"name": "Ronaldo Red", "size": "28", "qty": 1}, {"name": "Ronaldo Red", "size": "20", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Ronaldo WC", "size": "26", "qty": 5}, {"name": "Ronaldo WC", "size": "L", "qty": 1}, {"name": "Ronaldo WC", "size": "20", "qty": 2}, {"name": "Ronaldo White", "size": "24", "qty": 2}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Bunny Hop Extravaganza Classic (1 site),": [{"name": "Acuna Jr. Braves", "size": "AS", "qty": 1}, {"name": "Alvarez Astros", "size": "YXL", "qty": 1}, {"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crews Nationals", "size": "YM", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Freeman Dodgers", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "YXL", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Harper Phillies", "size": "YXL", "qty": 1}, {"name": "Henderson Oriols", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YL", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 3}, {"name": "Judge Yankees", "size": "YXL", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Raleigh Mariners", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "YL", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Soto Mets", "size": "YM", "qty": 2}, {"name": "Soto Mets", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Turner Phillies", "size": "YXL", "qty": 1}, {"name": "Whit Royals", "size": "YL", "qty": 1}, {"name": "Whit Royals", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Tribute", "size": "24", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Easter Bunny Bash ( 2 Sites)": [{"name": "Alvarez Astros", "size": "AS", "qty": 1}, {"name": "Crews Nationals", "size": "AS", "qty": 1}, {"name": "Crow Cubs", "size": "YS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 2}, {"name": "De LaCruz Reds", "size": "YM", "qty": 4}, {"name": "De LaCruz Reds", "size": "YXL", "qty": 2}, {"name": "De LaCruz Reds", "size": "AS", "qty": 2}, {"name": "Henderson Oriols", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "YL", "qty": 1}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YM", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YXL", "qty": 1}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Soto Mets", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "YM", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Turner Phillies", "size": "YS", "qty": 1}, {"name": "Turner Phillies", "size": "AS", "qty": 2}, {"name": "Whit Royals", "size": "YS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Easter Cup (1 Site)": [{"name": "France Mbappe", "size": "L", "qty": 1}, {"name": "France Mbappe", "size": "28", "qty": 1}, {"name": "France Mbappe", "size": "XL", "qty": 1}, {"name": "Gimenez", "size": "26", "qty": 1}, {"name": "Messi (Pink)", "size": "22", "qty": 2}, {"name": "Messi (Pink)", "size": "24", "qty": 3}, {"name": "Messi (Pink)", "size": "26", "qty": 3}, {"name": "Messi (Pink)", "size": "s", "qty": 2}, {"name": "Messi (Pink)", "size": "m", "qty": 1}, {"name": "Messi Argentina", "size": "22", "qty": 2}, {"name": "Messi Argentina", "size": "24", "qty": 3}, {"name": "Messi Argentina", "size": "26", "qty": 3}, {"name": "Messi Argentina", "size": "S", "qty": 4}, {"name": "Messi Argentina", "size": "M", "qty": 1}, {"name": "Messi Black", "size": "22", "qty": 2}, {"name": "Messi Black", "size": "24", "qty": 3}, {"name": "Messi Black", "size": "28", "qty": 3}, {"name": "Messi Special", "size": "26", "qty": 4}, {"name": "Messi Special", "size": "28", "qty": 4}, {"name": "Messi Special", "size": "24", "qty": 2}, {"name": "Messi Special", "size": "20", "qty": 1}, {"name": "Neymar Tribute", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Tribute", "size": "26", "qty": 1}, {"name": "Neymar Tribute", "size": "28", "qty": 3}, {"name": "Neymar Tribute", "size": "M", "qty": 2}, {"name": "Neymar Yellow", "size": "22", "qty": 2}, {"name": "Neymar Yellow", "size": "M", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "26", "qty": 1}, {"name": "Ronaldo Red", "size": "24", "qty": 1}, {"name": "Ronaldo Red", "size": "28", "qty": 1}, {"name": "Ronaldo Special", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 1}, {"name": "Ronaldo WC", "size": "22", "qty": 2}, {"name": "Ronaldo WC", "size": "26", "qty": 2}, {"name": "Ronaldo White", "size": "24", "qty": 2}, {"name": "Yamal Barca", "size": "28", "qty": 2}, {"name": "Yamal Black", "size": "S", "qty": 2}, {"name": "Yamal Flower", "size": "S", "qty": 2}, {"name": "Yamal Kobe", "size": "22", "qty": 1}, {"name": "Yamal Kobe", "size": "26", "qty": 2}, {"name": "Yamal Kobe", "size": "28", "qty": 1}, {"name": "Yamal Kobe", "size": "M", "qty": 1}, {"name": "Yamal Pink", "size": "28", "qty": 4}, {"name": "Yamal Pink", "size": "S", "qty": 5}, {"name": "Yamal Pink", "size": "26", "qty": 3}, {"name": "Yamal Pink", "size": "M", "qty": 3}, {"name": "Yamal Pink", "size": "L", "qty": 1}, {"name": "Yamal Pink", "size": "24", "qty": 1}, {"name": "Yamal Snake", "size": "S", "qty": 2}, {"name": "Yamal Snake", "size": "28", "qty": 1}],
+                    "Easter Shootout (1 Site)": [{"name": "Betts Dodgers", "size": "AS", "qty": 1}, {"name": "Crow Cubs", "size": "YS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Game 7 Easter Classic (SAT ONLY) (2Sites)": [{"name": "Acuna Jr. Braves", "size": "YS", "qty": 1}, {"name": "Acuna Jr. Braves", "size": "YXL", "qty": 1}, {"name": "Alvarez Astros", "size": "YXL", "qty": 1}, {"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crews Nationals", "size": "YM", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Freeman Dodgers", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "YXL", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Harper Phillies", "size": "YXL", "qty": 1}, {"name": "Henderson Oriols", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 3}, {"name": "Judge Yankees", "size": "YXL", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Raleigh Mariners", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "YL", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Soto Mets", "size": "YM", "qty": 2}, {"name": "Soto Mets", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Turner Phillies", "size": "YXL", "qty": 1}, {"name": "Whit Royals", "size": "YL", "qty": 1}, {"name": "Whit Royals", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Glory to the King (1 Site)": [{"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crow Cubs", "size": "YS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Glory to the King 2nd Site(1 Site)": [{"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crow Cubs", "size": "YS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Houston Texas Easter Cup (2 Sites)": [{"name": "Acuna Jr. Braves", "size": "YS", "qty": 5}, {"name": "Acuna Jr. Braves", "size": "YM", "qty": 1}, {"name": "Acuna Jr. Braves", "size": "AS", "qty": 1}, {"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crews Nationals", "size": "YM", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Freeman Dodgers", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Harper Phillies", "size": "YS", "qty": 4}, {"name": "Henderson Oriols", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "YS", "qty": 3}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YM", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 5}, {"name": "Ohtani Dodgers", "size": "YXL", "qty": 5}, {"name": "Raleigh Mariners", "size": "YS", "qty": 3}, {"name": "Skenes Pirates", "size": "YS", "qty": 3}, {"name": "Skenes Pirates", "size": "YXL", "qty": 1}, {"name": "Skenes Pirates", "size": "YM", "qty": 1}, {"name": "Tatis JR", "size": "YL", "qty": 2}, {"name": "Tatis JR", "size": "YS", "qty": 5}, {"name": "Tatis JR", "size": "YXL", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 3}, {"name": "Turner Phillies", "size": "YL", "qty": 2}, {"name": "Turner Phillies", "size": "YS", "qty": 3}, {"name": "Turner Phillies", "size": "AS", "qty": 2}, {"name": "Whit Royals", "size": "YS", "qty": 2}, {"name": "Whit Royals", "size": "YM", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Argentina", "size": "M", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi Black", "size": "26", "qty": 1}, {"name": "Messi Black", "size": "28", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi PSG", "size": "M", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Messi Special", "size": "28", "qty": 1}, {"name": "Messi Special", "size": "20", "qty": 1}, {"name": "Neymar Tribute", "size": "22", "qty": 4}, {"name": "Neymar Tribute", "size": "26", "qty": 6}, {"name": "Neymar Tribute", "size": "24", "qty": 5}, {"name": "Neymar Tribute", "size": "28", "qty": 7}, {"name": "Neymar Tribute", "size": "20", "qty": 2}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Blue", "size": "20", "qty": 2}, {"name": "Ronaldo Red", "size": "26", "qty": 1}, {"name": "Ronaldo Red", "size": "24", "qty": 2}, {"name": "Ronaldo Red", "size": "28", "qty": 1}, {"name": "Ronaldo Red", "size": "20", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Ronaldo WC", "size": "26", "qty": 5}, {"name": "Ronaldo WC", "size": "L", "qty": 1}, {"name": "Ronaldo WC", "size": "20", "qty": 2}, {"name": "Ronaldo White", "size": "24", "qty": 2}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "Jake Johnston Opening Day at the Park (1 Site)": [{"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crow Cubs", "size": "YS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "South MS Easter Bash- Sat Only Columbia (1 site)": [{"name": "Betts Dodgers", "size": "YS", "qty": 4}, {"name": "Crow Cubs", "size": "YS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 1}, {"name": "Guerrero JR", "size": "AS", "qty": 1}, {"name": "Judge Yankees", "size": "YS", "qty": 2}, {"name": "Judge Yankees", "size": "AS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "YS", "qty": 1}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "YS", "qty": 1}, {"name": "Trout Angels", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "South MS Easter Bash- Sat Only Petal (1 Site)": [{"name": "Acuna Jr. Braves", "size": "YXL", "qty": 1}, {"name": "Acuna Jr. Braves", "size": "YL", "qty": 2}, {"name": "Acuna Jr. Braves", "size": "AS", "qty": 1}, {"name": "Alvarez Astros", "size": "YXL", "qty": 1}, {"name": "Betts Dodgers", "size": "AS", "qty": 1}, {"name": "Crow Cubs", "size": "YXL", "qty": 1}, {"name": "De LaCruz Reds", "size": "AS", "qty": 2}, {"name": "Freeman Dodgers", "size": "AS", "qty": 1}, {"name": "Henderson Oriols", "size": "YM", "qty": 1}, {"name": "Judge Yankees", "size": "YL", "qty": 2}, {"name": "Ohtani Dodgers", "size": "YM", "qty": 3}, {"name": "Ohtani Dodgers", "size": "AS", "qty": 1}, {"name": "Raleigh Mariners", "size": "YM", "qty": 1}, {"name": "Skenes Pirates", "size": "YXL", "qty": 1}, {"name": "Skenes Pirates", "size": "YS", "qty": 1}, {"name": "Skenes Pirates", "size": "YL", "qty": 1}, {"name": "Skenes Pirates", "size": "AS", "qty": 1}, {"name": "Soto Mets", "size": "AS", "qty": 1}, {"name": "Tatis JR", "size": "YL", "qty": 1}, {"name": "Tatis JR", "size": "AS", "qty": 1}, {"name": "Trout Angels", "size": "YL", "qty": 2}, {"name": "Turner Phillies", "size": "YM", "qty": 4}, {"name": "Whit Royals", "size": "AS", "qty": 1}, {"name": "Messi Argentina", "size": "S", "qty": 1}, {"name": "Messi Black", "size": "24", "qty": 1}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "S", "qty": 2}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Yellow", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "22", "qty": 1}, {"name": "Ronaldo Special", "size": "24", "qty": 5}, {"name": "Yamal Pink", "size": "S", "qty": 5}],
+                    "U90C Spring Boys Cup": [{"name": "France Mbappe", "size": "28", "qty": 2}, {"name": "France Mbappe", "size": "S", "qty": 1}, {"name": "Gimenez", "size": "26", "qty": 1}, {"name": "Messi (Pink)", "size": "26", "qty": 3}, {"name": "Messi Argentina", "size": "26", "qty": 1}, {"name": "Messi Black", "size": "28", "qty": 3}, {"name": "Messi PSG", "size": "S", "qty": 1}, {"name": "Messi PSG", "size": "28", "qty": 2}, {"name": "Messi Special", "size": "S", "qty": 1}, {"name": "Messi Special", "size": "22", "qty": 2}, {"name": "Messi Special", "size": "28", "qty": 4}, {"name": "Neymar Tribute", "size": "S", "qty": 4}, {"name": "Neymar Tribute", "size": "22", "qty": 1}, {"name": "Neymar Tribute", "size": "26", "qty": 4}, {"name": "Neymar Tribute", "size": "28", "qty": 3}, {"name": "Neymar Tribute", "size": "24", "qty": 1}, {"name": "Neymar Tribute", "size": "20", "qty": 1}, {"name": "Ronaldo Blue", "size": "26", "qty": 1}, {"name": "Ronaldo Special", "size": "S", "qty": 1}, {"name": "Ronaldo Special", "size": "26", "qty": 1}, {"name": "Ronaldo Special", "size": "28", "qty": 1}, {"name": "Ronaldo Special", "size": "M", "qty": 2}, {"name": "Ronaldo Special", "size": "24", "qty": 2}, {"name": "Ronaldo WC", "size": "S", "qty": 2}, {"name": "Ronaldo WC", "size": "26", "qty": 1}, {"name": "Ronaldo WC", "size": "28", "qty": 1}, {"name": "Ronaldo WC", "size": "24", "qty": 1}, {"name": "Ronaldo White", "size": "26", "qty": 1}, {"name": "Yamal Black", "size": "S", "qty": 1}, {"name": "Yamal Black", "size": "26", "qty": 1}, {"name": "Yamal Flower", "size": "S", "qty": 2}, {"name": "Yamal Kobe", "size": "22", "qty": 1}, {"name": "Yamal Kobe", "size": "26", "qty": 2}, {"name": "Yamal Kobe", "size": "28", "qty": 1}, {"name": "Yamal Kobe", "size": "M", "qty": 1}, {"name": "Yamal Pink", "size": "28", "qty": 4}, {"name": "Yamal Pink", "size": "S", "qty": 5}, {"name": "Yamal Pink", "size": "26", "qty": 3}, {"name": "Yamal Pink", "size": "M", "qty": 3}, {"name": "Yamal Pink", "size": "L", "qty": 1}, {"name": "Yamal Pink", "size": "24", "qty": 1}, {"name": "Yamal Snake", "size": "S", "qty": 2}, {"name": "Yamal Snake", "size": "28", "qty": 1}]
+                }
+            }
+        };
 
         const CATEGORIES = [
             { key: 'all', label: 'All Inventory', icon: '📦' },
@@ -310,7 +409,8 @@
             { key: 'pulisic', label: 'Pulisic', icon: '🇺🇸' },
             { key: 'saka', label: 'Saka', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
             { key: 'vini', label: 'Vini Jr', icon: '🇧🇷' },
-            { key: 'gimenez', label: 'Gimenez', icon: '🇲🇽' }
+            { key: 'gimenez', label: 'Gimenez', icon: '🇲🇽' },
+            { key: 'tournaments', label: 'Packed', icon: '📦' }
         ];
 
         let activeCat = 'all';
@@ -337,63 +437,14 @@
             renderInventory();
         }
 
-        function getItemsForCat(cat) {
-            const items = [];
-            if (cat === 'all' || cat === 'baseball') {
-                Object.entries(INVENTORY.baseball).forEach(([name, info]) => {
-                    items.push({ name, ...info, category: 'baseball' });
-                });
-            }
-            if (cat === 'all' || cat === 'messi') {
-                if (INVENTORY.soccer['Messi Jerseys']) {
-                    items.push({ name: 'Messi Jerseys', ...INVENTORY.soccer['Messi Jerseys'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'ronaldo') {
-                if (INVENTORY.soccer['Ronaldo Jerseys']) {
-                    items.push({ name: 'Ronaldo Jerseys', ...INVENTORY.soccer['Ronaldo Jerseys'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'neymar') {
-                if (INVENTORY.soccer['Neymar Jerseys']) {
-                    items.push({ name: 'Neymar Jerseys', ...INVENTORY.soccer['Neymar Jerseys'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'yamal') {
-                if (INVENTORY.soccer['Yamal Jerseys']) {
-                    items.push({ name: 'Yamal Jerseys', ...INVENTORY.soccer['Yamal Jerseys'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'mbappe') {
-                if (INVENTORY.soccer['Mbappe']) {
-                    items.push({ name: 'Mbappe', ...INVENTORY.soccer['Mbappe'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'pulisic') {
-                if (INVENTORY.soccer['Pulisic Jerseys']) {
-                    items.push({ name: 'Pulisic Jerseys', ...INVENTORY.soccer['Pulisic Jerseys'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'saka') {
-                if (INVENTORY.soccer['SAKA']) {
-                    items.push({ name: 'SAKA', ...INVENTORY.soccer['SAKA'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'vini') {
-                if (INVENTORY.soccer['Vini Jr']) {
-                    items.push({ name: 'Vini Jr', ...INVENTORY.soccer['Vini Jr'], category: 'soccer' });
-                }
-            }
-            if (cat === 'all' || cat === 'gimenez') {
-                if (INVENTORY.soccer['Gimenez']) {
-                    items.push({ name: 'Gimenez', ...INVENTORY.soccer['Gimenez'], category: 'soccer' });
-                }
-            }
-            return items;
-        }
-
         function renderInventory() {
             const container = document.getElementById('inventory-content');
+
+            if (activeCat === 'tournaments') {
+                renderTournaments(container);
+                return;
+            }
+
             const items = getItemsForCat(activeCat);
 
             if (items.length === 0) {
@@ -405,13 +456,13 @@
             if (activeCat === 'all') {
                 const groups = {};
                 items.forEach(item => {
-                    const group = item.category === 'baseball' ? 'Baseball' : 'Soccer';
+                    const group = item.category || 'Other';
                     if (!groups[group]) groups[group] = [];
                     groups[group].push(item);
                 });
 
                 container.innerHTML = Object.entries(groups).map(([groupName, groupItems]) => `
-                    <div class="section-title">${groupName === 'Baseball' ? '⚾' : '⚽'} ${groupName}</div>
+                    <div class="section-title">${getGroupIcon(groupName)} ${groupName}</div>
                     <div class="jersey-grid">
                         ${groupItems.map(item => renderJerseyCard(item)).join('')}
                     </div>
@@ -425,8 +476,80 @@
             }
         }
 
+        function getGroupIcon(name) {
+            if (name === 'Baseball') return '⚾';
+            if (name === 'Messi') return '🔟';
+            if (name === 'Ronaldo') return '⚽';
+            if (name === 'Neymar') return '🇧🇷';
+            if (name === 'Yamal') return '🔥';
+            if (name === 'Mbappe') return '🇫🇷';
+            if (name === 'Pulisic') return '🇺🇸';
+            if (name === 'SAKA') return '🏴󠁧󠁢󠁥󠁮󠁧󠁿';
+            if (name === 'Vini Jr') return '🇧🇷';
+            if (name === 'Gimenez') return '🇲🇽';
+            return '📦';
+        }
+
+        function getItemsForCat(cat) {
+            const items = [];
+
+            if (cat === 'all' || cat === 'baseball') {
+                Object.entries(INVENTORY.baseball).forEach(([name, info]) => {
+                    items.push({ name, ...info, category: 'Baseball' });
+                });
+            }
+
+            if (cat === 'all' || cat === 'messi') {
+                (INVENTORY.soccer.Messi || []).forEach(item => {
+                    items.push({ ...item, category: 'Messi' });
+                });
+            }
+            if (cat === 'all' || cat === 'ronaldo') {
+                (INVENTORY.soccer.Ronaldo || []).forEach(item => {
+                    items.push({ ...item, category: 'Ronaldo' });
+                });
+            }
+            if (cat === 'all' || cat === 'neymar') {
+                (INVENTORY.soccer.Neymar || []).forEach(item => {
+                    items.push({ ...item, category: 'Neymar' });
+                });
+            }
+            if (cat === 'all' || cat === 'yamal') {
+                (INVENTORY.soccer.Yamal || []).forEach(item => {
+                    items.push({ ...item, category: 'Yamal' });
+                });
+            }
+            if (cat === 'all' || cat === 'mbappe') {
+                (INVENTORY.soccer.Mbappe || []).forEach(item => {
+                    items.push({ ...item, category: 'Mbappe' });
+                });
+            }
+            if (cat === 'all' || cat === 'pulisic') {
+                (INVENTORY.soccer.Pulisic || []).forEach(item => {
+                    items.push({ ...item, category: 'Pulisic' });
+                });
+            }
+            if (cat === 'all' || cat === 'saka') {
+                (INVENTORY.soccer.SAKA || []).forEach(item => {
+                    items.push({ ...item, category: 'SAKA' });
+                });
+            }
+            if (cat === 'all' || cat === 'vini') {
+                (INVENTORY.soccer['Vini Jr'] || []).forEach(item => {
+                    items.push({ ...item, category: 'Vini Jr' });
+                });
+            }
+            if (cat === 'all' || cat === 'gimenez') {
+                (INVENTORY.soccer.Gimenez || []).forEach(item => {
+                    items.push({ ...item, category: 'Gimenez' });
+                });
+            }
+
+            return items;
+        }
+
         function renderJerseyCard(item) {
-            const sizes = Object.entries(item.sizes)
+            const sizes = Object.entries(item.sizes || {})
                 .filter(([size, qty]) => qty > 0)
                 .sort((a, b) => {
                     const order = ['18','20','22','24','26','28','YS','YM','YL','YXL','S','M','L','XL','AXL'];
@@ -442,7 +565,7 @@
                 <div class="jersey-card">
                     <div class="jersey-header">
                         <div class="jersey-name">${item.name}</div>
-                        <div class="jersey-total">${item.total} <span>units</span></div>
+                        <div class="jersey-total">${Math.round(item.total)} <span>units</span></div>
                     </div>
                     <div class="size-grid">
                         ${sizes.map(([size, qty]) => {
@@ -459,6 +582,35 @@
             `;
         }
 
+        function renderTournaments(container) {
+            const dates = INVENTORY.tournaments;
+            if (!dates || Object.keys(dates).length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#8892b0;">No tournament data</div>';
+                return;
+            }
+
+            let html = '';
+            for (const [date, tournaments] of Object.entries(dates)) {
+                html += `<div class="tournament-date">📅 ${date}</div>`;
+                for (const [name, items] of Object.entries(tournaments)) {
+                    const totalItems = items.reduce((s, i) => s + i.qty, 0);
+                    html += `
+                        <div class="tournament-card">
+                            <div class="tournament-name">${name} <span style="color:#8892b0;font-size:0.8em;">(${totalItems} items)</span></div>
+                            <div class="tournament-items">
+                                ${items.map(item => `
+                                    <div class="tournament-item">
+                                        <span class="qty">${Math.round(item.qty)}</span> ${item.name} (${item.size})
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            container.innerHTML = html;
+        }
+
         function updateStats() {
             let total = 0, baseball = 0, soccer = 0, skus = 0;
 
@@ -467,10 +619,13 @@
                 baseball += item.total;
                 skus++;
             });
-            Object.values(INVENTORY.soccer).forEach(item => {
-                total += item.total;
-                soccer += item.total;
-                skus++;
+
+            Object.values(INVENTORY.soccer).forEach(playerItems => {
+                playerItems.forEach(item => {
+                    total += item.total;
+                    soccer += item.total;
+                    skus++;
+                });
             });
 
             document.getElementById('st-total').textContent = total >= 1000 ? (total/1000).toFixed(1) + 'K' : total;
