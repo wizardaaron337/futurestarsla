@@ -13,6 +13,7 @@
     <title>Enter Code — Future Stars</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="animations.css?v=2">
+    <script src="auth-config.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -240,8 +241,9 @@
     </div>
 
     <script>
-        const ACCESS_PIN = '2026';
-        const name = sessionStorage.getItem('fs_name') || 'User';
+        const username = sessionStorage.getItem('fs_auth');
+        const user = AUTH_CONFIG.getUser(username);
+        const name = user ? user.name : (sessionStorage.getItem('fs_name') || 'User');
         document.getElementById('user-name').textContent = name;
 
         let pin = '';
@@ -280,7 +282,7 @@
                 msg.textContent = 'Enter all 4 digits';
                 return;
             }
-            if (pin === ACCESS_PIN) {
+            if (AUTH_CONFIG.verifyPin(username, pin)) {
                 msg.className = 'msg success';
                 msg.textContent = 'Access granted!';
                 sessionStorage.setItem('fs_pin_verified', 'true');

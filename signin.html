@@ -202,6 +202,7 @@
         }
     </style>
     <link rel="stylesheet" href="animations.css?v=2">
+    <script src="auth-config.js"></script>
 </head>
 <body>
     <div class="progress-bar" id="progress-bar"></div>
@@ -241,13 +242,6 @@
             const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
             document.getElementById('progress-bar').style.width = pct+'%';
         });
-        const CREW = {
-            'jr': { role: 'owner', name: 'JR' },
-            'lane': { role: 'owner', name: 'Lane' },
-            'pj': { role: 'logistics', name: 'PJ' },
-            'caleb': { role: 'tournament', name: 'Caleb' },
-            'marlon': { role: 'inventory', name: 'Marlon' }
-        };
         let picked = null;
         const msg = document.getElementById('msg');
 
@@ -264,11 +258,17 @@
                 msg.textContent = 'Click your name first!';
                 return;
             }
+            const user = AUTH_CONFIG.getUser(picked);
+            if (!user) {
+                msg.className = 'msg error';
+                msg.textContent = 'User not found!';
+                return;
+            }
             msg.className = 'msg success';
             msg.textContent = 'Logging in...';
             sessionStorage.setItem('fs_auth', picked);
-            sessionStorage.setItem('fs_role', CREW[picked].role);
-            sessionStorage.setItem('fs_name', CREW[picked].name);
+            sessionStorage.setItem('fs_role', user.role);
+            sessionStorage.setItem('fs_name', user.name);
             setTimeout(() => window.location.href = 'pin.html', 500);
         }
     </script>

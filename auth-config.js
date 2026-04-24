@@ -1,0 +1,85 @@
+/**
+ * Future Stars LA - Authentication Configuration
+ * Edit this file to change PINs, roles, and access permissions
+ */
+
+const AUTH_CONFIG = {
+    // PIN codes for each user (change these as needed)
+    users: {
+        'jr': { 
+            name: 'JR', 
+            role: 'owner', 
+            pin: 'jr26',
+            emoji: '👑'
+        },
+        'lane': { 
+            name: 'Lane', 
+            role: 'owner', 
+            pin: 'lane26',
+            emoji: '👑'
+        },
+        'pj': { 
+            name: 'PJ', 
+            role: 'logistics', 
+            pin: 'pj26',
+            emoji: '🚐'
+        },
+        'caleb': { 
+            name: 'Caleb', 
+            role: 'tournament', 
+            pin: 'caleb26',
+            emoji: '📞'
+        },
+        'marlon': { 
+            name: 'Marlon', 
+            role: 'inventory', 
+            pin: 'marlon26',
+            emoji: '📦'
+        }
+    },
+
+    // Role-based page permissions
+    roles: {
+        owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact', 'inventory-v2'],
+        logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
+        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory', 'jersey-gallery', 'privacy', 'contact', 'inventory-v2'],
+        inventory: ['dashboard', 'inventory', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact', 'inventory-v2']
+    },
+
+    // Navigation items per role
+    navItems: [
+        { page: 'dashboard', label: 'Dashboard', icon: '📊', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
+        { page: 'tournaments', label: 'Tournaments', icon: '🏆', roles: ['owner', 'logistics', 'tournament'] },
+        { page: 'inventory-v2', label: 'Inventory', icon: '📦', roles: ['owner', 'inventory', 'tournament'] },
+        { page: 'trips', label: 'Trips', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
+        { page: 'team', label: 'Team', icon: '👥', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
+        { page: 'jersey-gallery', label: 'Jersey Gallery', icon: '👕', roles: ['owner', 'inventory', 'tournament'] },
+        { page: 'trip-planner', label: 'Trip Planner', icon: '📝', roles: ['owner', 'logistics', 'tournament'] },
+        { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', roles: ['owner', 'inventory'] },
+        { divider: true },
+        { page: 'privacy', label: 'Privacy', icon: '🔒', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
+        { page: 'contact', label: 'Contact', icon: '📧', roles: ['owner', 'logistics', 'tournament', 'inventory'] }
+    ],
+
+    // Helper function to verify PIN
+    verifyPin: function(username, pin) {
+        const user = this.users[username];
+        if (!user) return false;
+        return user.pin === pin;
+    },
+
+    // Helper function to get user data
+    getUser: function(username) {
+        return this.users[username] || null;
+    },
+
+    // Helper function to check page access
+    canAccess: function(role, page) {
+        if (role === 'owner') return true;
+        const allowed = this.roles[role] || this.roles.inventory;
+        return allowed.includes(page);
+    }
+};
+
+// Make available globally
+window.AUTH_CONFIG = AUTH_CONFIG;
