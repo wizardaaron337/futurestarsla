@@ -301,6 +301,104 @@
             letter-spacing: 1px;
         }
 
+        /* Clickable card */
+        .trip-card {
+            cursor: pointer;
+        }
+        .trip-card:hover .trip-name {
+            color: var(--gold);
+        }
+
+        /* Past trip styling */
+        .trip-card.past {
+            opacity: 0.5;
+        }
+        .trip-card.past .trip-status {
+            background: rgba(168,164,152,0.1);
+            color: var(--gray);
+            border-color: rgba(168,164,152,0.2);
+        }
+
+        /* Show past toggle */
+        .toggle-past {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--gray);
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .toggle-past:hover { border-color: var(--gold); color: var(--white); }
+        .toggle-past input { accent-color: var(--gold); }
+
+        /* Trip detail modal */
+        .trip-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .trip-modal-overlay.active { display: flex; }
+        .trip-modal {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .trip-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.8em;
+            cursor: pointer;
+        }
+        .trip-modal-close:hover { color: var(--white); }
+        .trip-modal h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            padding-right: 40px;
+        }
+        .detail-section {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .detail-section:last-child { border-bottom: none; }
+        .detail-section h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .detail-row-modal {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9em;
+        }
+        .detail-row-modal .label { color: var(--gray); }
+        .detail-row-modal .value { color: var(--white); font-weight: 500; }
+
         .empty-state {
             text-align: center;
             padding: 80px 20px;
@@ -382,9 +480,18 @@
                 <option value="Baseball">Baseball</option>
                 <option value="BB">Baseball</option>
             </select>
+            <label class="toggle-past">
+                <input type="checkbox" id="show-past" onchange="render()">
+                <span>Show past trips</span>
+            </label>
         </div>
 
         <div class="trips-grid" id="grid"></div>
+    </div>
+
+    <!-- Trip Detail Modal -->
+    <div class="trip-modal-overlay" id="trip-modal" onclick="if(event.target===this)closeTripModal()">
+        <div class="trip-modal" id="trip-modal-content"></div>
     </div>
 
     <script src="crew-data.js"></script>
@@ -459,11 +566,53 @@
             document.getElementById('subtitle').textContent = `${total} trips across ${allStates.length} states — ${locked} locked in — ${formatMoney(totalRev)} revenue tracked`;
         }
 
+        // Month name to number mapping (handles typos like "Febuary")
+        const MONTH_MAP = {
+            'jan': 0, 'january': 0,
+            'feb': 1, 'febuary': 1, 'february': 1,
+            'mar': 2, 'march': 2,
+            'apr': 3, 'april': 3,
+            'may': 4,
+            'jun': 5, 'june': 5,
+            'jul': 6, 'july': 6,
+            'aug': 7, 'august': 7,
+            'sep': 8, 'sept': 8, 'september': 8,
+            'oct': 9, 'october': 9,
+            'nov': 10, 'november': 10,
+            'dec': 11, 'december': 11
+        };
+
+        function parseTripDate(trip) {
+            const monthStr = (trip.month || '').toLowerCase().trim();
+            const startDateStr = (trip.startDate || '').toLowerCase().trim();
+            
+            const monthNum = MONTH_MAP[monthStr];
+            if (monthNum === undefined) return null;
+            
+            // Extract day number from strings like "1st", "8th", "15th", "16-17", "30-Sep 1"
+            let day = 1;
+            const dayMatch = startDateStr.match(/(\d+)/);
+            if (dayMatch) {
+                day = parseInt(dayMatch[1]);
+            }
+            
+            return new Date(2026, monthNum, day);
+        }
+
+        function isPastTrip(trip) {
+            const tripDate = parseTripDate(trip);
+            if (!tripDate) return false; // If we can't parse, show it
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return tripDate < today;
+        }
+
         function render() {
             const search = document.getElementById('search').value.toLowerCase();
             const month = document.getElementById('filter-month').value;
             const state = document.getElementById('filter-state').value;
             const sport = document.getElementById('filter-sport').value;
+            const showPast = document.getElementById('show-past').checked;
 
             let filtered = CREW_TRIPS.filter(t => {
                 if (search && !t.name.toLowerCase().includes(search) && !t.state.toLowerCase().includes(search) && !t.crew.toLowerCase().includes(search)) return false;
@@ -474,12 +623,24 @@
                     if (sport === 'Baseball' && !s.includes('baseball') && !s.includes('bb')) return false;
                     if (sport === 'Soccer' && !s.includes('soccer')) return false;
                 }
+                // Filter out past trips unless show-past is checked
+                if (!showPast && isPastTrip(t)) return false;
                 return true;
+            });
+
+            // Sort by date (upcoming first)
+            filtered.sort((a, b) => {
+                const da = parseTripDate(a);
+                const db = parseTripDate(b);
+                if (!da && !db) return 0;
+                if (!da) return 1;
+                if (!db) return -1;
+                return da - db;
             });
 
             const grid = document.getElementById('grid');
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><h3>No trips found</h3><p>Try adjusting your filters</p></div>`;
+                grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><h3>${showPast ? 'No trips found' : 'No upcoming trips'}</h3><p>${showPast ? 'Try adjusting your filters' : 'All trips are in the past. Check "Show past trips" to see them.'}</p></div>`;
                 return;
             }
 
@@ -488,6 +649,7 @@
                 const dateStr = t.startDate ? `${t.startDate}${t.endDate ? ' — ' + t.endDate : ''}` : '';
                 const sportDisplay = t.sport === 'BB' || t.sport.toLowerCase() === 'baseball' ? 'Baseball' : 
                                      t.sport.toLowerCase() === 'soccer' ? 'Soccer' : t.sport;
+                const pastClass = isPastTrip(t) ? 'past' : '';
                 
                 // Find matching cost data
                 const cost = findCost(t.name);
@@ -509,7 +671,7 @@
                 ` : '';
                 
                 return `
-                    <div class="trip-card">
+                    <div class="trip-card ${pastClass}" onclick="openTripDetail('${t.id}')">
                         <div class="trip-header">
                             <div class="trip-name">${t.name}</div>
                             <div class="trip-status ${statusClass}">${t.status || 'PENDING'}</div>
@@ -536,6 +698,68 @@
             }).join('');
         }
 
+        function openTripDetail(tripId) {
+            const trip = CREW_TRIPS.find(t => t.id === tripId);
+            if (!trip) return;
+            
+            const cost = findCost(trip.name);
+            const sportDisplay = trip.sport === 'BB' || trip.sport.toLowerCase() === 'baseball' ? 'Baseball' : 
+                                 trip.sport.toLowerCase() === 'soccer' ? 'Soccer' : trip.sport;
+            
+            let modalHtml = `
+                <button class="trip-modal-close" onclick="closeTripModal()">&times;</button>
+                <h2>${trip.name}</h2>
+                <div class="detail-section">
+                    <h4>📍 Location & Dates</h4>
+                    <div class="detail-row-modal"><span class="label">Sport</span><span class="value">${sportDisplay}</span></div>
+                    <div class="detail-row-modal"><span class="label">State</span><span class="value">${trip.state || 'TBD'}</span></div>
+                    <div class="detail-row-modal"><span class="label">Month</span><span class="value">${trip.month || 'TBD'}</span></div>
+                    <div class="detail-row-modal"><span class="label">Dates</span><span class="value">${trip.startDate || 'TBD'} ${trip.endDate ? '— ' + trip.endDate : ''}</span></div>
+                </div>
+            `;
+            
+            if (trip.crew || trip.crewNeeded) {
+                modalHtml += `
+                    <div class="detail-section">
+                        <h4>👥 Crew</h4>
+                        ${trip.crew ? `<div class="detail-row-modal"><span class="label">Assigned</span><span class="value">${trip.crew}</span></div>` : ''}
+                        ${trip.crewNeeded ? `<div class="detail-row-modal"><span class="label">Needed</span><span class="value">${trip.crewNeeded}</span></div>` : ''}
+                    </div>
+                `;
+            }
+            
+            if (trip.leaveDate || trip.leaveTime || trip.rentalReturn) {
+                modalHtml += `
+                    <div class="detail-section">
+                        <h4>🚐 Travel</h4>
+                        ${trip.leaveDate ? `<div class="detail-row-modal"><span class="label">Leave Date</span><span class="value">${trip.leaveDate}</span></div>` : ''}
+                        ${trip.leaveTime ? `<div class="detail-row-modal"><span class="label">Leave Time</span><span class="value">${trip.leaveTime}</span></div>` : ''}
+                        ${trip.rentalReturn ? `<div class="detail-row-modal"><span class="label">Rental Return</span><span class="value">${trip.rentalReturn}</span></div>` : ''}
+                        ${trip.pexCard ? `<div class="detail-row-modal"><span class="label">PEX Card</span><span class="value">${trip.pexCard}</span></div>` : ''}
+                    </div>
+                `;
+            }
+            
+            if (cost && cost.revenue > 0) {
+                modalHtml += `
+                    <div class="detail-section">
+                        <h4>💰 Financials</h4>
+                        <div class="detail-row-modal"><span class="label">Revenue</span><span class="value" style="color:var(--gold);">${formatMoney(cost.revenue)}</span></div>
+                        <div class="detail-row-modal"><span class="label">Cost</span><span class="value">${formatMoney(cost.cost)}</span></div>
+                        <div class="detail-row-modal"><span class="label">Profit</span><span class="value" style="color:var(--green);">${formatMoney(cost.profit)}</span></div>
+                        <div class="detail-row-modal"><span class="label">Margin</span><span class="value">${cost.margin > 0 ? cost.margin.toFixed(1) + '%' : '—'}</span></div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('trip-modal-content').innerHTML = modalHtml;
+            document.getElementById('trip-modal').classList.add('active');
+        }
+
+        function closeTripModal() {
+            document.getElementById('trip-modal').classList.remove('active');
+        }
+
         function logout() {
             sessionStorage.clear();
             window.location.href = 'signin.html';
@@ -543,6 +767,11 @@
 
         updateStats();
         render();
+
+        // Keyboard support for modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeTripModal();
+        });
     </script>
     <script>
         // Particles & Progress Bar
