@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Future Stars - Sign In</title>
+    <style>
+        body { font-family: Arial; background: #050810; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { text-align: center; }
+        h1 { color: #ffd700; }
+        button { padding: 15px 30px; margin: 10px; font-size: 18px; cursor: pointer; background: #00d4ff; border: none; border-radius: 8px; color: #000; }
+        button:hover { background: #ffd700; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🏆 FUTURE STARS</h1>
+        <p>Click your name to login:</p>
+        <button onclick="login('jr')">JR</button>
+        <button onclick="login('lane')">Lane</button>
+        <button onclick="login('pj')">PJ</button>
+        <button onclick="login('caleb')">Caleb</button>
+        <button onclick="login('marlon')">Marlon</button>
+    </div>
+    <script>
+        const CREW = {
+            'jr': { role: 'owner', name: 'JR' },
+            'lane': { role: 'owner', name: 'Lane' },
+            'pj': { role: 'logistics', name: 'PJ' },
+            'caleb': { role: 'tournament', name: 'Caleb' },
+            'marlon': { role: 'inventory', name: 'Marlon' }
+        };
+        function login(who) {
+            sessionStorage.setItem('fs_auth', who);
+            sessionStorage.setItem('fs_role', CREW[who].role);
+            sessionStorage.setItem('fs_name', CREW[who].name);
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
