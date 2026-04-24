@@ -324,8 +324,12 @@
         }
     }
 
-    // Run integration
-    integrateNav();
+    // Run integration when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', integrateNav);
+    } else {
+        integrateNav();
+    }
 
     // Add overlay for clicking outside
     document.body.insertAdjacentHTML('beforeend', '<div class="fs-dropdown-overlay" id="fsOverlay" onclick="toggleFsMenu()"></div>');
