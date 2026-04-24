@@ -475,6 +475,16 @@
             <button class="tab" onclick="switchTab('pack')">📝 Pack Trip</button>
         </div>
 
+        <!-- Barcode Scanner -->
+        <div class="barcode-section" style="background:var(--black-card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;display:flex;gap:12px;align-items:center;">
+            <span style="font-size:1.5em;">📱</span>
+            <div style="flex:1;">
+                <label style="display:block;font-size:0.75em;color:var(--gray);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Barcode Scan</label>
+                <input type="text" id="barcode-input" placeholder="Scan or type barcode..." style="width:100%;padding:10px;background:var(--black);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;" onkeydown="if(event.key==='Enter')processBarcode()">
+            </div>
+            <button class="btn btn-primary" onclick="processBarcode()" style="padding:10px 16px;">Check</button>
+        </div>
+
         <!-- Inventory Tab -->
         <div id="tab-inventory" class="tab-content">
             <div class="inv-section">
@@ -849,6 +859,44 @@
             document.getElementById('trip-date').value = '';
             document.getElementById('trip-location').value = '';
             document.querySelectorAll('#jersey-picker input').forEach(cb => cb.checked = false);
+        }
+
+        // Barcode Processing
+        function processBarcode() {
+            const input = document.getElementById('barcode-input');
+            const code = input.value.trim();
+            if (!code) return;
+            
+            // Simple barcode lookup - check if code matches any jersey name or SKU pattern
+            let found = false;
+            let result = '';
+            
+            // Check baseball jerseys
+            Object.entries(INVENTORY.baseball).forEach(([name, data]) => {
+                if (code.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(code.toLowerCase())) {
+                    found = true;
+                    result = `⚾ ${name}: ${data.total} units in stock`;
+                }
+            });
+            
+            // Check soccer jerseys
+            if (!found) {
+                Object.entries(INVENTORY.soccer).forEach(([name, data]) => {
+                    if (code.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(code.toLowerCase())) {
+                        found = true;
+                        result = `⚽ ${name}: ${data.total} units in stock`;
+                    }
+                });
+            }
+            
+            if (found) {
+                alert('✅ Found: ' + result);
+            } else {
+                alert('❌ No match for: ' + code);
+            }
+            
+            input.value = '';
+            input.focus();
         }
 
         // Init
