@@ -419,7 +419,7 @@
             const nav = document.getElementById('main-nav');
             if (!nav || !role) return;
             const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
-            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker' };
+            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
             const current = 'planner';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';
