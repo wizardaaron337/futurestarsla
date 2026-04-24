@@ -335,6 +335,23 @@
             color: var(--gold);
             font-weight: 600;
         }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; color: black; }
+            .header, .nav-btn, .tab-bar, .btn, .btn-secondary, .actions { display: none !important; }
+            .container { padding: 0; max-width: 100%; }
+            .section-title { color: black; border-bottom: 2px solid #333; }
+            .table-header, .table-row { border-bottom: 1px solid #ccc; }
+            .table-header { background: #f0f0f0; color: black; }
+            .table-row { background: white; }
+            .size-bar { background: #ddd; }
+            .size-fill { background: #333 !important; }
+            .shipped-badge { border: 1px solid #999; color: #666; }
+            .trip-card { border: 1px solid #ccc; break-inside: avoid; }
+            .trip-card.shipped { opacity: 0.7; }
+            .modal { display: none !important; }
+        }
         .modal-actions {
             display: flex;
             gap: 10px;
@@ -556,6 +573,7 @@
             <div id="modal-content"></div>
             <div class="modal-actions">
                 <button class="btn btn-primary" onclick="markShipped()">Mark as Shipped</button>
+                <button class="btn btn-secondary" onclick="printTrip()">🖨️ Print</button>
                 <button class="btn btn-secondary" onclick="closeModal()">Close</button>
             </div>
         </div>
@@ -801,6 +819,68 @@
         renderInventory();
         renderTrips();
         renderJerseyPicker();
+
+        function printTrip() {
+            if (!currentTripId) return;
+            const trip = TRIPS.find(t => t.id === currentTripId);
+            if (!trip) return;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Packing List - ${trip.name}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+                        h1 { color: #333; border-bottom: 3px solid #C9A227; padding-bottom: 10px; }
+                        .meta { color: #666; margin: 20px 0; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th { background: #f0f0f0; text-align: left; padding: 12px; border-bottom: 2px solid #333; }
+                        td { padding: 12px; border-bottom: 1px solid #ddd; }
+                        .checkbox { width: 30px; }
+                        .footer { margin-top: 40px; color: #999; font-size: 0.9em; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <h1>📦 Packing List</h1>
+                    <div class="meta">
+                        <strong>Trip:</strong> ${trip.name}<br>
+                        <strong>Date:</strong> ${trip.date}<br>
+                        <strong>Location:</strong> ${trip.location}<br>
+                        <strong>Sport:</strong> ${trip.sport}<br>
+                        <strong>Status:</strong> ${trip.shipped ? '✅ SHIPPED' : '📦 Ready to Pack'}
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="checkbox">☐</th>
+                                <th>Jersey</th>
+                                <th>Quantity</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${trip.items.map(item => `
+                                <tr>
+                                    <td class="checkbox">☐</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.qty}</td>
+                                    <td>${item.size || 'Mixed'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="footer">
+                        <p>Future Stars Sports Co</p>
+                        <p>Printed: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    <button class="no-print" onclick="window.print()" style="margin-top:30px;padding:12px 24px;background:#C9A227;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">🖨️ Print This Page</button>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
 
         // Close modal on Escape
         document.addEventListener('keydown', function(e) {
