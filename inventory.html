@@ -13,6 +13,7 @@
             --purple: #b829dd;
             --green: #00ff88;
             --red: #ff4444;
+            --orange: #ff8c00;
             --bg: #050810;
             --card: rgba(255,255,255,0.02);
         }
@@ -21,13 +22,13 @@
             background: var(--bg);
             color: #fff;
             min-height: 100vh;
-            font-size: 14px;
+            font-size: 15px;
         }
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 20px;
+            padding: 15px 25px;
             background: rgba(5,8,16,0.95);
             border-bottom: 1px solid rgba(0,212,255,0.1);
             position: sticky;
@@ -36,21 +37,21 @@
         }
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.4em;
+            font-size: 1.6em;
             font-weight: 700;
             background: linear-gradient(135deg, var(--gold), var(--blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
         }
-        .nav { display: flex; gap: 8px; }
+        .nav { display: flex; gap: 8px; flex-wrap: wrap; }
         .nav a {
-            padding: 6px 14px;
+            padding: 8px 16px;
             border: 1px solid rgba(0,212,255,0.2);
             color: var(--blue);
             text-decoration: none;
             border-radius: 6px;
-            font-size: 0.85em;
+            font-size: 0.9em;
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
             transition: all 0.2s;
@@ -63,24 +64,24 @@
         .main {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 25px;
         }
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .stat {
             background: var(--card);
             border: 1px solid rgba(0,212,255,0.08);
             border-radius: 12px;
-            padding: 16px;
+            padding: 18px;
             text-align: center;
         }
         .stat-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em;
+            font-size: 2em;
             font-weight: 900;
             background: linear-gradient(135deg, var(--gold), var(--blue));
             -webkit-background-clip: text;
@@ -91,13 +92,117 @@
             font-size: 0.8em;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 4px;
+            margin-top: 6px;
         }
-        .section-title {
+
+        /* Category Tabs */
+        .cat-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,212,255,0.1);
+        }
+        .cat-tab {
+            padding: 10px 20px;
+            background: var(--card);
+            border: 1px solid rgba(0,212,255,0.15);
+            color: var(--blue);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .cat-tab:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .cat-tab.active {
+            background: rgba(0,212,255,0.1);
+            border-color: var(--blue);
+            color: #fff;
+        }
+
+        /* Jersey Cards */
+        .jersey-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .jersey-card {
+            background: var(--card);
+            border: 1px solid rgba(0,212,255,0.08);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+        .jersey-card:hover {
+            border-color: rgba(0,212,255,0.2);
+            transform: translateY(-2px);
+        }
+        .jersey-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .jersey-name {
             font-family: 'Orbitron', sans-serif;
             font-size: 1em;
             color: var(--gold);
-            margin-bottom: 12px;
+        }
+        .jersey-total {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4em;
+            color: var(--green);
+        }
+        .jersey-total span {
+            font-size: 0.6em;
+            color: #8892b0;
+        }
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 8px;
+        }
+        .size-box {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        .size-box.low {
+            border-color: rgba(255,68,68,0.3);
+            background: rgba(255,68,68,0.05);
+        }
+        .size-box.medium {
+            border-color: rgba(255,140,0,0.3);
+            background: rgba(255,140,0,0.05);
+        }
+        .size-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75em;
+            color: var(--blue);
+            margin-bottom: 4px;
+        }
+        .size-qty {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fff;
+        }
+        .size-box.low .size-qty { color: var(--red); }
+        .size-box.medium .size-qty { color: var(--orange); }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            color: var(--gold);
+            margin: 25px 0 15px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -109,146 +214,22 @@
             height: 1px;
             background: linear-gradient(90deg, var(--gold), transparent);
         }
-        .controls {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-            align-items: center;
-        }
-        .search-box {
-            flex: 1;
-            min-width: 200px;
-            position: relative;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 8px 12px 8px 36px;
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.15);
-            border-radius: 8px;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.95em;
-        }
-        .search-box input:focus { outline: none; border-color: var(--blue); }
-        .search-box::before {
-            content: '🔍';
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.9em;
-            opacity: 0.5;
-        }
-        .filter-btn {
-            padding: 8px 16px;
-            background: var(--card);
-            border: 1px solid rgba(0,212,255,0.15);
-            color: var(--blue);
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.85em;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: rgba(0,212,255,0.1);
-            border-color: var(--blue);
-        }
-        .inventory-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-        .inventory-table th {
-            text-align: left;
-            padding: 10px 12px;
-            color: var(--blue);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75em;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-bottom: 1px solid rgba(0,212,255,0.15);
-            cursor: pointer;
-            user-select: none;
-        }
-        .inventory-table th:hover { color: var(--gold); }
-        .inventory-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-        }
-        .inventory-table tr:hover td {
-            background: rgba(255,255,255,0.02);
-        }
-        .item-name { font-weight: 600; color: #fff; }
-        .item-category {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-        }
-        .cat-baseball { background: rgba(255,68,68,0.1); color: var(--red); border: 1px solid rgba(255,68,68,0.2); }
-        .cat-soccer { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
-        .cat-tournament { background: rgba(0,212,255,0.1); color: var(--blue); border: 1px solid rgba(0,212,255,0.2); }
-        .cat-other { background: rgba(184,41,221,0.1); color: var(--purple); border: 1px solid rgba(184,41,221,0.2); }
-        .qty-bar {
-            width: 60px;
-            height: 4px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 2px;
-            overflow: hidden;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-        .qty-fill {
-            height: 100%;
-            border-radius: 2px;
-            background: linear-gradient(90deg, var(--blue), var(--green));
-        }
-        .size-tags {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-        .size-tag {
-            padding: 2px 6px;
-            background: rgba(0,212,255,0.06);
-            border: 1px solid rgba(0,212,255,0.1);
-            border-radius: 4px;
-            font-size: 0.75em;
-            color: #8892b0;
-            font-family: 'Orbitron', sans-serif;
-        }
-        .loading {
-            text-align: center;
-            padding: 60px;
-            color: var(--blue);
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 4px;
-        }
         .last-update {
             text-align: right;
             color: var(--green);
-            font-size: 0.8em;
-            margin-bottom: 10px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
         }
         @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 10px; padding: 10px; }
+            .header { flex-direction: column; gap: 10px; }
             .nav { flex-wrap: wrap; justify-content: center; }
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .inventory-table { font-size: 0.8em; }
-            .inventory-table th, .inventory-table td { padding: 8px 6px; }
-            .size-tags { display: none; }
+            .jersey-grid { grid-template-columns: 1fr; }
+            .cat-tabs { overflow-x: auto; flex-wrap: nowrap; }
         }
     </style>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="signin.html";}</script>
+    <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="sign-in.html";}</script>
     <div class="header">
         <div class="logo">🏆 FUTURE STARS</div>
         <nav class="nav">
@@ -258,193 +239,247 @@
             <a href="trips.html">Trips</a>
             <a href="trip-planner.html">Planner</a>
             <a href="team.html">Team</a>
-            <a href="jersey-gallery.html">Jerseys</a>
         </nav>
     </div>
-    
+
     <div class="main">
-        <div class="last-update" id="last-update">Loading Sortly data...</div>
-        
-        <div class="stats" id="stats">
-            <div class="stat">
-                <div class="stat-value" id="s-products">--</div>
-                <div class="stat-label">Products</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value" id="s-units">--</div>
-                <div class="stat-label">Total Units</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value" id="s-baseball">--</div>
-                <div class="stat-label">Baseball</div>
-            </div>
-            <div class="stat">
-                <div class="stat-value" id="s-soccer">--</div>
-                <div class="stat-label">Soccer</div>
-            </div>
+        <div class="last-update" id="last-update">Loading inventory...</div>
+
+        <div class="stats">
+            <div class="stat"><div class="stat-value" id="st-total">--</div><div class="stat-label">Total Units</div></div>
+            <div class="stat"><div class="stat-value" id="st-baseball">--</div><div class="stat-label">Baseball</div></div>
+            <div class="stat"><div class="stat-value" id="st-soccer">--</div><div class="stat-label">Soccer</div></div>
+            <div class="stat"><div class="stat-value" id="st-skus">--</div><div class="stat-label">SKUs</div></div>
         </div>
-        
-        <div class="section-title">📦 Inventory</div>
-        <div class="controls">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search products..." onkeyup="renderTable()">
-            </div>
-            <button class="filter-btn active" onclick="setFilter('all')" data-filter="all">All</button>
-            <button class="filter-btn" onclick="setFilter('baseball')" data-filter="baseball">⚾ Baseball</button>
-            <button class="filter-btn" onclick="setFilter('soccer')" data-filter="soccer">⚽ Soccer</button>
-            <button class="filter-btn" onclick="setFilter('tournament')" data-filter="tournament">🏆 Tournaments</button>
-        </div>
-        
-        <div id="table-container">
-            <div class="loading">LOADING...</div>
-        </div>
+
+        <div class="cat-tabs" id="cat-tabs"></div>
+        <div id="inventory-content"></div>
     </div>
-    
+
     <script>
-        let inventoryData = [];
-        let currentFilter = 'all';
-        let sortCol = 'name';
-        let sortDir = 1;
-        
-        async function loadData() {
-            try {
-                const res = await fetch('sortly-data.json');
-                const data = await res.json();
-                inventoryData = flattenData(data);
-                updateStats();
-                renderTable();
-                document.getElementById('last-update').textContent = 'Updated: ' + new Date().toLocaleTimeString();
-            } catch (e) {
-                document.getElementById('last-update').textContent = 'Error loading data';
-                console.error(e);
-            }
+        // INVENTORY DATA
+        const INVENTORY = {
+  "baseball": {
+    "Acuna Jr. Braves": { "total": 184, "sizes": {"YS": 42, "YM": 16, "YL": 49, "AS": 11, "YXL": 66} },
+    "Alvarez Astros": { "total": 36, "sizes": {"YL": 12, "YXL": 11, "YM": 5, "AS": 2, "YS": 6} },
+    "Betts Dodgers": { "total": 226, "sizes": {"YXL": 37, "AS": 60, "YL": 78, "YM": 51} },
+    "City Connect Black Griffin": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
+    "City Connect Black Skenes": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
+    "City Connect Braves Acuna Jr.": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
+    "City Connect Navy Tatis": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
+    "City Connect Red De La Cruz": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "YXL": 1, "S": 1} },
+    "Crews Nationals": { "total": 94, "sizes": {"YS": 11, "YM": 12, "YXL": 21, "AS": 27, "YL": 23} },
+    "Crow Cubs": { "total": 104, "sizes": {"YS": 23, "YM": 25, "YXL": 33, "YL": 19, "AS": 4} },
+    "De LaCruz Reds": { "total": 44, "sizes": {"YS": 10, "YXL": 32, "YL": 1, "AS": 1} },
+    "Freeman Dodgers": { "total": 14, "sizes": {"YS": 1, "YM": 2, "YXL": 7, "AS": 4} },
+    "Guerrero JR": { "total": 34, "sizes": {"YS": 3, "YM": 7, "YL": 7, "YXL": 15, "AS": 2} },
+    "Harper Phillies": { "total": 114, "sizes": {"YS": 17, "YM": 23, "YXL": 42, "AS": 3, "YL": 29} },
+    "Henderson Oriols": { "total": 54, "sizes": {"YS": 6, "YM": 16, "YXL": 12, "AS": 6, "YL": 14} },
+    "Judge Yankees": { "total": 157, "sizes": {"YM": 13, "YXL": 46, "AS": 25, "YL": 58, "YS": 15} },
+    "Ohtani Dodgers": { "total": 165, "sizes": {"YS": 28, "YL": 35, "YM": 31, "AS": 35, "YXL": 36} },
+    "Raleigh Mariners": { "total": 50, "sizes": {"YS": 6, "AS": 9, "YXL": 21, "YM": 6, "YL": 8} },
+    "Skenes Pirates": { "total": 194, "sizes": {"YS": 37, "YXL": 42, "YM": 31, "YL": 64, "AS": 20} },
+    "Soto Mets": { "total": 169, "sizes": {"YS": 10, "YM": 52, "YL": 35, "YXL": 48, "AS": 24} },
+    "Tatis JR": { "total": 174, "sizes": {"AS": 5, "YL": 20, "YS": 2, "YXL": 128, "YM": 19} },
+    "Trout Angels": { "total": 82, "sizes": {"YS": 10, "YM": 3, "YL": 30, "AS": 18, "YXL": 21} },
+    "Turner Phillies": { "total": 35, "sizes": {"YXL": 13, "YL": 11, "YS": 9, "AS": 2} },
+    "Whit Royals": { "total": 76, "sizes": {"YS": 2, "YM": 12, "YL": 14, "YXL": 17, "AS": 31} },
+    "Yelich Brewers": { "total": 5, "sizes": {"YS": 1, "YM": 1, "YL": 1, "XL": 1, "S": 1} }
+  },
+  "soccer": {
+    "Gimenez": { "total": 168, "sizes": {"22": 20, "26": 34, "S": 10, "M": 11, "XL": 8, "L": 9, "28": 49, "24": 27} },
+    "Mbappe": { "total": 151, "sizes": {"22": 4, "24": 7, "S": 17, "M": 13, "XL": 6, "L": 12, "20": 7, "26": 4, "28": 1, "18": 6} },
+    "Messi Jerseys": { "total": 2499, "sizes": {"24": 4, "28": 28, "26": 12, "m": 69, "s": 114, "22": 19, "l": 12, "xl": 9, "20": 18, "S": 29, "M": 30, "L": 14, "XL": 9, "18": 2} },
+    "Neymar Jerseys": { "total": 840, "sizes": {"20": 27, "22": 30, "24": 52, "26": 68, "28": 68, "AL": 0, "AM": 0, "AS": 0, "AXL": 0, "L": 2, "M": 3, "S": 3, "XL": 9} },
+    "Pulisic Jerseys": { "total": 129, "sizes": {"20": 11, "22": 16, "24": 31, "26": 15, "28": 13, "L": 12, "M": 8, "S": 15, "XL": 8} },
+    "Ronaldo Jerseys": { "total": 2102, "sizes": {"20": 14, "22": 41, "24": 47, "26": 56, "28": 50, "L": 39, "M": 40, "S": 38, "XL": 44} },
+    "SAKA": { "total": 127, "sizes": {"18": 3, "20": 17, "22": 24, "24": 30, "26": 3, "28": 4, "L": 12, "M": 15, "S": 18, "XL": 1} },
+    "Vini Jr": { "total": 84, "sizes": {"18": 6, "20": 15, "22": 12, "24": 8, "26": 4, "28": 1, "L": 11, "M": 8, "S": 9, "XL": 1} },
+    "Yamal Jerseys": { "total": 2036, "sizes": {"18": 4, "20": 5, "22": 37, "24": 6, "26": 3, "28": 16, "L": 23, "M": 23, "S": 11, "XL": 17} }
+  }
+};
+
+        const CATEGORIES = [
+            { key: 'all', label: 'All Inventory', icon: '📦' },
+            { key: 'baseball', label: 'Baseball', icon: '⚾' },
+            { key: 'messi', label: 'Messi', icon: '🔟' },
+            { key: 'ronaldo', label: 'Ronaldo', icon: '⚽' },
+            { key: 'neymar', label: 'Neymar', icon: '🇧🇷' },
+            { key: 'yamal', label: 'Yamal', icon: '🔥' },
+            { key: 'mbappe', label: 'Mbappe', icon: '🇫🇷' },
+            { key: 'pulisic', label: 'Pulisic', icon: '🇺🇸' },
+            { key: 'saka', label: 'Saka', icon: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+            { key: 'vini', label: 'Vini Jr', icon: '🇧🇷' },
+            { key: 'gimenez', label: 'Gimenez', icon: '🇲🇽' }
+        ];
+
+        let activeCat = 'all';
+
+        function init() {
+            renderTabs();
+            renderInventory();
+            updateStats();
+            document.getElementById('last-update').textContent = 'Updated: ' + new Date().toLocaleString();
         }
-        
-        function flattenData(data) {
+
+        function renderTabs() {
+            const container = document.getElementById('cat-tabs');
+            container.innerHTML = CATEGORIES.map(cat => `
+                <button class="cat-tab ${cat.key === activeCat ? 'active' : ''}" onclick="setCat('${cat.key}')">
+                    ${cat.icon} ${cat.label}
+                </button>
+            `).join('');
+        }
+
+        function setCat(key) {
+            activeCat = key;
+            renderTabs();
+            renderInventory();
+        }
+
+        function getItemsForCat(cat) {
             const items = [];
-            const categories = {
-                baseball: 'baseball',
-                soccer: 'soccer',
-                tournament: 'tournament',
-                tournaments: 'tournament'
-            };
-            
-            for (const [catKey, catData] of Object.entries(data)) {
-                const category = categories[catKey] || 'other';
-                if (Array.isArray(catData)) {
-                    // Raw items array
-                    const grouped = {};
-                    catData.forEach(item => {
-                        const key = item.name || item.sku || 'Unknown';
-                        if (!grouped[key]) grouped[key] = { name: key, category, total: 0, sizes: {} };
-                        grouped[key].total += item.qty || 0;
-                        if (item.size) {
-                            grouped[key].sizes[item.size] = (grouped[key].sizes[item.size] || 0) + item.qty;
-                        }
-                    });
-                    items.push(...Object.values(grouped));
-                } else if (typeof catData === 'object') {
-                    // Grouped by product name
-                    for (const [name, info] of Object.entries(catData)) {
-                        if (info && typeof info === 'object') {
-                            items.push({
-                                name,
-                                category,
-                                total: info.total || 0,
-                                sizes: info.sizes || {}
-                            });
-                        }
-                    }
+            if (cat === 'all' || cat === 'baseball') {
+                Object.entries(INVENTORY.baseball).forEach(([name, info]) => {
+                    items.push({ name, ...info, category: 'baseball' });
+                });
+            }
+            if (cat === 'all' || cat === 'messi') {
+                if (INVENTORY.soccer['Messi Jerseys']) {
+                    items.push({ name: 'Messi Jerseys', ...INVENTORY.soccer['Messi Jerseys'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'ronaldo') {
+                if (INVENTORY.soccer['Ronaldo Jerseys']) {
+                    items.push({ name: 'Ronaldo Jerseys', ...INVENTORY.soccer['Ronaldo Jerseys'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'neymar') {
+                if (INVENTORY.soccer['Neymar Jerseys']) {
+                    items.push({ name: 'Neymar Jerseys', ...INVENTORY.soccer['Neymar Jerseys'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'yamal') {
+                if (INVENTORY.soccer['Yamal Jerseys']) {
+                    items.push({ name: 'Yamal Jerseys', ...INVENTORY.soccer['Yamal Jerseys'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'mbappe') {
+                if (INVENTORY.soccer['Mbappe']) {
+                    items.push({ name: 'Mbappe', ...INVENTORY.soccer['Mbappe'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'pulisic') {
+                if (INVENTORY.soccer['Pulisic Jerseys']) {
+                    items.push({ name: 'Pulisic Jerseys', ...INVENTORY.soccer['Pulisic Jerseys'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'saka') {
+                if (INVENTORY.soccer['SAKA']) {
+                    items.push({ name: 'SAKA', ...INVENTORY.soccer['SAKA'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'vini') {
+                if (INVENTORY.soccer['Vini Jr']) {
+                    items.push({ name: 'Vini Jr', ...INVENTORY.soccer['Vini Jr'], category: 'soccer' });
+                }
+            }
+            if (cat === 'all' || cat === 'gimenez') {
+                if (INVENTORY.soccer['Gimenez']) {
+                    items.push({ name: 'Gimenez', ...INVENTORY.soccer['Gimenez'], category: 'soccer' });
                 }
             }
             return items;
         }
-        
-        function updateStats() {
-            const totalProducts = inventoryData.length;
-            const totalUnits = inventoryData.reduce((s, i) => s + i.total, 0);
-            const baseball = inventoryData.filter(i => i.category === 'baseball').reduce((s, i) => s + i.total, 0);
-            const soccer = inventoryData.filter(i => i.category === 'soccer').reduce((s, i) => s + i.total, 0);
-            
-            document.getElementById('s-products').textContent = totalProducts;
-            document.getElementById('s-units').textContent = totalUnits >= 1000 ? (totalUnits/1000).toFixed(1) + 'K' : totalUnits;
-            document.getElementById('s-baseball').textContent = baseball >= 1000 ? (baseball/1000).toFixed(1) + 'K' : baseball;
-            document.getElementById('s-soccer').textContent = soccer >= 1000 ? (soccer/1000).toFixed(1) + 'K' : soccer;
-        }
-        
-        function setFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-            renderTable();
-        }
-        
-        function setSort(col) {
-            if (sortCol === col) sortDir *= -1;
-            else { sortCol = col; sortDir = 1; }
-            renderTable();
-        }
-        
-        function renderTable() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            let filtered = inventoryData;
-            
-            if (currentFilter !== 'all') {
-                filtered = filtered.filter(i => i.category === currentFilter);
+
+        function renderInventory() {
+            const container = document.getElementById('inventory-content');
+            const items = getItemsForCat(activeCat);
+
+            if (items.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#8892b0;">No items found</div>';
+                return;
             }
-            if (search) {
-                filtered = filtered.filter(i => i.name.toLowerCase().includes(search));
+
+            // Group by category for 'all' view
+            if (activeCat === 'all') {
+                const groups = {};
+                items.forEach(item => {
+                    const group = item.category === 'baseball' ? 'Baseball' : 'Soccer';
+                    if (!groups[group]) groups[group] = [];
+                    groups[group].push(item);
+                });
+
+                container.innerHTML = Object.entries(groups).map(([groupName, groupItems]) => `
+                    <div class="section-title">${groupName === 'Baseball' ? '⚾' : '⚽'} ${groupName}</div>
+                    <div class="jersey-grid">
+                        ${groupItems.map(item => renderJerseyCard(item)).join('')}
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `
+                    <div class="jersey-grid">
+                        ${items.map(item => renderJerseyCard(item)).join('')}
+                    </div>
+                `;
             }
-            
-            filtered.sort((a, b) => {
-                let av = a[sortCol], bv = b[sortCol];
-                if (typeof av === 'string') av = av.toLowerCase();
-                if (typeof bv === 'string') bv = bv.toLowerCase();
-                if (av < bv) return -1 * sortDir;
-                if (av > bv) return 1 * sortDir;
-                return 0;
-            });
-            
-            const maxQty = Math.max(...inventoryData.map(i => i.total), 1);
-            
-            const html = `
-                <table class="inventory-table">
-                    <thead>
-                        <tr>
-                            <th onclick="setSort('name')">Product ${sortCol === 'name' ? (sortDir > 0 ? '▲' : '▼') : ''}</th>
-                            <th onclick="setSort('category')">Category ${sortCol === 'category' ? (sortDir > 0 ? '▲' : '▼') : ''}</th>
-                            <th onclick="setSort('total')">Qty ${sortCol === 'total' ? (sortDir > 0 ? '▲' : '▼') : ''}</th>
-                            <th>Sizes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${filtered.map(item => {
-                            const pct = (item.total / maxQty * 100).toFixed(0);
-                            const sizeList = Object.entries(item.sizes || {})
-                                .sort((a, b) => b[1] - a[1])
-                                .slice(0, 6)
-                                .map(([s, q]) => `<span class="size-tag">${s}:${Math.round(q)}</span>`)
-                                .join('');
+        }
+
+        function renderJerseyCard(item) {
+            const sizes = Object.entries(item.sizes)
+                .filter(([size, qty]) => qty > 0)
+                .sort((a, b) => {
+                    const order = ['18','20','22','24','26','28','YS','YM','YL','YXL','S','M','L','XL','AXL'];
+                    const ai = order.indexOf(a[0]);
+                    const bi = order.indexOf(b[0]);
+                    if (ai >= 0 && bi >= 0) return ai - bi;
+                    if (ai >= 0) return -1;
+                    if (bi >= 0) return 1;
+                    return a[0].localeCompare(b[0]);
+                });
+
+            return `
+                <div class="jersey-card">
+                    <div class="jersey-header">
+                        <div class="jersey-name">${item.name}</div>
+                        <div class="jersey-total">${item.total} <span>units</span></div>
+                    </div>
+                    <div class="size-grid">
+                        ${sizes.map(([size, qty]) => {
+                            const qtyClass = qty < 10 ? 'low' : qty < 30 ? 'medium' : '';
                             return `
-                                <tr>
-                                    <td class="item-name">${item.name}</td>
-                                    <td><span class="item-category cat-${item.category}">${item.category}</span></td>
-                                    <td>
-                                        <div class="qty-bar"><div class="qty-fill" style="width: ${pct}%"></div></div>
-                                        ${Math.round(item.total).toLocaleString()}
-                                    </td>
-                                    <td><div class="size-tags">${sizeList}</div></td>
-                                </tr>
+                                <div class="size-box ${qtyClass}">
+                                    <div class="size-label">${size}</div>
+                                    <div class="size-qty">${Math.round(qty)}</div>
+                                </div>
                             `;
                         }).join('')}
-                    </tbody>
-                </table>
+                    </div>
+                </div>
             `;
-            
-            document.getElementById('table-container').innerHTML = html;
         }
-        
-        loadData();
+
+        function updateStats() {
+            let total = 0, baseball = 0, soccer = 0, skus = 0;
+
+            Object.values(INVENTORY.baseball).forEach(item => {
+                total += item.total;
+                baseball += item.total;
+                skus++;
+            });
+            Object.values(INVENTORY.soccer).forEach(item => {
+                total += item.total;
+                soccer += item.total;
+                skus++;
+            });
+
+            document.getElementById('st-total').textContent = total >= 1000 ? (total/1000).toFixed(1) + 'K' : total;
+            document.getElementById('st-baseball').textContent = baseball >= 1000 ? (baseball/1000).toFixed(1) + 'K' : baseball;
+            document.getElementById('st-soccer').textContent = soccer >= 1000 ? (soccer/1000).toFixed(1) + 'K' : soccer;
+            document.getElementById('st-skus').textContent = skus;
+        }
+
+        init();
     </script>
 </body>
 </html>
