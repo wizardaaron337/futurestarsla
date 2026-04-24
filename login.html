@@ -4,39 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars - Sign In</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #ffd700; --blue: #00d4ff; --green: #00ff88; --red: #ff4444; --bg: #050810; }
-        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .box { background: rgba(255,255,255,0.03); border: 2px solid rgba(0,212,255,0.2); border-radius: 24px; padding: 50px; width: 100%; max-width: 480px; text-align: center; }
-        .logo { font-family: 'Orbitron'; font-size: 2.5em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
-        .tagline { color: #8892b0; margin-bottom: 40px; font-size: 1.2em; }
-        .names { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-        .names > :nth-child(5) { grid-column: 1 / -1; justify-self: center; width: 50%; }
-        .name-btn { padding: 16px; background: rgba(0,212,255,0.08); border: 2px solid rgba(0,212,255,0.2); border-radius: 12px; color: var(--blue); font-family: 'Orbitron'; font-size: 1.1em; cursor: pointer; transition: all 0.3s; }
-        .name-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); }
-        .name-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.2); box-shadow: 0 0 20px rgba(255,215,0,0.3); }
-        .go-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); border: 2px solid var(--blue); color: var(--blue); border-radius: 12px; font-family: 'Orbitron'; font-size: 1.2em; cursor: pointer; }
-        .go-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.2); }
-        .msg { margin-top: 20px; font-size: 1.1em; }
-        .msg.error { color: var(--red); }
-        .msg.success { color: var(--green); }
+        body { font-family: Arial, sans-serif; background: #050810; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .box { text-align: center; max-width: 400px; width: 100%; padding: 40px; }
+        h1 { color: #ffd700; font-size: 2.5em; margin-bottom: 10px; }
+        p { color: #8892b0; margin-bottom: 30px; font-size: 1.2em; }
+        .names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .names button:nth-child(5) { grid-column: 1 / -1; width: 50%; justify-self: center; }
+        button { padding: 15px; font-size: 1.1em; cursor: pointer; background: rgba(0,212,255,0.1); border: 2px solid #00d4ff; color: #00d4ff; border-radius: 8px; }
+        button:hover { background: rgba(255,215,0,0.2); border-color: #ffd700; color: #ffd700; }
+        button.selected { background: rgba(255,215,0,0.3); border-color: #ffd700; color: #ffd700; }
+        .go { width: 100%; background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(184,41,221,0.2)); margin-top: 10px; }
+        #msg { margin-top: 15px; font-size: 1em; }
     </style>
 </head>
 <body>
     <div class="box">
-        <div class="logo">🏆 FUTURE STARS</div>
-        <p class="tagline">Who are you?</p>
+        <h1>🏆 FUTURE STARS</h1>
+        <p>Who are you?</p>
         <div class="names">
-            <button class="name-btn" onclick="pick('jr')">👑 JR</button>
-            <button class="name-btn" onclick="pick('lane')">👑 Lane</button>
-            <button class="name-btn" onclick="pick('pj')">🚐 PJ</button>
-            <button class="name-btn" onclick="pick('caleb')">📞 Caleb</button>
-            <button class="name-btn" onclick="pick('marlon')">📦 Marlon</button>
+            <button onclick="pick('jr', this)">👑 JR</button>
+            <button onclick="pick('lane', this)">👑 Lane</button>
+            <button onclick="pick('pj', this)">🚐 PJ</button>
+            <button onclick="pick('caleb', this)">📞 Caleb</button>
+            <button onclick="pick('marlon', this)">📦 Marlon</button>
         </div>
-        <button class="go-btn" onclick="go()">GO</button>
-        <div class="msg" id="msg"></div>
+        <button class="go" onclick="go()">GO</button>
+        <div id="msg"></div>
     </div>
     <script>
         const CREW = {
@@ -47,22 +42,22 @@
             'marlon': { role: 'inventory', name: 'Marlon' }
         };
         let picked = null;
-        const msg = document.getElementById('msg');
 
-        function pick(who) {
+        function pick(who, btn) {
             picked = who;
-            document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
-            event.target.classList.add('selected');
-            msg.textContent = '';
+            document.querySelectorAll('.names button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('msg').textContent = '';
         }
 
         function go() {
+            const msg = document.getElementById('msg');
             if (!picked) {
-                msg.className = 'msg error';
+                msg.style.color = '#ff4444';
                 msg.textContent = 'Click your name first!';
                 return;
             }
-            msg.className = 'msg success';
+            msg.style.color = '#00ff88';
             msg.textContent = 'Logging in...';
             sessionStorage.setItem('fs_auth', picked);
             sessionStorage.setItem('fs_role', CREW[picked].role);
