@@ -184,8 +184,11 @@
             .logo { font-size: 1.6em; }
         }
     </style>
+    <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="particles" id="particles"></div>
     <div class="box">
         <div class="logo">🏆 FUTURE STARS</div>
         <p class="tagline">Enter your access code</p>
@@ -301,6 +304,31 @@
             else if (e.key === 'Backspace') backspace();
             else if (e.key === 'Enter') submit();
             else if (e.key === 'Escape') goBack();
+        });
+    </script>
+    <script>
+        // Particles & Progress Bar
+        (function(){
+            const container = document.getElementById("particles");
+            if (!container) return;
+            for(let i=0;i<25;i++){
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.left = Math.random()*100+"vw";
+                p.style.animationDelay = Math.random()*15+"s";
+                p.style.animationDuration = (10+Math.random()*10)+"s";
+                p.style.width = (2+Math.random()*3)+"px";
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener("scroll", function(){
+            const bar = document.getElementById("progress-bar");
+            if (!bar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            bar.style.width = pct+"%";
         });
     </script>
 </body>

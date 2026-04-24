@@ -34,8 +34,11 @@
         .btn-reject { background: rgba(255,68,68,0.15); color: var(--red); }
         @media (max-width: 768px) { .header { flex-direction: column; gap: 10px; } .gallery { grid-template-columns: repeat(2, 1fr); } }
     </style>
+    <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="particles" id="particles"></div>
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="signin.html";}</script>
     <div class="header">
         <a href="dashboard.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
@@ -111,6 +114,31 @@
         }
         
         render();
+    </script>
+    <script>
+        // Particles & Progress Bar
+        (function(){
+            const container = document.getElementById("particles");
+            if (!container) return;
+            for(let i=0;i<25;i++){
+                const p = document.createElement("div");
+                p.className = "particle";
+                p.style.left = Math.random()*100+"vw";
+                p.style.animationDelay = Math.random()*15+"s";
+                p.style.animationDuration = (10+Math.random()*10)+"s";
+                p.style.width = (2+Math.random()*3)+"px";
+                p.style.height = p.style.width;
+                container.appendChild(p);
+            }
+        })();
+        window.addEventListener("scroll", function(){
+            const bar = document.getElementById("progress-bar");
+            if (!bar) return;
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
+            bar.style.width = pct+"%";
+        });
     </script>
 </body>
 </html>
