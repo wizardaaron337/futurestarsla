@@ -344,6 +344,9 @@
             </div>
         </div>
 
+        <!-- Alerts Section -->
+        <div id="alerts-section" style="margin-bottom:24px;"></div>
+
         <div class="section-title animate-in" style="animation-delay:0.5s">QUICK ACCESS</div>
         <div class="cards">
             <a href="inventory-v2.html" class="card animate-in" style="animation-delay:0.55s">
@@ -417,9 +420,46 @@
         document.getElementById('user-name').textContent = NAME.toUpperCase();
         document.getElementById('welcome-name').textContent = NAME;
         document.getElementById('role-line').textContent = ROLE === 'owner' ? 'Owner Access — Full Control' : ROLE === 'logistics' ? 'Logistics Lead — Hotels, Cars, Trips' : ROLE === 'inventory' ? 'Inventory Manager — Stock & Jerseys' : ROLE === 'tournament' ? 'Tournament Lock — Crew & Events' : 'Team Member';
+        
+        // Load and display alerts
+        function loadAlerts() {
+            const alertsDiv = document.getElementById('alerts-section');
+            const trips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
+            const activeTrips = trips.filter(t => !t.shipped);
+            const shippedTrips = trips.filter(t => t.shipped);
+            
+            let html = '';
+            
+            // Active trips alert
+            if (activeTrips.length > 0) {
+                html += `<div style="background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.3);border-radius:12px;padding:16px;margin-bottom:12px;">
+                    <div style="font-weight:600;color:var(--gold);margin-bottom:8px;">🚐 Active Trips (${activeTrips.length})</div>
+                    ${activeTrips.map(t => `<div style="font-size:0.9em;color:var(--gray);padding:4px 0;">• ${t.name} — ${t.date}</div>`).join('')}
+                </div>`;
+            }
+            
+            // Low stock alert (example threshold: 50 units)
+            const lowStock = [];
+            // This would check actual inventory data
+            if (lowStock.length > 0) {
+                html += `<div style="background:rgba(239,83,80,0.1);border:1px solid rgba(239,83,80,0.3);border-radius:12px;padding:16px;">
+                    <div style="font-weight:600;color:var(--red);margin-bottom:8px;">⚠️ Low Stock Alert</div>
+                    ${lowStock.map(item => `<div style="font-size:0.9em;color:var(--gray);">• ${item.name}: ${item.qty} left</div>`).join('')}
+                </div>`;
+            }
+            
+            alertsDiv.innerHTML = html;
+        }
+        
+        // Update active trips count
+        const trips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
+        document.getElementById('db-trips').textContent = trips.filter(t => !t.shipped).length;
+        
+        loadAlerts();
+        
         function logout() {
             sessionStorage.clear();
-            window.location.href = 'sign-in.html';
+            window.location.href = 'signin.html';
         }
     </script>
 <script src="footer-component.js?v=2"></script>
