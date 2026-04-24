@@ -30,16 +30,21 @@
 <body>
     <script>if(!sessionStorage.getItem("fs_auth")){window.location.href="signin.html";}</script>
     <div class="header">
-        <div class="logo">🏆 FUTURE STARS</div>
-        <nav class="nav">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="departments.html">Departments</a>
-            <a href="inventory.html">Inventory</a>
-            <a href="trips.html">Trips</a>
-            <a href="trip-planner.html">Planner</a>
-            <a href="team.html" class="active">Team</a>
-
-        </nav>
+        <div class="logo">🏆 FUTURE STARS</div>        <nav class="nav" id="main-nav"></nav>
+        <script>
+            (function() {
+                const role = sessionStorage.getItem('fs_role');
+                const nav = document.getElementById('main-nav');
+                if (!nav || !role) return;
+                const links = { owner: ['dashboard','departments','inventory','trips','planner','team'], inventory: ['dashboard','inventory','team'], logistics: ['dashboard','trips','planner','team'], tournament: ['dashboard','trips','team'] };
+                const labels = { dashboard:'Dashboard', departments:'Departments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team' };
+                const current = window.location.pathname.split('/').pop().replace('.html','') || 'dashboard';
+                nav.innerHTML = (links[role] || links.owner).map(p => {
+                    const cls = p === current ? 'active' : '';
+                    return `<a href="${p}.html" class="${cls}">${labels[p]}</a>`;
+                }).join('');
+            })();
+        </script>
     </div>
     <div class="main">
         <div class="section">
