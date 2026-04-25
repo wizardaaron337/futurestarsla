@@ -40,10 +40,10 @@ const AUTH_CONFIG = {
 
     // Role-based page permissions
     roles: {
-        owner: ['dashboard', 'tournaments', 'inventory', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact', 'inventory-v2'],
+        owner: ['dashboard', 'tournaments', 'inventory-v2', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
         logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
-        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory', 'jersey-gallery', 'privacy', 'contact', 'inventory-v2'],
-        inventory: ['dashboard', 'inventory', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact', 'inventory-v2']
+        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
+        inventory: ['dashboard', 'inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
     },
 
     // Navigation items per role

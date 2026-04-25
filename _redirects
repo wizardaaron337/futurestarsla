@@ -1,2 +1,4 @@
-/login /sign-in.html 302
-/login.html /sign-in.html 302
+/login /signin.html 302
+/login.html /signin.html 302
+/sign-in /signin 302
+/sign-in.html /signin.html 302

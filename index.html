@@ -8,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars Sports Co</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="auth-config.js?v=1777085641"></script>
-    <script src="nav-dropdown.js?v=1777085641" defer></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -88,7 +86,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-        .btn-main {
+        .btn-primary {
             padding: 16px 32px;
             background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
             border: none;
@@ -106,7 +104,7 @@
             display: inline-block;
             box-shadow: 0 6px 20px rgba(201,162,39,0.3);
         }
-        .btn-main:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(201,162,39,0.4);
         }
@@ -204,7 +202,7 @@
             .hero h1 { font-size: 1.8em; }
             .hero .subtitle { font-size: 0.8em; letter-spacing: 3px; }
             .actions { flex-direction: column; width: 100%; padding: 0 20px; }
-            .btn-main, .btn-secondary { width: 100%; text-align: center; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
             .link-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -215,28 +213,41 @@
         <h1>FUTURE STARS</h1>
         <div class="subtitle">Sports Co</div>
         <p class="hero-tagline">Championship sports merchandise. Tournament operations. Inventory management.</p>
-        <div id="auth-status" style="margin-bottom:16px;font-size:0.9em;color:var(--gray);"></div>
         <div class="actions">
-            <a href="signin.html" class="btn-main" id="signin-btn">Sign In</a>
-            <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+            <a href="dashboard.html" class="btn-primary">Dashboard</a>
+            <a href="inventory-v2.html" class="btn-secondary">Inventory</a>
         </div>
     </div>
 
     <div class="quick-links">
-        <div class="section-title">Quick Access</div>
+        <div class="section-title">Tools</div>
         <div class="link-grid">
-            <a href="inventory-v2.html" class="link-card">
-                <div class="link-icon">📦</div>
-                <div class="link-body">
-                    <h3>Inventory</h3>
-                    <p>Check stock levels, pack trips, track shipments</p>
-                </div>
-            </a>
             <a href="tournaments.html" class="link-card">
                 <div class="link-icon">🏆</div>
                 <div class="link-body">
                     <h3>Tournaments</h3>
                     <p>Browse tournament schedule and details</p>
+                </div>
+            </a>
+            <a href="trips.html" class="link-card">
+                <div class="link-icon">🚐</div>
+                <div class="link-body">
+                    <h3>Trips</h3>
+                    <p>Trip schedule with finances and crew assignments</p>
+                </div>
+            </a>
+            <a href="trip-tracker.html" class="link-card">
+                <div class="link-icon">📋</div>
+                <div class="link-body">
+                    <h3>Trip Tracker</h3>
+                    <p>Pack jerseys, check in returns, track trip items</p>
+                </div>
+            </a>
+            <a href="trip-planner.html" class="link-card">
+                <div class="link-icon">📝</div>
+                <div class="link-body">
+                    <h3>Trip Planner</h3>
+                    <p>Find hotels and rental cars for upcoming trips</p>
                 </div>
             </a>
             <a href="team.html" class="link-card">
@@ -259,20 +270,5 @@
     <div class="footer">
         Future Stars Sports Co &copy; 2026
     </div>
-    <script>
-        (function() {
-            const authStatus = document.getElementById('auth-status');
-            const signinBtn = document.getElementById('signin-btn');
-            const name = sessionStorage.getItem('fs_name');
-            const verified = sessionStorage.getItem('fs_pin_verified') === 'true';
-            
-            if (name && verified) {
-                authStatus.innerHTML = '<span style="color:#C9A227;">👤 Logged in as ' + name + '</span>';
-                signinBtn.textContent = 'Switch User';
-            } else {
-                authStatus.textContent = 'Not logged in';
-            }
-        })();
-    </script>
 </body>
 </html>

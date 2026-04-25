@@ -19,31 +19,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;500;700&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #C9A227; --gold-light: #E8C84B; --green: #4CAF50; --red: #EF5350; --purple: #b829dd; --black: #0A0A0A; --black-card: #1A1A1A; }
-        body { font-family: 'Rajdhani', sans-serif; background: var(--bg); color: #fff; min-height: 100vh; font-size: 18px; line-height: 1.6; }
-        .header { display: flex; align-items: center; justify-content: space-between; padding: 20px 30px; background: rgba(5,8,16,0.95); border-bottom: 2px solid rgba(0,212,255,0.15); position: sticky; top: 0; z-index: 100; }
-        .logo { font-family: 'Cinzel', serif; font-size: 2.2em; font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .user-info { display: flex; align-items: center; gap: 15px; }
-        .user-name { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.1em; }
-        .logout-btn { padding: 10px 20px; border: 2px solid var(--red); color: var(--red); background: transparent; border-radius: 8px; font-family: 'Cinzel', serif; cursor: pointer; font-size: 0.9em; }
-        .nav { display: flex; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
-        .nav a { padding: 14px 24px; border: 2px solid rgba(0,212,255,0.25); color: var(--blue); text-decoration: none; border-radius: 10px; font-size: 1.1em; font-family: 'Cinzel', serif; transition: all 0.3s; }
-        .nav a:hover, .nav a.active { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.08); transform: translateY(-2px); }
+        :root { --gold: #C9A227; --gold-light: #E8C84B; --gold-dark: #B8941F; --green: #4CAF50; --red: #EF5350; --purple: #b829dd; --black: #0A0A0A; --black-light: #141414; --black-card: #1A1A1A; --black-hover: #242424; --border: #2A2824; --gray: #A8A498; --gray-dark: #6B665C; --white: #F8F6F0; }
+        body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 15px; }
+        .logo-link{display:flex;align-items:center;gap:12px;text-decoration:none;}
+        .logo-img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-dark);box-shadow:0 0 20px rgba(201,162,39,0.2);}
+        .logo-text{font-family:'Cinzel',serif;font-size:1.3em;font-weight:700;color:var(--gold);letter-spacing:3px;}
+        .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 30px; background: var(--black-light); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+        .user-info { display: flex; align-items: center; gap: 20px; }
+        .user-name { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.85em; letter-spacing: 2px; }
+        .logout-btn { padding: 8px 18px; background: transparent; border: 1px solid var(--gray-dark); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.8em; cursor: pointer; transition: all 0.3s; color: var(--gray); }
+        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .nav { display: flex; gap: 4px; padding: 12px 30px; background: var(--black-light); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .nav a { padding: 10px 20px; color: var(--gray); text-decoration: none; border-radius: 8px; font-size: 0.85em; font-weight: 500; transition: all 0.3s; letter-spacing: 0.5px; }
+        .nav a:hover { color: var(--white); background: var(--black-hover); }
+        .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
         .main { max-width: 1400px; margin: 0 auto; padding: 40px 30px; }
-        .welcome { font-family: 'Cinzel', serif; font-size: 2em; color: var(--gold); margin-bottom: 10px; }
+        .welcome { font-family: 'Cinzel', serif; font-size: 2.2em; font-weight: 700; color: var(--gold); margin-bottom: 10px; letter-spacing: 1px; }
         .section { margin-bottom: 40px; }
         .section-title { font-family: 'Cinzel', serif; font-size: 1.5em; color: var(--gold); margin-bottom: 24px; display: flex; align-items: center; gap: 15px; }
         .section-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); }
         .dept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-        .dept-card { background: var(--card); border: 2px solid rgba(0,212,255,0.08); border-radius: 16px; padding: 32px; transition: all 0.3s; cursor: pointer; }
-        .dept-card:hover { border-color: rgba(0,212,255,0.2); transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .dept-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; transition: all 0.3s; cursor: pointer; }
+        .dept-card:hover { border-color: var(--gold-dark); transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
         .dept-icon { font-size: 3em; margin-bottom: 15px; }
         .dept-name { font-family: 'Cinzel', serif; font-size: 1.3em; color: var(--gold); margin-bottom: 10px; }
-        .dept-desc { color: #8892b0; font-size: 1.1em; line-height: 1.6; margin-bottom: 15px; }
-        .dept-lead { color: var(--blue); font-family: 'Cinzel', serif; font-size: 0.9em; }
+        .dept-desc { color: var(--gray); font-size: 1.1em; line-height: 1.6; margin-bottom: 15px; }
+        .dept-lead { color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.9em; opacity: 0.8; }
         .dept-links { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
-        .dept-link { padding: 8px 16px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); color: var(--blue); border-radius: 6px; text-decoration: none; font-size: 0.9em; transition: all 0.3s; }
-        .dept-link:hover { background: rgba(0,212,255,0.2); }
+        .dept-link { padding: 8px 16px; background: rgba(201,162,39,0.08); border: 1px solid rgba(201,162,39,0.2); color: var(--gold); border-radius: 6px; text-decoration: none; font-size: 0.9em; transition: all 0.3s; }
+        .dept-link:hover { background: rgba(201,162,39,0.15); color: var(--gold-light); }
         @media (max-width: 768px) { .header { flex-direction: column; gap: 20px; } .nav a { padding: 16px; font-size: 1em; width: 100%; text-align: center; } .dept-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -75,7 +79,7 @@
                     <div class="dept-links">
                         <a href="dashboard.html" class="dept-link">Dashboard</a>
                         <a href="trips.html" class="dept-link">All Trips</a>
-                        <a href="inventory.html" class="dept-link">Inventory</a>
+                        <a href="inventory-v2.html" class="dept-link">Inventory</a>
 
                     </div>
                 </div>
@@ -110,7 +114,7 @@
                     <div class="dept-desc">Stock management, Sortly imports, jersey gallery, and packing lists.</div>
                     <div class="dept-lead">Lead: Marlon</div>
                     <div class="dept-links">
-                        <a href="inventory.html" class="dept-link">Stock</a>
+                        <a href="inventory-v2.html" class="dept-link">Stock</a>
                         <a href="sortly-upload.html" class="dept-link">Sortly Import</a>
 
                     </div>
