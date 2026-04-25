@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- build: 1777090018-64c45191 -->
+<!-- build: 1777090241-ca993a3b -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -11,6 +11,7 @@
     <script src="auth-config.js?v=1777085641"></script>
     <script src="crew-data.js?v=1777085641"></script>
     <script src="cost-data.js?v=1777085641"></script>
+    <script src="tournament-data.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1777085641" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -192,6 +193,9 @@
                     <tr>
                         <th>Sport</th>
                         <th>Trip Name</th>
+                        <th>Age Group</th>
+                        <th>Teams</th>
+                        <th>Contact</th>
                         <th>Status</th>
                         <th>Month</th>
                         <th>Dates</th>
@@ -207,7 +211,7 @@
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    <tr><td colspan="14" style="text-align:center;padding:40px;color:var(--gray-dark);">Loading trip data...</td></tr>
+                    <tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">Loading trip data...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -240,6 +244,17 @@
             if (!d) return false;
             const today = new Date(); today.setHours(0,0,0,0);
             return d < today;
+        }
+
+        // Build tournament lookup by name
+        function findTourney(tripName) {
+            if (typeof TOURNEY_DATA === 'undefined') return null;
+            const key = (tripName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            for (const t of TOURNEY_DATA) {
+                const tk = (t.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (tk === key || tk.includes(key) || key.includes(tk)) return t;
+            }
+            return null;
         }
 
         function render() {
@@ -278,7 +293,7 @@
             countEl.textContent = `${filtered.length} trips`;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>`;
                 return;
             }
 
@@ -290,9 +305,18 @@
                 const sportDisplay = t.sport === 'BB' ? 'Baseball' : 
                     (t.sport||'').toLowerCase() === 'baseball' ? 'Baseball' : t.sport || '—';
 
+                // Look up tournament data by name
+                const tourney = findTourney(t.name);
+                const ageGroup = tourney ? tourney.ageGroup : '—';
+                const teams = tourney ? tourney.size : '—';
+                const contact = tourney ? tourney.contact : '—';
+
                 return `<tr class="${pastClass}">
                     <td>${sportDisplay}</td>
                     <td><strong>${t.name || '—'}</strong></td>
+                    <td>${ageGroup}</td>
+                    <td>${teams}</td>
+                    <td${contact && contact.length > 25 ? ' title="' + contact + '"' : ''}>${contact && contact.length > 25 ? contact.substring(0,22) + '...' : contact}</td>
                     <td>${statusBadge}</td>
                     <td>${t.month || '—'}</td>
                     <td>${t.startDate || ''}${t.endDate ? ' — ' + t.endDate : ''}</td>
