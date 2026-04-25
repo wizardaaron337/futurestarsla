@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777150777-81496552";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -18,6 +18,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PJ Trip Maker — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
+    <script src="crew-data.js?v=1777085641"></script>
     <script src="nav-dropdown.js" defer></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
@@ -228,6 +229,54 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
   html{font-size:14px;}
   .modal{padding:20px;}
 }
+
+/* Crew Trips Card */
+.crew-section{margin-bottom:32px;}
+.crew-section h3{font-family:'Cinzel',serif;color:var(--gold);font-size:1em;margin-bottom:14px;letter-spacing:1px;display:flex;align-items:center;gap:10px;}
+.crew-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.crew-card{background:var(--black-card);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .3s;}
+.crew-card:hover{border-color:var(--gold-dark);}
+.crew-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.crew-card-name{font-family:'Cinzel',serif;color:var(--white);font-size:.95em;}
+.crew-card-status{padding:3px 10px;border-radius:6px;font-size:.7em;font-weight:600;}
+.crew-card-status.locked{background:rgba(76,175,80,0.1);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
+.crew-card-status.tentative{background:rgba(255,152,0,0.1);color:var(--orange);border:1px solid rgba(255,152,0,0.2);}
+.crew-card-meta{display:flex;flex-wrap:wrap;gap:6px;font-size:.78em;color:var(--gray);margin-bottom:8px;}
+.crew-card-meta span{display:flex;align-items:center;gap:4px;}
+.crew-card-actions{display:flex;gap:6px;margin-top:8px;}
+.crew-card-actions a{padding:5px 10px;border-radius:6px;font-size:.75em;text-decoration:none;transition:all .2s;font-weight:500;}
+.crew-book-btn{background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.2);color:var(--gold);}
+.crew-book-btn:hover{background:rgba(201,162,39,0.2);}
+.crew-plan-btn{background:rgba(100,181,246,0.1);border:1px solid rgba(100,181,246,0.2);color:var(--blue);}
+.crew-plan-btn:hover{background:rgba(100,181,246,0.2);}
+
+/* Booking link button in trip detail */
+.booking-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+.booking-link{padding:8px 16px;border-radius:8px;font-size:.85em;text-decoration:none;font-weight:500;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.booking-link.hotel{background:rgba(100,181,246,0.1);border:1px solid rgba(100,181,246,0.2);color:var(--blue);}
+.booking-link.hotel:hover{background:rgba(100,181,246,0.2);}
+.booking-link.car{background:rgba(255,152,0,0.1);border:1px solid rgba(255,152,0,0.2);color:var(--orange);}
+.booking-link.car:hover{background:rgba(255,152,0,0.2);}
+.booking-link.flight{background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.2);color:var(--green);}
+.booking-link.flight:hover{background:rgba(76,175,80,0.2);}
+
+/* Cost summary */
+.cost-summary{background:var(--black-light);border-radius:10px;padding:14px;margin-top:10px;}
+.cost-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.85em;}
+.cost-row .label{color:var(--gray);}
+.cost-row .value{color:var(--white);font-weight:500;}
+.cost-row.total{border-top:1px solid var(--border);padding-top:10px;margin-top:6px;}
+.cost-row.total .value{color:var(--gold);font-family:'Cinzel',serif;font-size:1.1em;font-weight:700;}
+
+/* Checklist */
+.checklist-input{background:var(--black-light);border:1px solid var(--border);border-radius:10px;padding:10px;}
+.checklist-item{display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid var(--border);}
+.checklist-item:last-child{border-bottom:none;}
+.checklist-item input[type="checkbox"]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;}
+.checklist-item .done{text-decoration:line-through;opacity:.5;}
+.checklist-item span{flex:1;color:var(--white);font-size:.85em;cursor:pointer;}
+#t-checklist-input{flex:1;padding:8px 12px;background:var(--black-card);border:1px solid var(--border);border-radius:8px;color:var(--white);font-family:'Inter',sans-serif;font-size:.85em;outline:none;}
+#t-checklist-input:focus{border-color:var(--gold);}
 </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -339,7 +388,51 @@ function renderFolderList(){
   const trips=getTrips();
   const app=document.getElementById('app');
 
-  let html=`
+  // Get PJ's assigned trips from CREW_TRIPS
+  let crewHtml='';
+  if(typeof CREW_TRIPS !== 'undefined'){
+    const myTrips = CREW_TRIPS.filter(t => {
+      const crew = (t.crew || '').toLowerCase();
+      return crew.includes('pj') || crew.includes('logistics');
+    });
+    const upcoming = myTrips.filter(t => t.status && t.status.toUpperCase() !== 'DONE' && t.status.toUpperCase() !== 'COMPLETED');
+    if(upcoming.length > 0){
+      const monthOrder = ['January','Febuary','February','March','April','May','June','July','August','September','October','November','December'];
+      upcoming.sort((a,b)=>monthOrder.indexOf(a.month||'') - monthOrder.indexOf(b.month||''));
+      crewHtml = `<div class="crew-section">
+        <h3>🚐 My Upcoming Trips (${upcoming.length})</h3>
+        <div class="crew-grid">
+          ${upcoming.slice(0,12).map(t => {
+            const statusClass = (t.status||'').toUpperCase() === 'LOCKED IN' ? 'locked' : 'tentative';
+            const type = (t.sport||'').toLowerCase() === 'baseball' ? '⚾' : (t.sport||'').toLowerCase() === 'soccer' ? '⚽' : '🏆';
+            const dest = t.location || (t.name + (t.state ? ', ' + t.state : ''));
+            const destEnc = encodeURIComponent(dest || t.name || '');
+            return `<div class="crew-card">
+              <div class="crew-card-header">
+                <div class="crew-card-name">${type} ${t.name}</div>
+                <span class="crew-card-status ${statusClass}">${t.status||''}</span>
+              </div>
+              <div class="crew-card-meta">
+                <span>📅 ${t.month || ''} ${t.startDate || ''}${t.endDate ? '-' + t.endDate : ''}</span>
+                <span>📍 ${dest}</span>
+              </div>
+              <div class="crew-card-meta" style="color:var(--gold);">
+                <span>👥 ${t.crew || ''}</span>
+                ${t.pexCard ? '<span>💳 PEX: ' + t.pexCard + '</span>' : ''}
+              </div>
+              <div class="crew-card-actions">
+                <a href="https://www.hotels.com/search.do?destination=${encodeURIComponent(dest || t.name)}" target="_blank" class="crew-book-btn">🏨 Hotel</a>
+                <a href="https://www.kayak.com/cars/${encodeURIComponent((dest||t.name).replace(', ','-').replace(' ','-'))}" target="_blank" class="crew-book-btn">🚗 Rental</a>
+                <a href="trip-planner.html" class="crew-plan-btn">📝 Plan</a>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }
+  }
+
+  let html=crewHtml + `
     <div class="page-header">
       <div>
         <div class="welcome">Trip Maker</div>
@@ -570,11 +663,13 @@ let tripTags=[];
 function openTripModal(tripId){
   editingTripId=tripId||null;
   tripTags=[];
+  _checklistItems=[];
   const modal=document.getElementById('trip-modal');
   let trip={};
   if(tripId){
     trip=getTrips().find(t=>t.id===tripId)||{};
     tripTags=trip.tags||[];
+    _checklistItems = (trip.checklist||[]).map(c=>({text:c.text,done:c.done}));
   }
 
   modal.innerHTML=`
@@ -624,6 +719,29 @@ function openTripModal(tripId){
             <input type="number" id="t-budget" min="0" placeholder="500" value="${trip.budget||''}">
           </div>
         </div>
+        <div class="form-section">
+          <h3>💰 Costs</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Hotel Rate ($/night)</label>
+              <input type="number" id="t-hotel-rate" min="0" placeholder="150" value="${trip.hotelRate||''}">
+            </div>
+            <div class="form-group">
+              <label>Hotel Nights</label>
+              <input type="number" id="t-hotel-nights" min="0" placeholder="3" value="${trip.hotelNights||''}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Rental Car Rate ($/day)</label>
+              <input type="number" id="t-car-rate" min="0" placeholder="65" value="${trip.carRate||''}">
+            </div>
+            <div class="form-group">
+              <label>Rental Days</label>
+              <input type="number" id="t-car-days" min="0" placeholder="3" value="${trip.carDays||''}">
+            </div>
+          </div>
+        </div>
         <div class="form-group">
           <label>Tags</label>
           <div class="tags-input" id="tags-container" onclick="document.getElementById('tag-input').focus()">
@@ -639,7 +757,18 @@ function openTripModal(tripId){
           <label>Notes</label>
           <textarea id="t-notes" placeholder="Private notes, confirmations, reminders...">${trip.notes||''}</textarea>
         </div>
+        <div class="form-group">
+          <label>✅ Pre-Trip Checklist</label>
+          <div class="checklist-input" id="checklist-container">
+            ${(trip.checklist||[]).map((item,i) => `<div class="checklist-item"><input type="checkbox" ${item.done?'checked':''} onchange="toggleChecklistItem(${i},'${trip.id||'NEW'}')"><span class="${item.done?'done':''}" ondblclick="editChecklistItem(${i},this,event)">${item.text}</span><button onclick="removeChecklistItem(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;margin-left:auto;font-size:1.1em;">&times;</button></div>`).join('')}
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <input type="text" id="t-checklist-input" placeholder="Add item..." onkeydown="if(event.key==='Enter')addChecklistItem()">
+              <button class="btn btn-primary btn-sm" onclick="addChecklistItem()">+</button>
+            </div>
+          </div>
+        </div>
       </div>
+      <div style="display:none;" id="checklist-data">${JSON.stringify(trip.checklist||[]).replace(/"/g,'&quot;')}</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button class="btn btn-primary" onclick="saveTrip()">${tripId?'Update Trip':'Create Trip'}</button>
         <button class="btn btn-secondary" onclick="closeTripModal()">Cancel</button>
@@ -695,9 +824,14 @@ function saveTrip(){
     type:document.getElementById('t-type').value,
     travelers:parseInt(document.getElementById('t-travelers').value)||1,
     budget:parseFloat(document.getElementById('t-budget').value)||0,
+    hotelRate:parseFloat(document.getElementById('t-hotel-rate').value)||0,
+    hotelNights:parseInt(document.getElementById('t-hotel-nights').value)||0,
+    carRate:parseFloat(document.getElementById('t-car-rate').value)||0,
+    carDays:parseInt(document.getElementById('t-car-days').value)||0,
     tags:[...tripTags],
     desc:document.getElementById('t-desc').value,
     notes:document.getElementById('t-notes').value,
+    checklist:[..._checklistItems],
     created:editingTripId?(getTrips().find(t=>t.id===editingTripId)?.created||Date.now()):Date.now(),
     updated:Date.now()
   };
@@ -714,6 +848,61 @@ function saveTrip(){
   closeTripModal();
   showToast(editingTripId?'Trip updated!':'Trip created!');
   if(currentFolderId)renderFolderView(currentFolderId);else renderFolderList();
+}
+
+// Checklist functions (used by inline onclick in trip modal)
+let _checklistItems = [];
+let _checklistTripId = null;
+
+function addChecklistItem(){
+  const inp = document.getElementById('t-checklist-input');
+  if(!inp||!inp.value.trim())return;
+  const item = {text:inp.value.trim(),done:false};
+  _checklistItems.push(item);
+  inp.value='';
+  renderChecklist();
+  _checklistTripId = document.getElementById('checklist-data')?.getAttribute('data-trip-id') || '';
+}
+
+function removeChecklistItem(idx){
+  _checklistItems.splice(idx,1);
+  renderChecklist();
+}
+
+function toggleChecklistItem(idx){
+  if(_checklistItems[idx]){
+    _checklistItems[idx].done = !_checklistItems[idx].done;
+    renderChecklist();
+  }
+}
+
+function editChecklistItem(idx,el,e){
+  e.stopPropagation();
+  const current = _checklistItems[idx]?.text||'';
+  const input = document.createElement('input');
+  input.type='text';
+  input.value=current;
+  input.style.cssText='flex:1;padding:4px 8px;background:var(--black-card);border:1px solid var(--gold);border-radius:4px;color:var(--white);font-size:.85em;';
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+  const save = (v)=>{
+    if(v&&_checklistItems[idx]){
+      _checklistItems[idx].text=v;
+      renderChecklist();
+    }else if(_checklistItems[idx]){
+      renderChecklist();
+    }
+  };
+  input.onblur=()=>save(input.value);
+  input.onkeydown=(ke)=>{if(ke.key==='Enter'){input.blur();}else if(ke.key==='Escape'){renderChecklist();}};
+}
+
+function renderChecklist(){
+  const container = document.getElementById('checklist-container');
+  if(!container)return;
+  const editId = _checklistTripId || document.getElementById('checklist-data')?.getAttribute('data-trip-id') || '';
+  container.innerHTML = _checklistItems.map((item,i)=>`<div class="checklist-item"><input type="checkbox" ${item.done?'checked':''} onchange="toggleChecklistItem(${i})"><span class="${item.done?'done':''}" ondblclick="editChecklistItem(${i},this,event)">${item.text}</span><button onclick="removeChecklistItem(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;margin-left:auto;font-size:1.1em;">&times;</button></div>`).join('')+`<div style="display:flex;gap:8px;margin-top:8px;"><input type="text" id="t-checklist-input" placeholder="Add item..." onkeydown="if(event.key==='Enter')addChecklistItem()"><button class="btn btn-primary btn-sm" onclick="addChecklistItem()">+</button></div>`;
 }
 
 function deleteTrip(id){
@@ -946,11 +1135,69 @@ function viewTrip(tripId){
     `;
   }
 
+  // Booking links
+  const dest = trip.destination || '';
+  if(dest){
+    const searchDest = encodeURIComponent(dest);
+    html+=`
+      <div class="detail-section">
+        <h4>🔗 Quick Bookings</h4>
+        <div class="booking-links">
+          <a href="https://www.hotels.com/search.do?destination=${searchDest}" target="_blank" class="booking-link hotel">🏨 Hotels.com</a>
+          <a href="https://www.booking.com/searchresults.html?ss=${searchDest}" target="_blank" class="booking-link hotel">🏨 Booking.com</a>
+          <a href="https://www.kayak.com/cars/${searchDest.replace(/%2C%20/g,'-').toLowerCase()}" target="_blank" class="booking-link car">🚗 Kayak Cars</a>
+          <a href="https://www.enterprise.com/en/car-rental/locations/us/${dest.split(',')[0].trim().toLowerCase()}.html" target="_blank" class="booking-link car">🚗 Enterprise</a>
+          <a href="https://www.google.com/travel/flights?q=flights+to+${searchDest}" target="_blank" class="booking-link flight">✈️ Flights</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${searchDest}" target="_blank" class="booking-link flight">🗺️ Map</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // Cost estimate
+  const nightly = trip.hotelRate || 0;
+  const carDaily = trip.carRate || 0;
+  const nights = trip.hotelNights || Math.ceil(days/2) || 1;
+  const carDays = trip.carDays || days || 1;
+  const hotelTotal = nightly * nights;
+  const carTotal = carDaily * carDays;
+  const total = hotelTotal + carTotal + (trip.budget || 0);
+  if(nightly > 0 || carDaily > 0){
+    html+=`
+      <div class="detail-section">
+        <h4>💰 Cost Estimate</h4>
+        <div class="cost-summary">
+          ${nightly > 0 ? `<div class="cost-row"><span class="label">🏨 Hotel (${nights} nights × $${nightly})</span><span class="value">$${hotelTotal}</span></div>` : ''}
+          ${carDaily > 0 ? `<div class="cost-row"><span class="label">🚗 Rental (${carDays} days × $${carDaily})</span><span class="value">$${carTotal}</span></div>` : ''}
+          ${trip.budget ? `<div class="cost-row"><span class="label">💰 Trip Budget</span><span class="value">$${trip.budget}</span></div>` : ''}
+          <div class="cost-row total"><span class="label">Estimated Total</span><span class="value">$${total}</span></div>
+        </div>
+      </div>
+    `;
+  }
+
   if(trip.desc){
     html+=`
       <div class="detail-section">
         <h4>📝 Description</h4>
         <p style="color:var(--gray);line-height:1.7;font-size:.9em;">${trip.desc}</p>
+      </div>
+    `;
+  }
+
+  // Checklist
+  if(trip.checklist&&trip.checklist.length){
+    const done=trip.checklist.filter(c=>c.done).length;
+    const pct=trip.checklist.length>0?Math.round(done/trip.checklist.length*100):0;
+    html+=`
+      <div class="detail-section">
+        <h4>✅ Checklist (${done}/${trip.checklist.length})</h4>
+        <div style="background:var(--black-light);border-radius:8px;padding:12px;">
+          <div style="height:6px;background:var(--border);border-radius:3px;margin-bottom:10px;overflow:hidden;">
+            <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:3px;transition:width .3s;"></div>
+          </div>
+          ${trip.checklist.map(c=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;color:${c.done?'var(--gray)':'var(--white)'};font-size:.85em;"><span style="color:${c.done?'var(--green)':'var(--gray-dark)'};">${c.done?'✅':'⬜'}</span><span style="${c.done?'text-decoration:line-through;opacity:.6':''}">${c.text}</span></div>`).join('')}
+        </div>
       </div>
     `;
   }
@@ -968,6 +1215,7 @@ function viewTrip(tripId){
         <div class="detail-actions">
           <button class="btn btn-primary" onclick="closeViewModal();openTripModal('${trip.id}');">✏️ Edit Trip</button>
           <button class="btn btn-success" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trip.destination)}','_blank')">🗺️ Open Map</button>
+          <button class="btn btn-secondary" onclick="printTripSummary('${trip.id}')">🖨️ Print</button>
           <button class="btn btn-danger" style="margin-left:auto;" onclick="closeViewModal();deleteTrip('${trip.id}');">🗑️ Delete</button>
         </div>
       </div>
@@ -1029,6 +1277,49 @@ function updateFolderTimestamp(folderId){
   const f=folders.find(x=>x.id===folderId);
   if(f){f.updated=Date.now();saveFolders(folders);}
 }
+function printTripSummary(tripId){
+  const trip=getTrips().find(t=>t.id===tripId);
+  if(!trip)return;
+  const folder=getFolders().find(f=>f.id===trip.folderId);
+  const days=countDays(trip.startDate,trip.endDate);
+  const night=trip.hotelRate||0;
+  const car=trip.carRate||0;
+  const total= (night*(trip.hotelNights||1)) + (car*(trip.carDays||1)) + (trip.budget||0);
+  const checkStr = (trip.checklist||[]).map(c=>`${c.done?'✓':'☐'} ${c.text}`).join('\n');
+  const printWin = window.open('','_blank','width=800,height=600');
+  printWin.document.write(`<!DOCTYPE html><html><head>
+<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script><title>${trip.name} — Trip Summary</title>
+    <style>body{font-family:system-ui,sans-serif;padding:40px;max-width:700px;margin:0 auto;}
+    h1{font-size:1.5em;margin-bottom:4px;}
+    .meta{color:#666;margin-bottom:20px;}
+    table{width:100%;border-collapse:collapse;margin:16px 0;}
+    td{padding:8px 4px;border-bottom:1px solid #eee;}
+    td:first-child{font-weight:600;width:100px;color:#444;}
+    .section{margin:20px 0;padding-top:10px;border-top:2px solid #333;}
+    .section h3{margin-bottom:8px;}
+    .total{font-size:1.3em;font-weight:700;color:#C9A227;text-align:right;margin-top:20px;}
+    .checklist{list-style:none;padding:0;}
+    .checklist li{margin:4px 0;padding:4px 0;border-bottom:1px solid #eee;}
+    @media print{body{padding:20px;}}</style></head><body>
+    <h1>${trip.name}</h1>
+    <div class="meta">${folder?folder.name+' • ':''}${trip.destination}</div>
+    <table>
+      <tr><td>Dates</td><td>${formatDate(trip.startDate)} — ${formatDate(trip.endDate)} (${days} day${days!==1?'s':''})</td></tr>
+      <tr><td>Travelers</td><td>${trip.travelers||1}</td></tr>
+      <tr><td>Type</td><td>${trip.type||'Other'}</td></tr>
+      ${trip.tags&&trip.tags.length?`<tr><td>Tags</td><td>${trip.tags.join(', ')}</td></tr>`:''}
+    </table>
+    ${trip.desc?`<div class="section"><h3>📝 Description</h3><p>${trip.desc}</p></div>`:''}
+    ${night||car?`<div class="section"><h3>💰 Cost Breakdown</h3><table>${night?`<tr><td>Hotel</td><td>$${night} × ${trip.hotelNights||1} night${trip.hotelNights!==1?'s':''}</td><td style="text-align:right;">$${night*(trip.hotelNights||1)}</td></tr>`:''}${car?`<tr><td>Rental Car</td><td>$${car} × ${trip.carDays||1} day${trip.carDays!==1?'s':''}</td><td style="text-align:right;">$${car*(trip.carDays||1)}</td></tr>`:''}${trip.budget?`<tr><td>Misc Budget</td><td></td><td style="text-align:right;">$${trip.budget}</td></tr>`:''}</table><div class="total">Total: $${total}</div></div>`:''}
+    ${checkStr?`<div class="section"><h3>✅ Checklist</h3><ul class="checklist">${checkStr.split('\n').map(l=>'<li>'+l+'</li>').join('')}</ul></div>`:''}
+    ${trip.notes?`<div class="section"><h3>📌 Notes</h3><p style="white-space:pre-wrap;">${trip.notes}</p></div>`:''}
+    <p style="margin-top:40px;color:#999;font-size:.8em;text-align:center;">Generated by Future Stars Trip Maker</p>
+  </body></html>`);
+  printWin.document.close();
+  printWin.focus();
+  setTimeout(()=>{try{printWin.print();}catch(e){}},500);
+}
+
 function showToast(msg){
   const existing=document.querySelector('.toast');
   if(existing)existing.remove();
@@ -1038,7 +1329,7 @@ function showToast(msg){
   document.body.appendChild(toast);
   setTimeout(()=>toast.remove(),3000);
 }
-function logout(){sessionStorage.clear();window.location.href='signin.html';}
+function logout(){localStorage.clear();sessionStorage.clear();window.location.href='signin.html';}
 
 /* ═════════════════════════════════════════
    KEYBOARD SHORTCUTS

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777150777-81496552";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -363,8 +363,8 @@
             <a href="inventory-v2.html" class="card animate-in" style="animation-delay:0.55s">
                 <div class="card-icon">📦</div>
                 <div class="card-body">
-                    <h3>Inventory & Trips</h3>
-                    <p>View stock levels, pack trips, and track what's shipped. All in one place.</p>
+                    <h3>Inventory</h3>
+                    <p>View stock levels with jersey cards, size dots, and low-stock alerts.</p>
                 </div>
             </a>
             <a href="tournaments.html" class="card animate-in" style="animation-delay:0.65s">
@@ -386,6 +386,13 @@
                 <div class="card-body">
                     <h3>Trip Planner</h3>
                     <p>Plan hotels, car rentals, and logistics for upcoming tournaments.</p>
+                </div>
+            </a>
+            <a href="pack-manager.html" class="card animate-in" style="animation-delay:0.95s">
+                <div class="card-icon">📦</div>
+                <div class="card-body">
+                    <h3>Pack Manager</h3>
+                    <p>Create trips, pick jerseys, print packing lists, manage shipments.</p>
                 </div>
             </a>
         </div>
@@ -417,43 +424,59 @@
         document.getElementById('welcome-name').textContent = NAME;
         document.getElementById('role-line').textContent = ROLE === 'owner' ? 'Owner Access — Full Control' : ROLE === 'logistics' ? 'Logistics Lead — Hotels, Cars, Trips' : ROLE === 'inventory' ? 'Inventory Manager — Stock & Jerseys' : ROLE === 'tournament' ? 'Tournament Lock — Crew & Events' : 'Team Member';
         
-        // Load and display alerts
-        function loadAlerts() {
-            const alertsDiv = document.getElementById('alerts-section');
-            const trips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
-            const activeTrips = trips.filter(t => !t.shipped);
-            const shippedTrips = trips.filter(t => t.shipped);
+        // Compute real inventory stats
+        function computeStats() {
+            let bbTotal = 0, scTotal = 0;
+            Object.values(INVENTORY.baseball).forEach(item => bbTotal += item.total || 0);
+            Object.values(INVENTORY.soccer).forEach(item => scTotal += item.total || 0);
+            const grand = bbTotal + scTotal;
+            document.getElementById('db-units').textContent = grand >= 1000 ? Math.round(grand/100)/10 + 'K' : grand;
+            document.getElementById('db-baseball').textContent = bbTotal >= 1000 ? Math.round(bbTotal/100)/10 + 'K' : bbTotal;
+            document.getElementById('db-soccer').textContent = scTotal >= 1000 ? Math.round(scTotal/100)/10 + 'K' : scTotal;
             
+            // Low stock items (below 10 units)
+            const lowItems = [];
+            Object.entries(INVENTORY.baseball).forEach(([name, data]) => {
+                if (data.total > 0 && data.total < 10) lowItems.push({name, qty: data.total, sport: 'baseball'});
+            });
+            Object.entries(INVENTORY.soccer).forEach(([name, data]) => {
+                if (data.total > 0 && data.total < 10) lowItems.push({name, qty: data.total, sport: 'soccer'});
+            });
+            
+            const alertsDiv = document.getElementById('alerts-section');
             let html = '';
             
-            // Active trips alert
-            if (activeTrips.length > 0) {
+            // Active trips alert (from fs_trips_pack)
+            const packTrips = JSON.parse(localStorage.getItem('fs_trips_pack') || '[]');
+            const activePackTrips = packTrips.filter(t => t.status === 'packing' || t.status === 'packed' || !t.status);
+            if (activePackTrips.length > 0) {
                 html += `<div style="background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.3);border-radius:12px;padding:16px;margin-bottom:12px;">
-                    <div style="font-weight:600;color:var(--gold);margin-bottom:8px;">🚐 Active Trips (${activeTrips.length})</div>
-                    ${activeTrips.map(t => `<div style="font-size:0.9em;color:var(--gray);padding:4px 0;">• ${t.name} — ${t.date}</div>`).join('')}
+                    <div style="font-weight:600;color:var(--gold);margin-bottom:8px;">📦 Active Pack Trips (${activePackTrips.length})</div>
+                    ${activePackTrips.slice(0,8).map(t => `<div style="font-size:0.9em;color:var(--gray);padding:4px 0;">• ${t.name} ${t.date ? '— ' + t.date : ''}</div>`).join('')}
                 </div>`;
             }
             
-            // Low stock alert (example threshold: 50 units)
-            const lowStock = [];
-            // This would check actual inventory data
-            if (lowStock.length > 0) {
+            // Low stock alert
+            if (lowItems.length > 0) {
                 html += `<div style="background:rgba(239,83,80,0.1);border:1px solid rgba(239,83,80,0.3);border-radius:12px;padding:16px;">
-                    <div style="font-weight:600;color:var(--red);margin-bottom:8px;">⚠️ Low Stock Alert</div>
-                    ${lowStock.map(item => `<div style="font-size:0.9em;color:var(--gray);">• ${item.name}: ${item.qty} left</div>`).join('')}
+                    <div style="font-weight:600;color:var(--red);margin-bottom:8px;">⚠️ Low Stock Alert (${lowItems.length} items)</div>
+                    ${lowItems.map(item => `<div style="font-size:0.9em;color:var(--gray);">• ${item.name} (${item.sport}): ${item.qty} left</div>`).join('')}
                 </div>`;
+            }
+            
+            if (!html) {
+                html = `<div style="color:var(--gray);font-size:0.95em;">✅ All clear — no active alerts</div>`;
             }
             
             alertsDiv.innerHTML = html;
         }
         
+        computeStats();
         // Update active trips count
-        const trips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
-        document.getElementById('db-trips').textContent = trips.filter(t => !t.shipped).length;
-        
-        loadAlerts();
+        document.getElementById('db-trips').textContent = (JSON.parse(localStorage.getItem('fs_trips_pack') || '[]')).length;
         
         function logout() {
+            localStorage.clear();
             sessionStorage.clear();
             window.location.href = 'signin.html';
         }
