@@ -1,24 +1,24 @@
 // Cloudflare Pages Functions Middleware
-// Runs on every request, sets no-cache headers for HTML
+// Force no-cache headers for all responses
 
 export async function onRequest(context) {
   const response = await context.next();
   
-  const contentType = response.headers.get('content-type') || '';
+  const newHeaders = new Headers(response.headers);
   
-  // Only modify HTML responses
-  if (contentType.includes('text/html')) {
-    const newHeaders = new Headers(response.headers);
-    newHeaders.set('Cache-Control', 'private, no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0');
-    newHeaders.set('Pragma', 'no-cache');
-    newHeaders.set('Expires', '0');
-    
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers: newHeaders
-    });
-  }
+  // Add a marker so we know middleware is running
+  newHeaders.set('X-FS-Middleware', 'active');
   
-  return response;
+  // Override ALL cache headers for HTML
+  const contentType = newHeaders.get('content-type') || '';
+  
+  newHeaders.set('Cache-Control', 'private, no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0');
+  newHeaders.set('Pragma', 'no-cache');
+  newHeaders.set('Expires', '0');
+  
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders
+  });
 }
