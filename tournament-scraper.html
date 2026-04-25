@@ -262,10 +262,11 @@
                 const saved = getData(t.name);
                 const status = saved ? saved.status : null;
                 const times = saved ? (saved.times || []) : [];
-                const url = saved ? (saved.url || '') : '';
+                const url = saved ? (saved.url || '') : (t.site || '');
                 
                 let badge = '';
-                if (status === 'loading') badge = '<span class="status-badge loading">⏳ Loading...</span>';
+                if (url && !saved) badge = '<span class="status-badge found">✅ Site available</span>';
+                else if (status === 'loading') badge = '<span class="status-badge loading">⏳ Loading...</span>';
                 else if (status === 'found') badge = '<span class="status-badge found">✅ ' + (times.length === 0 ? 'Site found, no schedule' : times.length + ' games found') + '</span>';
                 else if (status === 'no-site') badge = '<span class="status-badge fail">❌ No site found</span>';
                 else if (status === 'error') badge = '<span class="status-badge fail">⚠️ Error</span>';
@@ -285,6 +286,7 @@
                                 ${badge}
                                 <button class="btn-sm btn-lookup" onclick="event.stopPropagation();lookupTournament('${t.name.replace(/'/g,"\\'")}','${(t.state||'').replace(/'/g,"\\'")}')">🔍 Lookup</button>
                                 ${url ? '<a class="btn-sm btn-go" href="'+url+'" target="_blank" onclick="event.stopPropagation()">Open ↗</a>' : ''}
+                                ${!url && t.site ? '<a class="btn-sm btn-go" href="'+t.site+'" target="_blank" onclick="event.stopPropagation()">Open ↗</a>' : ''}
                                 ${saved ? '<button class="btn-sm btn-clear" onclick="event.stopPropagation();clearData(\''+t.name.replace(/'/g,"\\'")+'\')">✕</button>' : ''}
                             </div>
                         </div>
@@ -304,6 +306,7 @@
                             ${status === 'error' ? '<div style="color:var(--orange);font-size:0.85em">${saved ? saved.message || "Something went wrong" : "Something went wrong"}</div>' : ''}
                             ${status === 'manual' ? '<div style="color:var(--gray-dark);font-size:0.85em">URL saved — click Open to visit the site</div>' : ''}
                             ${url ? '<div class="source-link"><a href="'+url+'" target="_blank">🔗 Source: ' + url + '</a></div>' : ''}
+                            ${!url && t.site ? '<div class="source-link"><a href="'+t.site+'" target="_blank">🔗 Tournament Site ↗</a></div>' : ''}
                         </div>
                     </div>
                 `;

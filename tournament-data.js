@@ -1,5 +1,6 @@
 const TOURNEY_DATA = [
   {
+    "site": "https://events.gotsport.com/events/calendar.aspx?Search=Colleen%20Reilly%20Tournament%20PA",
     "name": "2024 Colleen Reilly Tournament",
     "ageGroup": "",
     "month": "Aug 16-18",
@@ -9,9 +10,10 @@ const TOURNEY_DATA = [
     "sites": "4",
     "setups": "",
     "responsible": "",
-    "contact": "csachson@horshamsoccer.com"
+    "contact": "csachson@horshamsoccer.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Community Kickoff",
     "ageGroup": "",
     "month": "Aug 16-18",
@@ -21,9 +23,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Bolingbrook Labor Day Festival",
     "ageGroup": "",
     "month": "Aug 30- Sept 1",
@@ -33,9 +36,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "",
     "responsible": "",
-    "contact": "Brooke.stobaugh@bolingbrooksoccerclub.org"
+    "contact": "Brooke.stobaugh@bolingbrooksoccerclub.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Texas Labor Day Cup",
     "ageGroup": "",
     "month": "Aug 31st-Sept 2nd",
@@ -45,9 +49,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "",
     "responsible": "",
-    "contact": "Maria@texassportsgroup.com"
+    "contact": "Maria@texassportsgroup.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Labor Day Kick-Off Classic",
     "ageGroup": "",
     "month": "Aug 31st",
@@ -57,9 +62,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "info@basoccer.club"
+    "contact": "info@basoccer.club",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Cajun Classic",
     "ageGroup": "",
     "month": "Sept  6-8",
@@ -69,9 +75,10 @@ const TOURNEY_DATA = [
     "sites": "1 (27 fields)",
     "setups": "",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Queen City Cup",
     "ageGroup": "",
     "month": "Sept  6-8",
@@ -81,9 +88,10 @@ const TOURNEY_DATA = [
     "sites": "1 (20 fields)",
     "setups": "",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "FC Alliance North Fall Classic",
     "ageGroup": "",
     "month": "Sept. 7-8",
@@ -93,9 +101,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "1ST Annual Quad City Fall Shootout",
     "ageGroup": "",
     "month": "September 13-15",
@@ -105,9 +114,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "tournament@emssc.org"
+    "contact": "tournament@emssc.org",
   },
   {
+    "site": "https://www.montanasurf.com/",
     "name": "Montana Surf Challenge",
     "ageGroup": "",
     "month": "September 14-15",
@@ -117,9 +127,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "",
     "responsible": "",
-    "contact": "Montanasurfchallenge@gmail.com (Erin)"
+    "contact": "Montanasurfchallenge@gmail.com (Erin)",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Give N Go Charity Tournament",
     "ageGroup": "",
     "month": "Sept 20-22",
@@ -129,9 +140,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "tournament@synergysoccerclub.com"
+    "contact": "tournament@synergysoccerclub.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "2024 Black Hills Cup",
     "ageGroup": "",
     "month": "Sept 20-22",
@@ -141,9 +153,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "sturgissoccer@hotmail.com"
+    "contact": "sturgissoccer@hotmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Wisconsin Rush OctoberFest",
     "ageGroup": "",
     "month": "Sep. 27-29",
@@ -153,9 +166,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com"
+    "contact": "cahmed@rushsoccer.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "IFC Fall Cup",
     "ageGroup": "",
     "month": "Sept 28-29",
@@ -165,9 +179,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "phackman9@gmail.com"
+    "contact": "phackman9@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "The 2024 Derby",
     "ageGroup": "",
     "month": "Sep. 27-29",
@@ -177,9 +192,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "",
     "responsible": "",
-    "contact": "Aly.moon@legendsfc.net"
+    "contact": "Aly.moon@legendsfc.net",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "MS River Derby",
     "ageGroup": "",
     "month": "Sep 28-29",
@@ -189,9 +205,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "United Futbol Cup 2024",
     "ageGroup": "",
     "month": "Oct. 5-6",
@@ -201,9 +218,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "2",
     "responsible": "",
-    "contact": "barcelonaunitedsc@gmail.com"
+    "contact": "barcelonaunitedsc@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Spring Creek Iowa Fall Classic",
     "ageGroup": "",
     "month": "Oct. 5-6",
@@ -213,9 +231,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "2",
     "responsible": "",
-    "contact": "dcousineau@kingshammersbd.com"
+    "contact": "dcousineau@kingshammersbd.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "OLOL",
     "ageGroup": "",
     "month": "Oct. 5-6",
@@ -225,9 +244,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "pfletcher@brsoccer.org"
+    "contact": "pfletcher@brsoccer.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Glacier Surf Premier Cup",
     "ageGroup": "",
     "month": "Oct. 4-6",
@@ -237,9 +257,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "",
-    "contact": "nate@glaciersurfsoccer.com"
+    "contact": "nate@glaciersurfsoccer.com",
   },
   {
+    "site": "https://www.scottsdalecup.com/",
     "name": "Scottsdale Cup",
     "ageGroup": "YES",
     "month": "Oct 11-13",
@@ -249,9 +270,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "",
-    "contact": "Rated Sports"
+    "contact": "Rated Sports",
   },
   {
+    "site": "https://www.ncrush.com/",
     "name": "NC Rush Triad Fall Classic",
     "ageGroup": "YES",
     "month": "Oct 12-13",
@@ -261,9 +283,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Norski SC Fall Bash",
     "ageGroup": "",
     "month": "Oct 11-13",
@@ -273,9 +296,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "norskisctournamentdirector@gmail.com"
+    "contact": "norskisctournamentdirector@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "CDO Southwest Showdown",
     "ageGroup": "YES",
     "month": "October 18th-20th",
@@ -285,9 +309,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "cdotournaments@gmail.com"
+    "contact": "cdotournaments@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Monster Mash at Cherry Island",
     "ageGroup": "",
     "month": "Oct. 19th",
@@ -297,9 +322,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "jctournament@aol.com"
+    "contact": "jctournament@aol.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Kick or Treat",
     "ageGroup": "",
     "month": "Oct 18-20",
@@ -309,9 +335,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "VP@lawtonsoccerclub.org"
+    "contact": "VP@lawtonsoccerclub.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Southeast Classic at Gatlinburg",
     "ageGroup": "",
     "month": "Oct 19-20",
@@ -321,9 +348,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "soccercam1019@gmail.com"
+    "contact": "soccercam1019@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Haunted Capital Cup",
     "ageGroup": "",
     "month": "October 25-27",
@@ -333,9 +361,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "tchapman.uccsoccer@outlook.com"
+    "contact": "tchapman.uccsoccer@outlook.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "ELK GROVE Ghoust Games",
     "ageGroup": "",
     "month": "October 25-27",
@@ -345,9 +374,10 @@ const TOURNEY_DATA = [
     "sites": "3",
     "setups": "3",
     "responsible": "",
-    "contact": "hkhangura@elkgrovesoccer.com"
+    "contact": "hkhangura@elkgrovesoccer.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Colorado East Cup",
     "ageGroup": "",
     "month": "Nov 1-3",
@@ -357,9 +387,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Arsenal Cup",
     "ageGroup": "",
     "month": "Nov 9-10",
@@ -369,9 +400,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "llevesque@ymcarome.org"
+    "contact": "llevesque@ymcarome.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Gatlinburg College Showcase (U14-19)",
     "ageGroup": "",
     "month": "Nov 9-10",
@@ -381,9 +413,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "soccercam1019@gmail.com"
+    "contact": "soccercam1019@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/calendar.aspx?Search=DSA%2030th%20Annual%20Invitational%20TX",
     "name": "2024 DSA 30th Annual Invitational",
     "ageGroup": "",
     "month": "Nov 8-10",
@@ -393,9 +426,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Impact Premier Cup",
     "ageGroup": "u8-u19",
     "month": "Nov 16-17",
@@ -405,9 +439,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "",
-    "contact": "soccercam1019@gmail.com"
+    "contact": "soccercam1019@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Adidas Clash",
     "ageGroup": "u9-u19",
     "month": "Nov 15-17",
@@ -417,9 +452,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "",
-    "contact": "Ggartner@ncfusion.org"
+    "contact": "Ggartner@ncfusion.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Rocky Mountain Fall Championship",
     "ageGroup": "u9-u10",
     "month": "Nov 16-17",
@@ -429,9 +465,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "2",
     "responsible": "",
-    "contact": "randy.weber@rapidsyouthsoccer.org"
+    "contact": "randy.weber@rapidsyouthsoccer.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Fall Classic",
     "ageGroup": "u4-u18",
     "month": "Nov 15-17",
@@ -441,9 +478,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "isatournamentdirector@gmail.com"
+    "contact": "isatournamentdirector@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Mountain State Cup",
     "ageGroup": "Yes//  u7-u19",
     "month": "Nov 15-17",
@@ -453,7 +491,7 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "",
-    "contact": "Samantha@shawneesports.com"
+    "contact": "Samantha@shawneesports.com",
   },
   {
     "name": "Bullhead City Baseball: Thanksgiving Classic",
@@ -465,9 +503,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "1",
     "responsible": "",
-    "contact": "702-969-1727"
+    "contact": "702-969-1727",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "West-Mont Fall Finale",
     "ageGroup": "u8-u14",
     "month": "Nov 22-24",
@@ -477,9 +516,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "moplinger@westmontunitedsoccer.org"
+    "contact": "moplinger@westmontunitedsoccer.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Thanksgiving Classic",
     "ageGroup": "U7-U19",
     "month": "Nov 23-24",
@@ -489,9 +529,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "JR",
-    "contact": "626-319-8480"
+    "contact": "626-319-8480",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "LTE Fall Classic",
     "ageGroup": "U7-U16",
     "month": "Nov 23-24",
@@ -501,9 +542,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "Wes",
-    "contact": "andy@ltesoccer.com"
+    "contact": "andy@ltesoccer.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Hawaii Thanksgiving INV",
     "ageGroup": "U8-U15",
     "month": "Nov 29-Dec 1",
@@ -513,9 +555,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Lane",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://www.desertsupercup.com/",
     "name": "Desert Supercup",
     "ageGroup": "U9-U14",
     "month": "Nov 29-Dec 1",
@@ -525,9 +568,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "Lane",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "1. La jolla All Star",
     "ageGroup": "U8-U14",
     "month": "Dec. 7-8",
@@ -537,9 +581,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "JR",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "2. Cornado Holiday Cup",
     "ageGroup": "U8-U14",
     "month": "Dec. 7-8",
@@ -549,9 +594,10 @@ const TOURNEY_DATA = [
     "sites": "1 Tidelands Park",
     "setups": "1",
     "responsible": "JR",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "3. Atlantic Cup",
     "ageGroup": "U9-U19",
     "month": "Dec 7-8",
@@ -561,9 +607,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Lane",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "4. The Open",
     "ageGroup": "U8-U14",
     "month": "Dec 6-8  EARLY FRIDAY",
@@ -573,9 +620,10 @@ const TOURNEY_DATA = [
     "sites": "2//// Reata U12-U15//// Bell94 U9-U12",
     "setups": "2",
     "responsible": "Lane",
-    "contact": "aly.moon@legendsfc.net"
+    "contact": "aly.moon@legendsfc.net",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "5. Gatlinburg Season Finale",
     "ageGroup": "U9-U19",
     "month": "Dec 7-8",
@@ -585,9 +633,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Lane",
-    "contact": "soccercam1019@gmail.com"
+    "contact": "soccercam1019@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "6. Level Up Cup",
     "ageGroup": "u8-u19",
     "month": "Dec 7-8",
@@ -597,9 +646,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "JR",
-    "contact": "Maria@texassportsgroup.com"
+    "contact": "Maria@texassportsgroup.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Homestead Cup",
     "ageGroup": "U8-U16",
     "month": "Dec 14-15",
@@ -609,7 +659,7 @@ const TOURNEY_DATA = [
     "sites": "2// Loren Roberts - Olders// Miami Communiuty - youngers",
     "setups": "2",
     "responsible": "WES",
-    "contact": "mayowa.owolabi@iepsoccer.com"
+    "contact": "mayowa.owolabi@iepsoccer.com",
   },
   {
     "name": "Lafayette Market",
@@ -621,9 +671,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Lane",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Illinois Futsal",
     "ageGroup": "",
     "month": "Dec 21-22",
@@ -633,9 +684,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Futsal Illinois State Championship",
     "ageGroup": "U8-U19",
     "month": "Dec 20-22",
@@ -645,9 +697,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Wes",
-    "contact": "630-447-8384"
+    "contact": "630-447-8384",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "HI-5 Tournament",
     "ageGroup": "",
     "month": "Jan 4-5",
@@ -657,9 +710,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Lane",
-    "contact": "Michael Ramirez <ayso5rc@gmail.com>"
+    "contact": "Michael Ramirez <ayso5rc@gmail.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Winter Thunder Cup",
     "ageGroup": "U9-U13",
     "month": "Jan 11-12",
@@ -669,9 +723,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "JR",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Sol Winter Classic",
     "ageGroup": "U8-U12",
     "month": "Jan 11-12",
@@ -681,9 +736,10 @@ const TOURNEY_DATA = [
     "sites": "2/ Sequoia Elem & Innovation MS",
     "setups": "2",
     "responsible": "Lane",
-    "contact": "sanmarcosunited@gmail.com  (Janet)"
+    "contact": "sanmarcosunited@gmail.com  (Janet)",
   },
   {
+    "site": "https://www.ratedcup.com/",
     "name": "Rated Cup",
     "ageGroup": "U7-U19",
     "month": "Jan 18-19",
@@ -693,9 +749,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Lane",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
+    "site": "https://www.vegascup.com/",
     "name": "Vegas Cup",
     "ageGroup": "",
     "month": "Jan 17-20",
@@ -705,9 +762,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "2",
     "responsible": "Lane/Wes",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/calendar.aspx?Search=Colorado%20Futsal%20Championships%20CO",
     "name": "Colorado Futsal Championships",
     "ageGroup": "",
     "month": "Jan 24-26",
@@ -717,9 +775,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Lane",
-    "contact": "randy.weber@rapidsyouthsoccer.org"
+    "contact": "randy.weber@rapidsyouthsoccer.org",
   },
   {
+    "site": "https://events.gotsport.com/events/calendar.aspx?Search=Winter%20Cold%20Snap%20(One%20Day)%20TX",
     "name": "Winter Cold Snap (One Day)",
     "ageGroup": "U7-U15",
     "month": "Jan 25",
@@ -729,9 +788,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "JR",
-    "contact": "469 583 3160"
+    "contact": "469 583 3160",
   },
   {
+    "site": "https://events.gotsport.com/events/schedule.aspx?eventid=12345",
     "name": "Lexington SA Cup",
     "ageGroup": "U8-U14",
     "month": "Feb 1-2",
@@ -741,9 +801,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "2",
     "responsible": "Lane",
-    "contact": "nicholbs@yahoo.com"
+    "contact": "nicholbs@yahoo.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Academy World Cup Friendlies",
     "ageGroup": "U9-U10",
     "month": "Feb 8-9",
@@ -753,9 +814,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Wes",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "MYSA Spring Shootout",
     "ageGroup": "U7-U19",
     "month": "Feb 8-9",
@@ -765,9 +827,10 @@ const TOURNEY_DATA = [
     "sites": "2",
     "setups": "2",
     "responsible": "Ryan",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "2025 Cal North Junior Cup",
     "ageGroup": "U9-U12",
     "month": "Feb 15-16",
@@ -777,9 +840,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "Wes",
-    "contact": "ddenkers@calnorth.org"
+    "contact": "ddenkers@calnorth.org",
   },
   {
+    "site": "https://www.utahyouthsoccer.net/",
     "name": "Icebreaker 2025",
     "ageGroup": "",
     "month": "Feb 15-17",
@@ -789,9 +853,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Wes",
-    "contact": "icebreakersoccer@gmail.com"
+    "contact": "icebreakersoccer@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Elk Grove Spring Kickoff Classic",
     "ageGroup": "",
     "month": "Feb 15-16",
@@ -801,9 +866,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "hkhangura@elkgrovesoccer.com"
+    "contact": "hkhangura@elkgrovesoccer.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Power Ford Rio Rapids Cup",
     "ageGroup": "U9-U19",
     "month": "Feb 15-16",
@@ -813,7 +879,7 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "1",
     "responsible": "Lane",
-    "contact": "yancey.ranspot@riorapids.org"
+    "contact": "yancey.ranspot@riorapids.org",
   },
   {
     "name": "Central USSSA",
@@ -825,7 +891,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "Winter Wind Up Grand Slam",
@@ -837,9 +903,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Jody - (318) 669-9077"
+    "contact": "Jody - (318) 669-9077",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "28th Annual Sun belt classic",
     "ageGroup": "",
     "month": "Feb 22-23",
@@ -849,9 +916,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Wes/Lane",
-    "contact": "Jenniferlgrable@gmail.com"
+    "contact": "Jenniferlgrable@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Castro Valley Spring Classic",
     "ageGroup": "u8-u12",
     "month": "Feb 22-23",
@@ -861,7 +929,7 @@ const TOURNEY_DATA = [
     "sites": "3",
     "setups": "3",
     "responsible": "Wes",
-    "contact": "vicepresident@castrovalleysoccer.com"
+    "contact": "vicepresident@castrovalleysoccer.com",
   },
   {
     "name": "Shamrock Shakedown",
@@ -873,9 +941,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "702-969-1727"
+    "contact": "702-969-1727",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "East Coast Spring Shootout (VA Rush)",
     "ageGroup": "",
     "month": "March 7-9",
@@ -885,9 +954,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Lane",
-    "contact": "Chris Ahmed <cahmed@rushsoccer.com>"
+    "contact": "Chris Ahmed <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Red Stick Tournament",
     "ageGroup": "u10-u19",
     "month": "March 6-9",
@@ -897,9 +967,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "pfletcher@brsoccer.org"
+    "contact": "pfletcher@brsoccer.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Premier Cup",
     "ageGroup": "u7-u19",
     "month": "March 8-9",
@@ -909,7 +980,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Wes",
-    "contact": "AUSTIN@TIGERTOURNAMENTS.COM"
+    "contact": "AUSTIN@TIGERTOURNAMENTS.COM",
   },
   {
     "name": "Parish Line USSSA",
@@ -921,9 +992,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Springfest 2025",
     "ageGroup": "",
     "month": "March 8-9",
@@ -933,7 +1005,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "Miguel"
+    "contact": "Miguel",
   },
   {
     "name": "Live Oak USSSA",
@@ -945,7 +1017,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "Courtesy Cajun Lagniappe (LA Crew)",
@@ -957,9 +1029,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Lane",
-    "contact": "Chris Ahmed <cahmed@rushsoccer.com>"
+    "contact": "Chris Ahmed <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Spring Madness Showcase",
     "ageGroup": "u7-u19",
     "month": "March 15-16",
@@ -969,7 +1042,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "Marina: 951-760-9914"
+    "contact": "Marina: 951-760-9914",
   },
   {
     "name": "St. Patrick's Show Down Grand Slam",
@@ -981,9 +1054,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Jody - (318)669-9077"
+    "contact": "Jody - (318)669-9077",
   },
   {
+    "site": "https://www.phoenixcup.com/",
     "name": "Phoenix Cup - Boys",
     "ageGroup": "",
     "month": "March 21-23",
@@ -993,7 +1067,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
     "name": "Live Oak USSSA",
@@ -1005,7 +1079,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "Cullman Showdown",
@@ -1017,7 +1091,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "stebo05151983@yahoo.com"
+    "contact": "stebo05151983@yahoo.com",
   },
   {
     "name": "Super Slam - Turf Warz Classic ll",
@@ -1029,9 +1103,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Lofflin - (225)636-1178"
+    "contact": "Lofflin - (225)636-1178",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "TFA 4V4 Challenge (1 Day)",
     "ageGroup": "",
     "month": "March 30",
@@ -1041,7 +1116,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
     "name": "Live Oak USSSA",
@@ -1053,9 +1128,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
+    "site": "https://www.psgacademycup.com/",
     "name": "PSG Academy Cup",
     "ageGroup": "",
     "month": "March 28-30",
@@ -1065,7 +1141,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
     "name": "2025 GMB Rawlings Championships Series",
@@ -1077,9 +1153,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan/Lane",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "United Spring Turf Challenge",
     "ageGroup": "",
     "month": "March 29-30",
@@ -1089,9 +1166,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "barcelonaunitedsc@gmail.com"
+    "contact": "barcelonaunitedsc@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "North Shore Preseason",
     "ageGroup": "U8-U15",
     "month": "April 4-6",
@@ -1101,9 +1179,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "Wes",
-    "contact": "northshoretournament@jahbat.org"
+    "contact": "northshoretournament@jahbat.org",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "United Spring Turf Challenge Boys",
     "ageGroup": "",
     "month": "April 5-6",
@@ -1113,7 +1192,7 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "barcelonaunitedsc@gmail.com"
+    "contact": "barcelonaunitedsc@gmail.com",
   },
   {
     "name": "Parish Line USSSA",
@@ -1125,7 +1204,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "2025 GMB King of Rings",
@@ -1137,7 +1216,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan/Lane",
-    "contact": ""
+    "contact": "",
   },
   {
     "name": "Twin City Slugfest",
@@ -1149,9 +1228,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Lofflin - (225)636-1178"
+    "contact": "Lofflin - (225)636-1178",
   },
   {
+    "site": "https://www.ncrush.com/",
     "name": "NC Rush Triad Beat the Heat (NC Triad)",
     "ageGroup": "",
     "month": "April 11-13",
@@ -1161,7 +1241,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Lane",
-    "contact": "Chris Ahmed <cahmed@rushsoccer.com>"
+    "contact": "Chris Ahmed <cahmed@rushsoccer.com>",
   },
   {
     "name": "Live Oak USSSA",
@@ -1173,7 +1253,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "Jackie Robinson",
@@ -1185,7 +1265,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "702-969-1727"
+    "contact": "702-969-1727",
   },
   {
     "name": "West Fel Turf Battle",
@@ -1197,7 +1277,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Lofflin - (225)636-1178"
+    "contact": "Lofflin - (225)636-1178",
   },
   {
     "name": "Smarts Early Bird Baseball Tournament",
@@ -1209,9 +1289,10 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "",
-    "contact": "Brian: 734-652-8736"
+    "contact": "Brian: 734-652-8736",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Texas Easter Cup",
     "ageGroup": "",
     "month": "April 19th-20th",
@@ -1221,7 +1302,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "Maria@texassportsgroup.com"
+    "contact": "Maria@texassportsgroup.com",
   },
   {
     "name": "Rush Select Academy Cup",
@@ -1233,9 +1314,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Copa De Sturgis",
     "ageGroup": "",
     "month": "April 19th-21st",
@@ -1245,7 +1327,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
     "name": "Festival International",
@@ -1257,7 +1339,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
     "name": "Live Oak USSSA",
@@ -1269,9 +1351,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Wisconsin Spring Classic",
     "ageGroup": "",
     "month": "April 26-27",
@@ -1281,7 +1364,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com"
+    "contact": "cahmed@rushsoccer.com",
   },
   {
     "name": "Autism Acceptance",
@@ -1293,7 +1376,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "702-969-1727"
+    "contact": "702-969-1727",
   },
   {
     "name": "Aydin Gonulsen Memorial Tournament",
@@ -1305,9 +1388,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "Ed Rose"
+    "contact": "Ed Rose",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Epic Cup",
     "ageGroup": "",
     "month": "May",
@@ -1317,7 +1401,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "russell@cincysc.com"
+    "contact": "russell@cincysc.com",
   },
   {
     "name": "Zachary Easton USSSA",
@@ -1329,9 +1413,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Norski Spring Fling Tournament",
     "ageGroup": "",
     "month": "May 2-4",
@@ -1341,9 +1426,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Bethesda Premier Cup TD Event",
     "ageGroup": "",
     "month": "May",
@@ -1353,7 +1439,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "240-344-4943"
+    "contact": "240-344-4943",
   },
   {
     "name": "Mother's Day Tournament USSSA",
@@ -1365,7 +1451,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "Mother's Day - Grand Slam Sports",
@@ -1377,7 +1463,7 @@ const TOURNEY_DATA = [
     "sites": "3-4",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Jody - (318)669-9077"
+    "contact": "Jody - (318)669-9077",
   },
   {
     "name": "Mother's Day Grand Slam",
@@ -1389,7 +1475,7 @@ const TOURNEY_DATA = [
     "sites": "1",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "ryan.futurestars@gmail.com"
+    "contact": "ryan.futurestars@gmail.com",
   },
   {
     "name": "USSSA",
@@ -1401,7 +1487,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "Bring the Heat",
@@ -1413,7 +1499,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "702-969-1727"
+    "contact": "702-969-1727",
   },
   {
     "name": "North LA State Championship",
@@ -1425,9 +1511,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Lofflin - (225)636-1178"
+    "contact": "Lofflin - (225)636-1178",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Nomads Spring Showdown",
     "ageGroup": "",
     "month": "May 17-18",
@@ -1437,9 +1524,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "El Clasico",
     "ageGroup": "",
     "month": "May 24-25",
@@ -1449,9 +1537,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Lane",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Ralph Downey Memorial Day Classic",
     "ageGroup": "",
     "month": "May 24-25",
@@ -1461,9 +1550,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>"
+    "contact": "cahmed@rushsoccer.com <cahmed@rushsoccer.com>",
   },
   {
+    "site": "https://www.texassupercup.com/",
     "name": "Texas Super Cup",
     "ageGroup": "",
     "month": "May 24-26",
@@ -1473,9 +1563,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
+    "site": "https://www.calicupclub.com/",
     "name": "Cali Cup",
     "ageGroup": "",
     "month": "May 24-26",
@@ -1485,7 +1576,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
     "name": "Live Oak USSSA",
@@ -1497,7 +1588,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "brannon.danos33@gmail.com"
+    "contact": "brannon.danos33@gmail.com",
   },
   {
     "name": "MP3 Series - South LA State Champ",
@@ -1509,9 +1600,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "Ryan",
-    "contact": "Lofflin - (225)636-1178"
+    "contact": "Lofflin - (225)636-1178",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "MT State Cup",
     "ageGroup": "",
     "month": "June 6-8",
@@ -1521,9 +1613,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "JR",
-    "contact": "president@montanarushsoccer.com"
+    "contact": "president@montanarushsoccer.com",
   },
   {
+    "site": "https://www.sdcharitycup.com/",
     "name": "San Diego Charity Cup",
     "ageGroup": "",
     "month": "June 7-8",
@@ -1533,7 +1626,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
     "name": "2025 GMB Fathers Day Classic",
@@ -1545,9 +1638,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Nomads Summer Cup",
     "ageGroup": "",
     "month": "June 21-22",
@@ -1557,9 +1651,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
+    "site": "https://www.nyccup.com/",
     "name": "NYC Cup",
     "ageGroup": "",
     "month": "July 11-13",
@@ -1569,9 +1664,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Elite Cup",
     "ageGroup": "",
     "month": "July 12-13",
@@ -1581,7 +1677,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
     "name": "2025 GMB 8U World",
@@ -1593,9 +1689,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
+    "contact": "",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Coronado Crown City Classic",
     "ageGroup": "",
     "month": "July 26-27",
@@ -1605,9 +1702,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
+    "site": "https://www.lacup.com/",
     "name": "LA Cup",
     "ageGroup": "",
     "month": "August 8-10",
@@ -1617,9 +1715,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "tarapielaet@ratedsports.com"
+    "contact": "tarapielaet@ratedsports.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "El Clasico (San Antonio)",
     "ageGroup": "",
     "month": "August 15th-17th",
@@ -1629,9 +1728,10 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "cahmed@rushsoccer.com"
+    "contact": "cahmed@rushsoccer.com",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "Premier Cup",
     "ageGroup": "",
     "month": "",
@@ -1641,9 +1741,10 @@ const TOURNEY_DATA = [
     "sites": "Reach out!!!!!!!!",
     "setups": "",
     "responsible": "",
-    "contact": "Amber"
+    "contact": "Amber",
   },
   {
+    "site": "https://events.gotsport.com/events/",
     "name": "La Jolla Labor Day Classic",
     "ageGroup": "",
     "month": "August 30-Sept 1",
@@ -1653,7 +1754,7 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": "anthony@stspecialists.com"
+    "contact": "anthony@stspecialists.com",
   },
   {
     "name": "MS River Derby",
@@ -1665,6 +1766,6 @@ const TOURNEY_DATA = [
     "sites": "",
     "setups": "",
     "responsible": "",
-    "contact": ""
-  }
+    "contact": "",
+  },
 ];
