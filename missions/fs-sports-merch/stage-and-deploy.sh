@@ -1,11 +1,12 @@
 #!/bin/bash
-# Future Stars LA — Staging Workflow Script
+# Future Stars LA — Deploy Script
 # Usage: ./stage-and-deploy.sh [message]
 
 set -e
 
 PROJECT_DIR="/home/aaron/.openclaw/workspace/missions/fs-sports-merch/website"
 PROJECT_NAME="futurestarsla"
+VERSION_FILE="/home/aaron/.openclaw/workspace/missions/fs-sports-merch/VERSION"
 
 cd "$PROJECT_DIR"
 
@@ -16,25 +17,35 @@ echo "  Future Stars LA Deploy"
 echo "  Branch: $BRANCH"
 echo "=========================================="
 
+CURRENT_VERSION=""
+[ -f "$VERSION_FILE" ] && CURRENT_VERSION=$(cat "$VERSION_FILE")
+
 if [ "$BRANCH" = "main" ]; then
     echo ""
     echo "⚠️  WARNING: You are about to deploy to the LIVE SITE!"
     echo "   URL: https://futurestarsla.com"
+    if [ -n "$CURRENT_VERSION" ]; then
+        echo "   Version: $CURRENT_VERSION"
+    fi
     echo ""
     read -p "Are you sure? Type 'live' to confirm: " CONFIRM
     if [ "$CONFIRM" != "live" ]; then
         echo "Cancelled."
         exit 1
     fi
-elif [ "$BRANCH" = "staging" ]; then
+elif [ "$BRANCH" = "dev" ]; then
     echo ""
-    echo "🧪 Deploying to STAGING environment"
-    echo "   Test your changes before merging to main"
+    echo "🧪 Deploying to DEV environment"
+    NAME="dev-$(date '+%m%d-%H%M')"
+    echo "   Working version: $NAME"
+    if [ -n "$CURRENT_VERSION" ]; then
+        echo "   Last release: $CURRENT_VERSION"
+    fi
     echo ""
 else
     echo ""
     echo "❓ Unknown branch: $BRANCH"
-    echo "   Use 'staging' for testing or 'main' for live"
+    echo "   Use 'dev' for development, 'main' for production"
     exit 1
 fi
 
@@ -90,14 +101,20 @@ echo "=========================================="
 if [ "$BRANCH" = "main" ]; then
     echo "✅ LIVE SITE UPDATED!"
     echo "   https://futurestarsla.com"
+    if [ -n "$CURRENT_VERSION" ]; then
+        echo "   Version: $CURRENT_VERSION"
+    fi
 else
-    echo "✅ STAGING UPDATED!"
-    echo "   Preview: https://staging.futurestarsla.com"
+    echo "✅ DEV UPDATED!"
+    echo "   Name: $NAME"
     echo ""
-    echo "When ready to go live:"
+    echo "When ready to release:"
+    echo "   1. Bump VERSION file"
     echo "   git checkout main"
-    echo "   git merge staging"
-    echo "   ./stage-and-deploy.sh 'Going live with changes'"
+    echo "   git merge dev"
+    echo "   git tag <version> && git push --tags"
+    echo "   git push origin main"
+    echo "   git checkout dev && git merge main && git push origin dev"
 fi
 echo "   Build: $BUILD_ID"
 echo "=========================================="

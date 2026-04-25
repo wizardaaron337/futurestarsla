@@ -1,164 +1,128 @@
-# 🚀 Future Stars LA — Update Workflow
+# 🚀 Future Stars LA — Release Workflow
 
-## How It Works
-
-We now have **two branches**:
+## Branches
 
 | Branch | URL | Purpose |
 |--------|-----|---------|
-| `main` | https://futurestarsla.com | **LIVE SITE** — what users see |
-| `staging` | https://staging.futurestarsla.com (or preview URL) | **TESTING** — work on improvements here |
+| `dev` | Preview URL | Active development & testing |
+| `main` | https://futurestarsla.com | Production releases only |
+
+## Versioning
+
+Every release gets a version name before merging to `main`. Versions follow `YYYY.MM.PATCH`:
+
+```
+v2026.4.1 — first deploy in April 2026
+v2026.4.2 — second release in April 2026
+v2026.5.1 — first release in May 2026
+```
+
+(You can name them whatever you want — they're just tags for tracking.)
 
 ---
 
-## 📝 Making Improvements
+## Day-to-Day Development
 
-### Step 1: Switch to Staging Branch
 ```bash
 cd ~/.openclaw/workspace/missions/fs-sports-merch/website
-git checkout staging
-```
 
-### Step 2: Make Your Changes
-Edit files, add features, fix bugs — whatever you're working on.
+# Make sure you're on dev
+git checkout dev
+git pull origin dev
 
-### Step 3: Test Locally
-Open files directly in your browser:
-```bash
-# Quick local test
-firefox index.html
-# or
-google-chrome inventory-v2.html
-```
+# Make your changes...
 
-### Step 4: Commit to Staging
-```bash
 git add .
-git commit -m "Description of changes"
-git push origin staging
+git commit -m "Description of what you changed"
+git push origin dev
 ```
 
-This auto-deploys to the **staging preview URL** where you can test.
+This deploys to the dev preview URL for testing.
 
-### Step 5: Review on Staging
-Visit the staging URL and make sure everything works.
+---
 
-### Step 6: Push Live (Merge to Main)
-When you're happy with the changes:
+## Releasing to Production
 
+### Step 1: Bump version
+Edit `VERSION` file in the project root:
 ```bash
-# Switch to main
-git checkout main
+echo "v2026.4.3" > ~/.openclaw/workspace/missions/fs-sports-merch/VERSION
+```
 
-# Pull latest (just in case)
+### Step 2: Merge to main
+```bash
+git checkout main
 git pull origin main
-
-# Merge staging changes
-git merge staging
-
-# Push live
-git push origin main
+git merge dev
 ```
 
-This deploys to **futurestarsla.com** immediately.
+### Step 3: Commit version on main
+```bash
+echo "v2026.4.3" > ~/.openclaw/workspace/missions/fs-sports-merch/VERSION
+git add VERSION
+git commit -m "Release v2026.4.3"
+git tag v2026.4.3
+git push origin main --tags
+```
+
+### Step 4: Sync dev with version bump
+```bash
+git checkout dev
+git merge main -m "Sync dev with v2026.4.3"
+git push origin dev
+```
 
 ---
 
-## 🔄 Quick Commands
+## Hotfixes
+
+When a fix needs to go to main before dev is ready:
 
 ```bash
-# Start working on a new feature
-cd ~/.openclaw/workspace/missions/fs-sports-merch/website
-git checkout staging
-git pull origin staging
-
-# ... make changes ...
-
+git checkout dev
+# Make the fix
 git add .
-git commit -m "Your changes"
-git push origin staging
+git commit -m "Fix: [description]"
+git push origin dev
 
-# When ready to go live
+# Cherry-pick to main
 git checkout main
-git merge staging
-git push origin main
+git cherry-pick <commit-sha>
 
-# Go back to staging for next round
-git checkout staging
+# Bump version
+echo "v2026.4.4" > VERSION
+git add VERSION
+git commit -m "Release v2026.4.4 (hotfix)"
+git tag v2026.4.4
+git push origin main --tags
+
+# Sync dev
+git checkout dev
+git merge main -m "Sync dev with v2026.4.4 (hotfix)"
+git push origin dev
 ```
 
 ---
 
-## 🆘 Emergency: Fix Live Site Directly
+## Rules
 
-If something breaks on the live site and you need to fix it NOW:
+- **All work happens on `dev`** — never commit directly to `main`
+- **Every push to `main` must have a version** — tag it
+- **Always merge main → dev after a release** — keeps versions in sync
+- **Version only gets bumped on `main`** — dev inherits via merge
+
+---
+
+## Quick Reference
 
 ```bash
-cd ~/.openclaw/workspace/missions/fs-sports-merch/website
-git checkout main
-# ... make the fix ...
-git add .
-git commit -m "HOTFIX: description"
-git push origin main
+# Start work
+git checkout dev && git pull origin dev
 
-# Then sync staging
-git checkout staging
-git merge main
-git push origin staging
+# Commit
+git add . && git commit -m "message" && git push origin dev
+
+# Release
+git checkout main && git merge dev && git tag v2026.4.X && git push origin main --tags
+git checkout dev && git merge main && git push origin dev
 ```
-
----
-
-## 📋 Current Features (What's Live)
-
-- ✅ PIN-based auth system (JR, Lane, PJ, Caleb, Marlon)
-- ✅ Inventory page with barcode scanning
-- ✅ Tournament schedule with lock/unlock
-- ✅ Trip planner with calendar
-- ✅ Jersey gallery with player search
-- ✅ Sortly CSV upload
-- ✅ Team directory
-- ✅ Dashboard with stats
-- ✅ Mobile-responsive design
-- ✅ Cache-busting on every deploy
-
----
-
-## 💡 Future Improvements Ideas
-
-### Quick Wins
-- [ ] Add loading spinners on all "Loading..." text
-- [ ] Better error messages when APIs fail
-- [ ] Auto-refresh inventory every 30 seconds
-- [ ] Dark mode toggle
-
-### Medium Effort
-- [ ] Export inventory to PDF/Excel
-- [ ] Tournament bracket visualization
-- [ ] Photo upload for jerseys/players
-- [ ] Push notifications for tournament updates
-
-### Big Features
-- [ ] Real-time chat between team members
-- [ ] Payment tracking for trips
-- [ ] Integration with Sortly API (real-time sync)
-- [ ] Mobile app (PWA with offline support)
-
----
-
-## 🔧 Setup for GitHub Actions (One-Time)
-
-To enable automatic deploys from GitHub, add these secrets:
-
-1. Go to https://github.com/wizardaaron337/futurestarsla/settings/secrets/actions
-2. Add `CLOUDFLARE_API_TOKEN` — get from Cloudflare dashboard
-3. Add `CLOUDFLARE_ACCOUNT_ID` — get from Cloudflare dashboard
-
-Until then, use the manual deploy script:
-```bash
-./deploy-quick.sh "Description of changes"
-```
-
----
-
-*Last updated: April 25, 2026*
