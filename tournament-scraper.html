@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _b="1777090743-2461ee76";var _s=sessionStorage.getItem("_fv");if(_s!==_b){sessionStorage.setItem("_fv",_b);location.reload(true);}</script>
-
-<!-- build: 1777090712-83d9d3e8 -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="-1">
+<script>var _b="1777090865-a98f9dcf";var _s=sessionStorage.getItem("_fv");if(_s!==_b){sessionStorage.setItem("_fv",_b);location.reload(true);}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournament Schedules — Future Stars</title>
@@ -51,14 +46,13 @@
         }
         .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
 
-        .main { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
+        .main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
         .page-title {
             font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700;
             color: var(--gold); margin-bottom: 4px;
         }
         .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 20px; }
 
-        /* Search & Card */
         .search-bar {
             display: flex; gap: 10px; margin-bottom: 20px;
         }
@@ -71,14 +65,26 @@
         .search-bar button {
             padding: 12px 24px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             border: none; border-radius: 8px; color: var(--black);
-            font-weight: 700; cursor: pointer; font-size: 0.9em;
+            font-weight: 700; cursor: pointer; font-size: 0.9em; white-space: nowrap;
         }
         .search-bar button:hover { filter: brightness(1.1); }
+        .search-bar button.secondary {
+            background: var(--black-card);
+            color: var(--gray);
+            border: 1px solid var(--border);
+        }
+
+        .results { display: flex; flex-direction: column; gap: 10px; }
 
         .tourney-card {
             background: var(--black-card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 20px; margin-bottom: 12px;
+            border-radius: 12px; overflow: hidden;
         }
+        .tourney-card .card-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 16px 20px; cursor: pointer;
+        }
+        .tourney-card .card-header:hover { background: var(--black-hover); }
         .tourney-card h3 {
             font-family: 'Cinzel', serif; color: var(--gold); font-size: 1em;
             margin-bottom: 4px;
@@ -87,66 +93,83 @@
             color: var(--gray); font-size: 0.85em; line-height: 1.6;
         }
         .tourney-card .meta strong { color: var(--white); }
-
-        .url-row {
-            display: flex; gap: 8px; align-items: center; margin-top: 10px;
+        .card-actions {
+            display: flex; gap: 6px; flex-shrink: 0;
         }
-        .url-row input {
-            flex: 1; padding: 8px 12px; background: var(--black);
-            border: 1px solid var(--border); border-radius: 6px; color: var(--white);
-            font-size: 0.85em; outline: none;
-        }
-        .url-row input:focus { border-color: var(--gold); }
-        .url-row .btn-sm {
-            padding: 8px 14px; border-radius: 6px; border: none;
+        .btn-sm {
+            padding: 6px 12px; border-radius: 6px; border: none;
             cursor: pointer; font-size: 0.8em; font-weight: 600;
+            white-space: nowrap;
         }
-        .btn-save { background: var(--gold); color: var(--black); }
-        .btn-scrape { background: rgba(100,181,246,0.2); color: #64B5F6; border: 1px solid rgba(100,181,246,0.3); }
-        .btn-open { background: transparent; color: var(--gray); border: 1px solid var(--border); text-decoration: none; display: inline-flex; align-items: center; padding: 8px 14px; }
-        .btn-open:hover { border-color: var(--gold); color: var(--gold); }
-        .btn-sm:hover { filter: brightness(1.1); }
+        .btn-lookup { background: rgba(100,181,246,0.15); color: #64B5F6; border: 1px solid rgba(100,181,246,0.3); }
+        .btn-go { background: rgba(201,162,39,0.12); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); text-decoration: none; display: inline-block; }
+        .btn-clear { background: transparent; color: var(--gray-dark); border: 1px solid transparent; }
+        .btn-lookup:hover, .btn-go:hover, .btn-clear:hover { filter: brightness(1.2); }
 
-        .saved-link {
-            display: inline-block; padding: 4px 10px; background: rgba(201,162,39,0.08);
-            border: 1px solid rgba(201,162,39,0.15); border-radius: 4px;
-            color: #64B5F6; font-size: 0.8em; text-decoration: none; margin-top: 4px;
-            word-break: break-all;
-        }
-        .saved-link:hover { text-decoration: underline; }
+        .card-body { padding: 0 20px 16px 20px; }
 
-        .results-panel {
-            margin-top: 12px; padding: 12px; background: var(--black);
-            border: 1px solid var(--border); border-radius: 8px;
-            max-height: 400px; overflow-y: auto;
-            font-size: 0.85em;
+        .schedule-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            margin-top: 10px;
         }
-        .results-panel .result-item {
-            padding: 6px 0; border-bottom: 1px solid var(--border);
-            display: flex; gap: 8px;
-        }
-        .results-panel .result-item:last-child { border: none; }
-        .result-time { color: var(--gold); font-weight: 600; white-space: nowrap; }
-        .result-detail { color: var(--gray); }
+        @media (max-width: 600px) { .schedule-grid { grid-template-columns: 1fr; } }
 
-        .scrape-status {
-            padding: 8px 12px; border-radius: 6px; margin-top: 8px;
-            font-size: 0.85em;
+        .game-card {
+            background: var(--black); border: 1px solid var(--border);
+            border-radius: 8px; padding: 12px;
         }
-        .scrape-status.loading { background: rgba(255,167,38,0.1); color: var(--orange); }
-        .scrape-status.error { background: rgba(239,83,80,0.1); color: var(--red); }
-        .scrape-status.success { background: rgba(76,175,80,0.1); color: var(--green); }
+        .game-card .game-time {
+            font-size: 1.2em; font-weight: 700; color: var(--gold);
+        }
+        .game-card .game-detail {
+            font-size: 0.85em; color: var(--gray); margin-top: 4px;
+        }
+        .game-card .game-field {
+            font-size: 0.8em; color: var(--gray-dark); margin-top: 2px;
+        }
+
+        .status-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 4px;
+            font-size: 0.75em; font-weight: 600;
+        }
+        .status-badge.loading { background: rgba(255,167,38,0.1); color: var(--orange); }
+        .status-badge.found { background: rgba(76,175,80,0.1); color: var(--green); }
+        .status-badge.fail { background: rgba(239,83,80,0.1); color: var(--red); }
+        .status-badge.info { background: rgba(100,181,246,0.1); color: #64B5F6; }
+        .status-badge.saved { background: rgba(201,162,39,0.1); color: var(--gold); }
 
         .empty-state {
             text-align: center; padding: 60px 20px; color: var(--gray-dark);
         }
         .empty-state .big { font-size: 3em; margin-bottom: 10px; }
         .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 6px; }
+        .empty-state p { font-size: 0.9em; }
 
-        @media (max-width: 600px) {
-            .search-bar { flex-direction: column; }
-            .url-row { flex-wrap: wrap; }
+        .source-link {
+            margin-top: 8px; font-size: 0.8em;
         }
+        .source-link a {
+            color: #64B5F6; text-decoration: none;
+        }
+        .source-link a:hover { text-decoration: underline; }
+
+        /* Manual URL entry (collapsed by default) */
+        .manual-toggle {
+            background: none; border: none; color: var(--gray-dark);
+            cursor: pointer; font-size: 0.8em; margin-top: 8px;
+        }
+        .manual-toggle:hover { color: var(--gray); }
+        .manual-url-row {
+            display: flex; gap: 8px; align-items: center; margin-top: 8px;
+            display: none;
+        }
+        .manual-url-row.open { display: flex; }
+        .manual-url-row input {
+            flex: 1; padding: 8px 12px; background: var(--black);
+            border: 1px solid var(--border); border-radius: 6px; color: var(--white);
+            font-size: 0.85em; outline: none;
+        }
+        .manual-url-row input:focus { border-color: var(--gold); }
     </style>
 </head>
 <body>
@@ -164,10 +187,10 @@
 
     <div class="main">
         <div class="page-title">Tournament Schedules</div>
-        <div class="page-subtitle">Search for a tournament, save its website, and scrape game times</div>
+        <div class="page-subtitle">Select a tournament and click <strong>🔍 Lookup</strong> — it'll find the website and scrape game times automatically</div>
 
         <div class="search-bar">
-            <input type="text" id="search" placeholder="Search tournament name..." oninput="filterTourneys()">
+            <input type="text" id="search" placeholder="Search tournament by name, sport, or state..." oninput="filterTourneys()">
         </div>
 
         <div id="tourney-list"></div>
@@ -177,39 +200,32 @@
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
 
-        // Load saved URLs and scraped data from localStorage
-        const STORED_URLS_KEY = 'fs_tourney_urls';
-        const STORED_TIMES_KEY = 'fs_tourney_times';
+        // ---------- stored data (per tournament) ----------
+        const STORED_KEY = 'fs_tourney_times_v2';
 
-        function getSavedUrls() {
-            return JSON.parse(localStorage.getItem(STORED_URLS_KEY) || '{}');
+        function getAllData() {
+            return JSON.parse(localStorage.getItem(STORED_KEY) || '{}');
         }
-        function saveUrl(tourneyName, url) {
-            const urls = getSavedUrls();
-            urls[tourneyName] = url;
-            localStorage.setItem(STORED_URLS_KEY, JSON.stringify(urls));
+        function getData(name) {
+            return getAllData()[name] || null;
         }
-        function removeUrl(tourneyName) {
-            const urls = getSavedUrls();
-            delete urls[tourneyName];
-            localStorage.setItem(STORED_URLS_KEY, JSON.stringify(urls));
+        function setData(name, data) {
+            const all = getAllData();
+            all[name] = data;
+            localStorage.setItem(STORED_KEY, JSON.stringify(all));
+        }
+        function clearData(name) {
+            const all = getAllData();
+            delete all[name];
+            localStorage.setItem(STORED_KEY, JSON.stringify(all));
             render();
         }
 
-        function getTimes(tourneyName) {
-            const all = JSON.parse(localStorage.getItem(STORED_TIMES_KEY) || '{}');
-            return all[tourneyName] || null;
-        }
-        function saveTimes(tourneyName, data) {
-            const all = JSON.parse(localStorage.getItem(STORED_TIMES_KEY) || '{}');
-            all[tourneyName] = data;
-            localStorage.setItem(STORED_TIMES_KEY, JSON.stringify(all));
-        }
-
+        // ---------- rendering ----------
         function render() {
             const list = document.getElementById('tourney-list');
             const search = document.getElementById('search').value.toLowerCase();
-            
+
             if (typeof TOURNEY_DATA === 'undefined' || !TOURNEY_DATA.length) {
                 list.innerHTML = '<div class="empty-state"><div class="big">😕</div><h3>No tournament data loaded</h3></div>';
                 return;
@@ -224,12 +240,7 @@
                 );
             }
 
-            if (filtered.length === 0) {
-                list.innerHTML = '<div class="empty-state"><div class="big">🔍</div><h3>No tournaments match</h3></div>';
-                return;
-            }
-
-            // Remove duplicates by name
+            // Dedup by name
             const seen = new Set();
             filtered = filtered.filter(t => {
                 const key = t.name.toLowerCase().trim();
@@ -238,142 +249,239 @@
                 return true;
             });
 
-            const savedUrls = getSavedUrls();
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="big">🔍</div><h3>No tournaments match "<strong>' + search + '</strong>"</h3></div>';
+                return;
+            }
 
             list.innerHTML = filtered.map(t => {
-                const savedUrl = savedUrls[t.name] || '';
-                const times = getTimes(t.name);
+                const saved = getData(t.name);
+                const status = saved ? saved.status : null;
+                const times = saved ? (saved.times || []) : [];
+                const url = saved ? (saved.url || '') : '';
+                
+                let badge = '';
+                if (status === 'loading') badge = '<span class="status-badge loading">⏳ Loading...</span>';
+                else if (status === 'found') badge = '<span class="status-badge found">✅ ' + (times.length === 0 ? 'Site found, no schedule' : times.length + ' games found') + '</span>';
+                else if (status === 'no-site') badge = '<span class="status-badge fail">❌ No site found</span>';
+                else if (status === 'error') badge = '<span class="status-badge fail">⚠️ Error</span>';
+                else if (status === 'manual') badge = '<span class="status-badge saved">💾 Saved URL</span>';
+
                 return `
                     <div class="tourney-card">
-                        <h3>${t.name}</h3>
-                        <div class="meta">
-                            ${t.sport ? t.sport + ' · ' : ''}${t.ageGroup ? t.ageGroup + ' · ' : ''}${t.size ? t.size + ' teams · ' : ''}${t.state || ''}
-                            ${t.contact ? ' · <strong>Contact:</strong> ' + t.contact : ''}
+                        <div class="card-header" onclick="document.getElementById('body-${t.name.replace(/[^a-z0-9]/gi,'')}').classList.toggle('hidden')">
+                            <div>
+                                <h3>${t.name}</h3>
+                                <div class="meta">
+                                    ${t.sport ? t.sport + ' · ' : ''}${t.ageGroup ? t.ageGroup + ' · ' : ''}${t.size ? t.size + ' teams · ' : ''}${t.state || ''}
+                                    ${t.contact ? ' · <strong>Contact:</strong> ' + t.contact : ''}
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                ${badge}
+                                <button class="btn-sm btn-lookup" onclick="event.stopPropagation();lookupTournament('${t.name.replace(/'/g,"\\'")}','${(t.state||'').replace(/'/g,"\\'")}')">🔍 Lookup</button>
+                                ${url ? '<a class="btn-sm btn-go" href="'+url+'" target="_blank" onclick="event.stopPropagation()">Open ↗</a>' : ''}
+                                ${saved ? '<button class="btn-sm btn-clear" onclick="event.stopPropagation();clearData(\''+t.name.replace(/'/g,"\\'")+'\')">✕</button>' : ''}
+                            </div>
                         </div>
-                        <div class="url-row">
-                            <input type="text" id="url-${t.name.replace(/[^a-zA-Z0-9]/g,'')}" placeholder="Paste tournament website URL..." value="${savedUrl}">
-                            <button class="btn-sm btn-save" onclick="saveTourneyUrl('${t.name.replace(/'/g,"\\'")}', 'url-${t.name.replace(/[^a-zA-Z0-9]/g,'')}')">Save</button>
-                            <button class="btn-sm btn-scrape" onclick="scrapePage('${t.name.replace(/'/g,"\\'")}')">Scrape</button>
-                            ${savedUrl ? `<a href="${savedUrl}" target="_blank" class="btn-sm btn-open">Open ↗</a>` : ''}
-                        </div>
-                        <div id="results-${t.name.replace(/[^a-zA-Z0-9]/g,'')}">
-                            ${times ? renderTimes(t.name, times) : ''}
+                        <div class="card-body" id="body-${t.name.replace(/[^a-z0-9]/gi,'')}" style="display:${times.length > 0 || status === 'no-site' ? 'block' : 'none'}">
+                            ${times.length > 0 ? `
+                                <div class="schedule-grid">
+                                    ${times.map(g => `
+                                        <div class="game-card">
+                                            <div class="game-time">${g.time || '?'}</div>
+                                            ${g.detail ? '<div class="game-detail">'+g.detail+'</div>' : ''}
+                                            ${g.field ? '<div class="game-field">📍 '+g.field+'</div>' : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            ${status === 'no-site' ? '<div style="color:var(--red);font-size:0.85em">Could not automatically find a website for this tournament.</div>' : ''}
+                            ${status === 'error' ? '<div style="color:var(--orange);font-size:0.85em">${saved ? saved.message || "Something went wrong" : "Something went wrong"}</div>' : ''}
+                            ${status === 'manual' ? '<div style="color:var(--gray-dark);font-size:0.85em">URL saved — click Open to visit the site</div>' : ''}
+                            ${url ? '<div class="source-link"><a href="'+url+'" target="_blank">🔗 Source: ' + url + '</a></div>' : ''}
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function renderTimes(tourneyName, data) {
-            const results = data.results || [];
-            if (results.length === 0) return '';
-            
-            return `<div class="results-panel">
-                ${results.map(r => `<div class="result-item">
-                    <span class="result-time">${r.time || '?'}</span>
-                    <span class="result-detail">${r.detail || ''}</span>
-                </div>`).join('')}
-            </div>`;
-        }
-
-        function saveTourneyUrl(name, inputId) {
-            const input = document.getElementById(inputId);
-            const url = input.value.trim();
-            if (!url) {
-                removeUrl(name);
-                return;
-            }
-            saveUrl(name, url);
-            const status = document.createElement('div');
-            status.className = 'scrape-status success';
-            status.textContent = '✅ URL saved!';
-            input.parentElement.appendChild(status);
-            setTimeout(() => status.remove(), 2000);
+        // ---------- search the web for a tournament ----------
+        function lookupTournament(name, state) {
+            // Mark as loading
+            setData(name, { status: 'loading', times: [], url: '' });
             render();
-        }
 
-        function scrapePage(tourneyName) {
-            const urls = getSavedUrls();
-            const url = urls[tourneyName];
-            if (!url) {
-                alert('Save a URL first before scraping.');
-                return;
-            }
+            // Build search query
+            let query = encodeURIComponent(name);
+            if (state) query += '%20' + encodeURIComponent(state);
+            query += '%20soccer%20tournament%20schedule';
 
-            const resultsDiv = document.getElementById('results-' + tourneyName.replace(/[^a-zA-Z0-9]/g,''));
-            resultsDiv.innerHTML = '<div class="scrape-status loading">🔍 Fetching ' + url + ' ...</div>';
+            // Use a search endpoint to find the tournament site
+            // We'll try multiple search strategies
+            const searchUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(
+                'https://html.duckduckgo.com/html/?q=' + query
+            );
 
-            // Use a CORS proxy to fetch the page
-            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-            
-            fetch(proxyUrl)
-                .then(res => {
-                    if (!res.ok) throw new Error('Could not fetch page (status ' + res.status + ')');
-                    return res.text();
+            fetch(searchUrl)
+                .then(r => {
+                    if (!r.ok) throw new Error('Search failed');
+                    return r.text();
                 })
                 .then(html => {
-                    // Parse the HTML for tables and schedule-like content
+                    // Extract links from search results
+                    const links = [];
+                    const linkRegex = /<a[^>]+class="result__a"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+                    let m;
+                    while ((m = linkRegex.exec(html)) !== null) {
+                        const href = m[1];
+                        const text = m[2].replace(/<[^>]+>/g, '').trim();
+                        if (href && !href.includes('twitter.com') && !href.includes('facebook.com')) {
+                            links.push({ href, text });
+                        }
+                    }
+
+                    // If DuckDuckGo failed, try a different pattern (class might differ)
+                    if (links.length === 0) {
+                        const altRegex = /<a[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+                        while ((m = altRegex.exec(html)) !== null) {
+                            const href = m[1];
+                            const text = m[2].replace(/<[^>]+>/g, '').trim();
+                            if (href && !href.includes('duckduckgo') && !href.includes('twitter.com') && !href.includes('facebook.com')) {
+                                links.push({ href, text });
+                            }
+                        }
+                    }
+
+                    // Filter for likely tournament/soccer sites
+                    const keywords = ['tournament', 'soccer', 'football', 'schedule', 'gotsoccer', 'tourneymachine', 'event', name.toLowerCase().split(' ').slice(0,2).join(' ')];
+                    let best = null;
+                    let bestScore = 0;
+                    
+                    for (const link of links) {
+                        let score = 0;
+                        const t = (link.text + ' ' + link.href).toLowerCase();
+                        for (const kw of keywords) {
+                            if (t.includes(kw)) score++;
+                        }
+                        if (link.href.includes('gotsoccer.com') || link.href.includes('tourneymachine.com')) score += 3;
+                        if (link.href.includes('events') || link.href.includes('schedules')) score += 1;
+                        if (score > bestScore) {
+                            bestScore = score;
+                            best = link;
+                        }
+                    }
+
+                    if (best && bestScore > 0) {
+                        // Found a site — now scrape it
+                        scrapePage(name, best.href);
+                    } else {
+                        // Try searching GotSoccer directly
+                        const gsQuery = encodeURIComponent(name.split(' ').slice(0,3).join(' '));
+                        const gsUrl = 'https://home.gotsoccer.com/events.aspx?q=' + gsQuery;
+                        scrapePage(name, gsUrl);
+                    }
+                })
+                .catch(err => {
+                    // Final fallback: try GotSoccer search
+                    const gsUrl = 'https://home.gotsoccer.com/events.aspx?q=' + encodeURIComponent(name.split(' ').slice(0,3).join(' '));
+                    scrapePage(name, gsUrl);
+                });
+        }
+
+        // ---------- scrape a page for game times ----------
+        function scrapePage(tourneyName, url) {
+            setData(tourneyName, { status: 'loading', times: [], url: url });
+            render();
+
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+
+            fetch(proxyUrl)
+                .then(r => {
+                    if (!r.ok) throw new Error('Could not load page');
+                    return r.text();
+                })
+                .then(html => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-                    
-                    // Look for tables
-                    const tables = doc.querySelectorAll('table');
-                    let results = [];
+                    const bodyText = doc.body ? doc.body.textContent : '';
 
-                    // Strategy 1: Look for any table with time-like content (HH:MM AM/PM)
+                    let times = [];
+
+                    // Strategy 1: Tables
+                    const tables = doc.querySelectorAll('table');
                     tables.forEach(table => {
                         const rows = table.querySelectorAll('tr');
                         rows.forEach(row => {
                             const cells = row.querySelectorAll('td, th');
                             const text = Array.from(cells).map(c => c.textContent.trim()).filter(Boolean);
                             const rowText = text.join(' ');
-                            
-                            // Check if any cell looks like a time (e.g., 8:00 AM, 14:30, 09:00)
-                            const timeMatch = rowText.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
-                            if (timeMatch && text.length >= 2) {
-                                const time = timeMatch[1];
-                                const detail = text.filter(t => t !== timeMatch[0]).join(' — ').substring(0, 200);
-                                results.push({ time, detail });
+                            const m = rowText.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
+                            if (m && text.length >= 2) {
+                                const time = m[1].toUpperCase();
+                                const detail = text.filter(t => t !== m[0].trim()).join(' — ').substring(0, 200);
+                                times.push({ time, detail, field: '' });
                             }
                         });
                     });
 
-                    // Strategy 2: If no tables, look for divs/paragraphs with time patterns
-                    if (results.length === 0) {
-                        const bodyText = doc.body ? doc.body.textContent : '';
+                    // Strategy 2: Lines with times
+                    if (times.length < 3) {
                         const lines = bodyText.split('\n').map(l => l.trim()).filter(Boolean);
-                        
+                        const seen = new Set();
                         lines.forEach(line => {
-                            const timeMatch = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
-                            if (timeMatch && line.length > 10 && line.length < 300) {
-                                const time = timeMatch[1];
-                                const detail = line.replace(timeMatch[0], '').trim().substring(0, 200);
-                                results.push({ time, detail });
+                            const m = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
+                            if (m && line.length > 10 && line.length < 300) {
+                                const time = m[1].toUpperCase();
+                                const key = time + line.substring(0, 50);
+                                if (seen.has(key)) return;
+                                seen.add(key);
+                                const detail = line.replace(m[0], '').trim().substring(0, 200);
+                                times.push({ time, detail, field: '' });
                             }
                         });
                     }
 
-                    // Deduplicate
+                    // Dedup
                     const seen = new Set();
-                    results = results.filter(r => {
-                        const key = r.time + r.detail;
+                    times = times.filter(t => {
+                        const key = t.time + t.detail;
                         if (seen.has(key)) return false;
                         seen.add(key);
                         return true;
                     });
 
-                    // Save results
-                    const data = { url, scrapeDate: new Date().toISOString(), results };
-                    saveTimes(tourneyName, data);
-                    
-                    if (results.length > 0) {
-                        resultsDiv.innerHTML = `<div class="scrape-status success">✅ Found ${results.length} schedule entries!</div>${renderTimes(tourneyName, data)}`;
-                    } else {
-                        resultsDiv.innerHTML = `<div class="scrape-status error">No game times found. Try opening the site manually.</div>`;
-                    }
+                    // Sort by time
+                    times.sort((a, b) => {
+                        const toMins = (t) => {
+                            const m = t.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+                            if (!m) return 0;
+                            let h = parseInt(m[1]), min = parseInt(m[2]);
+                            if (m[3]) {
+                                if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+                                if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
+                            }
+                            return h * 60 + min;
+                        };
+                        return toMins(a.time) - toMins(b.time);
+                    });
+
+                    setData(tourneyName, {
+                        status: 'found',
+                        times: times,
+                        url: url,
+                        scrapeDate: new Date().toISOString()
+                    });
+                    render();
                 })
                 .catch(err => {
-                    resultsDiv.innerHTML = `<div class="scrape-status error">⚠️ ${err.message || 'Could not fetch page'}</div>`;
+                    setData(tourneyName, {
+                        status: 'error',
+                        times: [],
+                        url: url,
+                        message: err.message || 'Could not load the page'
+                    });
+                    render();
                 });
         }
 
