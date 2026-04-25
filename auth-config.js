@@ -46,15 +46,15 @@ const AUTH_CONFIG = {
 
     // Role-based page permissions
     roles: {
-        owner: ['dashboard', 'tournaments', 'inventory-v2', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
-        logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
-        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
-        inventory: ['dashboard', 'inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
+        owner: ['tournaments', 'inventory-v2', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
+        logistics: ['tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
+        tournament: ['tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
+        inventory: ['inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
     },
 
     // Navigation items per role
     navItems: [
-        { page: 'dashboard', label: 'Dashboard', icon: '📊', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
+        { page: 'index', label: 'Home', icon: '🏠', roles: ['owner', 'logistics', 'tournament', 'inventory'] }
         { page: 'tournaments', label: 'Tournaments', icon: '🏆', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'inventory-v2', label: 'Inventory', icon: '📦', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trips', label: 'Trips', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },

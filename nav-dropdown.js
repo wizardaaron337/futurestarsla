@@ -10,18 +10,18 @@
 
     const userRole = sessionStorage.getItem('fs_role') || 'owner';
     const userName = sessionStorage.getItem('fs_name') || 'User';
-    const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'dashboard';
+    const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
     // Use AUTH_CONFIG if available, otherwise fallback
     const ROLE_PAGES = (typeof AUTH_CONFIG !== 'undefined') ? AUTH_CONFIG.roles : {
-        owner: ['dashboard', 'tournaments', 'inventory-v2', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
-        logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
-        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
-        inventory: ['dashboard', 'inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
+        owner: ['tournaments', 'inventory-v2', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'privacy', 'contact'],
+        logistics: ['tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
+        tournament: ['tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
+        inventory: ['inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
     };
 
     const NAV_ITEMS = (typeof AUTH_CONFIG !== 'undefined') ? AUTH_CONFIG.navItems : [
-        { page: 'dashboard', label: 'Dashboard', icon: '📊', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
+        { page: 'index', label: 'Home', icon: '🏠', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
         { page: 'tournaments', label: 'Tournaments', icon: '🏆', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'inventory-v2', label: 'Inventory', icon: '📦', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trips', label: 'Trips', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
@@ -51,7 +51,8 @@
         return getNavItems().map(item => {
             if (item.divider) return '<div class="fs-menu-divider"></div>';
             const isActive = item.page === currentPage ? 'active' : '';
-            return `<a href="${item.page}.html" class="fs-menu-item ${isActive}">
+            const href = item.page === 'index' ? 'signin.html' : item.page + '.html';
+            return `<a href="${href}" class="fs-menu-item ${isActive}">
                 <span class="fs-menu-icon">${item.icon}</span>
                 <span>${item.label}</span>
             </a>`;
@@ -69,7 +70,6 @@
         <div id="fs-menu-panel">
             <div class="fs-menu-header">
                 <div>
-                    <div class="fs-menu-brand">Future Stars</div>
                     <div class="fs-menu-user">${userName} <span class="fs-role-badge">${userRole}</span></div>
                 </div>
                 <button class="fs-menu-close" onclick="toggleFsMenu()">&times;</button>
@@ -95,9 +95,9 @@
             font-family: 'Inter', sans-serif;
         }
         #fs-menu-toggle {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             background: linear-gradient(135deg, #C9A227 0%, #B8941F 100%);
             border: none;
             cursor: pointer;
@@ -121,7 +121,7 @@
         }
         .fs-bar {
             display: block;
-            width: 22px;
+            width: 20px;
             height: 2.5px;
             background: #0A0A0A;
             border-radius: 2px;
@@ -140,10 +140,12 @@
             position: fixed;
             top: 0;
             right: -300px;
-            width: 280px;
+            width: 260px;
             height: 100vh;
-            background: linear-gradient(180deg, #141414 0%, #0A0A0A 100%);
-            border-left: 1px solid #2A2824;
+            background: rgba(14,14,14,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-left: 1px solid rgba(42,40,36,0.4);
             display: flex;
             flex-direction: column;
             transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -157,21 +159,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 24px 20px 16px;
-            border-bottom: 1px solid #2A2824;
+            padding: 20px 18px 12px;
+            border-bottom: 1px solid rgba(42,40,36,0.4);
             flex-shrink: 0;
         }
-        .fs-menu-brand {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1em;
-            font-weight: 700;
-            color: #C9A227;
-            letter-spacing: 2px;
-        }
         .fs-menu-user {
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: #A8A498;
-            margin-top: 4px;
         }
         .fs-role-badge {
             display: inline-block;
@@ -185,13 +179,13 @@
             margin-left: 6px;
         }
         .fs-menu-close {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 8px;
             background: transparent;
-            border: 1px solid #2A2824;
+            border: 1px solid rgba(42,40,36,0.6);
             color: #A8A498;
-            font-size: 1.4em;
+            font-size: 1.2em;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -206,27 +200,27 @@
         .fs-menu-scroll {
             flex: 1;
             overflow-y: auto;
-            padding: 8px 0;
+            padding: 6px 0;
         }
         .fs-menu-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 20px;
+            gap: 12px;
+            padding: 12px 18px;
             color: #A8A498;
             text-decoration: none;
-            font-size: 0.95em;
+            font-size: 0.9em;
             font-weight: 500;
             transition: all 0.25s ease;
             border-left: 3px solid transparent;
-            margin: 2px 8px;
-            border-radius: 0 10px 10px 0;
+            margin: 1px 8px;
+            border-radius: 0 8px 8px 0;
         }
         .fs-menu-item:hover {
             background: rgba(201,162,39,0.08);
             color: #F8F6F0;
             border-left-color: #C9A227;
-            padding-left: 24px;
+            padding-left: 22px;
         }
         .fs-menu-item.active {
             background: rgba(201,162,39,0.12);
@@ -235,29 +229,29 @@
             font-weight: 600;
         }
         .fs-menu-icon {
-            font-size: 1.3em;
-            width: 28px;
+            font-size: 1.1em;
+            width: 24px;
             text-align: center;
         }
         .fs-menu-divider {
             height: 1px;
-            background: #2A2824;
-            margin: 12px 20px;
+            background: rgba(42,40,36,0.4);
+            margin: 8px 18px;
         }
         .fs-menu-footer {
-            padding: 16px 20px;
-            border-top: 1px solid #2A2824;
+            padding: 12px 18px;
+            border-top: 1px solid rgba(42,40,36,0.4);
             flex-shrink: 0;
         }
         .fs-logout {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: transparent;
-            border: 1px solid #2A2824;
-            border-radius: 10px;
+            border: 1px solid rgba(42,40,36,0.6);
+            border-radius: 8px;
             color: #A8A498;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
+            font-size: 0.85em;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -276,8 +270,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.3);
             opacity: 0;
             visibility: hidden;
             transition: all 0.35s ease;
@@ -289,12 +282,12 @@
         }
         @media (max-width: 480px) {
             #fs-menu-panel {
-                width: 260px;
-                right: -280px;
+                width: 240px;
+                right: -260px;
             }
             #fs-menu-toggle {
-                width: 44px;
-                height: 44px;
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
@@ -323,7 +316,7 @@
             panel.classList.add('open');
             backdrop.classList.add('open');
             toggle.classList.add('open');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = '';
         }
     };
 
