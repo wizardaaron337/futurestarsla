@@ -513,6 +513,8 @@
             const doneCount = completed.length;
 
             content.innerHTML = `
+                <h3 class="section-title">🔗 Quick Links</h3>
+                <div class="quick-links" style="margin-bottom:24px;">${quickLinks}</div>
                 <div class="home-stats">
                     <div class="stat-card">
                         <div class="stat-num">${allCounts}</div>
@@ -545,9 +547,6 @@
                 })}
                 <div style="height:20px"></div>
                 ${tripSection('✅ Completed', '✅ complete', completed, () => '<span class="badge locked">Returned</span>')}
-                <div style="height:20px"></div>
-                <h3 class="section-title">🔗 Quick Links</h3>
-                <div class="quick-links">${quickLinks}</div>
             `;
         }
 
