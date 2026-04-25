@@ -118,6 +118,53 @@
             padding: 35px;
             margin-bottom: 40px;
         }
+        .search-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .search-field {
+            flex: 1;
+        }
+        .search-field label {
+            display: block;
+            font-size: 0.8em;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .search-field input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: 'Inter';
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        .search-field input:focus {
+            border-color: var(--gold);
+        }
+        .search-field input::placeholder {
+            color: var(--gray-dark);
+        }
+        .search-field .hint {
+            font-size: 0.75em;
+            color: var(--gray-dark);
+            margin-top: 4px;
+        }
+        @media (max-width: 600px) {
+            .search-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
         .search-label {
             font-family: 'Cinzel', serif;
             font-size: 0.8em;
@@ -472,13 +519,26 @@
         </div>
 
         <div class="search-box">
-            <label class="search-label">WHAT DO YOU NEED?</label>
-            <textarea class="prompt-input" id="prompt" placeholder="e.g. I need a hotel in Lafayette, LA and a car rental at the airport"></textarea>
+            <label class="search-label">WHERE ARE YOU HEADED?</label>
+            <div class="search-row">
+                <div class="search-field">
+                    <label>🏨 Hotel Location</label>
+                    <input type="text" id="hotel-loc" placeholder="e.g. Lafayette, LA" autocomplete="off">
+                    <div class="hint">City &amp; state where you need a hotel</div>
+                </div>
+                <div class="search-field">
+                    <label>🚗 Rental Car Location</label>
+                    <input type="text" id="car-loc" placeholder="e.g. ATL airport or downtown Dallas" autocomplete="off">
+                    <div class="hint">Leave blank to use hotel location</div>
+                </div>
+            </div>
             <div class="examples">
-                <span class="example-chip" onclick="setPrompt('Hotel in Atlanta, GA. Car rental at ATL airport')">Atlanta</span>
-                <span class="example-chip" onclick="setPrompt('Hotel and car in Houston, TX for 3 nights')">Houston</span>
-                <span class="example-chip" onclick="setPrompt('Cheap hotel in Dallas. Car rental downtown')">Dallas</span>
-                <span class="example-chip" onclick="setPrompt('Hotel near ballpark in Lexington, KY')">Lexington</span>
+                <span class="example-chip" onclick="setExample('Atlanta, GA', 'ATL airport')">Atlanta</span>
+                <span class="example-chip" onclick="setExample('Houston, TX', 'Houston downtown')">Houston</span>
+                <span class="example-chip" onclick="setExample('Dallas, TX', 'DFW airport')">Dallas</span>
+                <span class="example-chip" onclick="setExample('Lexington, KY', '')">Lexington</span>
+                <span class="example-chip" onclick="setExample('Lafayette, LA', 'Lafayette airport')">Lafayette</span>
+                <span class="example-chip" onclick="setExample('Baton Rouge, LA', '')">Baton Rouge</span>
             </div>
             <button class="btn-search" onclick="findOptions()">FIND OPTIONS</button>
         </div>
@@ -539,20 +599,9 @@
         let selectedCar = null;
         let currentCity = '';
 
-        function setPrompt(text) { document.getElementById('prompt').value = text; }
-
-        function parsePrompt(prompt) {
-            const text = prompt.toLowerCase();
-            let hotelLoc = '';
-            let carLoc = '';
-            const inMatch = text.match(/(?:hotel|stay)\s+(?:in|near|at)\s+([^,.]+)/i);
-            const carMatch = text.match(/(?:car|rental|rent)\s+(?:in|at|from)\s+([^,.]+)/i);
-            const generalMatch = text.match(/(?:in|near|at)\s+([^,.]+)/i);
-            hotelLoc = inMatch ? inMatch[1].trim() : (generalMatch ? generalMatch[1].trim() : '');
-            carLoc = carMatch ? carMatch[1].trim() : hotelLoc;
-            hotelLoc = hotelLoc.replace(/\b(the|a|an)\s+/g, '').trim();
-            carLoc = carLoc.replace(/\b(the|a|an)\s+/g, '').trim();
-            return { hotelLoc, carLoc };
+        function setExample(hotelVal, carVal) {
+            document.getElementById('hotel-loc').value = hotelVal;
+            document.getElementById('car-loc').value = carVal || '';
         }
 
         function getCityPricing(loc) {
@@ -766,10 +815,9 @@
         }
 
         function findOptions() {
-            const prompt = document.getElementById('prompt').value.trim();
-            if (!prompt) { alert('Tell PJ what you need first'); return; }
-            const { hotelLoc, carLoc } = parsePrompt(prompt);
-            if (!hotelLoc) { alert('Could not find a location. Try: "Hotel in [city]"'); return; }
+            const hotelLoc = document.getElementById('hotel-loc').value.trim();
+            const carLoc = document.getElementById('car-loc').value.trim() || hotelLoc;
+            if (!hotelLoc) { alert('Enter a hotel location first'); return; }
             hotelResults = generateHotels(hotelLoc);
             carResults = generateCars(carLoc || hotelLoc);
             renderHotels('all');
