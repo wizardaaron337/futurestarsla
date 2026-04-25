@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- build: 1777089406-0bc51204 -->
+<!-- build: 1777089842-9d3e78b1 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -10,6 +10,7 @@
     <title>Future Stars Sports Co</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="auth-config.js?v=1777089331"></script>
+    <script src="crew-data.js?v=1777089331"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -17,12 +18,14 @@
             --gold-light: #E8C84B;
             --gold-dark: #B8941F;
             --black: #0A0A0A;
-            --black-light: #141414;
             --black-card: #1A1A1A;
             --white: #F8F6F0;
             --gray: #A8A498;
             --gray-dark: #6B665C;
             --border: #2A2824;
+            --red: #EF5350;
+            --green: #4CAF50;
+            --amber: #FFA726;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -31,18 +34,17 @@
             min-height: 100vh;
         }
 
-        /* Hero Section */
-        .hero {
+        /* Landing Page (not logged in) */
+        .landing {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 40vh;
+            min-height: 100vh;
             text-align: center;
             padding: 40px 20px;
-            background: 
-                radial-gradient(circle at 30% 50%, rgba(201,162,39,0.05) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(201,162,39,0.03) 0%, transparent 50%);
+            background: radial-gradient(circle at 30% 50%, rgba(201,162,39,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(201,162,39,0.03) 0%, transparent 50%);
         }
         .logo-img {
             width: 80px;
@@ -53,14 +55,14 @@
             box-shadow: 0 0 40px rgba(201,162,39,0.3);
             margin-bottom: 20px;
         }
-        .hero h1 {
+        .landing h1 {
             font-family: 'Cinzel', serif;
             font-size: 2em;
             color: var(--gold);
             letter-spacing: 4px;
             margin-bottom: 4px;
         }
-        .hero .subtitle {
+        .landing .subtitle {
             font-family: 'Cinzel', serif;
             font-size: 0.9em;
             color: var(--gray);
@@ -68,37 +70,14 @@
             text-transform: uppercase;
             margin-bottom: 20px;
         }
-        .hero-tagline {
+        .landing p {
             color: var(--gray);
             font-size: 1em;
             max-width: 500px;
             line-height: 1.6;
             margin-bottom: 24px;
         }
-        .hero .welcome-name {
-            color: var(--gold-light);
-            font-size: 0.9em;
-            letter-spacing: 2px;
-            margin-bottom: 6px;
-        }
-        .hero .sign-out-link {
-            color: var(--gray-dark);
-            font-size: 0.8em;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .hero .sign-out-link:hover {
-            color: var(--red, #EF5350);
-        }
-
-        /* Quick Actions (not logged in) */
-        .actions {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .btn-primary {
+        .btn-signin {
             padding: 16px 32px;
             background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
             border: none;
@@ -109,115 +88,183 @@
             font-weight: 700;
             font-size: 1em;
             cursor: pointer;
-            transition: all 0.15s;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-decoration: none;
             display: inline-block;
             box-shadow: 0 6px 20px rgba(201,162,39,0.3);
+            transition: all 0.15s;
         }
-        .btn-primary:hover {
+        .btn-signin:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(201,162,39,0.4);
         }
-        .btn-secondary {
-            padding: 16px 32px;
-            background: transparent;
-            border: 2px solid var(--gold);
-            border-radius: 12px;
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-secondary:hover {
-            background: rgba(201,162,39,0.1);
-            transform: translateY(-2px);
-        }
 
-        /* Tool Grid (logged in) */
-        .tool-grid-section {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px 40px;
-        }
-        .tool-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 14px;
-        }
-        .tool-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-            text-decoration: none;
-            color: var(--white);
-            transition: all 0.3s;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-        .tool-card:hover {
-            border-color: var(--gold-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(201,162,39,0.08);
-        }
-        .tool-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, rgba(201,162,39,0.1), transparent);
-            border: 1px solid rgba(201,162,39,0.2);
-            border-radius: 10px;
+        /* Home Page (logged in) */
+        .header-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.3em;
-            flex-shrink: 0;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--black-card);
+            border-bottom: 1px solid var(--border);
         }
-        .tool-body h3 {
+        .header-bar .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .header-bar .logo-wrap img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+        }
+        .header-bar .logo-wrap span {
             font-family: 'Cinzel', serif;
-            font-size: 0.9em;
+            font-size: 1em;
             color: var(--gold);
-            margin-bottom: 4px;
+            letter-spacing: 2px;
         }
-        .tool-body p {
+        .header-bar .user-badge {
+            font-size: 0.85em;
             color: var(--gray);
-            font-size: 0.8em;
-            line-height: 1.4;
+        }
+        .header-bar .user-badge strong {
+            color: var(--white);
         }
 
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        /* Trip sections */
         .section-title {
             font-family: 'Cinzel', serif;
             font-size: 1em;
-            color: var(--gray);
-            text-align: center;
-            margin-bottom: 16px;
+            color: var(--gold);
             letter-spacing: 2px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-title .count {
+            color: var(--gray);
+            font-size: 0.8em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
         }
 
-        /* Footer */
+        .trip-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .trip-card .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+        .trip-card .icon.upcoming { background: rgba(76,175,80,0.1); }
+        .trip-card .icon.pack { background: rgba(255,167,38,0.1); }
+        .trip-card .icon.out { background: rgba(239,83,80,0.1); }
+
+        .trip-card .info { flex: 1; min-width: 0; }
+        .trip-card .info h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9em;
+            color: var(--gold);
+            margin-bottom: 2px;
+        }
+        .trip-card .info .meta {
+            font-size: 0.8em;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        .trip-card .info .meta strong { color: var(--white); }
+        .trip-card .badge {
+            font-size: 0.7em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .trip-card .badge.locked { background: rgba(76,175,80,0.15); color: var(--green); }
+        .trip-card .badge.pending { background: rgba(255,167,38,0.15); color: var(--amber); }
+        .trip-card .badge.need { background: rgba(239,83,80,0.15); color: var(--red); }
+
+        .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--gray-dark);
+            font-size: 0.9em;
+        }
+        .empty-state .big { font-size: 2em; margin-bottom: 8px; }
+
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .quick-link {
+            padding: 10px 16px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        .quick-link:hover {
+            border-color: var(--gold-dark);
+            color: var(--gold);
+        }
+
+        .sign-out {
+            color: var(--gray-dark);
+            font-size: 0.8em;
+            text-decoration: none;
+            margin-left: 12px;
+        }
+        .sign-out:hover { color: var(--red); }
+
         .footer {
             text-align: center;
-            padding: 30px 20px;
+            padding: 24px;
             color: var(--gray-dark);
             font-size: 0.8em;
             border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .loading-pulse {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-dark);
         }
 
         @media (max-width: 600px) {
-            .hero { min-height: 30vh; padding: 30px 16px; }
-            .hero h1 { font-size: 1.5em; }
-            .hero .subtitle { font-size: 0.7em; letter-spacing: 3px; }
-            .actions { flex-direction: column; width: 100%; padding: 0 20px; }
-            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
-            .tool-grid { grid-template-columns: 1fr; }
+            .header-bar { padding: 12px 16px; }
+            .main-content { padding: 16px; }
+            .trip-card { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -231,79 +278,178 @@
         const AUTH_VERIFIED = sessionStorage.getItem('fs_pin_verified') === 'true';
         const isLoggedIn = AUTH_USER && AUTH_VERIFIED;
 
-        const ALL_TOOLS = [
-            { page: 'tournaments', label: 'Tournaments', icon: '🏆', desc: 'Tournament schedule and crew operations' },
-            { page: 'inventory-v2', label: 'Inventory', icon: '📦', desc: 'Stock levels, pack trips, shipments' },
-            { page: 'trips', label: 'Trips', icon: '🚐', desc: 'Trip schedule with finances and crew assignments' },
-            { page: 'trip-tracker', label: 'Trip Tracker', icon: '📋', desc: 'Pack jerseys, check in returns, track items' },
-            { page: 'trip-planner', label: 'Trip Planner', icon: '📝', desc: 'Find hotels and rental cars for trips' },
-            { page: 'team', label: 'Team', icon: '👥', desc: 'Crew directory and contact info' },
-            { page: 'jersey-gallery', label: 'Jersey Gallery', icon: '👕', desc: 'Browse jersey designs and inventory' },
-            { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', desc: 'Upload inventory exports to Sortly' },
-            { page: 'privacy', label: 'Privacy', icon: '🔒', desc: 'Privacy policy and data practices' },
-            { page: 'contact', label: 'Contact', icon: '📧', desc: 'Get in touch with the team' }
-        ];
-
-        const ROLE_TOOLS = {
-            owner: ['tournaments', 'inventory-v2', 'trips', 'trip-tracker', 'trip-planner', 'team', 'jersey-gallery', 'sortly-upload', 'privacy', 'contact'],
-            logistics: ['tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
-            tournament: ['tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
-            inventory: ['inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
-        };
-
-        function getToolsForRole(role) {
-            const allowed = ROLE_TOOLS[role] || ROLE_TOOLS.inventory;
-            return ALL_TOOLS.filter(t => allowed.includes(t.page));
-        }
-
-        function renderLoggedIn() {
-            const tools = getToolsForRole(AUTH_ROLE);
-            const toolCards = tools.map(t => `
-                <a href="${t.page}.html" class="tool-card">
-                    <div class="tool-icon">${t.icon}</div>
-                    <div class="tool-body">
-                        <h3>${t.label}</h3>
-                        <p>${t.desc}</p>
-                    </div>
-                </a>
-            `).join('');
-
-            return `
-                <div class="hero" style="min-height:20vh;padding-bottom:20px">
+        if (!isLoggedIn) {
+            // Show landing page
+            document.getElementById('app-root').innerHTML = `
+                <div class="landing">
                     <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
                     <h1>FUTURE STARS</h1>
                     <div class="subtitle">Sports Co</div>
-                    <div class="welcome-name">Welcome, ${AUTH_NAME || AUTH_USER}</div>
-                    <a class="sign-out-link" onclick="signOut()">Sign Out</a>
+                    <p>Championship sports merchandise. Tournament operations. Inventory management.</p>
+                    <a href="signin.html" class="btn-signin">Sign In</a>
                 </div>
-                <div class="tool-grid-section">
-                    <div class="tool-grid">${toolCards}</div>
+            `;
+        } else {
+            // Show home page with trip data
+            document.getElementById('app-root').innerHTML = `
+                <div class="header-bar">
+                    <div class="logo-wrap">
+                        <img src="images/fs.jpeg" alt="Future Stars">
+                        <span>FUTURE STARS</span>
+                    </div>
+                    <div class="user-badge">
+                        <strong>${AUTH_NAME || AUTH_USER}</strong>
+                        <a class="sign-out" onclick="signOut()" href="#">Sign Out</a>
+                    </div>
+                </div>
+                <div class="main-content" id="home-content">
+                    <div class="loading-pulse">Loading trips...</div>
                 </div>
                 <div class="footer">Future Stars Sports Co &copy; 2026</div>
             `;
         }
 
-        function renderNotLoggedIn() {
-            return `
-                <div class="hero">
-                    <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-                    <h1>FUTURE STARS</h1>
-                    <div class="subtitle">Sports Co</div>
-                    <p class="hero-tagline">Championship sports merchandise. Tournament operations. Inventory management.</p>
-                    <div class="actions">
-                        <a href="index.html" class="btn-primary">Sign In</a>
-                    </div>
-                </div>
-                <div class="footer">Future Stars Sports Co &copy; 2026</div>
+        function parseOrdinal(s) {
+            if (!s) return 0;
+            return parseInt(s.replace(/[^0-9]/g, '')) || 0;
+        }
+
+        function formatDate(startOrdinal, endOrdinal, month) {
+            const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            const m = months.findIndex(m => m.toLowerCase().startsWith((month || '').toLowerCase().substring(0,3)));
+            const year = 2026;
+            if (m >= 0 && startOrdinal) {
+                const start = new Date(year, m, startOrdinal);
+                const end = endOrdinal ? new Date(year, m, endOrdinal) : null;
+                if (end && end > start) {
+                    return start.toLocaleDateString('en-US', {month:'short', day:'numeric'}) + ' - ' + end.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+                }
+                return start.toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+            }
+            return (month || '') + ' ' + (startOrdinal || '') + (endOrdinal ? '-' + endOrdinal : '');
+        }
+
+        function POC(trip) {
+            // Return the first crew member name as the POC contact
+            const crew = (trip.crew || '').split(',').map(n => n.trim()).filter(Boolean);
+            return crew[0] || 'N/A';
+        }
+
+        function renderHome() {
+            const content = document.getElementById('home-content');
+            if (!content || typeof CREW_TRIPS === 'undefined') {
+                if (content) content.innerHTML = '<div class="empty-state"><div class="big">😕</div><p>Could not load trip data</p></div>';
+                return;
+            }
+
+            const now = new Date();
+            const currentMonth = now.toLocaleDateString('en-US', {month:'long'});
+            
+            const all = CREW_TRIPS;
+            
+            // Get upcoming trips: status LOCKED IN, future month
+            const upcoming = all.filter(t => {
+                return t.status === 'LOCKED IN' || t.status === '';
+            }).slice(0, 5); // top 5
+
+            // Trips needing packing - those with status LOCKED IN but no leave date set
+            const needPack = all.filter(t => {
+                return t.status === 'LOCKED IN' && (!t.leaveDate || t.leaveDate.trim() === '');
+            }).slice(0, 5);
+
+            // Trips currently out (have leave date but no rental return)
+            const currentlyOut = all.filter(t => {
+                return t.leaveDate && t.leaveDate.trim() !== '' && (!t.rentalReturn || t.rentalReturn.trim() === '');
+            }).slice(0, 5);
+
+            content.innerHTML = '';
+
+            // Section: Quick Links (role-based)
+            const roleLinks = {
+                owner: ['tournaments','inventory-v2','trips','trip-tracker','trip-planner','team','jersey-gallery','sortly-upload','contact','privacy'],
+                logistics: ['tournaments','trips','trip-planner','team','contact','privacy'],
+                tournament: ['tournaments','trips','trip-planner','team','inventory-v2','jersey-gallery','contact','privacy'],
+                inventory: ['inventory-v2','jersey-gallery','sortly-upload','team','contact','privacy']
+            };
+            const linkLabels = {
+                tournaments:'🏆 Tournaments', 'inventory-v2':'📦 Inventory', trips:'🚐 Trips',
+                'trip-tracker':'📋 Trip Tracker', 'trip-planner':'📝 Trip Planner',
+                team:'👥 Team', 'jersey-gallery':'👕 Jersey Gallery',
+                'sortly-upload':'📤 Sortly Upload', contact:'📧 Contact', privacy:'🔒 Privacy'
+            };
+            const allowed = roleLinks[AUTH_ROLE] || roleLinks.inventory;
+
+            const quickLinks = allowed.map(p => `<a href="${p}.html" class="quick-link">${linkLabels[p] || p}</a>`).join('');
+
+            // Helper to build a trip list section
+            function tripSection(title, icon, trips, badgeFn) {
+                if (trips.length === 0) {
+                    return `
+                        <h3 class="section-title">${icon} ${title} <span class="count">(0)</span></h3>
+                        <div class="empty-state">All clear! Nothing here.</div>
+                    `;
+                }
+                const cards = trips.map(t => {
+                    const badge = badgeFn ? badgeFn(t) : '';
+                    const p = POC(t);
+                    return `
+                        <div class="trip-card">
+                            <div class="icon ${icon.includes('upcoming')?'upcoming':icon.includes('pack')?'pack':'out'}">${icon.includes('upcoming')?'📅':icon.includes('pack')?'📦':'🚐'}</div>
+                            <div class="info">
+                                <h4>${t.name || 'Unknown'}</h4>
+                                <div class="meta">
+                                    ${t.sport ? t.sport + ' · ' : ''}${formatDate(parseOrdinal(t.startDate), parseOrdinal(t.endDate), t.month)}
+                                    ${t.state ? ' · ' + t.state : ''}
+                                    <br>POC: <strong>${p}</strong>
+                                    ${t.crew ? ' · Crew: ' + t.crew : ''}
+                                </div>
+                            </div>
+                            ${badge}
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <h3 class="section-title">${icon} ${title} <span class="count">(${trips.length})</span></h3>
+                    ${cards}
+                `;
+            }
+
+            content.innerHTML = `
+                ${tripSection('Upcoming Trips', '📅 upcoming', upcoming, t => {
+                    if (t.status === 'LOCKED IN') return '<span class="badge locked">Locked In</span>';
+                    return '<span class="badge pending">Pending</span>';
+                })}
+                <div style="height:20px"></div>
+                ${tripSection('Need to Pack', '📦 pack', needPack, () => '<span class="badge need">Needs Packing</span>')}
+                <div style="height:20px"></div>
+                ${tripSection('Currently Out', '🚐 out', currentlyOut, () => '<span class="badge pending">In Field</span>')}
+                <div style="height:20px"></div>
+                <h3 class="section-title">🔗 Quick Links</h3>
+                <div class="quick-links">${quickLinks}</div>
             `;
         }
 
-        window.signOut = function() {
+        function signOut() {
             sessionStorage.clear();
             window.location.href = 'index.html';
-        };
+        }
 
-        document.getElementById('app-root').innerHTML = isLoggedIn ? renderLoggedIn() : renderNotLoggedIn();
+        // Run home render when data is loaded
+        if (isLoggedIn) {
+            if (typeof CREW_TRIPS !== 'undefined') {
+                renderHome();
+            } else {
+                // Wait for data
+                const check = setInterval(() => {
+                    if (typeof CREW_TRIPS !== 'undefined') {
+                        clearInterval(check);
+                        renderHome();
+                    }
+                }, 100);
+                setTimeout(() => clearInterval(check), 5000);
+            }
+        }
     </script>
 </body>
 </html>
