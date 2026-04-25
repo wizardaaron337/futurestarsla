@@ -93,7 +93,7 @@
             margin-left: auto; white-space: nowrap;
         }
 
-        /* TABLE — spreadsheet style */
+        /* === DESKTOP TABLE === */
         .trip-table {
             width: 100%;
             border-collapse: collapse;
@@ -128,8 +128,6 @@
         .trip-table tbody td .alt {
             color: var(--gray-dark);
         }
-
-        /* Status badges in table */
         .status-badge {
             display: inline-block; padding: 3px 8px;
             border-radius: 4px; font-size: 0.75em;
@@ -137,8 +135,6 @@
         }
         .status-badge.locked { background: rgba(76,175,80,0.12); color: var(--green); }
         .status-badge.pending { background: rgba(255,152,0,0.12); color: var(--orange); }
-
-        /* Past rows */
         .trip-table tbody tr.past { opacity: 0.45; }
         .trip-table tbody tr.past:hover { opacity: 0.65; }
 
@@ -147,11 +143,61 @@
         }
         .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 8px; }
 
+        /* === MOBILE CARD VIEW === */
+        .trip-cards { display: none; }
+        .trip-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            transition: opacity 0.15s;
+        }
+        .trip-card.past { opacity: 0.5; }
+        .trip-card .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 12px;
+            font-size: 0.85em;
+        }
+        .trip-card .card-row .label {
+            color: var(--gray-dark);
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .trip-card .card-row .value {
+            color: var(--white);
+            text-align: right;
+        }
+        .trip-card .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .trip-card .card-header h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95em;
+            color: var(--gold);
+            margin: 0;
+            flex: 1;
+        }
+        .trip-card .card-header .sport-icon {
+            font-size: 1.1em;
+        }
+
         @media (max-width: 768px) {
             .page { padding: 12px; }
             .page-title { font-size: 1.3em; }
             .controls { flex-direction: column; align-items: stretch; }
             .search-box { min-width: auto; }
+            /* Hide table, show cards */
+            #table-wrap { display: none; }
+            .trip-cards { display: block; }
         }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -224,13 +270,15 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Mobile card view -->
+        <div class="trip-cards" id="trip-cards"></div>
     </div>
 
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
 
-        // Month name to number mapping
         const MONTH_MAP = {
             'jan':0, 'january':0, 'feb':1, 'febuary':1, 'february':1,
             'mar':2, 'march':2, 'apr':3, 'april':3, 'may':4,
@@ -255,7 +303,6 @@
             return d < today;
         }
 
-        // Build tournament lookup by name
         function findTourney(tripName) {
             if (typeof TOURNEY_DATA === 'undefined') return null;
             const key = (tripName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -298,14 +345,18 @@
             });
 
             const tbody = document.getElementById('table-body');
+            const cardsEl = document.getElementById('trip-cards');
             const countEl = document.getElementById('row-count');
             countEl.textContent = `${filtered.length} trips`;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>`;
+                const msg = '<tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>';
+                tbody.innerHTML = msg;
+                cardsEl.innerHTML = '<div class="empty-state"><h3>🔍</h3><p>No trips match your filters</p></div>';
                 return;
             }
 
+            // Desktop table
             tbody.innerHTML = filtered.map(t => {
                 const pastClass = isPast(t) ? 'past' : '';
                 const statusBadge = t.status === 'LOCKED IN' 
@@ -313,8 +364,6 @@
                     : '<span class="status-badge pending">PENDING</span>';
                 const sportDisplay = t.sport === 'BB' ? 'Baseball' : 
                     (t.sport||'').toLowerCase() === 'baseball' ? 'Baseball' : t.sport || '—';
-
-                // Look up tournament data by name
                 const tourney = findTourney(t.name);
                 const ageGroup = tourney ? tourney.ageGroup : '—';
                 const teams = tourney ? tourney.size : '—';
@@ -339,6 +388,31 @@
                     <td>${t.pexQuestion || ''}</td>
                     <td>${t.leaveTimesSent || ''}</td>
                 </tr>`;
+            }).join('');
+
+            // Mobile cards - condensed view with key info
+            cardsEl.innerHTML = filtered.map(t => {
+                const pastClass = isPast(t) ? 'past' : '';
+                const statusBadge = t.status === 'LOCKED IN' 
+                    ? '<span class="status-badge locked" style="font-size:0.65em">LOCKED</span>'
+                    : '<span class="status-badge pending" style="font-size:0.65em">PENDING</span>';
+                const sportIcon = (t.sport||'').toLowerCase().includes('soccer') ? '⚽' : 
+                    ((t.sport||'').toLowerCase().includes('baseball') || t.sport === 'BB') ? '⚾' : '🏀';
+                return `<div class="trip-card ${pastClass}">
+                    <div class="card-header">
+                        <span class="sport-icon">${sportIcon}</span>
+                        <h3>${t.name || 'Unknown Trip'}</h3>
+                        ${statusBadge}
+                    </div>
+                    <div class="card-row">
+                        ${t.month || t.startDate ? '<span class="label">Dates</span><span class="value">' + (t.month||'') + ' ' + (t.startDate||'') + (t.endDate ? ' — ' + t.endDate : '') + '</span>' : ''}
+                        ${t.state ? '<span class="label">Location</span><span class="value">' + t.state + '</span>' : ''}
+                        ${t.crew ? '<span class="label">Crew</span><span class="value">' + t.crew + '</span>' : ''}
+                        ${t.leaveDate ? '<span class="label">Leave</span><span class="value">' + t.leaveDate + (t.leaveTime ? ' @ ' + t.leaveTime : '') + '</span>' : ''}
+                        ${t.pexCard ? '<span class="label">PEX</span><span class="value" style="color:var(--gold)">' + t.pexCard + '</span>' : ''}
+                        ${t.rentalReturn ? '<span class="label">Return</span><span class="value">' + t.rentalReturn + '</span>' : ''}
+                    </div>
+                </div>`;
             }).join('');
         }
 
