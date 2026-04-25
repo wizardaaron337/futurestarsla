@@ -622,6 +622,12 @@
 
         <!-- Inventory Tab -->
         <div id="tab-inventory" class="tab-content">
+            <div class="export-bar" style="margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="exportInventory('csv')">📊 Export CSV</button>
+                <button class="btn btn-secondary" onclick="exportInventory('json')">📋 Export JSON</button>
+                <button class="btn btn-secondary" onclick="window.print()">🖨️ Print</button>
+            </div>
+            <div id="low-stock-alerts" style="margin-bottom: 16px;"></div>
             <div class="inv-section">
                 <div class="inv-header">
                     <span class="inv-title">⚾ Baseball Jerseys</span>
@@ -1127,10 +1133,89 @@
             input.focus();
         }
 
+        // Export inventory to CSV or JSON
+        function exportInventory(format) {
+            const timestamp = new Date().toISOString().split('T')[0];
+            
+            if (format === 'csv') {
+                let csv = 'Sport,Jersey,Total,Size,Quantity\n';
+                Object.entries(INVENTORY.baseball).forEach(([name, data]) => {
+                    Object.entries(data.sizes).forEach(([size, qty]) => {
+                        csv += `Baseball,"${name}",${data.total},${size},${qty}\n`;
+                    });
+                });
+                Object.entries(INVENTORY.soccer).forEach(([name, data]) => {
+                    Object.entries(data.sizes).forEach(([size, qty]) => {
+                        csv += `Soccer,"${name}",${data.total},${size},${qty}\n`;
+                    });
+                });
+                downloadFile(csv, `fs-inventory-${timestamp}.csv`, 'text/csv');
+            } else if (format === 'json') {
+                const data = {
+                    exported: new Date().toISOString(),
+                    inventory: INVENTORY
+                };
+                downloadFile(JSON.stringify(data, null, 2), `fs-inventory-${timestamp}.json`, 'application/json');
+            }
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Low stock alerts
+        function checkLowStock() {
+            const alerts = [];
+            const threshold = 10;
+            
+            Object.entries(INVENTORY.baseball).forEach(([name, data]) => {
+                Object.entries(data.sizes).forEach(([size, qty]) => {
+                    if (qty < threshold) {
+                        alerts.push({ sport: 'Baseball', name, size, qty });
+                    }
+                });
+            });
+            
+            Object.entries(INVENTORY.soccer).forEach(([name, data]) => {
+                Object.entries(data.sizes).forEach(([size, qty]) => {
+                    if (qty < threshold) {
+                        alerts.push({ sport: 'Soccer', name, size, qty });
+                    }
+                });
+            });
+            
+            const container = document.getElementById('low-stock-alerts');
+            if (alerts.length > 0) {
+                container.innerHTML = `
+                    <div style="background: rgba(239,83,80,0.1); border: 1px solid rgba(239,83,80,0.3); border-radius: 12px; padding: 16px;">
+                        <div style="font-weight: 600; color: var(--red); margin-bottom: 8px;">⚠️ Low Stock Alert (${alerts.length} items below ${threshold} units)</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${alerts.map(a => `
+                                <span style="background: var(--black); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; font-size: 0.85em;">
+                                    ${a.sport === 'Baseball' ? '⚾' : '⚽'} ${a.name} ${a.size}: <strong style="color: var(--red);">${a.qty}</strong>
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = '';
+            }
+        }
+
         // Init
         renderInventory();
         renderTrips();
         renderJerseyPicker();
+        checkLowStock();
 
         // Auto-refresh inventory every 30 seconds (for multi-user updates)
         // Note: Since data is static, this re-renders the same data.
@@ -1138,6 +1223,7 @@
         if (window.FSUtils) {
             FSUtils.autoRefresh(() => {
                 renderInventory();
+                checkLowStock();
             }, 30000, 'inventory');
         }
 
