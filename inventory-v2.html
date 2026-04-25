@@ -14,6 +14,7 @@
     <script src="nav-dropdown.js?v=1777085641" defer></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
+    <script src="inventory-data.js?v=1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -298,51 +299,6 @@
         document.getElementById('user-name').textContent = sessionStorage.getItem('fs_name') || '';
 
         // Inventory Data
-        const INVENTORY = {
-            baseball: {
-                "Acuna Jr. Braves": {total: 184, sizes: {YS: 42, YM: 16, YL: 49, AS: 11, YXL: 66}, img: "jerseys/acuna-jr-braves.svg"},
-                "Alvarez Astros": {total: 36, sizes: {YL: 12, YXL: 11, YM: 5, AS: 2, YS: 6}, img: "jerseys/alvarez-astros.svg"},
-                "Betts Dodgers": {total: 226, sizes: {YXL: 37, AS: 60, YL: 78, YM: 51}, img: "jerseys/betts-dodgers.svg"},
-                "Crews Nationals": {total: 94, sizes: {YS: 11, YM: 12, YXL: 21, AS: 27, YL: 23}, img: "jerseys/crews-nationals.svg"},
-                "Crow Cubs": {total: 104, sizes: {YS: 23, YM: 25, YXL: 33, YL: 19, AS: 4}, img: "jerseys/crow-cubs.svg"},
-                "De LaCruz Reds": {total: 44, sizes: {YS: 10, YXL: 32, YL: 1, AS: 1}, img: "jerseys/de-lacruz-reds.svg"},
-                "Freeman Dodgers": {total: 14, sizes: {YS: 1, YM: 2, YXL: 7, AS: 4}, img: "jerseys/freeman-dodgers.svg"},
-                "Guerrero JR": {total: 34, sizes: {YS: 3, YM: 7, YL: 7, YXL: 15, AS: 2}, img: "jerseys/guerrero-jr.svg"},
-                "Harper Phillies": {total: 114, sizes: {YS: 17, YM: 23, YXL: 42, AS: 3, YL: 29}, img: "jerseys/harper-phillies.svg"},
-                "Henderson Oriols": {total: 54, sizes: {YS: 6, YM: 16, YXL: 12, AS: 6, YL: 14}, img: "jerseys/henderson-oriols.svg"},
-                "Judge Yankees": {total: 157, sizes: {YM: 13, YXL: 46, AS: 25, YL: 58, YS: 15}, img: "jerseys/judge-yankees.svg"},
-                "Ohtani Dodgers": {total: 165, sizes: {YS: 28, YL: 35, YM: 31, AS: 35, YXL: 36}, img: "jerseys/ohtani-dodgers.svg"},
-                "Raleigh Mariners": {total: 50, sizes: {YS: 6, AS: 9, YXL: 21, YM: 6, YL: 8}, img: "jerseys/raleigh-mariners.svg"},
-                "Skenes Pirates": {total: 194, sizes: {YS: 37, YXL: 42, YM: 31, YL: 64, AS: 20}, img: "jerseys/skenes-pirates.svg"},
-                "Soto Mets": {total: 169, sizes: {YS: 10, YM: 52, YL: 35, YXL: 48, AS: 24}, img: "jerseys/soto-mets.svg"},
-                "Tatis JR": {total: 174, sizes: {AS: 5, YL: 20, YS: 2, YXL: 128, YM: 19}, img: "jerseys/tatis-jr.svg"},
-                "Trout Angels": {total: 82, sizes: {YS: 10, YM: 3, YL: 30, AS: 18, YXL: 21}, img: "jerseys/trout-angels.svg"},
-                "Turner Phillies": {total: 35, sizes: {YXL: 13, YL: 11, YS: 9, AS: 2}, img: "jerseys/turner-phillies.svg"},
-                "Whit Royals": {total: 76, sizes: {YS: 2, YM: 12, YL: 14, YXL: 17, AS: 31}, img: "jerseys/whit-royals.svg"},
-            },
-            soccer: {
-                "Messi Pink": {total: 416, sizes: {20: 24, 22: 38, 24: 45, 26: 48, 28: 56, S: 35, M: 40, L: 42, XL: 38}, img: "jerseys/messi-pink.jpg"},
-                "Messi Argentina": {total: 402, sizes: {20: 22, 22: 35, 24: 42, 26: 45, 28: 52, S: 32, M: 38, L: 40, XL: 36}, img: "jerseys/messi-argentina.jpg"},
-                "Messi Black": {total: 491, sizes: {20: 28, 22: 42, 24: 50, 26: 55, 28: 62, S: 40, M: 45, L: 48, XL: 42}, img: "jerseys/messi-black.jpg"},
-                "Messi PSG": {total: 80, sizes: {20: 6, 22: 8, 24: 10, 26: 12, 28: 12, S: 6, M: 8, L: 10, XL: 8}, img: "jerseys/messi-psg.jpg"},
-                "Messi Tribute": {total: 60, sizes: {20: 4, 22: 6, 24: 8, 26: 8, 28: 10, S: 5, M: 6, L: 7, XL: 6}, img: "jerseys/messi-tribute.jpg"},
-                "Ronaldo Blue": {total: 445, sizes: {20: 25, 22: 38, 24: 45, 26: 50, 28: 55, S: 36, M: 42, L: 45, XL: 40}, img: "jerseys/ronaldo-blue.jpg"},
-                "Ronaldo Red": {total: 348, sizes: {20: 20, 22: 30, 24: 35, 26: 40, 28: 42, S: 28, M: 32, L: 35, XL: 30}, img: "jerseys/ronaldo-red.jpg"},
-                "Ronaldo White": {total: 90, sizes: {20: 6, 22: 10, 24: 12, 26: 12, 28: 14, S: 8, M: 10, L: 10, XL: 8}, img: "jerseys/ronaldo-white.jpg"},
-                "Ronaldo World Cup": {total: 70, sizes: {20: 5, 22: 8, 24: 9, 26: 10, 28: 12, S: 6, M: 8, L: 7, XL: 5}, img: "jerseys/ronaldo-wc.jpg"},
-                "Ronaldo Tribute": {total: 65, sizes: {20: 4, 22: 7, 24: 8, 26: 9, 28: 10, S: 5, M: 7, L: 8, XL: 7}, img: "jerseys/ronaldo-tribute.jpg"},
-                "Neymar Tribute": {total: 526, sizes: {20: 28, 22: 45, 24: 52, 26: 58, 28: 62, S: 40, M: 46, L: 50, XL: 44}, img: "jerseys/neymar-tribute.jpg"},
-                "Neymar Yellow": {total: 85, sizes: {20: 6, 22: 10, 24: 12, 26: 12, 28: 14, S: 8, M: 10, L: 8, XL: 5}, img: "jerseys/neymar-yellow.jpg"},
-                "Yamal Flower": {total: 430, sizes: {20: 24, 22: 36, 24: 42, 26: 48, 28: 52, S: 34, M: 40, L: 44, XL: 38}, img: "jerseys/yamal-spain.jpg"},
-                "Yamal Barca": {total: 328, sizes: {20: 18, 22: 28, 24: 32, 26: 36, 28: 40, S: 26, M: 30, L: 32, XL: 28}, img: "jerseys/yamal-2026.jpg"},
-                "Yamal Black": {total: 75, sizes: {20: 5, 22: 8, 24: 9, 26: 10, 28: 12, S: 6, M: 8, L: 9, XL: 8}, img: "jerseys/yamal-black.jpg"},
-                "Yamal Snake": {total: 65, sizes: {20: 4, 22: 7, 24: 8, 26: 8, 28: 10, S: 5, M: 7, L: 9, XL: 7}, img: "jerseys/yamal-snake.jpg"},
-                "Kobe Yamal": {total: 70, sizes: {20: 5, 22: 8, 24: 9, 26: 10, 28: 10, S: 6, M: 8, L: 8, XL: 6}, img: "jerseys/kobe-yamal.jpg"},
-                "Pink Yamal": {total: 60, sizes: {20: 4, 22: 6, 24: 8, 26: 8, 28: 10, S: 5, M: 6, L: 7, XL: 6}, img: "jerseys/pink-yamal.jpg"},
-                "Mbappe France": {total: 74, sizes: {20: 5, 22: 8, 24: 10, 26: 10, 28: 12, S: 6, M: 8, L: 8, XL: 7}, img: ""},
-            }
-        };
-
         // Render Inventory
         function renderInventory() {
             let bbTotal = 0, scTotal = 0, bbCount = 0, scCount = 0;

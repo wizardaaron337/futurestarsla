@@ -1038,7 +1038,7 @@ function showToast(msg){
   document.body.appendChild(toast);
   setTimeout(()=>toast.remove(),3000);
 }
-function logout(){sessionStorage.clear();window.location.href='signin.html';}
+function logout(){localStorage.clear();sessionStorage.clear();window.location.href='signin.html';}
 
 /* ═════════════════════════════════════════
    KEYBOARD SHORTCUTS
