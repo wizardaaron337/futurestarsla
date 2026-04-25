@@ -211,6 +211,41 @@
         .trip-card .badge.pending { background: rgba(255,167,38,0.15); color: var(--amber); }
         .trip-card .badge.need { background: rgba(239,83,80,0.15); color: var(--red); }
 
+        /* Home stat cards */
+        .home-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .stat-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+        .stat-num {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.7em;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+        @media (max-width: 480px) {
+            .home-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .trip-card .badge.need { background: rgba(239,83,80,0.15); color: var(--red); }
+
         .empty-state {
             text-align: center;
             padding: 32px 16px;
@@ -344,6 +379,16 @@
             return crew[0] || 'N/A';
         }
 
+        function loadTripStatuses() {
+            // Load packing/out status from trip tracker (localStorage)
+            try {
+                const raw = localStorage.getItem('fs_trip_status');
+                return raw ? JSON.parse(raw) : { status: {}, packing: {}, returns: {} };
+            } catch(e) {
+                return { status: {}, packing: {}, returns: {} };
+            }
+        }
+
         function renderHome() {
             const content = document.getElementById('home-content');
             if (!content || typeof CREW_TRIPS === 'undefined') {
@@ -354,22 +399,57 @@
             const now = new Date();
             const currentMonth = now.toLocaleDateString('en-US', {month:'long'});
             
+            // Load trip statuses from trip tracker (set from inventory UI)
+            const tripData = loadTripStatuses();
+            const trackerStatus = tripData.status || {};
+            const trackerPacking = tripData.packing || {};
+            const trackerReturns = tripData.returns || {};
+
             const all = CREW_TRIPS;
+
+            // Categorize trips by real status from CSV data + trip tracker
+            // Trip tracker overrides: 'packed', 'out', 'completed'
+            function getRealStatus(t) {
+                const id = t.name + '-' + t.startDate + '-' + t.month;
+                const ts = trackerStatus[id];
+                if (ts) return ts;
+                
+                // Fall back to CSV status + field logic
+                if (t.status === 'LOCKED IN') {
+                    if (t.leaveDate && t.leaveDate.trim() !== '') {
+                        if (t.rentalReturn && t.rentalReturn.trim() !== '') return 'completed';
+                        return 'out';
+                    }
+                    return 'locked';
+                }
+                return 'unassigned';
+            }
             
-            // Get upcoming trips: status LOCKED IN, future month
+            // Get upcoming trips: LOCKED IN status
             const upcoming = all.filter(t => {
-                return t.status === 'LOCKED IN' || t.status === '';
-            }).slice(0, 5); // top 5
+                const s = getRealStatus(t);
+                return s === 'locked' || s === 'out';
+            }).slice(0, 5);
 
-            // Trips needing packing - those with status LOCKED IN but no leave date set
+            // Trips needing packing - LOCKED IN with no leave date AND not marked as packed
             const needPack = all.filter(t => {
-                return t.status === 'LOCKED IN' && (!t.leaveDate || t.leaveDate.trim() === '');
+                const s = getRealStatus(t);
+                const id = t.name + '-' + t.startDate + '-' + t.month;
+                const packed = trackerPacking[id] && Object.keys(trackerPacking[id]).length > 0;
+                return s === 'locked' && !packed;
             }).slice(0, 5);
 
-            // Trips currently out (have leave date but no rental return)
+            // Trips currently out (have leave date, no return - or marked as 'out' in tracker)
             const currentlyOut = all.filter(t => {
-                return t.leaveDate && t.leaveDate.trim() !== '' && (!t.rentalReturn || t.rentalReturn.trim() === '');
+                const s = getRealStatus(t);
+                return s === 'out';
             }).slice(0, 5);
+
+            // Completed/recently returned
+            const completed = all.filter(t => {
+                const s = getRealStatus(t);
+                return s === 'completed';
+            }).slice(0, 3);
 
             content.innerHTML = '';
 
@@ -425,15 +505,46 @@
                 `;
             }
 
+            // Count badges
+            const allCounts = all.length;
+            const upCount = upcoming.length;
+            const packCount = needPack.length;
+            const outCount = currentlyOut.length;
+            const doneCount = completed.length;
+
             content.innerHTML = `
-                ${tripSection('Upcoming Trips', '📅 upcoming', upcoming, t => {
+                <div class="home-stats">
+                    <div class="stat-card">
+                        <div class="stat-num">${allCounts}</div>
+                        <div class="stat-label">Total Trips</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">${packCount}</div>
+                        <div class="stat-label">Need Packing</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">${outCount}</div>
+                        <div class="stat-label">Currently Out</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">${upCount}</div>
+                        <div class="stat-label">Upcoming</div>
+                    </div>
+                </div>
+                <div style="height:24px"></div>
+                ${tripSection('📦 Need to Pack', '📦 pack', needPack, t => {
+                    if (t.status === 'LOCKED IN') return '<span class="badge need">Needs Packing</span>';
+                    return '<span class="badge pending">Unassigned</span>';
+                })}
+                <div style="height:20px"></div>
+                ${tripSection('🚐 Currently Out', '🚐 out', currentlyOut, () => '<span class="badge pending">In Field</span>')}
+                <div style="height:20px"></div>
+                ${tripSection('📅 Upcoming Trips', '📅 upcoming', upcoming, t => {
                     if (t.status === 'LOCKED IN') return '<span class="badge locked">Locked In</span>';
                     return '<span class="badge pending">Pending</span>';
                 })}
                 <div style="height:20px"></div>
-                ${tripSection('Need to Pack', '📦 pack', needPack, () => '<span class="badge need">Needs Packing</span>')}
-                <div style="height:20px"></div>
-                ${tripSection('Currently Out', '🚐 out', currentlyOut, () => '<span class="badge pending">In Field</span>')}
+                ${tripSection('✅ Completed', '✅ complete', completed, () => '<span class="badge locked">Returned</span>')}
                 <div style="height:20px"></div>
                 <h3 class="section-title">🔗 Quick Links</h3>
                 <div class="quick-links">${quickLinks}</div>
