@@ -399,8 +399,6 @@
             .tabs { overflow-x: auto; }
         }
     </style>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="animations.css?v=2">
 </head>
 <body>
     <div class="progress-bar" id="progress-bar"></div>
@@ -465,7 +463,6 @@
         </div>
     </div>
 
-    <script src="crew-data.js"></script>
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
@@ -781,10 +778,5 @@
             bar.style.width = pct+"%";
         });
     </script>
-<script src="footer-component.js?v=2"></script>
-<script src="dark-mode.js?v=2"></script>
-    <script src="keyboard-shortcuts.js?v=2"></script>
-<script>if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js");}</script>
-<button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
 </body>
 </html>
