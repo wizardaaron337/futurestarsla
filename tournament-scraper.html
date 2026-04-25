@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- build: 1777090525-5e5e16c7 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Schedules — Future Stars</title>
+    <script src="auth-config.js?v=1777085641"></script>
+    <script src="crew-data.js?v=1777085641"></script>
+    <script src="tournament-data.js?v=1777085641"></script>
+    <script src="nav-dropdown.js?v=1777085641" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gold: #C9A227; --gold-dark: #B8941F;
+            --black: #0A0A0A; --black-card: #1A1A1A; --black-hover: #242424;
+            --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C;
+            --border: #2A2824; --green: #4CAF50; --red: #EF5350; --orange: #FFA726;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 20px; background: var(--black-card);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-link {
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+        }
+        .logo-img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold-dark); }
+        .logo-text {
+            font-family: 'Cinzel', serif; font-size: 1.1em; font-weight: 700;
+            color: var(--gold); letter-spacing: 3px;
+        }
+        .user-info { display: flex; align-items: center; gap: 16px; }
+        .user-name { color: var(--gold); font-size: 0.8em; letter-spacing: 1px; }
+        .logout-btn {
+            padding: 6px 14px; background: transparent; border: 1px solid var(--border);
+            color: var(--gray); border-radius: 6px; font-size: 0.75em; cursor: pointer;
+        }
+        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .main { max-width: 1000px; margin: 0 auto; padding: 24px 20px; }
+        .page-title {
+            font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700;
+            color: var(--gold); margin-bottom: 4px;
+        }
+        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 20px; }
+
+        /* Search & Card */
+        .search-bar {
+            display: flex; gap: 10px; margin-bottom: 20px;
+        }
+        .search-bar input {
+            flex: 1; padding: 12px 16px; background: var(--black-card);
+            border: 1px solid var(--border); border-radius: 8px; color: var(--white);
+            font-size: 0.95em; outline: none;
+        }
+        .search-bar input:focus { border-color: var(--gold); }
+        .search-bar button {
+            padding: 12px 24px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border: none; border-radius: 8px; color: var(--black);
+            font-weight: 700; cursor: pointer; font-size: 0.9em;
+        }
+        .search-bar button:hover { filter: brightness(1.1); }
+
+        .tourney-card {
+            background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px; margin-bottom: 12px;
+        }
+        .tourney-card h3 {
+            font-family: 'Cinzel', serif; color: var(--gold); font-size: 1em;
+            margin-bottom: 4px;
+        }
+        .tourney-card .meta {
+            color: var(--gray); font-size: 0.85em; line-height: 1.6;
+        }
+        .tourney-card .meta strong { color: var(--white); }
+
+        .url-row {
+            display: flex; gap: 8px; align-items: center; margin-top: 10px;
+        }
+        .url-row input {
+            flex: 1; padding: 8px 12px; background: var(--black);
+            border: 1px solid var(--border); border-radius: 6px; color: var(--white);
+            font-size: 0.85em; outline: none;
+        }
+        .url-row input:focus { border-color: var(--gold); }
+        .url-row .btn-sm {
+            padding: 8px 14px; border-radius: 6px; border: none;
+            cursor: pointer; font-size: 0.8em; font-weight: 600;
+        }
+        .btn-save { background: var(--gold); color: var(--black); }
+        .btn-scrape { background: rgba(100,181,246,0.2); color: #64B5F6; border: 1px solid rgba(100,181,246,0.3); }
+        .btn-open { background: transparent; color: var(--gray); border: 1px solid var(--border); text-decoration: none; display: inline-flex; align-items: center; padding: 8px 14px; }
+        .btn-open:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-sm:hover { filter: brightness(1.1); }
+
+        .saved-link {
+            display: inline-block; padding: 4px 10px; background: rgba(201,162,39,0.08);
+            border: 1px solid rgba(201,162,39,0.15); border-radius: 4px;
+            color: #64B5F6; font-size: 0.8em; text-decoration: none; margin-top: 4px;
+            word-break: break-all;
+        }
+        .saved-link:hover { text-decoration: underline; }
+
+        .results-panel {
+            margin-top: 12px; padding: 12px; background: var(--black);
+            border: 1px solid var(--border); border-radius: 8px;
+            max-height: 400px; overflow-y: auto;
+            font-size: 0.85em;
+        }
+        .results-panel .result-item {
+            padding: 6px 0; border-bottom: 1px solid var(--border);
+            display: flex; gap: 8px;
+        }
+        .results-panel .result-item:last-child { border: none; }
+        .result-time { color: var(--gold); font-weight: 600; white-space: nowrap; }
+        .result-detail { color: var(--gray); }
+
+        .scrape-status {
+            padding: 8px 12px; border-radius: 6px; margin-top: 8px;
+            font-size: 0.85em;
+        }
+        .scrape-status.loading { background: rgba(255,167,38,0.1); color: var(--orange); }
+        .scrape-status.error { background: rgba(239,83,80,0.1); color: var(--red); }
+        .scrape-status.success { background: rgba(76,175,80,0.1); color: var(--green); }
+
+        .empty-state {
+            text-align: center; padding: 60px 20px; color: var(--gray-dark);
+        }
+        .empty-state .big { font-size: 3em; margin-bottom: 10px; }
+        .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 6px; }
+
+        @media (max-width: 600px) {
+            .search-bar { flex-direction: column; }
+            .url-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+<script>// CACHE BUST - force fresh
+(function(){if(!location.search.includes("cb=")){var d=new Date().getTime();location.replace(location.pathname+"?cb="+d);}})();</script>
+    <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="index.html";}</script>
+    <div class="header">
+        <a href="index.html" class="logo-link">
+            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+            <span class="logo-text">FUTURE STARS</span>
+        </a>
+        <div class="user-info">
+            <span class="user-name" id="user-name"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="page-title">Tournament Schedules</div>
+        <div class="page-subtitle">Search for a tournament, save its website, and scrape game times</div>
+
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search tournament name..." oninput="filterTourneys()">
+        </div>
+
+        <div id="tourney-list"></div>
+    </div>
+
+    <script>
+        const NAME = sessionStorage.getItem('fs_name') || 'User';
+        document.getElementById('user-name').textContent = NAME.toUpperCase();
+
+        // Load saved URLs and scraped data from localStorage
+        const STORED_URLS_KEY = 'fs_tourney_urls';
+        const STORED_TIMES_KEY = 'fs_tourney_times';
+
+        function getSavedUrls() {
+            return JSON.parse(localStorage.getItem(STORED_URLS_KEY) || '{}');
+        }
+        function saveUrl(tourneyName, url) {
+            const urls = getSavedUrls();
+            urls[tourneyName] = url;
+            localStorage.setItem(STORED_URLS_KEY, JSON.stringify(urls));
+        }
+        function removeUrl(tourneyName) {
+            const urls = getSavedUrls();
+            delete urls[tourneyName];
+            localStorage.setItem(STORED_URLS_KEY, JSON.stringify(urls));
+            render();
+        }
+
+        function getTimes(tourneyName) {
+            const all = JSON.parse(localStorage.getItem(STORED_TIMES_KEY) || '{}');
+            return all[tourneyName] || null;
+        }
+        function saveTimes(tourneyName, data) {
+            const all = JSON.parse(localStorage.getItem(STORED_TIMES_KEY) || '{}');
+            all[tourneyName] = data;
+            localStorage.setItem(STORED_TIMES_KEY, JSON.stringify(all));
+        }
+
+        function render() {
+            const list = document.getElementById('tourney-list');
+            const search = document.getElementById('search').value.toLowerCase();
+            
+            if (typeof TOURNEY_DATA === 'undefined' || !TOURNEY_DATA.length) {
+                list.innerHTML = '<div class="empty-state"><div class="big">😕</div><h3>No tournament data loaded</h3></div>';
+                return;
+            }
+
+            let filtered = TOURNEY_DATA;
+            if (search) {
+                filtered = TOURNEY_DATA.filter(t => 
+                    (t.name || '').toLowerCase().includes(search) ||
+                    (t.sport || '').toLowerCase().includes(search) ||
+                    (t.state || '').toLowerCase().includes(search)
+                );
+            }
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="big">🔍</div><h3>No tournaments match</h3></div>';
+                return;
+            }
+
+            // Remove duplicates by name
+            const seen = new Set();
+            filtered = filtered.filter(t => {
+                const key = t.name.toLowerCase().trim();
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+
+            const savedUrls = getSavedUrls();
+
+            list.innerHTML = filtered.map(t => {
+                const savedUrl = savedUrls[t.name] || '';
+                const times = getTimes(t.name);
+                return `
+                    <div class="tourney-card">
+                        <h3>${t.name}</h3>
+                        <div class="meta">
+                            ${t.sport ? t.sport + ' · ' : ''}${t.ageGroup ? t.ageGroup + ' · ' : ''}${t.size ? t.size + ' teams · ' : ''}${t.state || ''}
+                            ${t.contact ? ' · <strong>Contact:</strong> ' + t.contact : ''}
+                        </div>
+                        <div class="url-row">
+                            <input type="text" id="url-${t.name.replace(/[^a-zA-Z0-9]/g,'')}" placeholder="Paste tournament website URL..." value="${savedUrl}">
+                            <button class="btn-sm btn-save" onclick="saveTourneyUrl('${t.name.replace(/'/g,"\\'")}', 'url-${t.name.replace(/[^a-zA-Z0-9]/g,'')}')">Save</button>
+                            <button class="btn-sm btn-scrape" onclick="scrapePage('${t.name.replace(/'/g,"\\'")}')">Scrape</button>
+                            ${savedUrl ? `<a href="${savedUrl}" target="_blank" class="btn-sm btn-open">Open ↗</a>` : ''}
+                        </div>
+                        <div id="results-${t.name.replace(/[^a-zA-Z0-9]/g,'')}">
+                            ${times ? renderTimes(t.name, times) : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTimes(tourneyName, data) {
+            const results = data.results || [];
+            if (results.length === 0) return '';
+            
+            return `<div class="results-panel">
+                ${results.map(r => `<div class="result-item">
+                    <span class="result-time">${r.time || '?'}</span>
+                    <span class="result-detail">${r.detail || ''}</span>
+                </div>`).join('')}
+            </div>`;
+        }
+
+        function saveTourneyUrl(name, inputId) {
+            const input = document.getElementById(inputId);
+            const url = input.value.trim();
+            if (!url) {
+                removeUrl(name);
+                return;
+            }
+            saveUrl(name, url);
+            const status = document.createElement('div');
+            status.className = 'scrape-status success';
+            status.textContent = '✅ URL saved!';
+            input.parentElement.appendChild(status);
+            setTimeout(() => status.remove(), 2000);
+            render();
+        }
+
+        function scrapePage(tourneyName) {
+            const urls = getSavedUrls();
+            const url = urls[tourneyName];
+            if (!url) {
+                alert('Save a URL first before scraping.');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results-' + tourneyName.replace(/[^a-zA-Z0-9]/g,''));
+            resultsDiv.innerHTML = '<div class="scrape-status loading">🔍 Fetching ' + url + ' ...</div>';
+
+            // Use a CORS proxy to fetch the page
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+            
+            fetch(proxyUrl)
+                .then(res => {
+                    if (!res.ok) throw new Error('Could not fetch page (status ' + res.status + ')');
+                    return res.text();
+                })
+                .then(html => {
+                    // Parse the HTML for tables and schedule-like content
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Look for tables
+                    const tables = doc.querySelectorAll('table');
+                    let results = [];
+
+                    // Strategy 1: Look for any table with time-like content (HH:MM AM/PM)
+                    tables.forEach(table => {
+                        const rows = table.querySelectorAll('tr');
+                        rows.forEach(row => {
+                            const cells = row.querySelectorAll('td, th');
+                            const text = Array.from(cells).map(c => c.textContent.trim()).filter(Boolean);
+                            const rowText = text.join(' ');
+                            
+                            // Check if any cell looks like a time (e.g., 8:00 AM, 14:30, 09:00)
+                            const timeMatch = rowText.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
+                            if (timeMatch && text.length >= 2) {
+                                const time = timeMatch[1];
+                                const detail = text.filter(t => t !== timeMatch[0]).join(' — ').substring(0, 200);
+                                results.push({ time, detail });
+                            }
+                        });
+                    });
+
+                    // Strategy 2: If no tables, look for divs/paragraphs with time patterns
+                    if (results.length === 0) {
+                        const bodyText = doc.body ? doc.body.textContent : '';
+                        const lines = bodyText.split('\n').map(l => l.trim()).filter(Boolean);
+                        
+                        lines.forEach(line => {
+                            const timeMatch = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
+                            if (timeMatch && line.length > 10 && line.length < 300) {
+                                const time = timeMatch[1];
+                                const detail = line.replace(timeMatch[0], '').trim().substring(0, 200);
+                                results.push({ time, detail });
+                            }
+                        });
+                    }
+
+                    // Deduplicate
+                    const seen = new Set();
+                    results = results.filter(r => {
+                        const key = r.time + r.detail;
+                        if (seen.has(key)) return false;
+                        seen.add(key);
+                        return true;
+                    });
+
+                    // Save results
+                    const data = { url, scrapeDate: new Date().toISOString(), results };
+                    saveTimes(tourneyName, data);
+                    
+                    if (results.length > 0) {
+                        resultsDiv.innerHTML = `<div class="scrape-status success">✅ Found ${results.length} schedule entries!</div>${renderTimes(tourneyName, data)}`;
+                    } else {
+                        resultsDiv.innerHTML = `<div class="scrape-status error">No game times found. Try opening the site manually.</div>`;
+                    }
+                })
+                .catch(err => {
+                    resultsDiv.innerHTML = `<div class="scrape-status error">⚠️ ${err.message || 'Could not fetch page'}</div>`;
+                });
+        }
+
+        function filterTourneys() {
+            render();
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'signin.html';
+        }
+
+        render();
+    </script>
+</body>
+</html>
