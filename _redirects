@@ -1,1 +1,2 @@
-# FS LA Deploy 1777123841-b2576d25
+# Cache bust: redirect to fresh URL on deploy
+/* /:splat 200
