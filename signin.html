@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="description" content="Future Stars Sports Co - Championship sports merchandise, tournament operations, and inventory management.">
-    <meta name="keywords" content="sports, merchandise, tournament, soccer, baseball, jerseys">
-    <meta name="author" content="Future Stars Sports Co">
-    <meta name="theme-color" content="#C9A227">
-    <meta property="og:title" content="Future Stars Sports Co">
-    <meta property="og:description" content="Elite sports merchandise for the next generation of champions.">
-    <meta property="og:type" content="website">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In — Future Stars</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="auth-config.js?v=5"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -19,84 +13,32 @@
             --gold-dark: #B8941F;
             --gold-light: #E8C84B;
             --black: #0A0A0A;
-            --dark-gray: #1A1A1A;
-            --card-bg: #141414;
-            --cream: #F8F6F0;
-            --muted: #A8A498;
+            --black-card: #1A1A1A;
+            --white: #F8F6F0;
+            --gray: #A8A498;
+            --gray-dark: #6B665C;
+            --border: #2A2824;
             --red: #EF5350;
             --green: #4CAF50;
         }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--black);
-            color: var(--cream);
+            color: var(--white);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(201,162,39,0.04) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(201,162,39,0.03) 0%, transparent 50%);
         }
-        .particles {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: var(--gold);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
-        }
-        .progress-bar {
-            position: fixed;
-            top: 0; left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-light));
-            z-index: 9999;
-            transition: width 0.1s;
-            width: 0%;
-        }
-        .spinner {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(201,162,39,0.1);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-in {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
-        }
-        .box { position: relative; z-index: 1; }
         .box {
-            background: var(--card-bg);
-            border: 1px solid rgba(201,162,39,0.15);
-            border-radius: 20px;
-            padding: 50px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 30px;
             width: 100%;
-            max-width: 480px;
+            max-width: 400px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
         }
         .logo-img {
             width: 80px;
@@ -104,70 +46,57 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--gold);
-            box-shadow: 0 0 30px rgba(201,162,39,0.2), 0 4px 15px rgba(0,0,0,0.4);
-            margin-bottom: 20px;
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        @keyframes shimmer {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.15); }
+            margin-bottom: 15px;
         }
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 1.6em;
+            font-size: 1.4em;
             font-weight: 700;
             color: var(--gold);
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             margin-bottom: 6px;
         }
-        .logo-script {
-            font-family: 'Great Vibes', cursive;
-            font-size: 1.4em;
-            color: var(--gold-light);
-            margin-bottom: 8px;
-        }
         .tagline {
-            color: var(--muted);
-            margin-bottom: 40px;
-            font-size: 1.1em;
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 1em;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.8em;
+            color: var(--gray);
+            margin-bottom: 6px;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .names {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-        .names > :nth-child(5) { grid-column: 1 / -1; justify-self: center; width: 50%; }
-        .name-btn {
-            padding: 16px;
-            background: var(--dark-gray);
-            border: 1px solid rgba(201,162,39,0.15);
-            border-bottom: 3px solid rgba(201,162,39,0.1);
-            border-radius: 14px;
-            color: var(--cream);
-            font-family: 'Inter', sans-serif;
-            font-size: 1.05em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            letter-spacing: 0.5px;
-        }
-        .name-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-            background: rgba(201,162,39,0.08);
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(201,162,39,0.15);
-        }
-        .name-btn.selected {
-            border-color: var(--gold);
-            color: var(--gold);
-            background: rgba(201,162,39,0.12);
-            box-shadow: 0 0 25px rgba(201,162,39,0.15), 0 0 0 1px rgba(201,162,39,0.2);
-        }
-        .go-btn {
+        .input-group input {
             width: 100%;
+            padding: 14px 16px;
+            background: var(--black);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            transition: all 0.2s;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(201,162,39,0.1);
+        }
+        .input-group input::placeholder {
+            color: var(--gray-dark);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
             background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
             border: none;
             border-bottom: 4px solid var(--gold-dark);
@@ -175,100 +104,121 @@
             color: var(--black);
             font-family: 'Cinzel', serif;
             font-weight: 700;
-            padding: 18px;
+            font-size: 1.1em;
             cursor: pointer;
             transition: all 0.15s;
             text-transform: uppercase;
             letter-spacing: 3px;
-            box-shadow: 0 6px 20px rgba(201,162,39,0.3);
-            font-size: 1.1em;
+            margin-top: 10px;
         }
-        .go-btn:hover {
+        .login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(201,162,39,0.4);
         }
-        .go-btn:active {
+        .login-btn:active {
             transform: translateY(2px);
             border-bottom: 2px solid var(--gold-dark);
-            box-shadow: 0 2px 10px rgba(201,162,39,0.2);
         }
-        .msg { margin-top: 20px; font-size: 1.05em; }
+
+        .msg {
+            margin-top: 20px;
+            font-size: 1em;
+            min-height: 24px;
+        }
         .msg.error { color: var(--red); }
         .msg.success { color: var(--green); }
+
+        .hint {
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(201,162,39,0.05);
+            border: 1px solid rgba(201,162,39,0.15);
+            border-radius: 8px;
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+        .hint strong {
+            color: var(--gold);
+        }
+
         @media (max-width: 480px) {
             .box { padding: 30px 20px; }
-            .names { grid-template-columns: 1fr; }
-            .names > :nth-child(5) { width: 100%; }
         }
     </style>
-    <script src="auth-config.js?v=3"></script>
 </head>
 <body>
-    <div class="progress-bar" id="progress-bar"></div>
-    <div class="particles" id="particles"></div>
-    <div class="box animate-in">
+    <div class="box">
         <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-        <div class="logo-script">FutureStars</div>
-        <div class="logo-text">SPORTS CO</div>
-        <p class="tagline">Who are you?</p>
-        <div class="names">
-            <button class="name-btn animate-in" style="animation-delay:0.1s" onclick="pick('jr')">👑 JR</button>
-            <button class="name-btn animate-in" style="animation-delay:0.2s" onclick="pick('lane')">👑 Lane</button>
-            <button class="name-btn animate-in" style="animation-delay:0.3s" onclick="pick('pj')">🚐 PJ</button>
-            <button class="name-btn animate-in" style="animation-delay:0.4s" onclick="pick('caleb')">📞 Caleb</button>
-            <button class="name-btn animate-in" style="animation-delay:0.5s" onclick="pick('marlon')">📦 Marlon</button>
+        <div class="logo-text">FUTURE STARS</div>
+        <p class="tagline">Sign in to your account</p>
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Enter username" autocomplete="off">
         </div>
-        <button class="go-btn animate-in" style="animation-delay:0.6s" onclick="go()">GO</button>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+        </div>
+
+        <button class="login-btn" onclick="login()">SIGN IN</button>
+
         <div class="msg" id="msg"></div>
+
+        <div class="hint">
+            <strong>Users:</strong> jr, lane, pj, caleb, marlon<br>
+            <strong>Passwords:</strong> jr26, lane26, pj26, caleb26, marlon26
+        </div>
     </div>
+
     <script>
-        (function(){
-            const container = document.getElementById('particles');
-            for(let i=0;i<25;i++){
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random()*100+'vw';
-                p.style.animationDelay = Math.random()*15+'s';
-                p.style.animationDuration = (10+Math.random()*10)+'s';
-                p.style.width = (2+Math.random()*3)+'px';
-                p.style.height = p.style.width;
-                container.appendChild(p);
-            }
-        })();
-        window.addEventListener('scroll', function(){
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
-            document.getElementById('progress-bar').style.width = pct+'%';
-        });
-        let picked = null;
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
         const msg = document.getElementById('msg');
 
-        function pick(who) {
-            picked = who;
-            document.querySelectorAll('.name-btn').forEach(b => b.classList.remove('selected'));
-            event.target.classList.add('selected');
-            msg.textContent = '';
-        }
+        // Auto-focus username
+        usernameInput.focus();
 
-        function go() {
-            if (!picked) {
+        // Submit on Enter
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') login();
+        });
+        usernameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') passwordInput.focus();
+        });
+
+        function login() {
+            const username = usernameInput.value.trim().toLowerCase();
+            const password = passwordInput.value.trim();
+
+            if (!username || !password) {
                 msg.className = 'msg error';
-                msg.textContent = 'Click your name first!';
+                msg.textContent = 'Enter both username and password';
                 return;
             }
-            const user = AUTH_CONFIG.getUser(picked);
+
+            const user = AUTH_CONFIG.getUser(username);
             if (!user) {
                 msg.className = 'msg error';
-                msg.textContent = 'User not found!';
+                msg.textContent = 'User not found';
                 return;
             }
-            msg.className = 'msg success';
-            msg.textContent = 'Logging in...';
-            sessionStorage.setItem('fs_auth', picked);
-            sessionStorage.setItem('fs_role', user.role);
-            sessionStorage.setItem('fs_name', user.name);
-            setTimeout(() => window.location.href = 'login.html', 500);
+
+            if (AUTH_CONFIG.verifyPin(username, password)) {
+                msg.className = 'msg success';
+                msg.textContent = 'Welcome, ' + user.name + '!';
+                sessionStorage.setItem('fs_auth', username);
+                sessionStorage.setItem('fs_role', user.role);
+                sessionStorage.setItem('fs_name', user.name);
+                sessionStorage.setItem('fs_pin_verified', 'true');
+                setTimeout(() => window.location.href = 'dashboard.html', 500);
+            } else {
+                msg.className = 'msg error';
+                msg.textContent = 'Wrong password';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
         }
     </script>
 </body>
