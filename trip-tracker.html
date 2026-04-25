@@ -21,7 +21,9 @@
     <script src="crew-data.js?v=1777085641"></script>
     <script src="cost-data.js?v=1777085641"></script>
     <script src="tournament-data.js?v=1777085641"></script>
-    <script src="nav-dropdown.js?v=1777085641" defer></script>
+    <script src="nav-dropdown.js" defer></script>
+    <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="fs-utils.js?v=1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -423,6 +425,7 @@
             <span class="logo-text">FUTURE STARS</span>
         </a>
         <div class="user-info">
+            <span id="dark-mode-toggle"></span>
             <span class="user-name" id="user-name"></span>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>

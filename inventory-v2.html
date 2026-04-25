@@ -167,12 +167,12 @@
             height: 140px;
             border-radius: 8px;
             margin-bottom: 10px;
-            background: var(--black-light);
+            background: linear-gradient(135deg, var(--black-light), #222);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--border);
-            font-size: 2em;
+            color: var(--gray-dark);
+            font-size: 2.5em;
         }
         .jersey-card .card-top {
             display: flex;
@@ -300,25 +300,25 @@
         // Inventory Data
         const INVENTORY = {
             baseball: {
-                "Acuna Jr. Braves": {total: 184, sizes: {YS: 42, YM: 16, YL: 49, AS: 11, YXL: 66}, img: ""},
-                "Alvarez Astros": {total: 36, sizes: {YL: 12, YXL: 11, YM: 5, AS: 2, YS: 6}, img: ""},
-                "Betts Dodgers": {total: 226, sizes: {YXL: 37, AS: 60, YL: 78, YM: 51}, img: ""},
-                "Crews Nationals": {total: 94, sizes: {YS: 11, YM: 12, YXL: 21, AS: 27, YL: 23}, img: ""},
-                "Crow Cubs": {total: 104, sizes: {YS: 23, YM: 25, YXL: 33, YL: 19, AS: 4}, img: ""},
-                "De LaCruz Reds": {total: 44, sizes: {YS: 10, YXL: 32, YL: 1, AS: 1}, img: ""},
-                "Freeman Dodgers": {total: 14, sizes: {YS: 1, YM: 2, YXL: 7, AS: 4}, img: ""},
-                "Guerrero JR": {total: 34, sizes: {YS: 3, YM: 7, YL: 7, YXL: 15, AS: 2}, img: ""},
-                "Harper Phillies": {total: 114, sizes: {YS: 17, YM: 23, YXL: 42, AS: 3, YL: 29}, img: ""},
-                "Henderson Oriols": {total: 54, sizes: {YS: 6, YM: 16, YXL: 12, AS: 6, YL: 14}, img: ""},
-                "Judge Yankees": {total: 157, sizes: {YM: 13, YXL: 46, AS: 25, YL: 58, YS: 15}, img: ""},
-                "Ohtani Dodgers": {total: 165, sizes: {YS: 28, YL: 35, YM: 31, AS: 35, YXL: 36}, img: ""},
-                "Raleigh Mariners": {total: 50, sizes: {YS: 6, AS: 9, YXL: 21, YM: 6, YL: 8}, img: ""},
-                "Skenes Pirates": {total: 194, sizes: {YS: 37, YXL: 42, YM: 31, YL: 64, AS: 20}, img: ""},
-                "Soto Mets": {total: 169, sizes: {YS: 10, YM: 52, YL: 35, YXL: 48, AS: 24}, img: ""},
-                "Tatis JR": {total: 174, sizes: {AS: 5, YL: 20, YS: 2, YXL: 128, YM: 19}, img: ""},
-                "Trout Angels": {total: 82, sizes: {YS: 10, YM: 3, YL: 30, AS: 18, YXL: 21}, img: ""},
-                "Turner Phillies": {total: 35, sizes: {YXL: 13, YL: 11, YS: 9, AS: 2}, img: ""},
-                "Whit Royals": {total: 76, sizes: {YS: 2, YM: 12, YL: 14, YXL: 17, AS: 31}, img: ""},
+                "Acuna Jr. Braves": {total: 184, sizes: {YS: 42, YM: 16, YL: 49, AS: 11, YXL: 66}, img: "jerseys/acuna-jr-braves.svg"},
+                "Alvarez Astros": {total: 36, sizes: {YL: 12, YXL: 11, YM: 5, AS: 2, YS: 6}, img: "jerseys/alvarez-astros.svg"},
+                "Betts Dodgers": {total: 226, sizes: {YXL: 37, AS: 60, YL: 78, YM: 51}, img: "jerseys/betts-dodgers.svg"},
+                "Crews Nationals": {total: 94, sizes: {YS: 11, YM: 12, YXL: 21, AS: 27, YL: 23}, img: "jerseys/crews-nationals.svg"},
+                "Crow Cubs": {total: 104, sizes: {YS: 23, YM: 25, YXL: 33, YL: 19, AS: 4}, img: "jerseys/crow-cubs.svg"},
+                "De LaCruz Reds": {total: 44, sizes: {YS: 10, YXL: 32, YL: 1, AS: 1}, img: "jerseys/de-lacruz-reds.svg"},
+                "Freeman Dodgers": {total: 14, sizes: {YS: 1, YM: 2, YXL: 7, AS: 4}, img: "jerseys/freeman-dodgers.svg"},
+                "Guerrero JR": {total: 34, sizes: {YS: 3, YM: 7, YL: 7, YXL: 15, AS: 2}, img: "jerseys/guerrero-jr.svg"},
+                "Harper Phillies": {total: 114, sizes: {YS: 17, YM: 23, YXL: 42, AS: 3, YL: 29}, img: "jerseys/harper-phillies.svg"},
+                "Henderson Oriols": {total: 54, sizes: {YS: 6, YM: 16, YXL: 12, AS: 6, YL: 14}, img: "jerseys/henderson-oriols.svg"},
+                "Judge Yankees": {total: 157, sizes: {YM: 13, YXL: 46, AS: 25, YL: 58, YS: 15}, img: "jerseys/judge-yankees.svg"},
+                "Ohtani Dodgers": {total: 165, sizes: {YS: 28, YL: 35, YM: 31, AS: 35, YXL: 36}, img: "jerseys/ohtani-dodgers.svg"},
+                "Raleigh Mariners": {total: 50, sizes: {YS: 6, AS: 9, YXL: 21, YM: 6, YL: 8}, img: "jerseys/raleigh-mariners.svg"},
+                "Skenes Pirates": {total: 194, sizes: {YS: 37, YXL: 42, YM: 31, YL: 64, AS: 20}, img: "jerseys/skenes-pirates.svg"},
+                "Soto Mets": {total: 169, sizes: {YS: 10, YM: 52, YL: 35, YXL: 48, AS: 24}, img: "jerseys/soto-mets.svg"},
+                "Tatis JR": {total: 174, sizes: {AS: 5, YL: 20, YS: 2, YXL: 128, YM: 19}, img: "jerseys/tatis-jr.svg"},
+                "Trout Angels": {total: 82, sizes: {YS: 10, YM: 3, YL: 30, AS: 18, YXL: 21}, img: "jerseys/trout-angels.svg"},
+                "Turner Phillies": {total: 35, sizes: {YXL: 13, YL: 11, YS: 9, AS: 2}, img: "jerseys/turner-phillies.svg"},
+                "Whit Royals": {total: 76, sizes: {YS: 2, YM: 12, YL: 14, YXL: 17, AS: 31}, img: "jerseys/whit-royals.svg"},
             },
             soccer: {
                 "Messi Pink": {total: 416, sizes: {20: 24, 22: 38, 24: 45, 26: 48, 28: 56, S: 35, M: 40, L: 42, XL: 38}, img: "jerseys/messi-pink.jpg"},

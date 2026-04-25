@@ -18,7 +18,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PJ Trip Maker — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
-    <script src="nav-dropdown.js?v=1777085641" defer></script>
+    <script src="nav-dropdown.js" defer></script>
+    <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="fs-utils.js?v=1"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -243,7 +245,8 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
     <span class="logo-text">FUTURE STARS</span>
   </a>
   <div class="user-info">
-    <span class="user-name" id="user-name"></span>
+    <span id="dark-mode-toggle"></span>
+            <span class="user-name" id="user-name"></span>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 </div>

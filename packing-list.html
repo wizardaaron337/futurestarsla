@@ -280,8 +280,8 @@
 
   <script>
     // Auth
-    const AUTH = sessionStorage.getItem('fs_auth');
-    const ROLE = sessionStorage.getItem('fs_role');
+    const AUTH = sessionStorage.getItem('fs_auth') || localStorage.getItem('fs_auth');
+    const ROLE = sessionStorage.getItem('fs_role') || localStorage.getItem('fs_role');
     if (!AUTH || !AUTH_CONFIG.canAccess(ROLE, 'inventory')) {
       window.location.href = 'signin.html';
     }
