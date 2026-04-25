@@ -35,6 +35,12 @@ const AUTH_CONFIG = {
             role: 'inventory', 
             pin: '1959',
             emoji: '📦'
+        },
+        'backend': { 
+            name: 'Backend', 
+            role: 'inventory', 
+            pin: '1959',
+            emoji: '⚙️'
         }
     },
 
