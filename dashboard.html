@@ -20,6 +20,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap&family=Great+Vibes&display=swap" rel="stylesheet">
     <script src="auth-config.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1777085641" defer></script>
+    <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="fs-utils.js?v=1"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -318,6 +320,7 @@
     <div class="header">
         <a href="index.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
         <div class="user-info">
+            <span id="dark-mode-toggle"></span>
             <span class="user-name" id="user-name"></span>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>

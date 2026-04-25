@@ -1,0 +1,166 @@
+/** Future Stars LA - Shared Utilities CSS */
+
+/* ===== Loading Spinner ===== */
+.fs-spinner-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 16px;
+}
+
+.fs-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(201, 162, 39, 0.2);
+    border-top-color: #C9A227;
+    border-radius: 50%;
+    animation: fs-spin 0.8s linear infinite;
+}
+
+@keyframes fs-spin {
+    to { transform: rotate(360deg); }
+}
+
+.fs-spinner-text {
+    color: var(--gray, #A8A498);
+    font-size: 0.9em;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Small spinner for inline use */
+.fs-spinner-sm {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-top-color: #C9A227;
+    border-radius: 50%;
+    animation: fs-spin 0.8s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* ===== Error State ===== */
+.fs-error-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 12px;
+    text-align: center;
+}
+
+.fs-error-icon {
+    font-size: 2em;
+}
+
+.fs-error-text {
+    color: var(--gray, #A8A498);
+    font-size: 0.95em;
+    max-width: 400px;
+    line-height: 1.5;
+}
+
+.fs-error-retry {
+    margin-top: 8px;
+    padding: 10px 24px;
+    background: var(--gold, #C9A227);
+    color: var(--black, #0A0A0A);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fs-error-retry:hover {
+    background: var(--gold-light, #E8C84B);
+    transform: translateY(-1px);
+}
+
+/* ===== Dark Mode Toggle ===== */
+.fs-dark-toggle {
+    background: var(--black-card, #1A1A1A);
+    border: 1px solid var(--border, #2A2824);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fs-dark-toggle:hover {
+    border-color: var(--gold, #C9A227);
+    transform: scale(1.1);
+}
+
+/* ===== Dark Mode Overrides ===== */
+body.fs-dark {
+    --black: #F8F6F0;
+    --black-light: #E8E4DC;
+    --black-card: #D8D4CC;
+    --black-hover: #C8C4BC;
+    --white: #1A1A1A;
+    --gray: #5A564C;
+    --gray-dark: #8A8478;
+    --border: #B8B4AC;
+    --gold: #B8941F;
+    --gold-light: #C9A227;
+    --gold-dark: #9A7A18;
+}
+
+body.fs-dark .header,
+body.fs-dark .inv-section,
+body.fs-dark .trip-card,
+body.fs-dark .modal,
+body.fs-dark .form-section,
+body.fs-dark .trip-table-container {
+    background: var(--black-card);
+    border-color: var(--border);
+}
+
+body.fs-dark .jersey-table th,
+body.fs-dark .trip-table th {
+    border-bottom-color: var(--border);
+    color: var(--gold);
+}
+
+body.fs-dark .jersey-table td,
+body.fs-dark .trip-table td {
+    border-bottom-color: rgba(186, 180, 172, 0.3);
+}
+
+body.fs-dark .size-pill {
+    background: var(--black-light);
+    border-color: var(--border);
+}
+
+body.fs-dark .trip-filter {
+    background: var(--black-card);
+    border-color: var(--border);
+}
+
+body.fs-dark input,
+body.fs-dark select,
+body.fs-dark textarea {
+    background: var(--black-light);
+    border-color: var(--border);
+    color: var(--white);
+}
+
+/* Smooth transition for dark mode */
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body * {
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}

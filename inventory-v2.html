@@ -12,6 +12,8 @@
     <title>Inventory & Trips — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1777085641" defer></script>
+    <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="fs-utils.js?v=1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -596,6 +598,7 @@
             <span class="logo-text">FUTURE STARS</span>
         </a>
         <div class="user-info">
+            <span id="dark-mode-toggle"></span>
             <span class="user-name" id="user-name"></span>
         </div>
     </div>
@@ -622,7 +625,7 @@
             <div class="inv-section">
                 <div class="inv-header">
                     <span class="inv-title">⚾ Baseball Jerseys</span>
-                    <span class="inv-count" id="bb-count">Loading...</span>
+                    <span class="inv-count" id="bb-count"><div class="fs-spinner-sm"></div> Loading...</span>
                 </div>
                 <table class="jersey-table">
                     <thead>
@@ -639,7 +642,7 @@
             <div class="inv-section">
                 <div class="inv-header">
                     <span class="inv-title">⚽ Soccer Jerseys</span>
-                    <span class="inv-count" id="sc-count">Loading...</span>
+                    <span class="inv-count" id="sc-count"><div class="fs-spinner-sm"></div> Loading...</span>
                 </div>
                 <table class="jersey-table">
                     <thead>
@@ -1128,6 +1131,15 @@
         renderInventory();
         renderTrips();
         renderJerseyPicker();
+
+        // Auto-refresh inventory every 30 seconds (for multi-user updates)
+        // Note: Since data is static, this re-renders the same data.
+        // When connected to a real API, this will fetch fresh data.
+        if (window.FSUtils) {
+            FSUtils.autoRefresh(() => {
+                renderInventory();
+            }, 30000, 'inventory');
+        }
 
         function printTrip() {
             if (!currentTripId) return;
