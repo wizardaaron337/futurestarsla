@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Manager - Future Stars LA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/fs.jpeg" type="image/jpeg">
+    <script src="fs-utils.js"></script>
+    <link rel="stylesheet" href="fs-utils.css">
+    <link rel="stylesheet" href="auth-config.js">
+    <script src="nav-dropdown.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --black: #0a0a0a;
+            --black-card: #111;
+            --black-light: #1a1a1a;
+            --gold: #C9A227;
+            --gold-light: #D4AF37;
+            --gold-dark: #A8881F;
+            --white: #f0f0f0;
+            --gray: #888;
+            --border: #222;
+            --green: #4CAF50;
+            --red: #EF5350;
+            --orange: #FF9800;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--black-card);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
+        .logo-text { font-family: 'Cinzel', serif; font-size: 1.1em; color: var(--gold); font-weight: 700; letter-spacing: 2px; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-name { font-size: 0.85em; color: var(--gray); }
+        .main { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        .page-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4em;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .page-subtitle {
+            font-size: 0.85em;
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+
+        /* Trip list */
+        .trip-section { margin-bottom: 28px; }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+        .section-header .count {
+            font-size: 0.85em;
+            color: var(--gray);
+        }
+        .trip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+        .trip-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+        .trip-card:hover {
+            border-color: var(--gold-dark);
+        }
+        .trip-card.shipped {
+            opacity: 0.55;
+            border-color: var(--red);
+        }
+        .trip-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .trip-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95em;
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .trip-status {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.7em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .trip-status.ready {
+            background: rgba(76,175,80,0.15);
+            color: var(--green);
+            border: 1px solid rgba(76,175,80,0.3);
+        }
+        .trip-status.shipped {
+            background: rgba(239,83,80,0.15);
+            color: var(--red);
+            border: 1px solid rgba(239,83,80,0.3);
+        }
+        .trip-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8em;
+            color: var(--gray);
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .trip-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .trip-item-tag {
+            padding: 3px 8px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.78em;
+            color: var(--gray);
+        }
+        .trip-item-tag .qty {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .trip-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.78em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--gray);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-sm:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-sm.gold { background: var(--gold); color: var(--black); border-color: var(--gold); }
+        .btn-sm.gold:hover { background: var(--gold-light); }
+        .btn-sm.green { border-color: var(--green); color: var(--green); }
+        .btn-sm.green:hover { background: rgba(76,175,80,0.1); }
+        .btn-sm.red { border-color: var(--red); color: var(--red); }
+        .btn-sm.red:hover { background: rgba(239,83,80,0.1); }
+        .btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        .empty-state .big-emoji { font-size: 3em; margin-bottom: 12px; display: block; }
+        .empty-state p { font-size: 0.9em; margin-bottom: 4px; }
+
+        /* Create Trip Form */
+        .form-card {
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .form-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.95em;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75em;
+            color: var(--gray);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .jersey-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 6px;
+            max-height: 260px;
+            overflow-y: auto;
+            padding: 8px;
+            background: var(--black);
+            border-radius: 8px;
+            margin-bottom: 14px;
+        }
+        .picker-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            background: var(--black-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        .picker-item:hover { border-color: var(--gold); }
+        .picker-item input { width: auto; }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-primary { background: var(--gold); color: var(--black); }
+        .btn-primary:hover { background: var(--gold-light); }
+        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--gray); }
+        .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-danger { background: transparent; border: 1px solid var(--red); color: var(--red); }
+        .btn-danger:hover { background: rgba(239,83,80,0.1); }
+
+        .print-meta { color: var(--gray); margin: 12px 0; font-size: 0.9em; line-height: 1.6; }
+        .print-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        .print-table th { background: var(--black-light); padding: 10px; text-align: left; border-bottom: 2px solid var(--border); color: var(--gold); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; }
+        .print-table td { padding: 10px; border-bottom: 1px solid var(--border); }
+        .print-table .cb { width: 30px; }
+        .print-footer { margin-top: 30px; color: var(--gray); font-size: 0.8em; }
+
+        .status-toggle { cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .main { padding: 12px; }
+            .trip-grid { grid-template-columns: 1fr; }
+            .jersey-picker { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+        }
+    </style>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="logo-link">
+            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+            <span class="logo-text">FUTURE STARS</span>
+        </a>
+        <div class="user-info">
+            <span id="dark-mode-toggle"></span>
+            <span class="user-name" id="user-name"></span>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="page-title">📦 Pack Manager</div>
+        <div class="page-subtitle">Create trips, select jerseys to pack, print packing lists, and mark as shipped.</div>
+
+        <!-- Create Trip Form -->
+        <div class="form-card" id="create-section">
+            <h3>➕ New Trip</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Trip Name</label>
+                    <input type="text" id="trip-name" placeholder="e.g. Easter Classic">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="trip-date">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="trip-location" placeholder="City, State">
+                </div>
+                <div class="form-group">
+                    <label>Sport</label>
+                    <select id="trip-sport">
+                        <option value="baseball">Baseball</option>
+                        <option value="soccer">Soccer</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+            </div>
+            <label style="display:block;font-size:0.75em;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Select Jerseys to Pack</label>
+            <div class="jersey-picker" id="jersey-picker"></div>
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="createTrip()">Create Trip</button>
+                <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+            </div>
+        </div>
+
+        <!-- Trip List -->
+        <div class="trip-section">
+            <div class="section-header">
+                <h2>🚐 Trips</h2>
+                <span class="count" id="trip-count">0</span>
+            </div>
+            <div id="trip-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Auth
+        if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){
+            window.location.href = "signin.html";
+        }
+        document.getElementById('user-name').textContent = sessionStorage.getItem('fs_name') || '';
+
+        // Inventory Data (same as inventory-v2.html)
+        const INVENTORY = {
+            baseball: {
+                "Acuna Jr. Braves": {total: 184, sizes: {YS: 42, YM: 16, YL: 49, AS: 11, YXL: 66}},
+                "Alvarez Astros": {total: 36, sizes: {YL: 12, YXL: 11, YM: 5, AS: 2, YS: 6}},
+                "Betts Dodgers": {total: 226, sizes: {YXL: 37, AS: 60, YL: 78, YM: 51}},
+                "Crews Nationals": {total: 94, sizes: {YS: 11, YM: 12, YXL: 21, AS: 27, YL: 23}},
+                "Crow Cubs": {total: 104, sizes: {YS: 23, YM: 25, YXL: 33, YL: 19, AS: 4}},
+                "De LaCruz Reds": {total: 44, sizes: {YS: 10, YXL: 32, YL: 1, AS: 1}},
+                "Freeman Dodgers": {total: 14, sizes: {YS: 1, YM: 2, YXL: 7, AS: 4}},
+                "Guerrero JR": {total: 34, sizes: {YS: 3, YM: 7, YL: 7, YXL: 15, AS: 2}},
+                "Harper Phillies": {total: 114, sizes: {YS: 17, YM: 23, YXL: 42, AS: 3, YL: 29}},
+                "Henderson Oriols": {total: 54, sizes: {YS: 6, YM: 16, YXL: 12, AS: 6, YL: 14}},
+                "Judge Yankees": {total: 157, sizes: {YM: 13, YXL: 46, AS: 25, YL: 58, YS: 15}},
+                "Ohtani Dodgers": {total: 165, sizes: {YS: 28, YL: 35, YM: 31, AS: 35, YXL: 36}},
+                "Raleigh Mariners": {total: 50, sizes: {YS: 6, AS: 9, YXL: 21, YM: 6, YL: 8}},
+                "Skenes Pirates": {total: 194, sizes: {YS: 37, YXL: 42, YM: 31, YL: 64, AS: 20}},
+                "Soto Mets": {total: 169, sizes: {YS: 10, YM: 52, YL: 35, YXL: 48, AS: 24}},
+                "Tatis JR": {total: 174, sizes: {AS: 5, YL: 20, YS: 2, YXL: 128, YM: 19}},
+                "Trout Angels": {total: 82, sizes: {YS: 10, YM: 3, YL: 30, AS: 18, YXL: 21}},
+                "Turner Phillies": {total: 35, sizes: {YXL: 13, YL: 11, YS: 9, AS: 2}},
+                "Whit Royals": {total: 76, sizes: {YS: 2, YM: 12, YL: 14, YXL: 17, AS: 31}},
+            },
+            soccer: {
+                "Messi Pink": {total: 416, sizes: {20: 24, 22: 38, 24: 45, 26: 48, 28: 56, S: 35, M: 40, L: 42, XL: 38}},
+                "Messi Argentina": {total: 402, sizes: {20: 22, 22: 35, 24: 42, 26: 45, 28: 52, S: 32, M: 38, L: 40, XL: 36}},
+                "Messi Black": {total: 491, sizes: {20: 28, 22: 42, 24: 50, 26: 55, 28: 62, S: 40, M: 45, L: 48, XL: 42}},
+                "Ronaldo Blue": {total: 445, sizes: {20: 25, 22: 38, 24: 45, 26: 50, 28: 55, S: 36, M: 42, L: 45, XL: 40}},
+                "Ronaldo Red": {total: 348, sizes: {20: 20, 22: 30, 24: 35, 26: 40, 28: 42, S: 28, M: 32, L: 35, XL: 30}},
+                "Neymar Tribute": {total: 526, sizes: {20: 28, 22: 45, 24: 52, 26: 58, 28: 62, S: 40, M: 46, L: 50, XL: 44}},
+                "Yamal Flower": {total: 430, sizes: {20: 24, 22: 36, 24: 42, 26: 48, 28: 52, S: 34, M: 40, L: 44, XL: 38}},
+                "Yamal Barca": {total: 328, sizes: {20: 18, 22: 28, 24: 32, 26: 36, 28: 40, S: 26, M: 30, L: 32, XL: 28}},
+                "Mbappe France": {total: 74, sizes: {20: 5, 22: 8, 24: 10, 26: 10, 28: 12, S: 6, M: 8, L: 8, XL: 7}},
+            }
+        };
+
+        // Trips
+        let TRIPS = JSON.parse(localStorage.getItem('fs_trips_pack') || '[]');
+
+        function renderTrips() {
+            const container = document.getElementById('trip-list');
+            document.getElementById('trip-count').textContent = `${TRIPS.length} trip${TRIPS.length !== 1 ? 's' : ''}`;
+
+            if (TRIPS.length === 0) {
+                container.innerHTML = `<div class="empty-state">
+                    <span class="big-emoji">📦</span>
+                    <p>No trips yet</p>
+                    <p style="font-size:0.8em;color:var(--border);">Fill out the form above and create your first trip.</p>
+                </div>`;
+                return;
+            }
+
+            // Sort: ready first, then by date descending
+            const sorted = [...TRIPS].sort((a, b) => {
+                if (a.shipped !== b.shipped) return a.shipped ? 1 : -1;
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            container.innerHTML = sorted.map(trip => {
+                const itemsHtml = trip.items.map(i =>
+                    `<span class="trip-item-tag">${i.name} <span class="qty">×${i.qty}</span></span>`
+                ).join('');
+
+                return `<div class="trip-card ${trip.shipped ? 'shipped' : ''}">
+                    <div class="trip-card-header">
+                        <span class="trip-name">${trip.name}</span>
+                        <span class="trip-status ${trip.shipped ? 'shipped' : 'ready'}">${trip.shipped ? 'Shipped' : 'Ready'}</span>
+                    </div>
+                    <div class="trip-meta">
+                        <span>📅 ${trip.date}</span>
+                        <span>📍 ${trip.location || 'TBD'}</span>
+                        <span>⚽ ${trip.sport}</span>
+                    </div>
+                    <div class="trip-items">${itemsHtml}</div>
+                    <div class="trip-actions">
+                        <button class="btn-sm" onclick="printTrip('${trip.id}')">🖨️ Print</button>
+                        ${!trip.shipped ? `<button class="btn-sm green" onclick="markShipped('${trip.id}')">📦 Mark Shipped</button>` : ''}
+                        ${trip.shipped ? `<button class="btn-sm" onclick="markReady('${trip.id}')">↩️ Mark Ready</button>` : ''}
+                        <button class="btn-sm red" onclick="deleteTrip('${trip.id}')" style="margin-left:auto;">🗑️</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function saveTrips() {
+            localStorage.setItem('fs_trips_pack', JSON.stringify(TRIPS));
+            renderTrips();
+        }
+
+        function markShipped(id) {
+            const trip = TRIPS.find(t => t.id === id);
+            if (trip && confirm(`Mark "${trip.name}" as shipped?`)) {
+                trip.shipped = true;
+                saveTrips();
+            }
+        }
+
+        function markReady(id) {
+            const trip = TRIPS.find(t => t.id === id);
+            if (trip) {
+                trip.shipped = false;
+                saveTrips();
+            }
+        }
+
+        function deleteTrip(id) {
+            const trip = TRIPS.find(t => t.id === id);
+            if (trip && confirm(`Delete "${trip.name}"?`)) {
+                TRIPS = TRIPS.filter(t => t.id !== id);
+                saveTrips();
+            }
+        }
+
+        function printTrip(id) {
+            const trip = TRIPS.find(t => t.id === id);
+            if (!trip) return;
+            const w = window.open('', '_blank');
+            w.document.write(`
+                <html><head>
+                <title>Packing List - ${trip.name}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+                    h1 { color: #333; border-bottom: 3px solid #C9A227; padding-bottom: 10px; }
+                    .meta { color: #666; margin: 20px 0; line-height: 1.8; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th { background: #f0f0f0; text-align: left; padding: 12px; border-bottom: 2px solid #333; }
+                    td { padding: 12px; border-bottom: 1px solid #ddd; }
+                    .cb { width: 30px; }
+                    .footer { margin-top: 40px; color: #999; font-size: 0.9em; }
+                    @media print { .no-print { display: none; } }
+                </style>
+                </head><body>
+                <h1>📦 Packing List</h1>
+                <div class="meta">
+                    <strong>Trip:</strong> ${trip.name}<br>
+                    <strong>Date:</strong> ${trip.date}<br>
+                    <strong>Location:</strong> ${trip.location || 'TBD'}<br>
+                    <strong>Sport:</strong> ${trip.sport}<br>
+                    <strong>Status:</strong> ${trip.shipped ? '✅ SHIPPED' : '📦 Ready to Pack'}
+                </div>
+                <table>
+                    <tr><th class="cb">☐</th><th>Jersey</th><th>Qty</th><th>Size</th></tr>
+                    ${trip.items.map(i => `<tr><td class="cb">☐</td><td>${i.name}</td><td>${i.qty}</td><td>${i.size || 'Mixed'}</td></tr>`).join('')}
+                </table>
+                <div class="footer">
+                    <p>Future Stars Sports Co</p>
+                    <p>Printed: ${new Date().toLocaleDateString()}</p>
+                </div>
+                <button class="no-print" onclick="window.print()" style="margin-top:30px;padding:12px 24px;background:#C9A227;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">🖨️ Print</button>
+                </body></html>
+            `);
+            w.document.close();
+        }
+
+        // Jersey Picker
+        function renderJerseyPicker() {
+            const picker = document.getElementById('jersey-picker');
+            let html = '';
+            Object.entries(INVENTORY.baseball).forEach(([name]) => {
+                html += `<label class="picker-item"><input type="checkbox" value="${name}" data-sport="baseball">⚾ ${name}</label>`;
+            });
+            Object.entries(INVENTORY.soccer).forEach(([name]) => {
+                html += `<label class="picker-item"><input type="checkbox" value="${name}" data-sport="soccer">⚽ ${name}</label>`;
+            });
+            picker.innerHTML = html;
+        }
+
+        function createTrip() {
+            const name = document.getElementById('trip-name').value.trim();
+            const date = document.getElementById('trip-date').value;
+            const location = document.getElementById('trip-location').value.trim();
+            const sport = document.getElementById('trip-sport').value;
+
+            if (!name || !date) {
+                alert('Please fill in trip name and date');
+                return;
+            }
+            const checked = document.querySelectorAll('#jersey-picker input:checked');
+            if (checked.length === 0) {
+                alert('Select at least one jersey');
+                return;
+            }
+
+            const items = Array.from(checked).map(cb => ({
+                name: cb.value,
+                qty: 10,
+                size: 'Mixed'
+            }));
+
+            TRIPS.push({
+                id: Date.now().toString(),
+                name, date,
+                location: location || 'TBD',
+                sport, items,
+                shipped: false
+            });
+            saveTrips();
+            alert('✅ Trip created!');
+            clearForm();
+        }
+
+        function clearForm() {
+            document.getElementById('trip-name').value = '';
+            document.getElementById('trip-date').value = '';
+            document.getElementById('trip-location').value = '';
+            document.querySelectorAll('#jersey-picker input').forEach(cb => cb.checked = false);
+        }
+
+        // Init
+        renderJerseyPicker();
+        renderTrips();
+    </script>
+</body>
+</html>
