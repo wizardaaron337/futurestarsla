@@ -336,17 +336,26 @@
             const email = document.getElementById('c-email').value;
             const subject = document.getElementById('c-subject').value;
             const message = document.getElementById('c-message').value;
-            
-            // Store locally (in real app, send to server)
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Opening email...';
+            btn.disabled = true;
+
+            // Save to localStorage regardless
             const inquiries = JSON.parse(localStorage.getItem('fs_contact_inquiries') || '[]');
             inquiries.push({
-                id: Date.now(),
-                name, email, subject, message,
+                id: Date.now(), name, email, subject, message,
                 date: new Date().toISOString()
             });
             localStorage.setItem('fs_contact_inquiries', JSON.stringify(inquiries));
-            
-            // Show success
+
+            // Open email client with pre-filled message
+            const mailto = 'mailto:info@futurestarsla.com?subject=' + encodeURIComponent(subject || 'Contact Form Inquiry') + '&body=' + encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message);
+            window.open(mailto, '_blank');
+
+            // Reset form
+            btn.textContent = originalText;
+            btn.disabled = false;
             document.getElementById('contact-form').reset();
             document.getElementById('success-msg').classList.add('show');
             setTimeout(() => {
