@@ -46,10 +46,10 @@ const AUTH_CONFIG = {
 
     // Role-based page permissions
     roles: {
-        owner: ['tournaments', 'inventory-v2', 'trips', 'team', 'jersey-gallery', 'trip-planner', 'sortly-upload', 'tournament-scraper', 'pack-manager', 'privacy', 'contact'],
+        owner: ['tournaments', 'inventory-v2', 'trips', 'team', 'trip-planner', 'sortly-upload', 'tournament-scraper', 'pack-manager', 'privacy', 'contact'],
         logistics: ['tournaments', 'trips', 'trip-planner', 'team', 'tournament-scraper', 'pack-manager', 'privacy', 'contact', 'inventory-v2'],
-        tournament: ['tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'tournament-scraper', 'pack-manager', 'privacy', 'contact'],
-        inventory: ['inventory-v2', 'jersey-gallery', 'sortly-upload', 'packing-list', 'pack-manager', 'team', 'privacy', 'contact']
+        tournament: ['tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'tournament-scraper', 'pack-manager', 'privacy', 'contact'],
+        inventory: ['inventory-v2', 'sortly-upload', 'pack-manager', 'team', 'privacy', 'contact']
     },
 
     // Navigation items per role
@@ -59,7 +59,6 @@ const AUTH_CONFIG = {
         { page: 'inventory-v2', label: 'Inventory', icon: '📦', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trips', label: 'Trips', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'team', label: 'Team', icon: '👥', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-        { page: 'jersey-gallery', label: 'Jersey Gallery', icon: '👕', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trip-planner', label: 'Trip Planner', icon: '📝', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'tournament-scraper', label: 'Schedules', icon: '⏰', roles: ['owner', 'logistics', 'tournament'] },
 
