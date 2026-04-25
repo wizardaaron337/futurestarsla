@@ -9,31 +9,31 @@ const AUTH_CONFIG = {
         'jr': { 
             name: 'JR', 
             role: 'owner', 
-            pin: 'jr26',
+            pin: '1959',
             emoji: '👑'
         },
         'lane': { 
             name: 'Lane', 
             role: 'owner', 
-            pin: 'lane26',
+            pin: '1959',
             emoji: '👑'
         },
         'pj': { 
             name: 'PJ', 
             role: 'logistics', 
-            pin: 'pj26',
+            pin: '1959',
             emoji: '🚐'
         },
         'caleb': { 
             name: 'Caleb', 
             role: 'tournament', 
-            pin: 'caleb26',
+            pin: '1959',
             emoji: '📞'
         },
         'marlon': { 
             name: 'Marlon', 
             role: 'inventory', 
-            pin: 'marlon26',
+            pin: '1959',
             emoji: '📦'
         }
     },
