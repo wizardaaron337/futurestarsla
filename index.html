@@ -495,15 +495,14 @@
                                     <button class="expand-btn" onclick="toggleTripDetails('${did}')" style="background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--gray);cursor:pointer;padding:4px 10px;font-size:0.75em;">▼ Details</button>
                                 </div>
                                 <div id="${did}" class="trip-details" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
-                                    <div class="meta">
-                                        ${dates}<br>
-                                        ${t.state ? '📍 ' + t.state : ''}
-                                        ${t.state && t.crew ? ' · ' : ''}${t.crew ? '👥 Crew: ' + t.crew : ''}<br>
-                                        POC: <strong>${p}</strong>
-                                        ${t.leaveDate ? '<br>📅 Leave: ' + t.leaveDate : ''}
-                                        ${t.leaveTime ? ' @ ' + t.leaveTime : ''}
-                                        ${t.rentalReturn ? '<br>🔄 Rental Return: ' + t.rentalReturn : ''}
-                                        ${t.pexCard ? '<br>💳 PEX Card: ' + t.pexCard : ''}
+                                    <div class="meta" style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+                                        <span style="color:var(--gray-dark);">Dates</span><span>${dates || 'TBD'}</span>
+                                        ${t.state ? '<span style="color:var(--gray-dark);">Location</span><span>' + t.state + '</span>' : ''}
+                                        <span style="color:var(--gray-dark);">POC</span><span><strong>${p}</strong></span>
+                                        ${t.crew ? '<span style="color:var(--gray-dark);">Crew</span><span>' + t.crew + '</span>' : ''}
+                                        ${t.leaveDate ? '<span style="color:var(--gray-dark);">Leave</span><span>' + t.leaveDate + (t.leaveTime ? ' @ ' + t.leaveTime : '') + '</span>' : ''}
+                                        ${t.rentalReturn ? '<span style="color:var(--gray-dark);">Rental Return</span><span>' + t.rentalReturn + '</span>' : ''}
+                                        ${t.pexCard ? '<span style="color:var(--gray-dark);">💳 PEX Card</span><span style="font-weight:600;color:var(--amber);">' + t.pexCard + '</span>' : ''}
                                     </div>
                                 </div>
                             </div>
