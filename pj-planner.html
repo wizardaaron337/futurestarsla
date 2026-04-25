@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777150777-81496552";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1287,7 +1287,8 @@ function printTripSummary(tripId){
   const total= (night*(trip.hotelNights||1)) + (car*(trip.carDays||1)) + (trip.budget||0);
   const checkStr = (trip.checklist||[]).map(c=>`${c.done?'✓':'☐'} ${c.text}`).join('\n');
   const printWin = window.open('','_blank','width=800,height=600');
-  printWin.document.write(`<!DOCTYPE html><html><head><title>${trip.name} — Trip Summary</title>
+  printWin.document.write(`<!DOCTYPE html><html><head>
+<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script><title>${trip.name} — Trip Summary</title>
     <style>body{font-family:system-ui,sans-serif;padding:40px;max-width:700px;margin:0 auto;}
     h1{font-size:1.5em;margin-bottom:4px;}
     .meta{color:#666;margin-bottom:20px;}
