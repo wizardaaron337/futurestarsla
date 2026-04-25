@@ -517,13 +517,6 @@
                 `;
             }
 
-            function toggleTripDetails(id) {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.style.display = el.style.display === 'none' ? 'block' : 'none';
-                }
-            }
-
             // Count badges
             const allCounts = all.length;
             const upCount = upcoming.length;
@@ -567,6 +560,13 @@
                 <div style="height:20px"></div>
                 ${tripSection('✅ Completed', '✅ complete', completed, () => '<span class="badge locked">Returned</span>')}
             `;
+        }
+
+        function toggleTripDetails(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = el.style.display === 'none' ? 'block' : 'none';
+            }
         }
 
         function signOut() {
