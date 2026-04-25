@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777092101-e19c137c";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777092408-522b856e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -218,7 +218,7 @@
                 sessionStorage.setItem('fs_role', user.role);
                 sessionStorage.setItem('fs_name', user.name);
                 sessionStorage.setItem('fs_pin_verified', 'true');
-                setTimeout(() => window.location.href = 'index.html', 500);
+                setTimeout(() => window.location.href = 'index.html' + (location.hostname.includes('pages.dev') ? '?r=' + Date.now() : ''), 500);
             } else {
                 msg.className = 'msg error';
                 msg.textContent = 'Wrong password';

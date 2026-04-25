@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777092101-e19c137c";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777092408-522b856e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -293,7 +293,7 @@
                     <h1>FUTURE STARS</h1>
                     <div class="subtitle">Sports Co</div>
                     <p>Championship sports merchandise. Tournament operations. Inventory management.</p>
-                    <a href="signin.html" class="btn-signin">Sign In</a>
+                    <a href="signin" class="btn-signin">Sign In</a>
                 </div>
             `;
         } else {
@@ -440,7 +440,7 @@
 
         function signOut() {
             sessionStorage.clear();
-            window.location.href = 'index.html';
+            window.location.href = 'index.html' + (location.hostname.includes('pages.dev') ? '?r=' + Date.now() : '');
         }
 
         // Run home render when data is loaded

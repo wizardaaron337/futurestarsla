@@ -52,7 +52,8 @@
         return getNavItems().map(item => {
             if (item.divider) return '<div class="fs-menu-divider"></div>';
             const isActive = item.page === currentPage ? 'active' : '';
-            const href = item.page === 'index' ? 'signin.html' : item.page + '.html';
+            const suffix = location.hostname.includes('pages.dev') ? '' : '.html';
+            const href = item.page === 'index' ? 'signin.html' : item.page + suffix;
             return `<a href="${href}" class="fs-menu-item ${isActive}">
                 <span class="fs-menu-icon">${item.icon}</span>
                 <span>${item.label}</span>
@@ -324,7 +325,7 @@
     // Logout function
     window.fsLogout = function() {
         sessionStorage.clear();
-        window.location.href = 'signin.html';
+        window.location.href = location.hostname.includes('pages.dev') ? '/signin' : 'signin.html';
     };
 
     // Close on Escape
