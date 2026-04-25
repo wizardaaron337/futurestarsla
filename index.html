@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- build: 1777089331-29d44acf -->
+<!-- build: 1777089406-0bc51204 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Stars Sports Co</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="auth-config.js?v=1777089331"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -36,7 +37,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 50vh;
+            min-height: 40vh;
             text-align: center;
             padding: 40px 20px;
             background: 
@@ -44,43 +45,53 @@
                 radial-gradient(circle at 70% 30%, rgba(201,162,39,0.03) 0%, transparent 50%);
         }
         .logo-img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--gold);
             box-shadow: 0 0 40px rgba(201,162,39,0.3);
-            margin-bottom: 24px;
-            animation: pulse-logo 3s ease-in-out infinite;
-        }
-        @keyframes pulse-logo {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(201,162,39,0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(201,162,39,0.5); }
+            margin-bottom: 20px;
         }
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-size: 2.5em;
+            font-size: 2em;
             color: var(--gold);
             letter-spacing: 4px;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
         .hero .subtitle {
             font-family: 'Cinzel', serif;
-            font-size: 1em;
+            font-size: 0.9em;
             color: var(--gray);
             letter-spacing: 6px;
             text-transform: uppercase;
-            margin-bottom: 32px;
+            margin-bottom: 20px;
         }
         .hero-tagline {
             color: var(--gray);
-            font-size: 1.1em;
+            font-size: 1em;
             max-width: 500px;
             line-height: 1.6;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
+        }
+        .hero .welcome-name {
+            color: var(--gold-light);
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .hero .sign-out-link {
+            color: var(--gray-dark);
+            font-size: 0.8em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .hero .sign-out-link:hover {
+            color: var(--red, #EF5350);
         }
 
-        /* Quick Actions */
+        /* Quick Actions (not logged in) */
         .actions {
             display: flex;
             gap: 16px;
@@ -130,146 +141,169 @@
             transform: translateY(-2px);
         }
 
-        /* Quick Links Grid */
-        .quick-links {
-            max-width: 1200px;
+        /* Tool Grid (logged in) */
+        .tool-grid-section {
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 0 20px 40px;
         }
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.2em;
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 24px;
-            letter-spacing: 2px;
-        }
-        .link-grid {
+        .tool-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
         }
-        .link-card {
+        .tool-card {
             background: var(--black-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             text-decoration: none;
             color: var(--white);
             transition: all 0.3s;
             display: flex;
             align-items: flex-start;
-            gap: 16px;
+            gap: 14px;
         }
-        .link-card:hover {
+        .tool-card:hover {
             border-color: var(--gold-dark);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(201,162,39,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(201,162,39,0.08);
         }
-        .link-icon {
-            width: 48px;
-            height: 48px;
+        .tool-icon {
+            width: 44px;
+            height: 44px;
             background: linear-gradient(135deg, rgba(201,162,39,0.1), transparent);
             border: 1px solid rgba(201,162,39,0.2);
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
+            font-size: 1.3em;
             flex-shrink: 0;
         }
-        .link-body h3 {
+        .tool-body h3 {
             font-family: 'Cinzel', serif;
-            font-size: 0.95em;
+            font-size: 0.9em;
             color: var(--gold);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
-        .link-body p {
+        .tool-body p {
             color: var(--gray);
-            font-size: 0.85em;
-            line-height: 1.5;
+            font-size: 0.8em;
+            line-height: 1.4;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+            color: var(--gray);
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
         }
 
         /* Footer */
         .footer {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
             color: var(--gray-dark);
-            font-size: 0.85em;
+            font-size: 0.8em;
             border-top: 1px solid var(--border);
         }
 
         @media (max-width: 600px) {
-            .hero h1 { font-size: 1.8em; }
-            .hero .subtitle { font-size: 0.8em; letter-spacing: 3px; }
+            .hero { min-height: 30vh; padding: 30px 16px; }
+            .hero h1 { font-size: 1.5em; }
+            .hero .subtitle { font-size: 0.7em; letter-spacing: 3px; }
             .actions { flex-direction: column; width: 100%; padding: 0 20px; }
             .btn-primary, .btn-secondary { width: 100%; text-align: center; }
-            .link-grid { grid-template-columns: 1fr; }
+            .tool-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-        <h1>FUTURE STARS</h1>
-        <div class="subtitle">Sports Co</div>
-        <p class="hero-tagline">Championship sports merchandise. Tournament operations. Inventory management.</p>
-        <div class="actions">
-            <a href="signin.html" class="btn-primary">Sign In</a>
-            <a href="inventory-v2.html" class="btn-secondary">Inventory</a>
-        </div>
-    </div>
+    <div id="app-root"></div>
 
-    <div class="quick-links">
-        <div class="section-title">Tools</div>
-        <div class="link-grid">
-            <a href="tournaments.html" class="link-card">
-                <div class="link-icon">🏆</div>
-                <div class="link-body">
-                    <h3>Tournaments</h3>
-                    <p>Browse tournament schedule and details</p>
-                </div>
-            </a>
-            <a href="trips.html" class="link-card">
-                <div class="link-icon">🚐</div>
-                <div class="link-body">
-                    <h3>Trips</h3>
-                    <p>Trip schedule with finances and crew assignments</p>
-                </div>
-            </a>
-            <a href="trip-tracker.html" class="link-card">
-                <div class="link-icon">📋</div>
-                <div class="link-body">
-                    <h3>Trip Tracker</h3>
-                    <p>Pack jerseys, check in returns, track trip items</p>
-                </div>
-            </a>
-            <a href="trip-planner.html" class="link-card">
-                <div class="link-icon">📝</div>
-                <div class="link-body">
-                    <h3>Trip Planner</h3>
-                    <p>Find hotels and rental cars for upcoming trips</p>
-                </div>
-            </a>
-            <a href="team.html" class="link-card">
-                <div class="link-icon">👥</div>
-                <div class="link-body">
-                    <h3>Team</h3>
-                    <p>Crew directory and contact info</p>
-                </div>
-            </a>
-            <a href="contact.html" class="link-card">
-                <div class="link-icon">📧</div>
-                <div class="link-body">
-                    <h3>Contact</h3>
-                    <p>Get in touch with the team</p>
-                </div>
-            </a>
-        </div>
-    </div>
+    <script>
+        const AUTH_USER = sessionStorage.getItem('fs_auth');
+        const AUTH_NAME = sessionStorage.getItem('fs_name');
+        const AUTH_ROLE = sessionStorage.getItem('fs_role');
+        const AUTH_VERIFIED = sessionStorage.getItem('fs_pin_verified') === 'true';
+        const isLoggedIn = AUTH_USER && AUTH_VERIFIED;
 
-    <div class="footer">
-        Future Stars Sports Co &copy; 2026
-    </div>
+        const ALL_TOOLS = [
+            { page: 'tournaments', label: 'Tournaments', icon: '🏆', desc: 'Tournament schedule and crew operations' },
+            { page: 'inventory-v2', label: 'Inventory', icon: '📦', desc: 'Stock levels, pack trips, shipments' },
+            { page: 'trips', label: 'Trips', icon: '🚐', desc: 'Trip schedule with finances and crew assignments' },
+            { page: 'trip-tracker', label: 'Trip Tracker', icon: '📋', desc: 'Pack jerseys, check in returns, track items' },
+            { page: 'trip-planner', label: 'Trip Planner', icon: '📝', desc: 'Find hotels and rental cars for trips' },
+            { page: 'team', label: 'Team', icon: '👥', desc: 'Crew directory and contact info' },
+            { page: 'jersey-gallery', label: 'Jersey Gallery', icon: '👕', desc: 'Browse jersey designs and inventory' },
+            { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', desc: 'Upload inventory exports to Sortly' },
+            { page: 'privacy', label: 'Privacy', icon: '🔒', desc: 'Privacy policy and data practices' },
+            { page: 'contact', label: 'Contact', icon: '📧', desc: 'Get in touch with the team' }
+        ];
+
+        const ROLE_TOOLS = {
+            owner: ['tournaments', 'inventory-v2', 'trips', 'trip-tracker', 'trip-planner', 'team', 'jersey-gallery', 'sortly-upload', 'privacy', 'contact'],
+            logistics: ['tournaments', 'trips', 'trip-planner', 'team', 'privacy', 'contact', 'inventory-v2'],
+            tournament: ['tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'jersey-gallery', 'privacy', 'contact'],
+            inventory: ['inventory-v2', 'jersey-gallery', 'sortly-upload', 'team', 'privacy', 'contact']
+        };
+
+        function getToolsForRole(role) {
+            const allowed = ROLE_TOOLS[role] || ROLE_TOOLS.inventory;
+            return ALL_TOOLS.filter(t => allowed.includes(t.page));
+        }
+
+        function renderLoggedIn() {
+            const tools = getToolsForRole(AUTH_ROLE);
+            const toolCards = tools.map(t => `
+                <a href="${t.page}.html" class="tool-card">
+                    <div class="tool-icon">${t.icon}</div>
+                    <div class="tool-body">
+                        <h3>${t.label}</h3>
+                        <p>${t.desc}</p>
+                    </div>
+                </a>
+            `).join('');
+
+            return `
+                <div class="hero" style="min-height:20vh;padding-bottom:20px">
+                    <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+                    <h1>FUTURE STARS</h1>
+                    <div class="subtitle">Sports Co</div>
+                    <div class="welcome-name">Welcome, ${AUTH_NAME || AUTH_USER}</div>
+                    <a class="sign-out-link" onclick="signOut()">Sign Out</a>
+                </div>
+                <div class="tool-grid-section">
+                    <div class="tool-grid">${toolCards}</div>
+                </div>
+                <div class="footer">Future Stars Sports Co &copy; 2026</div>
+            `;
+        }
+
+        function renderNotLoggedIn() {
+            return `
+                <div class="hero">
+                    <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
+                    <h1>FUTURE STARS</h1>
+                    <div class="subtitle">Sports Co</div>
+                    <p class="hero-tagline">Championship sports merchandise. Tournament operations. Inventory management.</p>
+                    <div class="actions">
+                        <a href="index.html" class="btn-primary">Sign In</a>
+                    </div>
+                </div>
+                <div class="footer">Future Stars Sports Co &copy; 2026</div>
+            `;
+        }
+
+        window.signOut = function() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        };
+
+        document.getElementById('app-root').innerHTML = isLoggedIn ? renderLoggedIn() : renderNotLoggedIn();
+    </script>
 </body>
 </html>
