@@ -143,6 +143,32 @@
         .prompt-input:focus { border-color: var(--gold); }
         .prompt-input::placeholder { color: var(--gray-dark); }
 
+        /* Link styles for hotel/rental names and addresses */
+        .option-name-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 1.05em;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            transition: all 0.2s;
+        }
+        .option-name-link:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+        .option-detail-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .option-detail-link:hover {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+
         .examples {
             display: flex;
             gap: 10px;
@@ -695,11 +721,21 @@
             return '<span class="option-logo-fallback">🏨</span>';
         }
 
+        function getGoogleMapsLink(address) {
+            return `https://www.google.com/maps/search/${encodeURIComponent(address)}`;
+        }
+
+        function getGoogleSearchLink(brand, city) {
+            return `https://www.google.com/search?q=${encodeURIComponent(brand + ' ' + city)}`;
+        }
+
         function renderOptionCard(option, type, idx) {
             const isSelected = type === 'hotel' ? selectedHotel === idx : selectedCar === idx;
             const btnText = isSelected ? 'SELECTED' : 'SELECT';
             const onClick = type === 'hotel' ? `selectHotel(${idx})` : `selectCar(${idx})`;
             const bookUrl = getBookingUrl(option.name, currentCity);
+            const mapsUrl = getGoogleMapsLink(option.address);
+            const googleUrl = getGoogleSearchLink(option.name, currentCity);
             const icon = type === 'hotel' ? '🏨' : '🚗';
 
             return `
@@ -707,7 +743,7 @@
                     <div class="option-top">
                         <div class="option-logo">${renderLogo(option.name)}</div>
                         <div class="option-header-text">
-                            <div class="option-name">${option.name}</div>
+                            <a href="${googleUrl}" class="option-name-link" target="_blank" onclick="event.stopPropagation();">${option.name} ↗</a>
                             <span class="option-badge badge-${option.badge}">${option.badgeLabel}</span>
                         </div>
                     </div>
@@ -716,7 +752,7 @@
                         <span class="rating-text">${option.rating} (${option.reviews.toLocaleString()} reviews)</span>
                     </div>
                     <div class="option-price">$${option.price} <span>/night</span></div>
-                    <div class="option-detail">📍 ${option.address}</div>
+                    <a href="${mapsUrl}" class="option-detail-link" target="_blank" onclick="event.stopPropagation();">📍 ${option.address} ↗</a>
                     <div class="option-detail">${type === 'hotel' ? '📏 ' + option.distance : '🚗 ' + option.vehicle}</div>
                     <div class="option-amenities">
                         ${option.amenities.slice(0, 4).map(a => `<span class="amenity-tag">${a}</span>`).join('')}
@@ -787,13 +823,17 @@
         function updateSummary() {
             if (selectedHotel !== null) {
                 const h = hotelResults[selectedHotel];
-                document.getElementById('sum-hotel-name').textContent = h.name;
-                document.getElementById('sum-hotel-price').textContent = `$${h.price}/night`;
+                const bookUrl = getBookingUrl(h.name, currentCity);
+                const mapsUrl = getGoogleMapsLink(h.address);
+                document.getElementById('sum-hotel-name').innerHTML = `<a href="${bookUrl}" target="_blank" style="color:var(--gold);text-decoration:none;">${h.name} ↗</a>`;
+                document.getElementById('sum-hotel-price').innerHTML = `$${h.price}/night<br><small><a href="${mapsUrl}" target="_blank" style="color:var(--gray);text-decoration:underline;">📍 View on map ↗</a></small>`;
             }
             if (selectedCar !== null) {
                 const c = carResults[selectedCar];
-                document.getElementById('sum-car-name').textContent = c.name;
-                document.getElementById('sum-car-price').textContent = `$${c.price}/day`;
+                const bookUrl = getBookingUrl(c.name, currentCity);
+                const mapsUrl = getGoogleMapsLink(c.address);
+                document.getElementById('sum-car-name').innerHTML = `<a href="${bookUrl}" target="_blank" style="color:var(--gold);text-decoration:none;">${c.name} ↗</a>`;
+                document.getElementById('sum-car-price').innerHTML = `$${c.price}/day<br><small><a href="${mapsUrl}" target="_blank" style="color:var(--gray);text-decoration:underline;">📍 View on map ↗</a></small>`;
             }
             let total = 0;
             if (selectedHotel !== null) total += hotelResults[selectedHotel].price * 2;
