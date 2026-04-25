@@ -4,12 +4,20 @@
  */
 
 (function() {
+    // Restore auth from localStorage to sessionStorage (survives build ID page reload)
+    if (!sessionStorage.getItem('fs_auth') && localStorage.getItem('fs_auth')) {
+        sessionStorage.setItem('fs_auth', localStorage.getItem('fs_auth'));
+        sessionStorage.setItem('fs_role', localStorage.getItem('fs_role'));
+        sessionStorage.setItem('fs_name', localStorage.getItem('fs_name'));
+    }
+
     // Only show nav for authenticated users
-    const isAuth = !!sessionStorage.getItem('fs_auth');
+    const isAuth = !!sessionStorage.getItem('fs_auth') || !!localStorage.getItem('fs_auth');
     if (!isAuth) return;
 
-    const userRole = sessionStorage.getItem('fs_role') || 'owner';
-    const userName = sessionStorage.getItem('fs_name') || 'User';
+    // Use sessionStorage (now restored) or fallback
+    const userRole = sessionStorage.getItem('fs_role') || localStorage.getItem('fs_role') || 'owner';
+    const userName = sessionStorage.getItem('fs_name') || localStorage.getItem('fs_name') || 'User';
     const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
     // Use AUTH_CONFIG if available, otherwise fallback
@@ -324,7 +332,12 @@
 
     // Logout function
     window.fsLogout = function() {
-        sessionStorage.clear();
+        sessionStorage.removeItem('fs_auth');
+        sessionStorage.removeItem('fs_role');
+        sessionStorage.removeItem('fs_name');
+        localStorage.removeItem('fs_auth');
+        localStorage.removeItem('fs_role');
+        localStorage.removeItem('fs_name');
         window.location.href = location.hostname.includes('pages.dev') ? '/signin' : 'signin.html';
     };
 

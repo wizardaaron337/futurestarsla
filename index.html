@@ -279,11 +279,13 @@
     <div id="app-root"></div>
 
     <script>
-        const AUTH_USER = sessionStorage.getItem('fs_auth');
-        const AUTH_NAME = sessionStorage.getItem('fs_name');
-        const AUTH_ROLE = sessionStorage.getItem('fs_role');
-        const AUTH_VERIFIED = !!sessionStorage.getItem('fs_auth');
-        const isLoggedIn = AUTH_USER && AUTH_VERIFIED;
+        function getAuth(key) {
+            return sessionStorage.getItem(key) || localStorage.getItem(key);
+        }
+        const AUTH_USER = getAuth('fs_auth');
+        const AUTH_NAME = getAuth('fs_name');
+        const AUTH_ROLE = getAuth('fs_role');
+        const isLoggedIn = !!AUTH_USER;
 
         if (!isLoggedIn) {
             // Show landing page
@@ -439,7 +441,12 @@
         }
 
         function signOut() {
-            sessionStorage.clear();
+            sessionStorage.removeItem('fs_auth');
+            sessionStorage.removeItem('fs_role');
+            sessionStorage.removeItem('fs_name');
+            localStorage.removeItem('fs_auth');
+            localStorage.removeItem('fs_role');
+            localStorage.removeItem('fs_name');
             window.location.href = 'index.html' + (location.hostname.includes('pages.dev') ? '?r=' + Date.now() : '');
         }
 
