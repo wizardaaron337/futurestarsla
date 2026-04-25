@@ -752,7 +752,7 @@
 
     <script>
         // Auth check
-        if(!sessionStorage.getItem("fs_auth") || sessionStorage.getItem("fs_pin_verified") !== "true"){
+        if(!sessionStorage.getItem("fs_auth") ){
             window.location.href = "signin.html";
         }
         document.getElementById('user-name').textContent = sessionStorage.getItem('fs_name') || '';

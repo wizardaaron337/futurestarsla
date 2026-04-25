@@ -1,45 +1,45 @@
 /**
  * Future Stars LA - Authentication Configuration
- * Edit this file to change PINs, roles, and access permissions
+ * Edit this file to change passwords, roles, and access permissions
  */
 
 const AUTH_CONFIG = {
-    // PIN codes for each user (change these as needed)
+    // Username + password login (change these as needed)
     users: {
         'jr': { 
             name: 'JR', 
             role: 'owner', 
-            pin: '1959',
+            password: 'jr26',
             emoji: '👑'
         },
         'lane': { 
             name: 'Lane', 
             role: 'owner', 
-            pin: '1959',
+            password: 'lane26',
             emoji: '👑'
         },
         'pj': { 
             name: 'PJ', 
             role: 'logistics', 
-            pin: '1959',
+            password: 'pj26',
             emoji: '🚐'
         },
         'caleb': { 
             name: 'Caleb', 
             role: 'tournament', 
-            pin: '1959',
+            password: 'caleb26',
             emoji: '📞'
         },
         'marlon': { 
             name: 'Marlon', 
             role: 'inventory', 
-            pin: '1959',
+            password: 'marlon26',
             emoji: '📦'
         },
         'backend': { 
             name: 'Backend', 
             role: 'inventory', 
-            pin: '1959',
+            password: 'backend26',
             emoji: '⚙️'
         }
     },
@@ -70,11 +70,11 @@ const AUTH_CONFIG = {
         { page: 'contact', label: 'Contact', icon: '📧', roles: ['owner', 'logistics', 'tournament', 'inventory'] }
     ],
 
-    // Helper function to verify PIN
-    verifyPin: function(username, pin) {
+    // Helper function to verify password
+    verifyPassword: function(username, password) {
         const user = this.users[username];
         if (!user) return false;
-        return user.pin === pin;
+        return user.password === password;
     },
 
     // Helper function to get user data

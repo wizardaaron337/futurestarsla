@@ -5,7 +5,7 @@
 
 (function() {
     // Only show nav for authenticated users
-    const isAuth = sessionStorage.getItem('fs_auth') && sessionStorage.getItem('fs_pin_verified') === 'true';
+    const isAuth = !!sessionStorage.getItem('fs_auth');
     if (!isAuth) return;
 
     const userRole = sessionStorage.getItem('fs_role') || 'owner';

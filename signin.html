@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
 <script>var _buildId="1777125254-e7ead898";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
-
-<!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -134,19 +132,6 @@
         .msg.error { color: var(--red); }
         .msg.success { color: var(--green); }
 
-        .hint {
-            margin-top: 20px;
-            padding: 12px;
-            background: rgba(201,162,39,0.05);
-            border: 1px solid rgba(201,162,39,0.15);
-            border-radius: 8px;
-            font-size: 0.8em;
-            color: var(--gray);
-        }
-        .hint strong {
-            color: var(--gold);
-        }
-
         @media (max-width: 480px) {
             .box { padding: 30px 20px; }
         }
@@ -211,13 +196,12 @@
                 return;
             }
 
-            if (AUTH_CONFIG.verifyPin(username, password)) {
+            if (AUTH_CONFIG.verifyPassword(username, password)) {
                 msg.className = 'msg success';
                 msg.textContent = 'Welcome, ' + user.name + '!';
                 sessionStorage.setItem('fs_auth', username);
                 sessionStorage.setItem('fs_role', user.role);
                 sessionStorage.setItem('fs_name', user.name);
-                sessionStorage.setItem('fs_pin_verified', 'true');
                 setTimeout(() => window.location.href = 'index.html' + (location.hostname.includes('pages.dev') ? '?r=' + Date.now() : ''), 500);
             } else {
                 msg.className = 'msg error';

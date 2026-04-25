@@ -282,7 +282,7 @@
         const AUTH_USER = sessionStorage.getItem('fs_auth');
         const AUTH_NAME = sessionStorage.getItem('fs_name');
         const AUTH_ROLE = sessionStorage.getItem('fs_role');
-        const AUTH_VERIFIED = sessionStorage.getItem('fs_pin_verified') === 'true';
+        const AUTH_VERIFIED = !!sessionStorage.getItem('fs_auth');
         const isLoggedIn = AUTH_USER && AUTH_VERIFIED;
 
         if (!isLoggedIn) {
