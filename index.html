@@ -479,22 +479,34 @@
                         <div class="empty-state">All clear! Nothing here.</div>
                     `;
                 }
-                const cards = trips.map(t => {
+                const cards = trips.map((t, idx) => {
                     const badge = badgeFn ? badgeFn(t) : '';
                     const p = POC(t);
+                    const did = 'td-' + Date.now() + '-' + idx;
+                    const sportIcon = t.sport === 'Baseball' ? '⚾' : t.sport === 'Soccer' ? '⚽' : '🏀';
+                    const dates = formatDate(parseOrdinal(t.startDate), parseOrdinal(t.endDate), t.month);
                     return `
                         <div class="trip-card">
-                            <div class="icon ${icon.includes('upcoming')?'upcoming':icon.includes('pack')?'pack':'out'}">${icon.includes('upcoming')?'📅':icon.includes('pack')?'📦':'🚐'}</div>
+                            <div class="icon ${icon.includes('upcoming')?'upcoming':icon.includes('pack')?'pack':'out'}" style="cursor:pointer;" onclick="toggleTripDetails('${did}')">${icon.includes('upcoming')?'📅':icon.includes('pack')?'📦':'🚐'}</div>
                             <div class="info">
-                                <h4>${t.name || 'Unknown'}</h4>
-                                <div class="meta">
-                                    ${t.sport ? t.sport + ' · ' : ''}${formatDate(parseOrdinal(t.startDate), parseOrdinal(t.endDate), t.month)}
-                                    ${t.state ? ' · ' + t.state : ''}
-                                    <br>POC: <strong>${p}</strong>
-                                    ${t.crew ? ' · Crew: ' + t.crew : ''}
+                                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                                    <h4 style="flex:1;margin:0;">${sportIcon} ${t.name || 'Unknown'}</h4>
+                                    ${badge}
+                                    <button class="expand-btn" onclick="toggleTripDetails('${did}')" style="background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--gray);cursor:pointer;padding:4px 10px;font-size:0.75em;">▼ Details</button>
+                                </div>
+                                <div id="${did}" class="trip-details" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+                                    <div class="meta">
+                                        ${dates}<br>
+                                        ${t.state ? '📍 ' + t.state : ''}
+                                        ${t.state && t.crew ? ' · ' : ''}${t.crew ? '👥 Crew: ' + t.crew : ''}<br>
+                                        POC: <strong>${p}</strong>
+                                        ${t.leaveDate ? '<br>📅 Leave: ' + t.leaveDate : ''}
+                                        ${t.leaveTime ? ' @ ' + t.leaveTime : ''}
+                                        ${t.rentalReturn ? '<br>🔄 Rental Return: ' + t.rentalReturn : ''}
+                                        ${t.pexCard ? '<br>💳 PEX Card: ' + t.pexCard : ''}
+                                    </div>
                                 </div>
                             </div>
-                            ${badge}
                         </div>
                     `;
                 }).join('');
@@ -503,6 +515,13 @@
                     <h3 class="section-title">${icon} ${title} <span class="count">(${trips.length})</span></h3>
                     ${cards}
                 `;
+            }
+
+            function toggleTripDetails(id) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+                }
             }
 
             // Count badges
