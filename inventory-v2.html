@@ -336,6 +336,128 @@
             font-weight: 600;
         }
 
+        /* Trip Table Styles */
+        .trip-table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--black-card);
+        }
+        .trip-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        .trip-table thead {
+            background: var(--black-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .trip-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+        .trip-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--white);
+            vertical-align: middle;
+        }
+        .trip-table tbody tr {
+            transition: all 0.2s;
+        }
+        .trip-table tbody tr:hover {
+            background: rgba(201,162,39,0.05);
+        }
+        .trip-table tbody tr.shipped-row {
+            opacity: 0.6;
+            background: rgba(239,83,80,0.03);
+        }
+        .trip-table tbody tr.shipped-row:hover {
+            opacity: 0.8;
+            background: rgba(239,83,80,0.06);
+        }
+        .trip-name-cell {
+            font-weight: 600;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+        .items-cell {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--gray);
+            font-size: 0.85em;
+        }
+        .sport-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        .sport-badge.baseball {
+            background: rgba(100,181,246,0.15);
+            color: #64B5F6;
+            border: 1px solid rgba(100,181,246,0.3);
+        }
+        .sport-badge.soccer {
+            background: rgba(76,175,80,0.15);
+            color: #4CAF50;
+            border: 1px solid rgba(76,175,80,0.3);
+        }
+        .sport-badge.both {
+            background: rgba(201,162,39,0.15);
+            color: var(--gold);
+            border: 1px solid rgba(201,162,39,0.3);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .status-badge.ready {
+            background: rgba(76,175,80,0.15);
+            color: #4CAF50;
+            border: 1px solid rgba(76,175,80,0.3);
+        }
+        .status-badge.shipped {
+            background: rgba(239,83,80,0.15);
+            color: #EF5350;
+            border: 1px solid rgba(239,83,80,0.3);
+        }
+        .btn-icon {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+            margin-right: 4px;
+        }
+        .btn-icon:hover {
+            background: rgba(201,162,39,0.1);
+            border-color: var(--gold);
+        }
+        .btn-icon.ship-btn:hover {
+            background: rgba(76,175,80,0.1);
+            border-color: #4CAF50;
+        }
+
         /* Print Styles */
         @media print {
             body { background: white; color: black; }
@@ -529,7 +651,22 @@
                 <button class="trip-filter" onclick="filterTrips('ready')">Ready to Pack</button>
                 <button class="trip-filter" onclick="filterTrips('shipped')">Shipped</button>
             </div>
-            <div class="trip-grid" id="trip-grid"></div>
+            <div class="trip-table-container" id="trip-table-container">
+                <table class="trip-table" id="trip-table">
+                    <thead>
+                        <tr>
+                            <th>Trip Name</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Sport</th>
+                            <th>Items</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trip-table-body"></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Pack Trip Tab -->
@@ -683,36 +820,104 @@
 
         // Render Trips
         function renderTrips(filter = 'all') {
-            const grid = document.getElementById('trip-grid');
+            const tbody = document.getElementById('trip-table-body');
             let trips = TRIPS;
             if (filter === 'ready') trips = trips.filter(t => !t.shipped);
             if (filter === 'shipped') trips = trips.filter(t => t.shipped);
 
             if (trips.length === 0) {
-                grid.innerHTML = '<p style="color:var(--gray);text-align:center;padding:40px;">No trips yet. Create one in the Pack Trip tab.</p>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray);">No trips yet. Create one in the Pack Trip tab.</td></tr>';
                 return;
             }
 
-            grid.innerHTML = trips.map(trip => {
-                const itemSummary = trip.items.slice(0, 5).map(i => 
-                    `<span class="trip-item">${i.name} <span class="qty">${i.qty}</span></span>`
-                ).join('');
-                const more = trip.items.length > 5 ? `<span class="trip-item">+${trip.items.length - 5} more</span>` : '';
+            tbody.innerHTML = trips.map(trip => {
+                const itemSummary = trip.items.map(i => `${i.name} (${i.qty})`).join(', ');
                 
                 return `
-                <div class="trip-card ${trip.shipped ? 'shipped' : ''}" onclick="openTrip('${trip.id}')">
-                    <div class="trip-header">
-                        <span class="trip-name">${trip.name}</span>
-                        <span class="trip-status ${trip.shipped ? 'shipped' : 'ready'}">${trip.shipped ? 'Shipped' : 'Ready'}</span>
-                    </div>
-                    <div class="trip-meta">
-                        <span>📅 ${trip.date}</span>
-                        <span>📍 ${trip.location}</span>
-                        <span>⚽ ${trip.sport}</span>
-                    </div>
-                    <div class="trip-items">${itemSummary}${more}</div>
-                </div>`;
+                <tr class="${trip.shipped ? 'shipped-row' : ''}">
+                    <td class="trip-name-cell">${trip.name}</td>
+                    <td>${trip.date}</td>
+                    <td>${trip.location}</td>
+                    <td><span class="sport-badge ${trip.sport}">${trip.sport}</span></td>
+                    <td class="items-cell" title="${itemSummary}">${itemSummary.length > 30 ? itemSummary.substring(0, 30) + '...' : itemSummary}</td>
+                    <td><span class="status-badge ${trip.shipped ? 'shipped' : 'ready'}">${trip.shipped ? 'Shipped' : 'Ready'}</span></td>
+                    <td>
+                        <button class="btn-icon" onclick="openTrip('${trip.id}')" title="View">👁</button>
+                        <button class="btn-icon" onclick="printTripById('${trip.id}')" title="Print">🖨</button>
+                        ${!trip.shipped ? `<button class="btn-icon ship-btn" onclick="markShippedById('${trip.id}')" title="Mark Shipped">📦</button>` : ''}
+                    </td>
+                </tr>`;
             }).join('');
+        }
+
+        function printTripById(id) {
+            const trip = TRIPS.find(t => t.id === id);
+            if (!trip) return;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Packing List - ${trip.name}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+                        h1 { color: #333; border-bottom: 3px solid #C9A227; padding-bottom: 10px; }
+                        .meta { color: #666; margin: 20px 0; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th { background: #f0f0f0; text-align: left; padding: 12px; border-bottom: 2px solid #333; }
+                        td { padding: 12px; border-bottom: 1px solid #ddd; }
+                        .checkbox { width: 30px; }
+                        .footer { margin-top: 40px; color: #999; font-size: 0.9em; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <h1>📦 Packing List</h1>
+                    <div class="meta">
+                        <strong>Trip:</strong> ${trip.name}<br>
+                        <strong>Date:</strong> ${trip.date}<br>
+                        <strong>Location:</strong> ${trip.location}<br>
+                        <strong>Sport:</strong> ${trip.sport}<br>
+                        <strong>Status:</strong> ${trip.shipped ? '✅ SHIPPED' : '📦 Ready to Pack'}
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="checkbox">☐</th>
+                                <th>Jersey</th>
+                                <th>Quantity</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${trip.items.map(item => `
+                                <tr>
+                                    <td class="checkbox">☐</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.qty}</td>
+                                    <td>${item.size || 'Mixed'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <div class="footer">
+                        <p>Future Stars Sports Co</p>
+                        <p>Printed: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    <button class="no-print" onclick="window.print()" style="margin-top:30px;padding:12px 24px;background:#C9A227;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">🖨️ Print This Page</button>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        function markShippedById(id) {
+            const trip = TRIPS.find(t => t.id === id);
+            if (trip) {
+                trip.shipped = true;
+                localStorage.setItem('fs_trips', JSON.stringify(TRIPS));
+                renderTrips();
+            }
         }
 
         function filterTrips(filter) {
