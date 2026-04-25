@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- build: 1777089842-9d3e78b1 -->
+<!-- build: 1777090018-64c45191 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="description" content="Future Stars Sports Co - Championship sports merchandise, tournament operations, and inventory management.">
-    <meta name="keywords" content="sports, merchandise, tournament, soccer, baseball, jerseys">
-    <meta name="author" content="Future Stars Sports Co">
-    <meta name="theme-color" content="#C9A227">
-    <meta property="og:title" content="Future Stars Sports Co">
-    <meta property="og:description" content="Elite sports merchandise for the next generation of champions.">
-    <meta property="og:type" content="website">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trips — Future Stars</title>
@@ -23,435 +16,141 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --gold: #C9A227;
-            --gold-light: #E8C84B;
-            --gold-dark: #B8941F;
-            --black: #0A0A0A;
-            --black-light: #141414;
-            --black-card: #1A1A1A;
-            --black-hover: #242424;
-            --white: #F8F6F0;
-            --gray: #A8A498;
-            --gray-dark: #6B665C;
-            --border: #2A2824;
-            --green: #4CAF50;
-            --red: #EF5350;
-            --orange: #FF9800;
-            --blue: #64B5F6;
+            --gold: #C9A227; --gold-dark: #B8941F;
+            --black: #0A0A0A; --black-card: #1A1A1A; --black-hover: #242424;
+            --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C;
+            --border: #2A2824; --green: #4CAF50; --red: #EF5350; --orange: #FF9800;
         }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--black);
             color: var(--white);
             min-height: 100vh;
-            font-size: 15px;
+            font-size: 14px;
         }
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 30px;
-            background: var(--black-light);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 20px; background: var(--black-card);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
         }
         .logo-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
         }
         .logo-img {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
+            width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
             border: 2px solid var(--gold-dark);
-            box-shadow: 0 0 20px rgba(201,162,39,0.2);
         }
         .logo-text {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 3px;
+            font-family: 'Cinzel', serif; font-size: 1.1em; font-weight: 700;
+            color: var(--gold); letter-spacing: 3px;
         }
-        .user-info { display: flex; align-items: center; gap: 20px; }
-        .user-name {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.85em;
-            letter-spacing: 2px;
-        }
+        .user-info { display: flex; align-items: center; gap: 16px; }
+        .user-name { color: var(--gold); font-size: 0.8em; letter-spacing: 1px; }
         .logout-btn {
-            padding: 8px 18px;
-            background: transparent;
-            border: 1px solid var(--gray-dark);
-            color: var(--gray);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.3s;
+            padding: 6px 14px; background: transparent; border: 1px solid var(--border);
+            color: var(--gray); border-radius: 6px; font-size: 0.75em; cursor: pointer;
         }
         .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .nav {
-            display: flex;
-            gap: 4px;
-            padding: 12px 30px;
-            background: var(--black-light);
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .nav a {
-            padding: 10px 20px;
-            color: var(--gray);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.85em;
-            font-weight: 500;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-        }
-        .nav a:hover { color: var(--white); background: var(--black-hover); }
-        .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
-        .main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 30px;
-        }
-        .welcome {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 6px;
-            letter-spacing: 1px;
-        }
-        .subtitle { color: var(--gray); margin-bottom: 35px; font-size: 1em; }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 35px;
+        /* Page layout */
+        .page { padding: 20px; max-width: 100%; overflow-x: auto; }
+        .page-title {
+            font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700;
+            color: var(--gold); margin-bottom: 4px;
         }
-        .stat {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 18px 12px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .stat:hover {
-            border-color: var(--gold-dark);
-            transform: translateY(-3px);
-        }
-        .stat-value {
-            font-family: 'Cinzel', serif;
-            font-size: 1.6em;
-            font-weight: 700;
-            color: var(--gold);
-            margin-bottom: 4px;
-        }
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.7em;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 16px; }
 
+        /* Controls bar */
         .controls {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-            align-items: center;
+            display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+            margin-bottom: 14px;
         }
         .search-box {
-            flex: 1;
-            min-width: 250px;
-            padding: 12px 18px;
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95em;
-            outline: none;
+            padding: 10px 14px; background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--white); font-size: 0.85em; outline: none;
+            min-width: 220px; flex: 1;
         }
         .search-box:focus { border-color: var(--gold); }
-        .search-box::placeholder { color: var(--gray-dark); }
         .filter-select {
-            padding: 12px 16px;
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-            outline: none;
-            cursor: pointer;
+            padding: 10px 12px; background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--white); font-size: 0.85em; outline: none; cursor: pointer;
         }
         .filter-select:focus { border-color: var(--gold); }
-
-        .trips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 16px;
-        }
-        .trip-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s;
-        }
-        .trip-card:hover {
-            border-color: var(--gold-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
-        .trip-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 14px;
-            gap: 12px;
-        }
-        .trip-name {
-            font-family: 'Cinzel', serif;
-            font-size: 0.95em;
-            color: var(--white);
-            letter-spacing: 1px;
-            line-height: 1.4;
-            flex: 1;
-        }
-        .trip-status {
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.7em;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .status-locked {
-            background: rgba(76,175,80,0.1);
-            color: var(--green);
-            border: 1px solid rgba(76,175,80,0.2);
-        }
-        .trip-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        .meta-tag {
-            padding: 4px 10px;
-            background: rgba(201,162,39,0.06);
-            border: 1px solid rgba(201,162,39,0.12);
-            border-radius: 6px;
-            font-size: 0.8em;
-            color: var(--gray);
-        }
-        .meta-tag.sport { color: var(--gold); border-color: rgba(201,162,39,0.2); }
-        .trip-details {
-            color: var(--gray);
-            font-size: 0.88em;
-            line-height: 1.7;
-        }
-        .trip-details strong {
-            color: var(--white);
-            font-weight: 500;
-        }
-        .trip-footer {
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .crew-tag {
-            font-size: 0.85em;
-            color: var(--gold-light);
-        }
-        .crew-tag strong { color: var(--gold); }
-        .pex-tag {
-            font-size: 0.75em;
-            padding: 3px 8px;
-            background: rgba(100,181,246,0.1);
-            border: 1px solid rgba(100,181,246,0.2);
-            color: var(--blue);
-            border-radius: 4px;
-        }
-        .finance-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-        }
-        .finance-item {
-            text-align: center;
-        }
-        .finance-value {
-            font-family: 'Cinzel', serif;
-            font-size: 1.1em;
-            color: var(--gold);
-            font-weight: 700;
-        }
-        .finance-label {
-            font-size: 0.7em;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Clickable card */
-        .trip-card {
-            cursor: pointer;
-        }
-        .trip-card:hover .trip-name {
-            color: var(--gold);
-        }
-
-        /* Past trip styling */
-        .trip-card.past {
-            opacity: 0.5;
-        }
-        .trip-card.past .trip-status {
-            background: rgba(168,164,152,0.1);
-            color: var(--gray);
-            border-color: rgba(168,164,152,0.2);
-        }
-
-        /* Show past toggle */
         .toggle-past {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--gray);
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: all 0.2s;
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 14px; background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--gray); font-size: 0.8em; cursor: pointer;
         }
-        .toggle-past:hover { border-color: var(--gold); color: var(--white); }
+        .toggle-past:hover { border-color: var(--gold); }
         .toggle-past input { accent-color: var(--gold); }
+        .row-count {
+            font-size: 0.8em; color: var(--gray-dark);
+            margin-left: auto; white-space: nowrap;
+        }
 
-        /* Trip detail modal */
-        .trip-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .trip-modal-overlay.active { display: flex; }
-        .trip-modal {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
+        /* TABLE — spreadsheet style */
+        .trip-table {
             width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 1400px;
         }
-        .trip-modal-close {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--gray);
-            font-size: 1.8em;
-            cursor: pointer;
-        }
-        .trip-modal-close:hover { color: var(--white); }
-        .trip-modal h2 {
-            font-family: 'Cinzel', serif;
+        .trip-table thead th {
+            position: sticky; top: 60px; z-index: 10;
+            background: var(--black-card);
+            padding: 10px 10px;
+            border-bottom: 2px solid var(--gold-dark);
             color: var(--gold);
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            padding-right: 40px;
-        }
-        .detail-section {
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .detail-section:last-child { border-bottom: none; }
-        .detail-section h4 {
             font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.85em;
-            margin-bottom: 10px;
+            font-size: 0.7em;
             letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: left;
+            white-space: nowrap;
         }
-        .detail-row-modal {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 0.9em;
+        .trip-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
         }
-        .detail-row-modal .label { color: var(--gray); }
-        .detail-row-modal .value { color: var(--white); font-weight: 500; }
+        .trip-table tbody tr:hover {
+            background: rgba(201,162,39,0.04);
+        }
+        .trip-table tbody td {
+            padding: 8px 10px;
+            color: var(--white);
+            vertical-align: middle;
+        }
+        .trip-table tbody td .alt {
+            color: var(--gray-dark);
+        }
+
+        /* Status badges in table */
+        .status-badge {
+            display: inline-block; padding: 3px 8px;
+            border-radius: 4px; font-size: 0.75em;
+            font-weight: 600; letter-spacing: 1px;
+        }
+        .status-badge.locked { background: rgba(76,175,80,0.12); color: var(--green); }
+        .status-badge.pending { background: rgba(255,152,0,0.12); color: var(--orange); }
+
+        /* Past rows */
+        .trip-table tbody tr.past { opacity: 0.45; }
+        .trip-table tbody tr.past:hover { opacity: 0.65; }
 
         .empty-state {
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--gray);
+            text-align: center; padding: 60px 20px; color: var(--gray);
         }
-        .empty-state h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5em;
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-
-        /* Skeleton Loading */
-        .skeleton-card {
-            background: var(--black-card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 24px; animation: skeleton-pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes skeleton-pulse { 0%,100%{opacity:.4;} 50%{opacity:.8;} }
-        .skeleton-line { height: 16px; background: var(--black-hover); border-radius: 6px; margin-bottom: 12px; }
-        .skeleton-line.short { width: 60%; } .skeleton-line.medium { width: 80%; }
-        .skeleton-line.long { width: 100%; } .skeleton-line.title { height: 22px; width: 70%; margin-bottom: 16px; }
-        .skeleton-meta { display: flex; gap: 8px; margin-bottom: 16px; }
-        .skeleton-tag { width: 60px; height: 24px; background: var(--black-hover); border-radius: 6px; }
+        .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 8px; }
 
         @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
-            .nav { padding: 10px 20px; }
-            .main { padding: 30px 20px; }
-            .trips-grid { grid-template-columns: 1fr; }
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .welcome { font-size: 1.6em; }
-            .finance-row { grid-template-columns: 1fr; }
+            .page { padding: 12px; }
+            .page-title { font-size: 1.3em; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .search-box { min-width: auto; }
         }
     </style>
 </head>
 <body>
-    <div class="progress-bar" id="progress-bar"></div>
-    <div class="particles" id="particles"></div>
     <script>if(!sessionStorage.getItem("fs_auth")||sessionStorage.getItem("fs_pin_verified")!=="true"){window.location.href="index.html";}</script>
     <div class="header">
         <a href="index.html" class="logo-link">
@@ -463,316 +162,151 @@
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </div>
-    <nav class="nav" id="main-nav"></nav>
-    
 
-    <div class="main">
-        <div class="welcome">Trip Schedule</div>
-        <div class="subtitle" id="subtitle">Loading trips...</div>
-
-        <div class="stats" id="stats">
-            <div class="stat"><div class="stat-value" id="st-total">--</div><div class="stat-label">Total Trips</div></div>
-            <div class="stat"><div class="stat-value" id="st-locked">--</div><div class="stat-label">Locked In</div></div>
-            <div class="stat"><div class="stat-value" id="st-revenue">--</div><div class="stat-label">Revenue</div></div>
-            <div class="stat"><div class="stat-value" id="st-profit">--</div><div class="stat-label">Profit</div></div>
-            <div class="stat"><div class="stat-value" id="st-margin">--</div><div class="stat-label">Avg Margin</div></div>
-            <div class="stat"><div class="stat-value" id="st-states">--</div><div class="stat-label">States</div></div>
-        </div>
+    <div class="page">
+        <div class="page-title">Trips</div>
+        <div class="page-subtitle" id="subtitle">Loading...</div>
 
         <div class="controls">
-            <input type="text" class="search-box" id="search" placeholder="Search trips..." oninput="render()">
-            <select class="filter-select" id="filter-month" onchange="render()">
-                <option value="">All Months</option>
-            </select>
-            <select class="filter-select" id="filter-state" onchange="render()">
-                <option value="">All States</option>
-            </select>
+            <input type="text" class="search-box" id="search" placeholder="Search trip, state, crew..." oninput="render()">
             <select class="filter-select" id="filter-sport" onchange="render()">
                 <option value="">All Sports</option>
                 <option value="Soccer">Soccer</option>
                 <option value="Baseball">Baseball</option>
-                <option value="BB">Baseball</option>
+            </select>
+            <select class="filter-select" id="filter-status" onchange="render()">
+                <option value="">All Status</option>
+                <option value="LOCKED IN">Locked In</option>
+                <option value="PENDING">Pending</option>
             </select>
             <label class="toggle-past">
                 <input type="checkbox" id="show-past" onchange="render()">
-                <span>Show past trips</span>
+                <span>Show past</span>
             </label>
+            <span class="row-count" id="row-count"></span>
         </div>
 
-        <div class="trips-grid" id="grid">
-                <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-meta"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
-                <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-meta"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
-                <div class="skeleton-card"><div class="skeleton-line title"></div><div class="skeleton-meta"><div class="skeleton-tag"></div><div class="skeleton-tag"></div></div><div class="skeleton-line medium"></div><div class="skeleton-line short"></div><div class="skeleton-line long"></div></div>
-            </div>
-    </div>
-
-    <!-- Trip Detail Modal -->
-    <div class="trip-modal-overlay" id="trip-modal" onclick="if(event.target===this)closeTripModal()">
-        <div class="trip-modal" id="trip-modal-content"></div>
+        <div id="table-wrap">
+            <table class="trip-table" id="trip-table">
+                <thead>
+                    <tr>
+                        <th>Sport</th>
+                        <th>Trip Name</th>
+                        <th>Status</th>
+                        <th>Month</th>
+                        <th>Dates</th>
+                        <th>State</th>
+                        <th>Crew</th>
+                        <th>Crew Needed</th>
+                        <th>Leave Date</th>
+                        <th>Leave Time</th>
+                        <th>Rental Return</th>
+                        <th>PEX Card</th>
+                        <th>PEX?</th>
+                        <th>Times Sent</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr><td colspan="14" style="text-align:center;padding:40px;color:var(--gray-dark);">Loading trip data...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         document.getElementById('user-name').textContent = NAME.toUpperCase();
 
-        // Build a lookup for cost data by tournament name (fuzzy match)
-        const costLookup = {};
-        if (typeof COST_DATA !== 'undefined') {
-            COST_DATA.forEach(c => {
-                costLookup[c.tournament.toLowerCase().replace(/[^a-z0-9]/g, '')] = c;
-            });
-        }
-
-        function findCost(tripName) {
-            if (!tripName || typeof COST_DATA === 'undefined') return null;
-            const key = tripName.toLowerCase().replace(/[^a-z0-9]/g, '');
-            // Exact match first
-            if (costLookup[key]) return costLookup[key];
-            // Partial match
-            for (const [k, v] of Object.entries(costLookup)) {
-                if (k.includes(key) || key.includes(k)) return v;
-            }
-            return null;
-        }
-
-        // Populate filters
-        const months = [...new Set(CREW_TRIPS.map(t => t.month).filter(Boolean))].sort();
-        const states = [...new Set(CREW_TRIPS.map(t => t.state).filter(Boolean))].sort();
-        document.getElementById('filter-month').innerHTML = '<option value="">All Months</option>' + months.map(m => `<option value="${m}">${m}</option>`).join('');
-        document.getElementById('filter-state').innerHTML = '<option value="">All States</option>' + states.map(s => `<option value="${s}">${s}</option>`).join('');
-
-        function formatMoney(n) {
-            if (!n || n === 0) return '$0';
-            if (n >= 1000) return '$' + (n/1000).toFixed(1) + 'K';
-            return '$' + Math.round(n);
-        }
-
-        function updateStats() {
-            const total = CREW_TRIPS.length;
-            const locked = CREW_TRIPS.filter(t => t.status === 'LOCKED IN').length;
-            const allStates = [...new Set(CREW_TRIPS.map(t => t.state).filter(Boolean))];
-            const allCrew = new Set();
-            CREW_TRIPS.forEach(t => {
-                if (t.crew) {
-                    t.crew.split(',').forEach(c => allCrew.add(c.trim()));
-                }
-            });
-
-            // Financial stats from cost data
-            let totalRev = 0, totalProfit = 0, marginCount = 0, totalMargin = 0;
-            if (typeof COST_DATA !== 'undefined') {
-                COST_DATA.forEach(c => {
-                    totalRev += c.revenue;
-                    totalProfit += c.profit;
-                    if (c.margin > 0) {
-                        totalMargin += c.margin;
-                        marginCount++;
-                    }
-                });
-            }
-            const avgMargin = marginCount > 0 ? (totalMargin / marginCount).toFixed(1) + '%' : '—';
-
-            document.getElementById('st-total').textContent = total;
-            document.getElementById('st-locked').textContent = locked;
-            document.getElementById('st-revenue').textContent = formatMoney(totalRev);
-            document.getElementById('st-profit').textContent = formatMoney(totalProfit);
-            document.getElementById('st-margin').textContent = avgMargin;
-            document.getElementById('st-states').textContent = allStates.length;
-            document.getElementById('subtitle').textContent = `${total} trips across ${allStates.length} states — ${locked} locked in — ${formatMoney(totalRev)} revenue tracked`;
-        }
-
-        // Month name to number mapping (handles typos like "Febuary")
+        // Month name to number mapping
         const MONTH_MAP = {
-            'jan': 0, 'january': 0,
-            'feb': 1, 'febuary': 1, 'february': 1,
-            'mar': 2, 'march': 2,
-            'apr': 3, 'april': 3,
-            'may': 4,
-            'jun': 5, 'june': 5,
-            'jul': 6, 'july': 6,
-            'aug': 7, 'august': 7,
-            'sep': 8, 'sept': 8, 'september': 8,
-            'oct': 9, 'october': 9,
-            'nov': 10, 'november': 10,
-            'dec': 11, 'december': 11
+            'jan':0, 'january':0, 'feb':1, 'febuary':1, 'february':1,
+            'mar':2, 'march':2, 'apr':3, 'april':3, 'may':4,
+            'jun':5, 'june':5, 'jul':6, 'july':6,
+            'aug':7, 'august':7, 'sep':8, 'sept':8, 'september':8,
+            'oct':9, 'october':9, 'nov':10, 'november':10, 'dec':11, 'december':11
         };
 
         function parseTripDate(trip) {
             const monthStr = (trip.month || '').toLowerCase().trim();
-            const startDateStr = (trip.startDate || '').toLowerCase().trim();
-            
+            const startStr = (trip.startDate || '').toLowerCase().trim();
             const monthNum = MONTH_MAP[monthStr];
             if (monthNum === undefined) return null;
-            
-            // Extract day number from strings like "1st", "8th", "15th", "16-17", "30-Sep 1"
-            let day = 1;
-            const dayMatch = startDateStr.match(/(\d+)/);
-            if (dayMatch) {
-                day = parseInt(dayMatch[1]);
-            }
-            
-            return new Date(2026, monthNum, day);
+            const d = startStr.match(/(\d+)/);
+            return d ? new Date(2026, monthNum, parseInt(d[1])) : null;
         }
 
-        function isPastTrip(trip) {
-            const tripDate = parseTripDate(trip);
-            if (!tripDate) return false; // If we can't parse, show it
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            return tripDate < today;
+        function isPast(trip) {
+            const d = parseTripDate(trip);
+            if (!d) return false;
+            const today = new Date(); today.setHours(0,0,0,0);
+            return d < today;
         }
 
         function render() {
             const search = document.getElementById('search').value.toLowerCase();
-            const month = document.getElementById('filter-month').value;
-            const state = document.getElementById('filter-state').value;
             const sport = document.getElementById('filter-sport').value;
+            const status = document.getElementById('filter-status').value;
             const showPast = document.getElementById('show-past').checked;
 
             let filtered = CREW_TRIPS.filter(t => {
-                if (search && !t.name.toLowerCase().includes(search) && !t.state.toLowerCase().includes(search) && !t.crew.toLowerCase().includes(search)) return false;
-                if (month && t.month !== month) return false;
-                if (state && t.state !== state) return false;
-                if (sport) {
-                    const s = t.sport.toLowerCase();
-                    if (sport === 'Baseball' && !s.includes('baseball') && !s.includes('bb')) return false;
-                    if (sport === 'Soccer' && !s.includes('soccer')) return false;
+                if (search && !t.name.toLowerCase().includes(search) &&
+                    !t.state.toLowerCase().includes(search) &&
+                    !t.crew.toLowerCase().includes(search)) return false;
+                if (sport === 'Soccer' && (!t.sport || !t.sport.toLowerCase().includes('soccer'))) return false;
+                if (sport === 'Baseball') {
+                    const s = (t.sport||'').toLowerCase();
+                    if (!s.includes('baseball') && !s.includes('bb')) return false;
                 }
-                // Filter out past trips unless show-past is checked
-                if (!showPast && isPastTrip(t)) return false;
+                if (status) {
+                    if (status === 'LOCKED IN' && t.status !== 'LOCKED IN') return false;
+                    if (status === 'PENDING' && (t.status === 'LOCKED IN' || t.status === '')) return false;
+                }
+                if (!showPast && isPast(t)) return false;
                 return true;
             });
 
-            // Sort by date (upcoming first)
             filtered.sort((a, b) => {
-                const da = parseTripDate(a);
-                const db = parseTripDate(b);
+                const da = parseTripDate(a), db = parseTripDate(b);
                 if (!da && !db) return 0;
                 if (!da) return 1;
                 if (!db) return -1;
                 return da - db;
             });
 
-            const grid = document.getElementById('grid');
+            const tbody = document.getElementById('table-body');
+            const countEl = document.getElementById('row-count');
+            countEl.textContent = `${filtered.length} trips`;
+
             if (filtered.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><h3>${showPast ? 'No trips found' : 'No upcoming trips'}</h3><p>${showPast ? 'Try adjusting your filters' : 'All trips are in the past. Check "Show past trips" to see them.'}</p></div>`;
+                tbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>`;
                 return;
             }
 
-            grid.innerHTML = filtered.map(t => {
-                const statusClass = t.status === 'LOCKED IN' ? 'status-locked' : '';
-                const dateStr = t.startDate ? `${t.startDate}${t.endDate ? ' — ' + t.endDate : ''}` : '';
-                const sportDisplay = t.sport === 'BB' || t.sport.toLowerCase() === 'baseball' ? 'Baseball' : 
-                                     t.sport.toLowerCase() === 'soccer' ? 'Soccer' : t.sport;
-                const pastClass = isPastTrip(t) ? 'past' : '';
-                
-                // Find matching cost data
-                const cost = findCost(t.name);
-                const financeHtml = cost && cost.revenue > 0 ? `
-                    <div class="finance-row">
-                        <div class="finance-item">
-                            <div class="finance-value">${formatMoney(cost.revenue)}</div>
-                            <div class="finance-label">Revenue</div>
-                        </div>
-                        <div class="finance-item">
-                            <div class="finance-value">${formatMoney(cost.profit)}</div>
-                            <div class="finance-label">Profit</div>
-                        </div>
-                        <div class="finance-item">
-                            <div class="finance-value">${cost.margin > 0 ? cost.margin.toFixed(1) + '%' : '—'}</div>
-                            <div class="finance-label">Margin</div>
-                        </div>
-                    </div>
-                ` : '';
-                
-                return `
-                    <div class="trip-card ${pastClass}" onclick="openTripDetail('${t.id}')">
-                        <div class="trip-header">
-                            <div class="trip-name">${t.name}</div>
-                            <div class="trip-status ${statusClass}">${t.status || 'PENDING'}</div>
-                        </div>
-                        <div class="trip-meta">
-                            <span class="meta-tag sport">${sportDisplay}</span>
-                            <span class="meta-tag">${t.state || '—'}</span>
-                            <span class="meta-tag">${t.month || '—'}</span>
-                            ${t.crewNeeded ? `<span class="meta-tag">${t.crewNeeded} crew</span>` : ''}
-                        </div>
-                        <div class="trip-details">
-                            <div>📅 <strong>Dates:</strong> ${dateStr || 'TBD'}</div>
-                            ${t.crew ? `<div>👥 <strong>Crew:</strong> ${t.crew}</div>` : ''}
-                            ${t.leaveDate || t.leaveTime ? `<div>🚐 <strong>Leave:</strong> ${t.leaveDate || ''} ${t.leaveTime || ''}</div>` : ''}
-                            ${t.rentalReturn ? `<div>🔙 <strong>Return:</strong> ${t.rentalReturn}</div>` : ''}
-                        </div>
-                        ${financeHtml}
-                        <div class="trip-footer">
-                            <span class="crew-tag">${t.pexCard ? `<strong>PEX:</strong> ${t.pexCard}` : ''}</span>
-                            ${t.leaveTimesSent ? `<span class="pex-tag">Times Sent</span>` : ''}
-                        </div>
-                    </div>
-                `;
+            tbody.innerHTML = filtered.map(t => {
+                const pastClass = isPast(t) ? 'past' : '';
+                const statusBadge = t.status === 'LOCKED IN' 
+                    ? '<span class="status-badge locked">LOCKED</span>'
+                    : '<span class="status-badge pending">PENDING</span>';
+                const sportDisplay = t.sport === 'BB' ? 'Baseball' : 
+                    (t.sport||'').toLowerCase() === 'baseball' ? 'Baseball' : t.sport || '—';
+
+                return `<tr class="${pastClass}">
+                    <td>${sportDisplay}</td>
+                    <td><strong>${t.name || '—'}</strong></td>
+                    <td>${statusBadge}</td>
+                    <td>${t.month || '—'}</td>
+                    <td>${t.startDate || ''}${t.endDate ? ' — ' + t.endDate : ''}</td>
+                    <td>${t.state || '—'}</td>
+                    <td>${t.crew || ''}</td>
+                    <td>${t.crewNeeded || ''}</td>
+                    <td>${t.leaveDate || ''}</td>
+                    <td>${t.leaveTime || ''}</td>
+                    <td>${t.rentalReturn || ''}</td>
+                    <td>${t.pexCard || ''}</td>
+                    <td>${t.pexQuestion || ''}</td>
+                    <td>${t.leaveTimesSent || ''}</td>
+                </tr>`;
             }).join('');
-        }
-
-        function openTripDetail(tripId) {
-            const trip = CREW_TRIPS.find(t => t.id === tripId);
-            if (!trip) return;
-            
-            const cost = findCost(trip.name);
-            const sportDisplay = trip.sport === 'BB' || trip.sport.toLowerCase() === 'baseball' ? 'Baseball' : 
-                                 trip.sport.toLowerCase() === 'soccer' ? 'Soccer' : trip.sport;
-            
-            let modalHtml = `
-                <button class="trip-modal-close" onclick="closeTripModal()">&times;</button>
-                <h2>${trip.name}</h2>
-                <div class="detail-section">
-                    <h4>📍 Location & Dates</h4>
-                    <div class="detail-row-modal"><span class="label">Sport</span><span class="value">${sportDisplay}</span></div>
-                    <div class="detail-row-modal"><span class="label">State</span><span class="value">${trip.state || 'TBD'}</span></div>
-                    <div class="detail-row-modal"><span class="label">Month</span><span class="value">${trip.month || 'TBD'}</span></div>
-                    <div class="detail-row-modal"><span class="label">Dates</span><span class="value">${trip.startDate || 'TBD'} ${trip.endDate ? '— ' + trip.endDate : ''}</span></div>
-                </div>
-            `;
-            
-            if (trip.crew || trip.crewNeeded) {
-                modalHtml += `
-                    <div class="detail-section">
-                        <h4>👥 Crew</h4>
-                        ${trip.crew ? `<div class="detail-row-modal"><span class="label">Assigned</span><span class="value">${trip.crew}</span></div>` : ''}
-                        ${trip.crewNeeded ? `<div class="detail-row-modal"><span class="label">Needed</span><span class="value">${trip.crewNeeded}</span></div>` : ''}
-                    </div>
-                `;
-            }
-            
-            if (trip.leaveDate || trip.leaveTime || trip.rentalReturn) {
-                modalHtml += `
-                    <div class="detail-section">
-                        <h4>🚐 Travel</h4>
-                        ${trip.leaveDate ? `<div class="detail-row-modal"><span class="label">Leave Date</span><span class="value">${trip.leaveDate}</span></div>` : ''}
-                        ${trip.leaveTime ? `<div class="detail-row-modal"><span class="label">Leave Time</span><span class="value">${trip.leaveTime}</span></div>` : ''}
-                        ${trip.rentalReturn ? `<div class="detail-row-modal"><span class="label">Rental Return</span><span class="value">${trip.rentalReturn}</span></div>` : ''}
-                        ${trip.pexCard ? `<div class="detail-row-modal"><span class="label">PEX Card</span><span class="value">${trip.pexCard}</span></div>` : ''}
-                    </div>
-                `;
-            }
-            
-            if (cost && cost.revenue > 0) {
-                modalHtml += `
-                    <div class="detail-section">
-                        <h4>💰 Financials</h4>
-                        <div class="detail-row-modal"><span class="label">Revenue</span><span class="value" style="color:var(--gold);">${formatMoney(cost.revenue)}</span></div>
-                        <div class="detail-row-modal"><span class="label">Cost</span><span class="value">${formatMoney(cost.cost)}</span></div>
-                        <div class="detail-row-modal"><span class="label">Profit</span><span class="value" style="color:var(--green);">${formatMoney(cost.profit)}</span></div>
-                        <div class="detail-row-modal"><span class="label">Margin</span><span class="value">${cost.margin > 0 ? cost.margin.toFixed(1) + '%' : '—'}</span></div>
-                    </div>
-                `;
-            }
-            
-            document.getElementById('trip-modal-content').innerHTML = modalHtml;
-            document.getElementById('trip-modal').classList.add('active');
-        }
-
-        function closeTripModal() {
-            document.getElementById('trip-modal').classList.remove('active');
         }
 
         function logout() {
@@ -780,38 +314,8 @@
             window.location.href = 'signin.html';
         }
 
-        updateStats();
+        document.getElementById('subtitle').textContent = `${CREW_TRIPS.length} trips loaded`;
         render();
-
-        // Keyboard support for modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeTripModal();
-        });
-    </script>
-    <script>
-        // Particles & Progress Bar
-        (function(){
-            const container = document.getElementById("particles");
-            if (!container) return;
-            for(let i=0;i<25;i++){
-                const p = document.createElement("div");
-                p.className = "particle";
-                p.style.left = Math.random()*100+"vw";
-                p.style.animationDelay = Math.random()*15+"s";
-                p.style.animationDuration = (10+Math.random()*10)+"s";
-                p.style.width = (2+Math.random()*3)+"px";
-                p.style.height = p.style.width;
-                container.appendChild(p);
-            }
-        })();
-        window.addEventListener("scroll", function(){
-            const bar = document.getElementById("progress-bar");
-            if (!bar) return;
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const pct = scrollHeight > 0 ? (scrollTop/scrollHeight)*100 : 0;
-            bar.style.width = pct+"%";
-        });
     </script>
 </body>
 </html>
