@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- build: 1777090241-ca993a3b -->
+<!-- build: 1777090288-d90ff069 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -126,8 +126,13 @@
             .logo-text { font-size: 1.2em; }
         }
     </style>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
 </head>
 <body>
+<script>// CACHE BUST - force fresh
+(function(){if(!location.search.includes("cb=")){var d=new Date().getTime();location.replace(location.pathname+"?cb="+d);}})();</script>
     <div class="progress-bar" id="progress-bar"></div>
     <div class="particles" id="particles"></div>
     <div class="container">
