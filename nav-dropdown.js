@@ -61,17 +61,87 @@
         });
     }
 
+    // Categorize nav items into sections
+    function categorizeItems(items) {
+        const sections = [];
+        const groupMap = {
+            'Dashboard': ['index', 'dashboard'],
+            'Operations': ['tournaments', 'inventory-v2', 'trips', 'tournament-scraper'],
+            'Planning': ['trip-planner', 'pack-manager', 'pj-planner', 'trip-plans', 'trip-tracker'],
+            'Utilities': ['sortly-upload', 'team', 'departments']
+        };
+        const sectionLabels = {
+            'Dashboard': { icon: '📊', desc: '' },
+            'Operations': { icon: '⚡', desc: 'Core business' },
+            'Planning': { icon: '🗺️', desc: 'Trip tools' },
+            'Utilities': { icon: '🛠️', desc: 'Resources' }
+        };
+        
+        // Assign items to sections
+        const assigned = new Set();
+        Object.entries(groupMap).forEach(([sectionName, pages]) => {
+            const sectionItems = items.filter(item => !item.divider && pages.includes(item.page));
+            if (sectionItems.length > 0) {
+                sections.push({ name: sectionName, ...sectionLabels[sectionName], items: sectionItems });
+                sectionItems.forEach(i => assigned.add(i));
+            }
+        });
+        
+        // Any unassigned items go to Other
+        const other = items.filter(item => !item.divider && !assigned.has(item));
+        if (other.length > 0) {
+            sections.push({ name: 'Other', icon: '📋', desc: '', items: other });
+        }
+        
+        return sections;
+    }
+
     function buildMenuItems() {
-        return getNavItems().map(item => {
-            if (item.divider) return '<div class="fs-menu-divider"></div>';
-            const isActive = item.page === currentPage ? 'active' : '';
-            const suffix = location.hostname.includes('pages.dev') ? '' : '.html';
-            const href = item.page === 'index' ? 'signin.html' : item.page + suffix;
-            return `<a href="${href}" class="fs-menu-item ${isActive}">
-                <span class="fs-menu-icon">${item.icon}</span>
-                <span>${item.label}</span>
-            </a>`;
-        }).join('');
+        const items = getNavItems();
+        const mainItems = items.filter(i => !i.divider);
+        const hasDivider = items.some(i => i.divider);
+        const footerItems = hasDivider ? items.slice(items.indexOf(items.find(i=>i.divider)) + 1) : [];
+        const baseItems = hasDivider ? items.slice(0, items.indexOf(items.find(i=>i.divider))) : items;
+        
+        // Group into sections
+        const sections = categorizeItems(baseItems.filter(i => !i.divider));
+        
+        const suffix = location.hostname.includes('pages.dev') ? '' : '.html';
+        
+        let html = '';
+        sections.forEach(section => {
+            html += `
+                <div class="fs-section-label">
+                    <span class="fs-section-icon">${section.icon}</span>
+                    ${section.name}
+                    ${section.desc ? `<span class="fs-section-desc">${section.desc}</span>` : ''}
+                </div>`;
+            html += section.items.map(item => {
+                if (item.divider) return '';
+                const isActive = item.page === currentPage ? 'active' : '';
+                const href = item.page === 'index' ? 'signin.html' : item.page + suffix;
+                return `<a href="${href}" class="fs-menu-item ${isActive}">
+                    <span class="fs-menu-icon">${item.icon}</span>
+                    <span class="fs-menu-label">${item.label}</span>
+                </a>`;
+            }).join('');
+        });
+        
+        // Footer items (after divider)
+        if (footerItems.length > 0) {
+            html += '<div class="fs-menu-divider"></div>';
+            html += footerItems.map(item => {
+                if (item.divider) return '';
+                const isActive = item.page === currentPage ? 'active' : '';
+                const href = item.page === 'index' ? 'signin.html' : item.page + suffix;
+                return `<a href="${href}" class="fs-menu-item fs-menu-footer-item ${isActive}">
+                    <span class="fs-menu-icon">${item.icon}</span>
+                    <span class="fs-menu-label">${item.label}</span>
+                </a>`;
+            }).join('');
+        }
+        
+        return html;
     }
 
     // Create the floating nav HTML
@@ -154,18 +224,18 @@
         #fs-menu-panel {
             position: fixed;
             top: 0;
-            right: -300px;
-            width: 260px;
+            right: -320px;
+            width: 280px;
             height: 100vh;
-            background: rgba(14,14,14,0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-left: 1px solid rgba(42,40,36,0.4);
+            background: rgba(10,10,12,0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(201,162,39,0.12);
             display: flex;
             flex-direction: column;
-            transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100000;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+            box-shadow: -5px 0 40px rgba(0,0,0,0.6);
         }
         #fs-menu-panel.open {
             right: 0;
@@ -174,24 +244,27 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 18px 12px;
-            border-bottom: 1px solid rgba(42,40,36,0.4);
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(201,162,39,0.1);
             flex-shrink: 0;
+            background: linear-gradient(180deg, rgba(201,162,39,0.04) 0%, transparent 100%);
         }
         .fs-menu-user {
-            font-size: 0.85em;
-            color: #A8A498;
+            font-size: 0.9em;
+            color: #F8F6F0;
+            font-weight: 600;
         }
         .fs-role-badge {
             display: inline-block;
-            padding: 2px 8px;
-            background: rgba(201,162,39,0.15);
-            color: #C9A227;
+            padding: 2px 10px;
+            background: rgba(201,162,39,0.12);
+            color: #E8C84B;
             border-radius: 4px;
-            font-size: 0.75em;
+            font-size: 0.7em;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-left: 6px;
+            font-weight: 400;
         }
         .fs-menu-close {
             width: 30px;
@@ -215,47 +288,105 @@
         .fs-menu-scroll {
             flex: 1;
             overflow-y: auto;
-            padding: 6px 0;
+            padding: 8px 0;
+            scroll-behavior: smooth;
+        }
+        .fs-menu-scroll::-webkit-scrollbar {
+            width: 3px;
+        }
+        .fs-menu-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .fs-menu-scroll::-webkit-scrollbar-thumb {
+            background: rgba(201,162,39,0.2);
+            border-radius: 2px;
+        }
+        .fs-section-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px 6px;
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(168,164,152,0.5);
+            font-weight: 600;
+        }
+        .fs-section-icon {
+            font-size: 0.9em;
+            opacity: 0.5;
+        }
+        .fs-section-desc {
+            color: rgba(168,164,152,0.25);
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            font-size: 0.9em;
+            margin-left: auto;
         }
         .fs-menu-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 18px;
-            color: #A8A498;
+            padding: 10px 20px;
+            color: rgba(168,164,152,0.85);
             text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.25s ease;
-            border-left: 3px solid transparent;
-            margin: 1px 8px;
-            border-radius: 0 8px 8px 0;
+            font-size: 0.88em;
+            font-weight: 450;
+            transition: all 0.2s ease;
+            margin: 1px 10px;
+            border-radius: 8px;
+            position: relative;
         }
         .fs-menu-item:hover {
             background: rgba(201,162,39,0.08);
             color: #F8F6F0;
-            border-left-color: #C9A227;
-            padding-left: 22px;
+            transform: translateX(2px);
+        }
+        .fs-menu-item:active {
+            transform: scale(0.98);
         }
         .fs-menu-item.active {
             background: rgba(201,162,39,0.12);
-            color: #C9A227;
-            border-left-color: #C9A227;
+            color: #E8C84B;
             font-weight: 600;
         }
+        .fs-menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: #C9A227;
+            border-radius: 0 3px 3px 0;
+        }
         .fs-menu-icon {
-            font-size: 1.1em;
+            font-size: 1.15em;
             width: 24px;
             text-align: center;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .fs-menu-label {
+            white-space: nowrap;
+        }
+        .fs-menu-footer-item {
+            font-size: 0.82em;
+            opacity: 0.7;
+        }
+        .fs-menu-footer-item:hover {
+            opacity: 1;
         }
         .fs-menu-divider {
             height: 1px;
-            background: rgba(42,40,36,0.4);
-            margin: 8px 18px;
+            background: rgba(201,162,39,0.08);
+            margin: 8px 20px;
         }
         .fs-menu-footer {
-            padding: 12px 18px;
-            border-top: 1px solid rgba(42,40,36,0.4);
+            padding: 12px 20px;
+            border-top: 1px solid rgba(201,162,39,0.08);
             flex-shrink: 0;
         }
         .fs-logout {
@@ -285,10 +416,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.5);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.35s ease;
+            transition: all 0.3s ease;
             z-index: 99998;
         }
         #fs-menu-backdrop.open {
@@ -297,12 +428,21 @@
         }
         @media (max-width: 480px) {
             #fs-menu-panel {
-                width: 240px;
-                right: -260px;
+                width: 260px;
+                right: -280px;
             }
             #fs-menu-toggle {
                 width: 40px;
                 height: 40px;
+            }
+            .fs-menu-item {
+                padding: 11px 16px;
+                margin: 1px 6px;
+                font-size: 0.85em;
+            }
+            .fs-section-label {
+                padding: 14px 16px 4px;
+                font-size: 0.65em;
             }
         }
     </style>
