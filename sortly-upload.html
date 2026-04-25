@@ -139,9 +139,13 @@
     <div class="progress-bar" id="progress-bar"></div>
     <div class="particles" id="particles"></div>
     <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
         <a href="index.html" class="logo-link">
             <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
             <span class="logo-text">FUTURE STARS</span>
+        </a>
+        <span id="dark-mode-toggle"></span>
+        </div>
         </a>
         <p class="subtitle">Sortly Inventory Import</p>
         <div class="upload-area" onclick="document.getElementById('file-input').click()">
@@ -156,6 +160,12 @@
         <a href="index.html" class="nav-back">← Back to Dashboard</a>
     </div>
     <script>
+        // Auth guard
+        const AUTH = sessionStorage.getItem('fs_auth') || localStorage.getItem('fs_auth');
+        if (!AUTH) { window.location.href = 'index.html'; }
+        // Ensure dark mode works
+        if (localStorage.getItem('fs_darkMode') === 'true') document.documentElement.classList.add('dark-mode');
+        
         // Particles & Progress Bar
         (function(){
             const container = document.getElementById("particles");
