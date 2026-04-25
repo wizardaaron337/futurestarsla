@@ -93,6 +93,26 @@
     .btn-secondary{background:var(--black-card);border:1px solid var(--border);color:var(--white);}
     .btn-secondary:hover{border-color:var(--gold);}
 
+    /* Editable quantity inputs */
+    .qty-input{background:transparent;border:1px solid transparent;border-radius:4px;color:var(--gold);font-weight:700;text-align:center;padding:2px 4px;transition:all .2s;}
+    .qty-input:hover{border-color:var(--border);}
+    .qty-input:focus{outline:none;border-color:var(--gold);background:rgba(201,162,39,0.1);}
+    .unit{color:var(--gray);font-size:.85em;}
+
+    /* Gear items */
+    .gear-item{background:linear-gradient(135deg,var(--black-light),var(--black-card));}
+    .gear-item .jersey-item-name{font-size:.9em;}
+
+    /* Print styles */
+    @media print{
+      .header,.wizard,.form-card,.packing-actions{display:none!important;}
+      .results{display:block!important;}
+      .qty-input{border:none!important;color:var(--black)!important;}
+      body{background:white!important;color:black!important;}
+      .jersey-item,.checklist{background:white!important;border:1px solid #ccc!important;}
+      .jersey-item-name,.checklist h4{color:black!important;}
+    }
+
     @media(max-width:768px){
       .form-row{grid-template-columns:1fr;}
       .wizard{flex-direction:column;}
@@ -249,6 +269,8 @@
 
       <div id="jersey-sections"></div>
 
+      <div id="gear-sections"></div>
+
       <div class="checklist" style="margin-top:24px;">
         <h4>✅ Packing Checklist</h4>
         <div id="checklist-items"></div>
@@ -350,6 +372,37 @@
       soccer: ['Messi Black', 'Ronaldo Blue', 'Neymar Tribute', 'Yamal Flower', 'Messi Pink', 'Messi Argentina']
     };
 
+    // Gear items by sport
+    const GEAR_ITEMS = {
+      baseball: [
+        { name: 'Baseballs', icon: '⚾', defaultQty: 12, unit: 'dozen' },
+        { name: 'Batting Helmets', icon: '⛑️', defaultQty: 2, unit: 'each' },
+        { name: 'Bats', icon: '🏏', defaultQty: 4, unit: 'each' },
+        { name: 'Sliding Mitts', icon: '🧤', defaultQty: 6, unit: 'pairs' },
+        { name: 'Sunglasses', icon: '🕶️', defaultQty: 10, unit: 'each' },
+        { name: 'Necklaces', icon: '📿', defaultQty: 15, unit: 'each' },
+        { name: 'Shorts', icon: '🩳', defaultQty: 20, unit: 'pairs' },
+        { name: 'Socks', icon: '🧦', defaultQty: 30, unit: 'pairs' },
+        { name: 'Water Bottles', icon: '💧', defaultQty: 15, unit: 'each' },
+        { name: 'First Aid Kit', icon: '🏥', defaultQty: 1, unit: 'kit' }
+      ],
+      soccer: [
+        { name: 'Soccer Balls', icon: '⚽', defaultQty: 12, unit: 'each' },
+        { name: 'Shin Guards', icon: '🦵', defaultQty: 15, unit: 'pairs' },
+        { name: 'Goalie Gloves', icon: '🧤', defaultQty: 4, unit: 'pairs' },
+        { name: 'Cones', icon: '🔺', defaultQty: 20, unit: 'each' },
+        { name: 'Sunglasses', icon: '🕶️', defaultQty: 10, unit: 'each' },
+        { name: 'Necklaces', icon: '📿', defaultQty: 15, unit: 'each' },
+        { name: 'Shorts', icon: '🩳', defaultQty: 20, unit: 'pairs' },
+        { name: 'Socks', icon: '🧦', defaultQty: 30, unit: 'pairs' },
+        { name: 'Water Bottles', icon: '💧', defaultQty: 15, unit: 'each' },
+        { name: 'First Aid Kit', icon: '🏥', defaultQty: 1, unit: 'kit' }
+      ]
+    };
+
+    // Store current packing data for editing
+    let currentPackingData = null;
+
     function generatePackingList() {
       const sport = document.getElementById('sport').value;
       const age = document.getElementById('age-group').value;
@@ -367,17 +420,18 @@
       const totalPlayers = teamSize * teamCount;
       const jerseysNeeded = Math.ceil(totalPlayers * multiplier);
 
-      let html = '';
+      let jerseyHtml = '';
+      let gearHtml = '';
       let totalJerseys = 0;
-      let summaryStats = [];
+      let totalGear = 0;
 
       // Baseball jerseys
       if (sport === 'baseball' || sport === 'both') {
         const dist = SIZE_DIST[age] || SIZE_DIST.u12;
         const baseballJerseys = POPULAR_JERSEYS.baseball.slice(0, Math.min(teamCount + 1, 6));
         
-        let baseballHtml = '<div class="jersey-section"><h4>⚾ Baseball Jerseys</h4><div class="jersey-grid">';
-        baseballJerseys.forEach(jersey => {
+        let baseballHtml = '<div class="jersey-section"><h4>⚾ Baseball Jerseys <span style="font-size:.7em;color:var(--gray);font-weight:400;">(click numbers to edit)</span></h4><div class="jersey-grid">';
+        baseballJerseys.forEach((jersey, idx) => {
           const qty = Math.ceil(jerseysNeeded / baseballJerseys.length);
           totalJerseys += qty;
           
@@ -385,22 +439,20 @@
           Object.entries(dist).forEach(([size, pct]) => {
             const sizeQty = Math.ceil(qty * pct);
             if (sizeQty > 0) {
-              sizeHtml += `<span class="size-tag">${size}: <span class="qty">${sizeQty}</span></span>`;
+              sizeHtml += `<span class="size-tag">${size}: <input type="number" class="qty-input" value="${sizeQty}" data-jersey="bb-${idx}" data-size="${size}" style="width:40px;background:transparent;border:none;color:var(--gold);font-weight:700;text-align:center;" onchange="updateJerseyTotal('bb-${idx}')"> <span class="unit">ea</span></span>`;
             }
           });
           
           baseballHtml += `
-            <div class="jersey-item">
+            <div class="jersey-item" data-jersey-id="bb-${idx}">
               <div class="jersey-item-name">${jersey}</div>
               <div class="jersey-item-details">${sizeHtml}</div>
-              <div style="margin-top:8px;font-size:.85em;color:var(--gray);">Total: <strong style="color:var(--gold);">${qty}</strong></div>
+              <div style="margin-top:8px;font-size:.85em;color:var(--gray);">Total: <strong style="color:var(--gold);" class="jersey-total" id="bb-${idx}-total">${qty}</strong></div>
             </div>
           `;
         });
         baseballHtml += '</div></div>';
-        html += baseballHtml;
-        
-        summaryStats.push({ label: 'Baseball Jerseys', value: totalJerseys });
+        jerseyHtml += baseballHtml;
       }
 
       // Soccer jerseys
@@ -409,8 +461,8 @@
         const soccerJerseys = POPULAR_JERSEYS.soccer.slice(0, Math.min(teamCount + 1, 6));
         let soccerTotal = 0;
         
-        let soccerHtml = '<div class="jersey-section"><h4>⚽ Soccer Jerseys</h4><div class="jersey-grid">';
-        soccerJerseys.forEach(jersey => {
+        let soccerHtml = '<div class="jersey-section"><h4>⚽ Soccer Jerseys <span style="font-size:.7em;color:var(--gray);font-weight:400;">(click numbers to edit)</span></h4><div class="jersey-grid">';
+        soccerJerseys.forEach((jersey, idx) => {
           const qty = Math.ceil(jerseysNeeded / soccerJerseys.length);
           soccerTotal += qty;
           
@@ -418,23 +470,66 @@
           Object.entries(dist).forEach(([size, pct]) => {
             const sizeQty = Math.ceil(qty * pct);
             if (sizeQty > 0) {
-              sizeHtml += `<span class="size-tag">${size}: <span class="qty">${sizeQty}</span></span>`;
+              sizeHtml += `<span class="size-tag">${size}: <input type="number" class="qty-input" value="${sizeQty}" data-jersey="sc-${idx}" data-size="${size}" style="width:40px;background:transparent;border:none;color:var(--gold);font-weight:700;text-align:center;" onchange="updateJerseyTotal('sc-${idx}')"> <span class="unit">ea</span></span>`;
             }
           });
           
           soccerHtml += `
-            <div class="jersey-item">
+            <div class="jersey-item" data-jersey-id="sc-${idx}">
               <div class="jersey-item-name">${jersey}</div>
               <div class="jersey-item-details">${sizeHtml}</div>
-              <div style="margin-top:8px;font-size:.85em;color:var(--gray);">Total: <strong style="color:var(--gold);">${qty}</strong></div>
+              <div style="margin-top:8px;font-size:.85em;color:var(--gray);">Total: <strong style="color:var(--gold);" class="jersey-total" id="sc-${idx}-total">${qty}</strong></div>
             </div>
           `;
         });
         soccerHtml += '</div></div>';
-        html += soccerHtml;
-        
-        summaryStats.push({ label: 'Soccer Jerseys', value: soccerTotal });
+        jerseyHtml += soccerHtml;
         totalJerseys += soccerTotal;
+      }
+
+      // Gear items
+      const sports = sport === 'both' ? ['baseball', 'soccer'] : [sport];
+      let allGear = [];
+      
+      sports.forEach(s => {
+        if (GEAR_ITEMS[s]) {
+          allGear = allGear.concat(GEAR_ITEMS[s].map(g => ({...g, sport: s})));
+        }
+      });
+
+      // Remove duplicates
+      const seen = new Set();
+      allGear = allGear.filter(g => {
+        if (seen.has(g.name)) return false;
+        seen.add(g.name);
+        return true;
+      });
+
+      if (allGear.length > 0) {
+        gearHtml = '<div class="jersey-section"><h4>🎒 Gear & Equipment <span style="font-size:.7em;color:var(--gray);font-weight:400;">(click numbers to edit)</span></h4><div class="jersey-grid">';
+        
+        allGear.forEach((item, idx) => {
+          const qty = Math.ceil(item.defaultQty * (teamCount > 1 ? teamCount * 0.7 : 1));
+          totalGear += qty;
+          
+          gearHtml += `
+            <div class="jersey-item gear-item" data-gear-id="gear-${idx}">
+              <div class="jersey-item-name">${item.icon} ${item.name}</div>
+              <div class="jersey-item-details">
+                <span class="size-tag">
+                  Qty: <input type="number" class="qty-input" value="${qty}" data-gear="gear-${idx}" style="width:50px;background:transparent;border:none;color:var(--gold);font-weight:700;text-align:center;"> <span class="unit">${item.unit}</span>
+                </span>
+              </div>
+              <div style="margin-top:8px;font-size:.8em;color:var(--gray);">
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                  <input type="checkbox" checked style="accent-color:var(--gold);"> Pack this item
+                </label>
+              </div>
+            </div>
+          `;
+        });
+        
+        gearHtml += '</div></div>';
       }
 
       // Summary bar
@@ -449,7 +544,11 @@
         </div>
         <div class="summary-stat">
           <div class="summary-stat-value">${totalJerseys}</div>
-          <div class="summary-stat-label">Total Jerseys</div>
+          <div class="summary-stat-label">Jerseys</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-stat-value">${totalGear}</div>
+          <div class="summary-stat-label">Gear Items</div>
         </div>
         <div class="summary-stat">
           <div class="summary-stat-value">${backupPct}%</div>
@@ -466,7 +565,11 @@
         'Include inventory sheet',
         'Bring zip ties for organization',
         'Pack marker pens for labeling',
-        'Check jersey condition (no stains/tears)'
+        'Check jersey condition (no stains/tears)',
+        'Count all gear items',
+        'Pack first aid kit',
+        'Verify water bottle count',
+        'Double-check sunglasses & accessories'
       ];
 
       const checklistHtml = checklistItems.map((item, i) => `
@@ -479,20 +582,57 @@
       // Update DOM
       document.getElementById('results-title').textContent = `📦 ${tourneyName} — Packing List`;
       document.getElementById('summary-bar').innerHTML = summaryHtml;
-      document.getElementById('jersey-sections').innerHTML = html;
+      document.getElementById('jersey-sections').innerHTML = jerseyHtml;
+      document.getElementById('gear-sections').innerHTML = gearHtml;
       document.getElementById('checklist-items').innerHTML = checklistHtml;
       document.getElementById('results').classList.add('show');
 
-      // Save to localStorage
-      saveToHistory({
+      // Store data
+      currentPackingData = {
         name: tourneyName,
         sport, age, teamSize, teamCount, backupPct,
-        totalJerseys, totalPlayers,
+        totalJerseys, totalGear, totalPlayers,
         created: new Date().toISOString()
-      });
+      };
+
+      // Save to localStorage
+      saveToHistory(currentPackingData);
 
       // Scroll to results
       document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateJerseyTotal(jerseyId) {
+      const item = document.querySelector(`[data-jersey-id="${jerseyId}"]`);
+      if (!item) return;
+      
+      const inputs = item.querySelectorAll('.qty-input');
+      let total = 0;
+      inputs.forEach(input => {
+        total += parseInt(input.value) || 0;
+      });
+      
+      const totalEl = document.getElementById(`${jerseyId}-total`);
+      if (totalEl) totalEl.textContent = total;
+      
+      // Update summary
+      updateSummary();
+    }
+
+    function updateSummary() {
+      let totalJerseys = 0;
+      document.querySelectorAll('.jersey-total').forEach(el => {
+        totalJerseys += parseInt(el.textContent) || 0;
+      });
+      
+      let totalGear = 0;
+      document.querySelectorAll('.gear-item .qty-input').forEach(input => {
+        totalGear += parseInt(input.value) || 0;
+      });
+      
+      const stats = document.querySelectorAll('.summary-stat-value');
+      if (stats[2]) stats[2].textContent = totalJerseys;
+      if (stats[3]) stats[3].textContent = totalGear;
     }
 
     function saveToHistory(packingList) {
