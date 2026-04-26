@@ -207,16 +207,7 @@
 </head>
 <body>
     <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-    <div class="header">
-        <a href="index.html" class="logo-link">
-            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-            <span class="logo-text">FUTURE STARS</span>
-        </a>
         <div class="user-info">
-            <span id="dark-mode-toggle"></span>
-            <span class="user-name" id="user-name"></span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
     </div>
 
     <div class="page">
@@ -277,7 +268,6 @@
 
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
-        document.getElementById('user-name').textContent = NAME.toUpperCase();
 
         const MONTH_MAP = {
             'jan':0, 'january':0, 'feb':1, 'febuary':1, 'february':1,

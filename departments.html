@@ -64,15 +64,7 @@
     <div class="progress-bar" id="progress-bar"></div>
     <div class="particles" id="particles"></div>
     <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-    <div class="header">
-        <a href="index.html" class="logo-link"><img src="images/fs.jpeg" alt="Future Stars" class="logo-img"><span class="logo-text">FUTURE STARS</span></a>
-        <div class="user-info">
-            <span id="dark-mode-toggle"></span>
-            <span class="user-name" id="user-name"></span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
     </div>
-    <nav class="nav" id="main-nav"></nav>
     
     <div class="main">
         <div class="welcome">Departments</div>
@@ -157,7 +149,6 @@
     
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
-        document.getElementById('user-name').textContent = NAME;
         
         function goToDept(dept) {
             // Could add department-specific routing here

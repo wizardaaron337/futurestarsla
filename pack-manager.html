@@ -595,7 +595,6 @@
         if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){
             window.location.href = "signin.html";
         }
-        document.getElementById('user-name').textContent = sessionStorage.getItem('fs_name') || '';
 
         // ─── State ──────────────────────────────────────────────
         let TRIPS = [];

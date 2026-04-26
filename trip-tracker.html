@@ -419,18 +419,8 @@
     <div class="progress-bar" id="progress-bar"></div>
     <div class="particles" id="particles"></div>
     <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-    <div class="header">
-        <a href="index.html" class="logo-link">
-            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-            <span class="logo-text">FUTURE STARS</span>
-        </a>
         <div class="user-info">
-            <span id="dark-mode-toggle"></span>
-            <span class="user-name" id="user-name"></span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
     </div>
-    <nav class="nav" id="main-nav"></nav>
 
     <div class="main">
         <div class="welcome">Trip Tracker</div>
@@ -481,21 +471,8 @@
 
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
-        document.getElementById('user-name').textContent = NAME.toUpperCase();
 
-        // Nav
-        (function() {
-            const role = sessionStorage.getItem('fs_role');
-            const nav = document.getElementById('main-nav');
-            if (!nav || !role) return;
-            const links = { owner: ['index','tournaments','inventory','trips','planner','team','tracker'], inventory: ['index','inventory','team','tracker'], logistics: ['index','trips','planner','team','tracker'], tournament: ['index','tournaments','team'] };
-            const labels = { index:'Home', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
-            const current = 'tracker';
-            nav.innerHTML = (links[role] || links.owner).map(p => {
-                const cls = p === current ? 'active' : '';
-                return `<a href="${p === 'tracker' ? 'trip-tracker' : p}.html" class="${cls}">${labels[p]}</a>`;
-            }).join('');
-        })();
+        
 
         // Trip status storage
         const STORAGE_KEY = 'fs_trip_status';

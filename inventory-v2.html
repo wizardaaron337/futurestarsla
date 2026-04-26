@@ -255,15 +255,7 @@
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>
-    <div class="header">
-        <a href="index.html" class="logo-link">
-            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-            <span class="logo-text">FUTURE STARS</span>
-        </a>
         <div class="user-info">
-            <span id="dark-mode-toggle"></span>
-            <span class="user-name" id="user-name"></span>
-        </div>
     </div>
 
     <div class="main">
@@ -296,7 +288,6 @@
         if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth") ){
             window.location.href = "signin.html";
         }
-        document.getElementById('user-name').textContent = sessionStorage.getItem('fs_name') || '';
 
         // Inventory Data
         // Render Inventory
