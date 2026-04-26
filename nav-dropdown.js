@@ -160,18 +160,18 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(201,162,39,0.15);
-            height: 52px;
+            height: 60px;
         }
         body {
-            padding-top: 52px !important;
+            padding-top: 60px !important;
         }
         #fs-nav-spacer {
-            height: 52px;
+            height: 60px;
         }
         #fs-top-nav-inner {
             max-width: 100%;
-            height: 52px;
-            padding: 0 16px;
+            height: 60px;
+            padding: 0 20px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -179,11 +179,11 @@
         #fs-nav-brand {
             font-family: 'Cinzel', serif;
             font-weight: 700;
-            font-size: 0.85em;
+            font-size: 1em;
             color: #C9A227;
             text-decoration: none;
-            letter-spacing: 1px;
-            padding-right: 16px;
+            letter-spacing: 2px;
+            padding-right: 20px;
             border-right: 1px solid rgba(201,162,39,0.15);
             white-space: nowrap;
         }
@@ -201,16 +201,17 @@
             border: none;
             color: rgba(168,164,152,0.7);
             font-family: 'Inter', sans-serif;
-            font-size: 0.8em;
-            font-weight: 500;
-            padding: 0 12px;
-            height: 52px;
+            font-size: 0.95em;
+            font-weight: 600;
+            padding: 0 18px;
+            height: 60px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.2s;
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
         .fs-tab-btn:hover {
             color: #F8F6F0;
@@ -221,7 +222,7 @@
             background: rgba(201,162,39,0.08);
         }
         .fs-tab-icon {
-            font-size: 1em;
+            font-size: 1.2em;
         }
         .fs-tab-arrow {
             font-size: 0.7em;
@@ -236,13 +237,13 @@
             position: absolute;
             top: 100%;
             left: 0;
-            min-width: 180px;
+            min-width: 220px;
             background: rgba(14,14,18,0.97);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(201,162,39,0.12);
-            border-radius: 0 0 10px 10px;
-            padding: 6px;
+            border-radius: 0 0 12px 12px;
+            padding: 8px;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-6px);
@@ -258,13 +259,13 @@
         .fs-drop-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 9px 14px;
+            gap: 12px;
+            padding: 12px 18px;
             color: rgba(168,164,152,0.8);
             text-decoration: none;
-            font-size: 0.82em;
-            font-weight: 450;
-            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 500;
+            border-radius: 8px;
             transition: all 0.15s;
         }
         .fs-drop-item:hover {
@@ -277,8 +278,8 @@
             font-weight: 600;
         }
         .fs-drop-icon {
-            font-size: 1em;
-            width: 20px;
+            font-size: 1.2em;
+            width: 24px;
             text-align: center;
         }
 
@@ -296,7 +297,7 @@
             flex-shrink: 0;
         }
         #fs-nav-user {
-            font-size: 0.78em;
+            font-size: 0.85em;
             color: rgba(168,164,152,0.6);
             font-weight: 500;
         }
@@ -304,9 +305,9 @@
             background: transparent;
             border: 1px solid rgba(42,40,36,0.5);
             border-radius: 6px;
-            padding: 4px 10px;
+            padding: 6px 12px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 1em;
             transition: all 0.2s;
             line-height: 1;
         }
