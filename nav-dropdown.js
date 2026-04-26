@@ -160,18 +160,18 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(201,162,39,0.15);
-            height: 60px;
+            height: 68px;
         }
         body {
-            padding-top: 60px !important;
+            padding-top: 68px !important;
         }
         #fs-nav-spacer {
-            height: 60px;
+            height: 68px;
         }
         #fs-top-nav-inner {
             max-width: 100%;
-            height: 60px;
-            padding: 0 20px;
+            height: 68px;
+            padding: 0 24px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -179,11 +179,11 @@
         #fs-nav-brand {
             font-family: 'Cinzel', serif;
             font-weight: 700;
-            font-size: 1em;
+            font-size: 1.15em;
             color: #C9A227;
             text-decoration: none;
-            letter-spacing: 2px;
-            padding-right: 20px;
+            letter-spacing: 3px;
+            padding-right: 24px;
             border-right: 1px solid rgba(201,162,39,0.15);
             white-space: nowrap;
         }
@@ -201,10 +201,10 @@
             border: none;
             color: rgba(168,164,152,0.7);
             font-family: 'Inter', sans-serif;
-            font-size: 0.95em;
+            font-size: 1.05em;
             font-weight: 600;
-            padding: 0 18px;
-            height: 60px;
+            padding: 0 22px;
+            height: 68px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -259,11 +259,11 @@
         .fs-drop-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 18px;
+            gap: 14px;
+            padding: 14px 20px;
             color: rgba(168,164,152,0.8);
             text-decoration: none;
-            font-size: 0.95em;
+            font-size: 1em;
             font-weight: 500;
             border-radius: 8px;
             transition: all 0.15s;
@@ -297,7 +297,7 @@
             flex-shrink: 0;
         }
         #fs-nav-user {
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: rgba(168,164,152,0.6);
             font-weight: 500;
         }
