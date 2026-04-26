@@ -1,5 +1,5 @@
 // Future Stars LA — Inventory Data
-// Shared between inventory-v2.html and dashboard.html
+// Shared between inventory-v2.html and index.html (home dashboard)
 
 const INVENTORY = {
     baseball: {

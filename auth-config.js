@@ -6,39 +6,39 @@
 const AUTH_CONFIG = {
     // Username + password login (change these as needed)
     users: {
-        'jr': { 
-            name: 'JR', 
-            role: 'owner', 
+        'jr': {
+            name: 'JR',
+            role: 'owner',
             password: 'jr26',
             emoji: '👑'
         },
-        'lane': { 
-            name: 'Lane', 
-            role: 'owner', 
+        'lane': {
+            name: 'Lane',
+            role: 'owner',
             password: 'lane26',
             emoji: '👑'
         },
-        'pj': { 
-            name: 'PJ', 
-            role: 'logistics', 
+        'pj': {
+            name: 'PJ',
+            role: 'logistics',
             password: 'pj26',
             emoji: '🚐'
         },
-        'caleb': { 
-            name: 'Caleb', 
-            role: 'tournament', 
+        'caleb': {
+            name: 'Caleb',
+            role: 'tournament',
             password: 'caleb26',
             emoji: '📞'
         },
-        'marlon': { 
-            name: 'Marlon', 
-            role: 'inventory', 
+        'marlon': {
+            name: 'Marlon',
+            role: 'inventory',
             password: 'marlon26',
             emoji: '📦'
         },
-        'backend': { 
-            name: 'Backend', 
-            role: 'inventory', 
+        'backend': {
+            name: 'Backend',
+            role: 'inventory',
             password: 'backend26',
             emoji: '⚙️'
         }
@@ -46,21 +46,20 @@ const AUTH_CONFIG = {
 
     // Role-based page permissions
     roles: {
-        owner: ['dashboard', 'tournaments', 'inventory-v2', 'trips', 'team', 'trip-planner', 'sortly-upload', 'tournament-scraper', 'pack-manager', 'pj-planner', 'trip-tracker', 'trip-plans', 'departments', 'privacy', 'contact'],
-        logistics: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'tournament-scraper', 'pj-planner', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
-        tournament: ['dashboard', 'tournaments', 'trips', 'trip-planner', 'team', 'inventory-v2', 'tournament-scraper', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
-        inventory: ['dashboard', 'inventory-v2', 'sortly-upload', 'pack-manager', 'team', 'trip-tracker', 'privacy', 'contact']
+        owner: ['index', 'tournaments', 'inventory-v2', 'trips', 'team', 'sortly-upload', 'tournament-scraper', 'pack-manager', 'pj-planner', 'trip-tracker', 'trip-plans', 'departments', 'privacy', 'contact'],    
+        logistics: ['index', 'tournaments', 'trips', 'team', 'tournament-scraper', 'pj-planner', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],    
+        tournament: ['index', 'tournaments', 'trips', 'team', 'inventory-v2', 'tournament-scraper', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
+        inventory: ['index', 'inventory-v2', 'sortly-upload', 'pack-manager', 'team', 'trip-tracker', 'privacy', 'contact']
     },
 
     // Navigation items per role
     navItems: [
         { page: 'index', label: 'Home', icon: '🏠', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-        { page: 'dashboard', label: 'Dashboard', icon: '📊', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
         { page: 'tournaments', label: 'Tournaments', icon: '🏆', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'inventory-v2', label: 'Inventory', icon: '📦', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trips', label: 'Trips', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'team', label: 'Team', icon: '👥', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-        { page: 'trip-planner', label: 'Trip Planner', icon: '📝', roles: ['owner', 'logistics', 'tournament'] },
+
         { page: 'tournament-scraper', label: 'Schedules', icon: '⏰', roles: ['owner', 'logistics', 'tournament'] },
 
         { page: 'pack-manager', label: 'Pack Manager', icon: '📦', roles: ['owner', 'tournament', 'inventory'] },

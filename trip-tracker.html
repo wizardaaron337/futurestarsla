@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -488,8 +488,8 @@
             const role = sessionStorage.getItem('fs_role');
             const nav = document.getElementById('main-nav');
             if (!nav || !role) return;
-            const links = { owner: ['dashboard','tournaments','inventory','trips','planner','team','tracker'], inventory: ['dashboard','inventory','team','tracker'], logistics: ['dashboard','trips','planner','team','tracker'], tournament: ['dashboard','tournaments','team'] };
-            const labels = { dashboard:'Dashboard', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
+            const links = { owner: ['index','tournaments','inventory','trips','planner','team','tracker'], inventory: ['index','inventory','team','tracker'], logistics: ['index','trips','planner','team','tracker'], tournament: ['index','tournaments','team'] };
+            const labels = { index:'Home', tournaments:'Tournaments', inventory:'Inventory', trips:'Trips', planner:'Planner', team:'Team', tracker:'Tracker', 'trip-plans':'Plans' };
             const current = 'tracker';
             nav.innerHTML = (links[role] || links.owner).map(p => {
                 const cls = p === current ? 'active' : '';

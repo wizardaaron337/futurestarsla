@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777155581-73ad001e";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -16,6 +16,7 @@
     <script src="tournament-data.js?v=1777089331"></script>
     <script src="nav-dropdown.js" defer></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="inventory-data.js?v=1"></script>
     <script src="fs-utils.js?v=1"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -533,10 +534,13 @@
             const outCount = currentlyOut.length;
             const doneCount = completed.length;
 
+            // Inventory stats
+            const bb = typeof INVENTORY !== 'undefined' && INVENTORY.baseball ? Object.keys(INVENTORY.baseball).length : 0;
+            const sc = typeof INVENTORY !== 'undefined' && INVENTORY.soccer ? Object.keys(INVENTORY.soccer).length : 0;
+            const totalStyles = bb + sc;
+
             content.innerHTML = `
-                <h3 class="section-title">🔗 Quick Links</h3>
-                <div class="quick-links" style="margin-bottom:24px;">${quickLinks}</div>
-                <div class="home-stats">
+                <div class="home-stats" style="margin-bottom:20px;">
                     <div class="stat-card">
                         <div class="stat-num">${allCounts}</div>
                         <div class="stat-label">Total Trips</div>
@@ -553,8 +557,22 @@
                         <div class="stat-num">${upCount}</div>
                         <div class="stat-label">Upcoming</div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-num">${totalStyles}</div>
+                        <div class="stat-label">Jersey Styles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">⚾ ${bb}</div>
+                        <div class="stat-label">Baseball</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num">⚽ ${sc}</div>
+                        <div class="stat-label">Soccer</div>
+                    </div>
                 </div>
-                <div style="height:24px"></div>
+                <div style="height:8px"></div>
+                <h3 class="section-title">🔗 Quick Links</h3>
+                <div class="quick-links" style="margin-bottom:24px;">${quickLinks}</div>
                 ${tripSection('📦 Need to Pack', '📦 pack', needPack, t => {
                     if (t.status === 'LOCKED IN') return '<span class="badge need">Needs Packing</span>';
                     return '<span class="badge pending">Unassigned</span>';
