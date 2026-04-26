@@ -113,48 +113,30 @@
 
     // Build the nav bar HTML
     const groups = getTabGroups();
-    const navHTML = `
-    <div id="fs-top-nav">
-        <div id="fs-top-nav-inner">
-            <a href="index.html" id="fs-nav-brand">Future Stars</a>
-            <div id="fs-nav-tabs">
-                ${groups.map(g => {
-                    if (g.tab.toLowerCase() === 'home') {
-                        return `
-                    <div class="fs-tab">
-                        <a href="index.html" class="fs-tab-btn fs-home-btn ${isActive('index') ? 'active' : ''}">
-                            <span class="fs-tab-icon">🏠</span>
-                            <span>Home</span>
-                        </a>
-                    </div>`;
-                    }
-                    return `
-                    <div class="fs-tab" data-tab="${g.tab.toLowerCase()}">
-                        <button class="fs-tab-btn" onclick="toggleFsDropdown('${g.tab.toLowerCase()}')">
-                            <span class="fs-tab-icon">${g.icon}</span>
-                            <span>${g.tab}</span>
-                            <span class="fs-tab-arrow">▾</span>
-                        </button>
-                        <div class="fs-dropdown" id="fs-drop-${g.tab.toLowerCase()}">
-                            ${g.children.map(item => `
-                                <a href="${item.page === 'index' ? 'signin.html' : item.page + suffix}" class="fs-drop-item ${isActive(item.page) ? 'active' : ''}">
-                                    <span class="fs-drop-icon">${item.icon}</span>
-                                    <span>${item.label}</span>
-                                </a>
-                            `).join('')}
-                        </div>
-                    </div>`;
-                }).join('')}
-            </div>
-            <div id="fs-nav-right">
-                <span id="dark-mode-toggle" style="display:inline-flex;align-items:center;"></span>
-                <span id="fs-nav-user">${userName}</span>
-                <button id="fs-nav-logout" onclick="fsNavLogout()" title="Log Out">🚪</button>
-            </div>
-        </div>
-    </div>
-    <div id="fs-nav-spacer"></div>
-    `;
+    function buildTabs() {
+        var html = '';
+        for (var i = 0; i < groups.length; i++) {
+            var g = groups[i];
+            if (g.tab.toLowerCase() === 'home') {
+                html += '<div class="fs-tab"><a href="index.html" class="fs-tab-btn fs-home-btn' + (isActive('index') ? ' active' : '') + '"><span class="fs-tab-icon">🏠</span><span>Home</span></a></div>';
+            } else {
+                html += '<div class="fs-tab" data-tab="' + g.tab.toLowerCase() + '">';
+                html += '<button class="fs-tab-btn" onclick="toggleFsDropdown(\'' + g.tab.toLowerCase() + '\')">';
+                html += '<span class="fs-tab-icon">' + g.icon + '</span><span>' + g.tab + '</span><span class="fs-tab-arrow">▾</span></button>';
+                html += '<div class="fs-dropdown" id="fs-drop-' + g.tab.toLowerCase() + '">';
+                for (var j = 0; j < g.children.length; j++) {
+                    var item = g.children[j];
+                    var href = item.page === 'index' ? 'signin.html' : item.page + suffix;
+                    var act = isActive(item.page) ? ' active' : '';
+                    html += '<a href="' + href + '" class="fs-drop-item' + act + '"><span class="fs-drop-icon">' + item.icon + '</span><span>' + item.label + '</span></a>';
+                }
+                html += '</div></div>';
+            }
+        }
+        return html;
+    }
+    var tabsHtml = buildTabs();
+    var navHTML = '<div id="fs-top-nav"><div id="fs-top-nav-inner"><a href="index.html" id="fs-nav-brand">Future Stars</a><div id="fs-nav-tabs">' + tabsHtml + '</div><div id="fs-nav-right"><span id="dark-mode-toggle" style="display:inline-flex;align-items:center;"></span><span id="fs-nav-user">' + userName + '</span><button id="fs-nav-logout" onclick="fsNavLogout()" title="Log Out">🚪</button></div></div></div><div id="fs-nav-spacer"></div>';
 
     const navCSS = `
     <style id="fs-nav-styles">
