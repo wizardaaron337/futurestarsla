@@ -118,7 +118,17 @@
         <div id="fs-top-nav-inner">
             <a href="index.html" id="fs-nav-brand">Future Stars</a>
             <div id="fs-nav-tabs">
-                ${groups.map(g => `
+                ${groups.map(g => {
+                    if (g.tab.toLowerCase() === 'home') {
+                        return `
+                    <div class="fs-tab">
+                        <a href="index.html" class="fs-tab-btn fs-home-btn ${isActive('index') ? 'active' : ''}">
+                            <span class="fs-tab-icon">🏠</span>
+                            <span>Home</span>
+                        </a>
+                    </div>`;
+                    }
+                    return `
                     <div class="fs-tab" data-tab="${g.tab.toLowerCase()}">
                         <button class="fs-tab-btn" onclick="toggleFsDropdown('${g.tab.toLowerCase()}')">
                             <span class="fs-tab-icon">${g.icon}</span>
@@ -133,8 +143,8 @@
                                 </a>
                             `).join('')}
                         </div>
-                    </div>
-                `).join('')}
+                    </div>`;
+                }).join('')}
             </div>
             <div id="fs-nav-right">
                 <span id="dark-mode-toggle" style="display:inline-flex;align-items:center;"></span>
@@ -216,6 +226,22 @@
         .fs-tab-btn:hover {
             color: #F8F6F0;
             background: rgba(201,162,39,0.06);
+        }
+        /* Home button (no dropdown, direct link) */
+        .fs-home-btn {
+            text-decoration: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(201,162,39,0.15), rgba(201,162,39,0.05));
+            color: rgba(168,164,152,0.85) !important;
+        }
+        .fs-home-btn:hover {
+            background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(201,162,39,0.1)) !important;
+            color: #E8C84B !important;
+        }
+        .fs-home-btn.active {
+            background: linear-gradient(135deg, rgba(201,162,39,0.2), rgba(201,162,39,0.08)) !important;
+            color: #E8C84B !important;
+        }
         }
         .fs-tab-btn.open {
             color: #E8C84B;
