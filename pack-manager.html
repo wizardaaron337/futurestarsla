@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777217649-5e325576";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pack Manager - Future Stars LA</title>
@@ -54,7 +54,6 @@
         .user-info { display: flex; align-items: center; gap: 12px; }
         .user-name { font-size: 0.85em; color: var(--gray); }
         .main { max-width: 1100px; margin: 0 auto; padding: 20px; }
-
         .page-title {
             font-family: 'Cinzel', serif;
             font-size: 1.4em;
@@ -66,7 +65,6 @@
             color: var(--gray);
             margin-bottom: 24px;
         }
-
         /* Tabs */
         .tabs {
             display: flex;
@@ -98,7 +96,6 @@
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
         /* Create Trip Form */
         .form-card {
             background: var(--black-card);
@@ -141,7 +138,6 @@
             outline: none;
             border-color: var(--gold);
         }
-
         /* Sport filter buttons */
         .sport-filters {
             display: flex;
@@ -166,7 +162,6 @@
             border-color: var(--gold);
             font-weight: 600;
         }
-
         /* Jersey picker - card grid */
         .jersey-grid {
             display: grid;
@@ -210,7 +205,6 @@
             transition: opacity 0.15s;
         }
         .jersey-card.selected .check { opacity: 1; }
-
         /* Qty/size row for each selected jersey */
         .selected-section {
             background: var(--black);
@@ -274,7 +268,6 @@
             padding: 2px 6px;
         }
         .selected-item .remove-btn:hover { opacity: 1; }
-
         .form-actions {
             display: flex;
             gap: 10px;
@@ -295,7 +288,6 @@
         .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--gray); }
         .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
-
         .trip-section { margin-bottom: 28px; }
         .section-header {
             display: flex;
@@ -315,7 +307,6 @@
             font-size: 0.85em;
             color: var(--gray);
         }
-
         .trip-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -418,7 +409,6 @@
         .btn-sm.red { border-color: var(--red); color: var(--red); }
         .btn-sm.red:hover { background: rgba(239,83,80,0.1); }
         .btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -426,7 +416,6 @@
         }
         .empty-state .big-emoji { font-size: 3em; margin-bottom: 12px; display: block; }
         .empty-state p { font-size: 0.9em; margin-bottom: 4px; }
-
         /* Quick Print Sheet */
         .print-sheet {
             display: flex;
@@ -478,7 +467,6 @@
             margin-bottom: 10px;
             line-height: 1.6;
         }
-
         @media (max-width: 768px) {
             .main { padding: 12px; }
             .trip-grid { grid-template-columns: 1fr; }
@@ -507,22 +495,15 @@
             <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
             <span class="logo-text">FUTURE STARS</span>
         </a>
-        <div class="user-info">
-            <span id="dark-mode-toggle"></span>
-            <span class="user-name" id="user-name"></span>
-        </div>
     </div>
-
     <div class="main">
         <div class="page-title no-print">📦 Pack Manager</div>
         <div class="page-subtitle no-print">Create packing trips, pick jerseys with quantities, print checkout sheets for the crew.</div>
-
         <!-- Tabs -->
         <div class="tabs no-print">
             <button class="tab-btn active" onclick="switchTab('create')">➕ New Trip</button>
             <button class="tab-btn" onclick="switchTab('trips')">🚐 All Trips</button>
         </div>
-
         <!-- TAB: Create Trip -->
         <div class="tab-content active" id="tab-create">
             <div class="form-card">
@@ -552,7 +533,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="form-card">
                 <h3>👕 Pick Jerseys</h3>
                 <div class="sport-filters" id="picker-filters">
@@ -561,7 +541,6 @@
                     <button class="sport-btn" data-filter="soccer" onclick="filterPicker('soccer')">⚽ Soccer</button>
                 </div>
                 <div class="jersey-grid" id="jersey-picker"></div>
-
                 <div id="selected-items-section" style="display:none;">
                     <h4 style="font-size:0.75em;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">
                         ✅ Selected Jerseys — Set Quantities & Sizes
@@ -570,14 +549,12 @@
                         <div id="selected-items"></div>
                     </div>
                 </div>
-
                 <div class="form-actions">
                     <button class="btn btn-primary" id="create-btn" onclick="createTrip()">➕ Create Trip</button>
                     <button class="btn btn-secondary" onclick="clearForm()">Clear All</button>
                 </div>
             </div>
         </div>
-
         <!-- TAB: All Trips -->
         <div class="tab-content" id="tab-trips">
             <div class="trip-section">
@@ -589,23 +566,19 @@
             </div>
         </div>
     </div>
-
     <script>
         // ─── Auth ───────────────────────────────────────────────
         if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){
             window.location.href = "signin.html";
         }
-
         // ─── State ──────────────────────────────────────────────
         let TRIPS = [];
         let selectedJerseys = [];  // [{name, sport, qty, size}]
         let pickerFilter = 'all';
-
         // ─── Init ───────────────────────────────────────────────
         try {
             TRIPS = JSON.parse(localStorage.getItem('fs_trips_pack')) || [];
         } catch(e) { TRIPS = []; }
-
         // ─── Tab Switching ─────────────────────────────────────
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -618,23 +591,19 @@
                 document.getElementById('tab-trips').classList.add('active');
             }
         }
-
         // ─── Jersey Picker ─────────────────────────────────────
         function renderJerseyPicker() {
             const picker = document.getElementById('jersey-picker');
             let html = '';
             const allJerseys = [];
-
             Object.entries(INVENTORY.baseball || {}).forEach(([name, data]) => {
                 allJerseys.push({ name, sport: 'baseball', data });
             });
             Object.entries(INVENTORY.soccer || {}).forEach(([name, data]) => {
                 allJerseys.push({ name, sport: 'soccer', data });
             });
-
             const filtered = pickerFilter === 'all' ? allJerseys
                 : allJerseys.filter(j => j.sport === pickerFilter);
-
             filtered.forEach(j => {
                 const selected = selectedJerseys.some(s => s.name === j.name);
                 const emoji = j.sport === 'baseball' ? '⚾' : '⚽';
@@ -644,17 +613,14 @@
                     <div class="jersey-name">${j.name}</div>
                 </div>`;
             });
-
             if (filtered.length === 0) {
                 html = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--gray);font-size:0.9em;">
                     No jerseys found for this sport.
                 </div>`;
             }
-
             picker.innerHTML = html;
             updateSelectedSection();
         }
-
         function filterPicker(filter) {
             pickerFilter = filter;
             document.querySelectorAll('.sport-btn').forEach(b => {
@@ -662,7 +628,6 @@
             });
             renderJerseyPicker();
         }
-
         function toggleJersey(name, sport) {
             const idx = selectedJerseys.findIndex(s => s.name === name);
             if (idx >= 0) {
@@ -672,16 +637,13 @@
             }
             renderJerseyPicker();
         }
-
         function updateSelectedSection() {
             const section = document.getElementById('selected-items-section');
             const container = document.getElementById('selected-items');
-
             if (selectedJerseys.length === 0) {
                 section.style.display = 'none';
                 return;
             }
-
             section.style.display = 'block';
             let html = '';
             selectedJerseys.forEach((item, idx) => {
@@ -702,38 +664,32 @@
             });
             container.innerHTML = html;
         }
-
         function getSizeOptions(sport) {
             if (sport === 'baseball') {
                 return ['Mixed', 'YS', 'YM', 'YL', 'YXL', 'AS'];
             }
             return ['Mixed', '20', '22', '24', '26', '28', 'S', 'M', 'L', 'XL'];
         }
-
         function updateItemQty(idx, val) {
             if (selectedJerseys[idx]) {
                 selectedJerseys[idx].qty = parseInt(val) || 1;
             }
         }
-
         function updateItemSize(idx, val) {
             if (selectedJerseys[idx]) {
                 selectedJerseys[idx].size = val;
             }
         }
-
         function removeJersey(idx) {
             selectedJerseys.splice(idx, 1);
             renderJerseyPicker();
         }
-
         // ─── Create Trip ───────────────────────────────────────
         function createTrip() {
             const name = document.getElementById('trip-name').value.trim();
             const date = document.getElementById('trip-date').value;
             const location = document.getElementById('trip-location').value.trim();
             const sport = document.getElementById('trip-sport').value;
-
             if (!name || !date) {
                 alert('Please fill in trip name and date');
                 return;
@@ -742,14 +698,12 @@
                 alert('Select at least one jersey');
                 return;
             }
-
             const items = selectedJerseys.map(s => ({
                 name: s.name,
                 sport: s.sport,
                 qty: s.qty,
                 size: s.size
             }));
-
             TRIPS.push({
                 id: Date.now().toString(),
                 name, date,
@@ -757,12 +711,10 @@
                 sport, items,
                 shipped: false
             });
-
             saveTrips();
             clearForm();
             switchTab('trips');
         }
-
         function clearForm() {
             document.getElementById('trip-name').value = '';
             document.getElementById('trip-date').value = '';
@@ -770,13 +722,11 @@
             selectedJerseys = [];
             renderJerseyPicker();
         }
-
         // ─── Trip List ─────────────────────────────────────────
         function renderTrips() {
             const container = document.getElementById('trip-list');
             document.getElementById('trip-count').textContent =
                 `${TRIPS.length} trip${TRIPS.length !== 1 ? 's' : ''}`;
-
             if (TRIPS.length === 0) {
                 container.innerHTML = `<div class="empty-state">
                     <span class="big-emoji">📦</span>
@@ -785,17 +735,14 @@
                 </div>`;
                 return;
             }
-
             const sorted = [...TRIPS].sort((a, b) => {
                 if (a.shipped !== b.shipped) return a.shipped ? 1 : -1;
                 return new Date(b.date) - new Date(a.date);
             });
-
             container.innerHTML = sorted.map(trip => {
                 const itemsHtml = trip.items.map(i =>
                     `<span class="trip-item-tag">${i.name} <span class="qty">×${i.qty}</span> <span style="color:var(--gray-dark);font-size:0.85em;">(${i.size})</span></span>`
                 ).join('');
-
                 return `<div class="trip-card ${trip.shipped ? 'shipped' : ''}">
                     <div class="trip-card-header">
                         <span class="trip-name">${trip.name}</span>
@@ -818,12 +765,10 @@
                 </div>`;
             }).join('');
         }
-
         function saveTrips() {
             localStorage.setItem('fs_trips_pack', JSON.stringify(TRIPS));
             renderTrips();
         }
-
         function markShipped(id) {
             const trip = TRIPS.find(t => t.id === id);
             if (trip && confirm(`Mark "${trip.name}" as shipped?`)) {
@@ -831,7 +776,6 @@
                 saveTrips();
             }
         }
-
         function markReady(id) {
             const trip = TRIPS.find(t => t.id === id);
             if (trip) {
@@ -839,7 +783,6 @@
                 saveTrips();
             }
         }
-
         function deleteTrip(id) {
             const trip = TRIPS.find(t => t.id === id);
             if (trip && confirm(`Delete "${trip.name}"?`)) {
@@ -847,19 +790,15 @@
                 saveTrips();
             }
         }
-
         // ─── Print Packing Sheet ────────────────────────────────
         function printPackingSheet(id) {
             const trip = TRIPS.find(t => t.id === id);
             if (!trip) return;
-
             const w = window.open('', '_blank');
             const today = new Date().toLocaleDateString();
-
             // Group items by sport for cleaner display
             const baseballItems = trip.items.filter(i => i.sport === 'baseball');
             const soccerItems = trip.items.filter(i => i.sport === 'soccer');
-
             const renderItems = (items, sportEmoji) => items.map(i => `
                 <div class="print-check-row">
                     <div class="checkbox"></div>
@@ -867,7 +806,6 @@
                     <span class="item-qty">${i.qty} × ${i.size}</span>
                 </div>
             `).join('');
-
             let bodyHtml = '';
             if (baseballItems.length > 0) {
                 bodyHtml += `<div class="print-card">
@@ -881,10 +819,9 @@
                     ${renderItems(soccerItems, '⚽')}
                 </div>`;
             }
-
             w.document.write(`
                 <html><head>
-<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777217649-5e325576";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
                 <title>Packing Sheet - ${trip.name}</title>
                 <style>
                     * { margin: 0; padding: 0; box-sizing: border-box; }

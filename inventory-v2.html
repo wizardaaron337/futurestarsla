@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
-
+<script>var _buildId="1777217649-5e325576";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -79,13 +78,11 @@
             font-size: 0.8em;
             letter-spacing: 1px;
         }
-
         .main {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
-
         /* Tab Switcher */
         .tabs {
             display: flex;
@@ -112,7 +109,6 @@
             border-color: var(--gold);
             color: var(--gold);
         }
-
         /* Compact Inventory - Card Layout */
         .inv-section {
             margin-bottom: 32px;
@@ -243,7 +239,6 @@
             letter-spacing: 0.5px;
         }
         .jersey-card .card-low-badge.show { display: block; }
-
         @media (max-width: 768px) {
             .main { padding: 12px; }
             .jersey-grid { grid-template-columns: 1fr; }
@@ -255,9 +250,6 @@
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>
-        <div class="user-info">
-    </div>
-
     <div class="main">
         <div id="inv-summary-strip" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px;"></div>
         <div class="export-bar" style="margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
@@ -273,7 +265,6 @@
             </div>
             <div class="jersey-grid" id="bb-table"></div>
         </div>
-
         <div class="inv-section">
             <div class="inv-header">
                 <span class="inv-title">⚽ Soccer</span>
@@ -282,19 +273,16 @@
             <div class="jersey-grid" id="sc-table"></div>
         </div>
     </div>
-
     <script>
         // Auth check
         if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth") ){
             window.location.href = "signin.html";
         }
-
         // Inventory Data
         // Render Inventory
         function renderInventory() {
             let bbTotal = 0, scTotal = 0, bbCount = 0, scCount = 0;
             let bbLow = 0, scLow = 0, bbOut = 0, scOut = 0;
-
             function renderCard(name, data, sport) {
                 const sizes = Object.entries(data.sizes);
                 const anyLow = sizes.some(([,qty]) => qty > 0 && qty < 10);
@@ -318,14 +306,12 @@
                     <div class="card-sizes">${dots}</div>
                 </div>`;
             }
-
             function countLow(sizes) {
                 return Object.values(sizes).filter(q => q > 0 && q < 10).length;
             }
             function countOut(sizes) {
                 return Object.values(sizes).filter(q => q === 0).length;
             }
-
             const bbGrid = document.getElementById('bb-table');
             bbGrid.innerHTML = Object.entries(INVENTORY.baseball).map(([name, data]) => {
                 bbTotal += data.total;
@@ -335,7 +321,6 @@
                 return renderCard(name, data, 'baseball');
             }).join('');
             document.getElementById('bb-count').textContent = `${bbCount} items · ${bbTotal} total`;
-
             const scGrid = document.getElementById('sc-table');
             scGrid.innerHTML = Object.entries(INVENTORY.soccer).map(([name, data]) => {
                 scTotal += data.total;
@@ -345,7 +330,6 @@
                 return renderCard(name, data, 'soccer');
             }).join('');
             document.getElementById('sc-count').textContent = `${scCount} items · ${scTotal} total`;
-
             // Summary strip
             const strip = document.getElementById('inv-summary-strip');
             if (strip) {
@@ -371,7 +355,6 @@
                 `;
             }
         }
-
         // Export inventory to CSV or JSON
         function exportInventory(format) {
             const timestamp = new Date().toISOString().split('T')[0];
@@ -397,7 +380,6 @@
                 downloadFile(JSON.stringify(data, null, 2), `fs-inventory-${timestamp}.json`, 'application/json');
             }
         }
-
         function downloadFile(content, filename, type) {
             const blob = new Blob([content], { type });
             const url = URL.createObjectURL(blob);
@@ -409,7 +391,6 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-
         // Low stock alerts
         function checkLowStock() {
             const alerts = [];
@@ -449,11 +430,9 @@
                 container.innerHTML = '';
             }
         }
-
         // Init
         renderInventory();
         checkLowStock();
-
         // Auto-refresh inventory every 30 seconds
         if (window.FSUtils) {
             FSUtils.autoRefresh(() => {

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
-
+<script>var _buildId="1777217649-5e325576";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -136,7 +135,6 @@
             letter-spacing: 1px;
         }
         .subtitle { color: var(--gray); margin-bottom: 35px; font-size: 1em; }
-
         /* Tabs */
         .tabs {
             display: flex;
@@ -172,7 +170,6 @@
             font-size: 0.75em;
             font-family: 'Inter', sans-serif;
         }
-
         /* Trip Cards */
         .trips-grid {
             display: grid;
@@ -233,7 +230,6 @@
             color: var(--gray);
         }
         .meta-tag.sport { color: var(--gold); border-color: rgba(201,162,39,0.2); }
-
         /* Jersey Section */
         .jersey-section {
             margin-top: 16px;
@@ -268,7 +264,6 @@
             color: var(--gold);
             font-weight: 700;
         }
-
         /* Actions */
         .actions {
             display: flex;
@@ -302,7 +297,6 @@
             color: var(--white);
         }
         .btn-success:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(76,175,80,0.3); }
-
         /* Modal */
         .modal-overlay {
             display: none;
@@ -378,7 +372,6 @@
             color: var(--white);
             font-size: 0.9em;
         }
-
         /* Return Report */
         .return-report {
             background: rgba(76,175,80,0.05);
@@ -401,7 +394,6 @@
             font-size: 0.85em;
         }
         .return-item:last-child { border-bottom: none; }
-
         @media (max-width: 768px) {
             .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
             .nav { padding: 10px 20px; }
@@ -419,13 +411,9 @@
     <div class="progress-bar" id="progress-bar"></div>
     <div class="particles" id="particles"></div>
     <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-        <div class="user-info">
-    </div>
-
     <div class="main">
         <div class="welcome">Trip Tracker</div>
         <div class="subtitle" id="subtitle">Manage trips, track jerseys, report returns</div>
-
         <div class="tabs">
             <button class="tab active" onclick="switchTab('upcoming')" id="tab-upcoming">
                 Upcoming <span class="badge" id="count-upcoming">0</span>
@@ -437,12 +425,10 @@
                 Completed <span class="badge" id="count-completed">0</span>
             </button>
         </div>
-
         <div id="content-upcoming" class="tab-content"></div>
         <div id="content-out" class="tab-content" style="display:none;"></div>
         <div id="content-completed" class="tab-content" style="display:none;"></div>
     </div>
-
     <!-- Pack Modal -->
     <div class="modal-overlay" id="pack-modal">
         <div class="modal">
@@ -455,7 +441,6 @@
             </div>
         </div>
     </div>
-
     <!-- Check In Modal -->
     <div class="modal-overlay" id="checkin-modal">
         <div class="modal">
@@ -468,46 +453,37 @@
             </div>
         </div>
     </div>
-
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
-
         
-
         // Trip status storage
         const STORAGE_KEY = 'fs_trip_status';
         const PACKING_KEY = 'fs_trip_packing';
         const RETURNS_KEY = 'fs_trip_returns';
-
         function getTripData() {
             const status = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             const packing = JSON.parse(localStorage.getItem(PACKING_KEY) || '{}');
             const returns = JSON.parse(localStorage.getItem(RETURNS_KEY) || '{}');
             return { status, packing, returns };
         }
-
         function setTripStatus(tripId, status) {
             const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             data[tripId] = status;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             render();
         }
-
         function setTripPacking(tripId, jerseys) {
             const data = JSON.parse(localStorage.getItem(PACKING_KEY) || '{}');
             data[tripId] = jerseys;
             localStorage.setItem(PACKING_KEY, JSON.stringify(data));
         }
-
         function setTripReturns(tripId, jerseys) {
             const data = JSON.parse(localStorage.getItem(RETURNS_KEY) || '{}');
             data[tripId] = jerseys;
             localStorage.setItem(RETURNS_KEY, JSON.stringify(data));
         }
-
         let currentTripId = null;
         let currentModal = null;
-
         // Jersey catalog
         const JERSEY_CATALOG = {
             'Soccer': ['Ronaldo Blue','Ronaldo Red','Ronaldo White','Ronaldo Special','Ronaldo WC',
@@ -520,7 +496,6 @@
                         'De LaCruz Reds','Crews Nationals','Skenes Pirates','Holliday Orioles',
                         'Trout Angels','Crow','Mariners','Freeman','Alverez','Henderson','Guerrero']
         };
-
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tab).classList.add('active');
@@ -528,54 +503,44 @@
             document.getElementById('content-' + tab).style.display = 'block';
             render();
         }
-
         function getTripStatus(trip) {
             const { status } = getTripData();
             return status[trip.id] || 'upcoming';
         }
-
         function render() {
             const { status, packing, returns } = getTripData();
             const activeTab = document.querySelector('.tab.active').id.replace('tab-', '');
-
             // Categorize trips
             const upcoming = [];
             const out = [];
             const completed = [];
-
             CREW_TRIPS.forEach(trip => {
                 const s = status[trip.id] || 'upcoming';
                 if (s === 'upcoming') upcoming.push(trip);
                 else if (s === 'out') out.push(trip);
                 else if (s === 'completed') completed.push(trip);
             });
-
             document.getElementById('count-upcoming').textContent = upcoming.length;
             document.getElementById('count-out').textContent = out.length;
             document.getElementById('count-completed').textContent = completed.length;
-
             // Render active tab
             if (activeTab === 'upcoming') renderTrips(upcoming, 'upcoming');
             else if (activeTab === 'out') renderTrips(out, 'out');
             else if (activeTab === 'completed') renderTrips(completed, 'completed');
         }
-
         function renderTrips(trips, type) {
             const container = document.getElementById('content-' + type);
             if (trips.length === 0) {
                 container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--gray);"><h3 style="font-family:Cinzel,serif; color:var(--gold); margin-bottom:10px;">No ${type} trips</h3></div>`;
                 return;
             }
-
             container.innerHTML = '<div class="trips-grid">' + trips.map(trip => {
                 const { packing: packingData, returns: returnsData } = getTripData();
                 const tripPacking = packingData[trip.id] || {};
                 const tripReturns = returnsData[trip.id] || {};
                 const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
-
                 let jerseyHtml = '';
                 let returnHtml = '';
-
                 if (Object.keys(tripPacking).length > 0) {
                     jerseyHtml = `
                         <div class="jersey-section">
@@ -591,7 +556,6 @@
                         </div>
                     `;
                 }
-
                 if (Object.keys(tripReturns).length > 0) {
                     returnHtml = `
                         <div class="return-report">
@@ -605,7 +569,6 @@
                         </div>
                     `;
                 }
-
                 let actionsHtml = '';
                 if (type === 'upcoming') {
                     actionsHtml = `
@@ -622,7 +585,6 @@
                         </div>
                     `;
                 }
-
                 return `
                     <div class="trip-card">
                         <div class="trip-header">
@@ -645,22 +607,18 @@
                 `;
             }).join('') + '</div>';
         }
-
         function markOut(tripId) {
             setTripStatus(tripId, 'out');
         }
-
         function markCompleted(tripId) {
             setTripStatus(tripId, 'completed');
         }
-
         function openPackModal(tripId) {
             currentTripId = tripId;
             currentModal = 'pack';
             const trip = CREW_TRIPS.find(t => t.id === tripId);
             const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
             const jerseys = JERSEY_CATALOG[sportType] || JERSEY_CATALOG['Soccer'];
-
             document.getElementById('pack-form').innerHTML = `
                 <p style="color:var(--gray); margin-bottom:16px;">Packing for: <strong style="color:var(--gold);">${trip.name}</strong></p>
                 ${jerseys.map(j => `
@@ -672,36 +630,30 @@
             `;
             document.getElementById('pack-modal').classList.add('active');
         }
-
         function savePack() {
             const trip = CREW_TRIPS.find(t => t.id === currentTripId);
             const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
             const jerseys = JERSEY_CATALOG[sportType] || JERSEY_CATALOG['Soccer'];
             const packed = {};
-
             jerseys.forEach(j => {
                 const val = document.getElementById('pack-' + j.replace(/\s+/g,'-')).value;
                 if (val && parseInt(val) > 0) {
                     packed[j] = parseInt(val);
                 }
             });
-
             setTripPacking(currentTripId, packed);
             closeModal();
             render();
         }
-
         function openCheckInModal(tripId) {
             currentTripId = tripId;
             currentModal = 'checkin';
             const { packing: packingData } = getTripData();
             const tripPacking = packingData[tripId] || {};
-
             if (Object.keys(tripPacking).length === 0) {
                 alert('No packing list found for this trip');
                 return;
             }
-
             document.getElementById('checkin-form').innerHTML = `
                 <p style="color:var(--gray); margin-bottom:16px;">Report returned jerseys:</p>
                 ${Object.entries(tripPacking).map(([name, packedQty]) => `
@@ -713,37 +665,31 @@
             `;
             document.getElementById('checkin-modal').classList.add('active');
         }
-
         function saveCheckIn() {
             const { packing: packingData } = getTripData();
             const tripPacking = packingData[currentTripId] || {};
             const returned = {};
-
             Object.keys(tripPacking).forEach(name => {
                 const val = document.getElementById('return-' + name.replace(/\s+/g,'-')).value;
                 if (val && parseInt(val) > 0) {
                     returned[name] = parseInt(val);
                 }
             });
-
             setTripReturns(currentTripId, returned);
             closeModal();
             render();
         }
-
         function closeModal() {
             document.getElementById('pack-modal').classList.remove('active');
             document.getElementById('checkin-modal').classList.remove('active');
             currentTripId = null;
             currentModal = null;
         }
-
         function logout() {
             localStorage.clear();
             sessionStorage.clear();
             window.location.href = 'signin.html';
         }
-
         // Init
         render();
     </script>

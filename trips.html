@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
-
+<script>var _buildId="1777217649-5e325576";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
 <!-- build: 1777090712-83d9d3e8 -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -56,7 +55,6 @@
             color: var(--gray); border-radius: 6px; font-size: 0.75em; cursor: pointer;
         }
         .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
-
         /* Page layout */
         .page { padding: 20px; max-width: 100%; overflow-x: auto; }
         .page-title {
@@ -64,7 +62,6 @@
             color: var(--gold); margin-bottom: 4px;
         }
         .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 16px; }
-
         /* Controls bar */
         .controls {
             display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
@@ -92,7 +89,6 @@
             font-size: 0.8em; color: var(--gray-dark);
             margin-left: auto; white-space: nowrap;
         }
-
         /* === DESKTOP TABLE === */
         .trip-table {
             width: 100%;
@@ -137,12 +133,10 @@
         .status-badge.pending { background: rgba(255,152,0,0.12); color: var(--orange); }
         .trip-table tbody tr.past { opacity: 0.45; }
         .trip-table tbody tr.past:hover { opacity: 0.65; }
-
         .empty-state {
             text-align: center; padding: 60px 20px; color: var(--gray);
         }
         .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 8px; }
-
         /* === MOBILE CARD VIEW === */
         .trip-cards { display: none; }
         .trip-card {
@@ -189,7 +183,6 @@
         .trip-card .card-header .sport-icon {
             font-size: 1.1em;
         }
-
         @media (max-width: 768px) {
             .page { padding: 12px; }
             .page-title { font-size: 1.3em; }
@@ -207,13 +200,9 @@
 </head>
 <body>
     <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-        <div class="user-info">
-    </div>
-
     <div class="page">
         <div class="page-title">Trips</div>
         <div class="page-subtitle" id="subtitle">Loading...</div>
-
         <div class="controls">
             <input type="text" class="search-box" id="search" placeholder="Search trip, state, crew..." oninput="render()">
             <select class="filter-select" id="filter-sport" onchange="render()">
@@ -232,7 +221,6 @@
             </label>
             <span class="row-count" id="row-count"></span>
         </div>
-
         <div id="table-wrap">
             <table class="trip-table" id="trip-table">
                 <thead>
@@ -261,14 +249,11 @@
                 </tbody>
             </table>
         </div>
-
         <!-- Mobile card view -->
         <div class="trip-cards" id="trip-cards"></div>
     </div>
-
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
-
         const MONTH_MAP = {
             'jan':0, 'january':0, 'feb':1, 'febuary':1, 'february':1,
             'mar':2, 'march':2, 'apr':3, 'april':3, 'may':4,
@@ -276,7 +261,6 @@
             'aug':7, 'august':7, 'sep':8, 'sept':8, 'september':8,
             'oct':9, 'october':9, 'nov':10, 'november':10, 'dec':11, 'december':11
         };
-
         function parseTripDate(trip) {
             const monthStr = (trip.month || '').toLowerCase().trim();
             const startStr = (trip.startDate || '').toLowerCase().trim();
@@ -285,14 +269,12 @@
             const d = startStr.match(/(\d+)/);
             return d ? new Date(2026, monthNum, parseInt(d[1])) : null;
         }
-
         function isPast(trip) {
             const d = parseTripDate(trip);
             if (!d) return false;
             const today = new Date(); today.setHours(0,0,0,0);
             return d < today;
         }
-
         function findTourney(tripName) {
             if (typeof TOURNEY_DATA === 'undefined') return null;
             const key = (tripName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -302,13 +284,11 @@
             }
             return null;
         }
-
         function render() {
             const search = document.getElementById('search').value.toLowerCase();
             const sport = document.getElementById('filter-sport').value;
             const status = document.getElementById('filter-status').value;
             const showPast = document.getElementById('show-past').checked;
-
             let filtered = CREW_TRIPS.filter(t => {
                 if (search && !t.name.toLowerCase().includes(search) &&
                     !t.state.toLowerCase().includes(search) &&
@@ -325,7 +305,6 @@
                 if (!showPast && isPast(t)) return false;
                 return true;
             });
-
             filtered.sort((a, b) => {
                 const da = parseTripDate(a), db = parseTripDate(b);
                 if (!da && !db) return 0;
@@ -333,19 +312,16 @@
                 if (!db) return -1;
                 return da - db;
             });
-
             const tbody = document.getElementById('table-body');
             const cardsEl = document.getElementById('trip-cards');
             const countEl = document.getElementById('row-count');
             countEl.textContent = `${filtered.length} trips`;
-
             if (filtered.length === 0) {
                 const msg = '<tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>';
                 tbody.innerHTML = msg;
                 cardsEl.innerHTML = '<div class="empty-state"><h3>🔍</h3><p>No trips match your filters</p></div>';
                 return;
             }
-
             // Desktop table
             tbody.innerHTML = filtered.map(t => {
                 const pastClass = isPast(t) ? 'past' : '';
@@ -358,7 +334,6 @@
                 const ageGroup = tourney ? tourney.ageGroup : '—';
                 const teams = tourney ? tourney.size : '—';
                 const contact = tourney ? tourney.contact : '—';
-
                 return `<tr class="${pastClass}">
                     <td>${sportDisplay}</td>
                     <td><strong>${t.name || '—'}</strong></td>
@@ -379,7 +354,6 @@
                     <td>${t.leaveTimesSent || ''}</td>
                 </tr>`;
             }).join('');
-
             // Mobile cards - condensed view with key info
             cardsEl.innerHTML = filtered.map(t => {
                 const pastClass = isPast(t) ? 'past' : '';
@@ -405,13 +379,11 @@
                 </div>`;
             }).join('');
         }
-
         function logout() {
             localStorage.clear();
             sessionStorage.clear();
             window.location.href = 'signin.html';
         }
-
         document.getElementById('subtitle').textContent = `${CREW_TRIPS.length} trips loaded`;
         render();
     </script>

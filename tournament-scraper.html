@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>var _buildId="1777212123-5ef5dfa5";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
+<script>var _buildId="1777217649-5e325576";if(sessionStorage.getItem("_fsv")!==_buildId){sessionStorage.setItem("_fsv",_buildId);location.reload(true);}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tournament Schedules — Future Stars</title>
@@ -47,14 +47,12 @@
             color: var(--gray); border-radius: 6px; font-size: 0.75em; cursor: pointer;
         }
         .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
-
         .main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
         .page-title {
             font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700;
             color: var(--gold); margin-bottom: 4px;
         }
         .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 20px; }
-
         .search-bar {
             display: flex; gap: 10px; margin-bottom: 20px;
         }
@@ -75,9 +73,7 @@
             color: var(--gray);
             border: 1px solid var(--border);
         }
-
         .results { display: flex; flex-direction: column; gap: 10px; }
-
         .tourney-card {
             background: var(--black-card); border: 1px solid var(--border);
             border-radius: 12px; overflow: hidden;
@@ -107,15 +103,12 @@
         .btn-go { background: rgba(201,162,39,0.12); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); text-decoration: none; display: inline-block; }
         .btn-clear { background: transparent; color: var(--gray-dark); border: 1px solid transparent; }
         .btn-lookup:hover, .btn-go:hover, .btn-clear:hover { filter: brightness(1.2); }
-
         .card-body { padding: 0 20px 16px 20px; }
-
         .schedule-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
             margin-top: 10px;
         }
         @media (max-width: 600px) { .schedule-grid { grid-template-columns: 1fr; } }
-
         .game-card {
             background: var(--black); border: 1px solid var(--border);
             border-radius: 8px; padding: 12px;
@@ -129,7 +122,6 @@
         .game-card .game-field {
             font-size: 0.8em; color: var(--gray-dark); margin-top: 2px;
         }
-
         .status-badge {
             display: inline-block; padding: 3px 10px; border-radius: 4px;
             font-size: 0.75em; font-weight: 600;
@@ -139,14 +131,12 @@
         .status-badge.fail { background: rgba(239,83,80,0.1); color: var(--red); }
         .status-badge.info { background: rgba(100,181,246,0.1); color: #64B5F6; }
         .status-badge.saved { background: rgba(201,162,39,0.1); color: var(--gold); }
-
         .empty-state {
             text-align: center; padding: 60px 20px; color: var(--gray-dark);
         }
         .empty-state .big { font-size: 3em; margin-bottom: 10px; }
         .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 6px; }
         .empty-state p { font-size: 0.9em; }
-
         .source-link {
             margin-top: 8px; font-size: 0.8em;
         }
@@ -154,7 +144,6 @@
             color: #64B5F6; text-decoration: none;
         }
         .source-link a:hover { text-decoration: underline; }
-
         /* Manual URL entry (collapsed by default) */
         .manual-toggle {
             background: none; border: none; color: var(--gray-dark);
@@ -177,26 +166,18 @@
 </head>
 <body>
     <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-        <div class="user-info">
-    </div>
-
     <div class="main">
         <div class="page-title">Tournament Schedules</div>
         <div class="page-subtitle">Select a tournament and click <strong>🔍 Lookup</strong> — it'll find the website and scrape game times automatically</div>
-
         <div class="search-bar">
             <input type="text" id="search" placeholder="Search tournament by name, sport, or state..." oninput="filterTourneys()">
         </div>
-
         <div id="tourney-list"></div>
     </div>
-
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
-
         // ---------- stored data (per tournament) ----------
         const STORED_KEY = 'fs_tourney_times_v2';
-
         function getAllData() {
             return JSON.parse(localStorage.getItem(STORED_KEY) || '{}');
         }
@@ -214,17 +195,14 @@
             localStorage.setItem(STORED_KEY, JSON.stringify(all));
             render();
         }
-
         // ---------- rendering ----------
         function render() {
             const list = document.getElementById('tourney-list');
             const search = document.getElementById('search').value.toLowerCase();
-
             if (typeof TOURNEY_DATA === 'undefined' || !TOURNEY_DATA.length) {
                 list.innerHTML = '<div class="empty-state"><div class="big">😕</div><h3>No tournament data loaded</h3></div>';
                 return;
             }
-
             let filtered = TOURNEY_DATA;
             if (search) {
                 filtered = TOURNEY_DATA.filter(t => 
@@ -233,7 +211,6 @@
                     (t.state || '').toLowerCase().includes(search)
                 );
             }
-
             // Dedup by name
             const seen = new Set();
             filtered = filtered.filter(t => {
@@ -242,12 +219,10 @@
                 seen.add(key);
                 return true;
             });
-
             if (filtered.length === 0) {
                 list.innerHTML = '<div class="empty-state"><div class="big">🔍</div><h3>No tournaments match "<strong>' + search + '</strong>"</h3></div>';
                 return;
             }
-
             list.innerHTML = filtered.map(t => {
                 const saved = getData(t.name);
                 const status = saved ? saved.status : null;
@@ -261,7 +236,6 @@
                 else if (status === 'no-site') badge = '<span class="status-badge fail">❌ No site found</span>';
                 else if (status === 'error') badge = '<span class="status-badge fail">⚠️ Error</span>';
                 else if (status === 'manual') badge = '<span class="status-badge saved">💾 Saved URL</span>';
-
                 return `
                     <div class="tourney-card">
                         <div class="card-header" onclick="document.getElementById('body-${t.name.replace(/[^a-z0-9]/gi,'')}').classList.toggle('hidden')">
@@ -302,24 +276,20 @@
                 `;
             }).join('');
         }
-
         // ---------- search the web for a tournament ----------
         function lookupTournament(name, state) {
             // Mark as loading
             setData(name, { status: 'loading', times: [], url: '' });
             render();
-
             // Build search query
             let query = encodeURIComponent(name);
             if (state) query += '%20' + encodeURIComponent(state);
             query += '%20soccer%20tournament%20schedule';
-
             // Use a search endpoint to find the tournament site
             // We'll try multiple search strategies
             const searchUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(
                 'https://html.duckduckgo.com/html/?q=' + query
             );
-
             fetch(searchUrl)
                 .then(r => {
                     if (!r.ok) throw new Error('Search failed');
@@ -337,7 +307,6 @@
                             links.push({ href, text });
                         }
                     }
-
                     // If DuckDuckGo failed, try a different pattern (class might differ)
                     if (links.length === 0) {
                         const altRegex = /<a[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
@@ -349,7 +318,6 @@
                             }
                         }
                     }
-
                     // Filter for likely tournament/soccer sites
                     const keywords = ['tournament', 'soccer', 'football', 'schedule', 'gotsoccer', 'tourneymachine', 'event', name.toLowerCase().split(' ').slice(0,2).join(' ')];
                     let best = null;
@@ -368,7 +336,6 @@
                             best = link;
                         }
                     }
-
                     if (best && bestScore > 0) {
                         // Found a site — now scrape it
                         scrapePage(name, best.href);
@@ -385,14 +352,11 @@
                     scrapePage(name, gsUrl);
                 });
         }
-
         // ---------- scrape a page for game times ----------
         function scrapePage(tourneyName, url) {
             setData(tourneyName, { status: 'loading', times: [], url: url });
             render();
-
             const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-
             fetch(proxyUrl)
                 .then(r => {
                     if (!r.ok) throw new Error('Could not load page');
@@ -402,9 +366,7 @@
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const bodyText = doc.body ? doc.body.textContent : '';
-
                     let times = [];
-
                     // Strategy 1: Tables
                     const tables = doc.querySelectorAll('table');
                     tables.forEach(table => {
@@ -421,7 +383,6 @@
                             }
                         });
                     });
-
                     // Strategy 2: Lines with times
                     if (times.length < 3) {
                         const lines = bodyText.split('\n').map(l => l.trim()).filter(Boolean);
@@ -438,7 +399,6 @@
                             }
                         });
                     }
-
                     // Dedup
                     const seen = new Set();
                     times = times.filter(t => {
@@ -447,7 +407,6 @@
                         seen.add(key);
                         return true;
                     });
-
                     // Sort by time
                     times.sort((a, b) => {
                         const toMins = (t) => {
@@ -462,7 +421,6 @@
                         };
                         return toMins(a.time) - toMins(b.time);
                     });
-
                     setData(tourneyName, {
                         status: 'found',
                         times: times,
@@ -481,17 +439,14 @@
                     render();
                 });
         }
-
         function filterTourneys() {
             render();
         }
-
         function logout() {
             localStorage.clear();
             sessionStorage.clear();
             window.location.href = 'signin.html';
         }
-
         render();
     </script>
 </body>
