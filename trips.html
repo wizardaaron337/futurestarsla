@@ -149,6 +149,30 @@
             var teamsStr = t.teams ? '👥 ' + t.teams + ' teams' : '';
             var dim = stage === 'returned' ? ' style="opacity:0.6;"' : '';
 
+            // Check packing progress from fs_trips_pack
+            var packExists = false;
+            var shipStatus = '❌';
+            try {
+                var packTrips = JSON.parse(localStorage.getItem('fs_trips_pack') || '[]');
+                var packMatch = packTrips.find(function(p){return p.name === t.name;});
+                if (packMatch) {
+                    packExists = true;
+                    shipStatus = packMatch.shipped ? '✅' : '📋';
+                }
+            } catch(e) {}
+
+            // Check hotel/car from PJ trips
+            var hotelStatus = '❌';
+            var carStatus = '❌';
+            try {
+                var pjTrips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
+                var pjMatch = pjTrips.find(function(p){return p.name === t.name;});
+                if (pjMatch) {
+                    if (pjMatch.hotelName) hotelStatus = '✅';
+                    if (pjMatch.carName) carStatus = '✅';
+                }
+            } catch(e) {}
+
             html += '<div class="trip-card"' + dim + '>' +
                 '<div class="trip-icon">' + icon + '</div>' +
                 '<div class="trip-info">' +
@@ -157,6 +181,12 @@
                         (dateStr ? '<span>📅 ' + dateStr + '</span>' : '') +
                         (t.location ? '<span>📍 ' + t.location + '</span>' : '') +
                         (teamsStr ? '<span>' + teamsStr + '</span>' : '') +
+                    '</div>' +
+                    '<div style="display:flex;gap:10px;font-size:0.82em;color:var(--gray);margin-top:4px;flex-wrap:wrap;">' +
+                        '<span>🏨 Booked ' + hotelStatus + '</span>' +
+                        '<span>🚗 Rental ' + carStatus + '</span>' +
+                        '<span>📊 Teams: ' + (t.teams || '—') + '</span>' +
+                        '<span>📦 Packing ' + shipStatus + '</span>' +
                     '</div>' +
                 '</div>' +
                 '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +

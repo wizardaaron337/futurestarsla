@@ -827,6 +827,15 @@
                 sport, items,
                 shipped: false
             });
+            // Auto-set tournament status to 'out' in fs_trip_statuses
+            try {
+                var tourneyId = document.getElementById('tourney-select').value;
+                if (tourneyId) {
+                    var statuses = JSON.parse(localStorage.getItem('fs_trip_statuses') || '{}');
+                    statuses[tourneyId] = 'out';
+                    localStorage.setItem('fs_trip_statuses', JSON.stringify(statuses));
+                }
+            } catch(e) {}
             saveTrips();
             clearForm();
             switchTab('trips');
@@ -859,29 +868,57 @@
                 return new Date(b.date) - new Date(a.date);
             });
             container.innerHTML = sorted.map(trip => {
-                const itemsHtml = trip.items.map(i =>
-                    `<span class="trip-item-tag">${i.name} <span class="qty">×${i.qty}</span> <span style="color:var(--gray-dark);font-size:0.85em;">(${i.size})</span></span>`
-                ).join('');
-                return `<div class="trip-card ${trip.shipped ? 'shipped' : ''}">
-                    <div class="trip-card-header">
-                        <span class="trip-name">${trip.name}</span>
-                        <span class="trip-status ${trip.shipped ? 'shipped' : 'ready'}">${trip.shipped ? 'Shipped' : 'Ready'}</span>
-                    </div>
-                    <div class="trip-meta">
-                        <span>📅 ${trip.date}</span>
-                        <span>📍 ${trip.location || 'TBD'}</span>
-                        <span>${trip.sport === 'baseball' ? '⚾' : trip.sport === 'soccer' ? '⚽' : '🏟️'} ${trip.sport}</span>
-                        <span>📦 ${trip.items.reduce((s,i) => s + i.qty, 0)} total items</span>
-                    </div>
-                    <div class="trip-items">${itemsHtml}</div>
-                    <div class="trip-actions">
-                        <button class="btn-sm blue" onclick="printPackingSheet('${trip.id}')">🖨️ Print Sheet</button>
-                        ${!trip.shipped
-                            ? `<button class="btn-sm green" onclick="markShipped('${trip.id}')">📦 Mark Shipped</button>`
-                            : `<button class="btn-sm" onclick="markReady('${trip.id}')">↩️ Ready</button>`}
-                        <button class="btn-sm red" onclick="deleteTrip('${trip.id}')" style="margin-left:auto;">🗑️</button>
-                    </div>
-                </div>`;
+                const totalItems = trip.items.reduce((s,i) => s + i.qty, 0);
+                const sportIcon = trip.sport === 'baseball' ? '⚾' : trip.sport === 'soccer' ? '⚽' : '🏟️';
+                // Build sport/teams line from schedule
+                var tripSportLine = sportIcon + ' ' + trip.sport;
+                try {
+                    var schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                    var t = schedule.find(function(x){return x.name === trip.name;});
+                    if (t) {
+                        tripSportLine = sportIcon + ' ' + (t.sport || trip.sport) + (t.teams ? ' | 👥 ' + t.teams + ' teams' : '');
+                    }
+                } catch(e) {}
+                var sizeCheckboxes = function(item) {
+                    var sizes = ['SM','MD','LG'];
+                    var checkboxes = sizes.map(function(sz) {
+                        var checked = '';
+                        if (item.size === sz || item.size.indexOf(sz) >= 0) checked = ' checked';
+                        return '<label style="font-size:0.8em;cursor:pointer;display:inline-flex;align-items:center;gap:2px;">' +
+                            '<input type="checkbox" style="width:14px;height:14px;accent-color:var(--gold);"' + checked + '>' +
+                            '<span>' + sz + '</span></label>';
+                    }).join('&nbsp;');
+                    return checkboxes;
+                };
+                var itemsLines = trip.items.map(function(item) {
+                    return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:0.82em;border-bottom:1px solid var(--border);">' +
+                        '<span style="flex:1;color:var(--white);">' + item.name + '</span>' +
+                        '<span style="color:var(--gold);font-weight:600;">' + item.qty + 'x</span>' +
+                        '&nbsp;' + sizeCheckboxes(item) +
+                    '</div>';
+                }).join('');
+                return '<div class="trip-card ' + (trip.shipped ? 'shipped' : '') + '" style="position:relative;overflow:hidden;">' +
+                    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">' +
+                        '<span class="trip-name" style="font-size:0.9em;">📦 ' + trip.name + '</span>' +
+                        '<span class="trip-status ' + (trip.shipped ? 'shipped' : 'ready') + '" style="font-size:0.65em;">' + (trip.shipped ? 'Shipped' : 'Ready') + '</span>' +
+                    '</div>' +
+                    '<div style="display:flex;gap:10px;font-size:0.8em;color:var(--gray);margin-bottom:6px;">' +
+                        '<span>' + tripSportLine + '</span>' +
+                    '</div>' +
+                    '<div style="border-top:1px solid var(--gold-dark);border-bottom:1px solid var(--gold-dark);padding:4px 0;margin:4px 0;">' +
+                        itemsLines +
+                    '</div>' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:0.82em;">' +
+                        '<span style="color:var(--gray);">Total: <strong style="color:var(--gold);">' + totalItems + '</strong> items</span>' +
+                        '<div style="display:flex;gap:6px;">' +
+                            '<button class="btn-sm blue" onclick="printPackingSheet(\'' + trip.id + '\')" style="padding:4px 10px;font-size:0.75em;">🖨️ Print</button>' +
+                            (trip.shipped
+                                ? '<span style="color:var(--green);font-weight:600;font-size:0.8em;">📦 Shipped ✅</span>'
+                                : '<button class="btn-sm green" onclick="markShipped(\'' + trip.id + '\')" style="padding:4px 10px;font-size:0.75em;">📦 Ship</button>') +
+                            '<button class="btn-sm red" onclick="deleteTrip(\'' + trip.id + '\')" style="padding:4px 10px;font-size:0.75em;">🗑️</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
             }).join('');
         }
         function saveTrips() {
@@ -1062,3 +1099,4 @@
                 </body></html>
             `);
             w.document.close();
+        }
