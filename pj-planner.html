@@ -377,22 +377,31 @@ function seedData(){
    RENDER: MAIN VIEW
    ═════════════════════════════════════════ */
 function renderMainView() {
-  var trips = getTrips().filter(function(t) { return t.folderId === 'tournaments'; });
+  // Read straight from fs_tourney_schedule — no fs_trips dependency
+  var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+  if (tournaments.length === 0) {
+    seedData();
+    tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+  }
   var app = document.getElementById('app');
   
   var html = '<div class="page-header">' +
     '<div><div class="welcome">Trip Maker</div>' +
-    '<div class="subtitle">' + trips.length + ' tournament' + (trips.length !== 1 ? 's' : '') + ' — book hotels & cars for each</div></div>' +
+    '<div class="subtitle">' + tournaments.length + ' tournament' + (tournaments.length !== 1 ? 's' : '') + ' — book hotels & cars for each</div></div>' +
     '</div>';
   
-  if (trips.length === 0) {
+  if (tournaments.length === 0) {
     html += '<div class="empty-state"><div class="empty-state-icon">🏟️</div><h3>No tournaments yet</h3><p>Add tournaments in the <strong>Schedules</strong> tab first.</p></div>';
     app.innerHTML = html;
     return;
   }
   
   html += '<div class="tournament-strip">';
-  trips.forEach(function(trip) {
+  tournaments.forEach(function(t) {
+    // Merge in hotel/car data from fs_trips if available
+    var pjTrips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
+    var pjMatch = pjTrips.find(function(p) { return p.name === t.name || p.tourneyId === t.id; });
+    var trip = pjMatch || t;
     var sportIcon = trip.sport === 'Soccer' ? '⚽' : trip.sport === 'Baseball' ? '⚾' : '🏟️';
     var dates = (trip.startDate || '') + (trip.endDate ? ' — ' + trip.endDate : '');
     var hotelStatus = trip.hotelName ? '<span style="color:var(--green);font-size:0.8em;">✅ ' + trip.hotelName + ' $' + (trip.hotelPrice || 0) + '/night</span>' : '<span style="color:var(--red);font-size:0.8em;">❌ Not Booked</span>';
@@ -826,9 +835,31 @@ function planUpdateSummary() {
 
 function planSaveSelections() {
   if (!viewTripId) return;
-  const trips = getTrips();
-  const trip = trips.find(t => t.id === viewTripId);
-  if (!trip) return;
+  var trips = getTrips();
+  var trip = trips.find(function(t) { return t.id === viewTripId || t.tourneyId === viewTripId; });
+  if (!trip) {
+    // Trip not in fs_trips yet — create it
+    var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+    var t = tournaments.find(function(x) { return x.id === viewTripId || 'trip-'+x.id === viewTripId; });
+    if (!t) return;
+    trip = {
+      id: 'trip-' + t.id,
+      tourneyId: t.id,
+      folderId: 'tournaments',
+      name: t.name,
+      destination: t.location || '',
+      startDate: t.start || '',
+      endDate: t.end || '',
+      sport: t.sport,
+      teams: t.teams,
+      travelers: 3,
+      budget: 500,
+      type: 'tournament',
+      tags: [(t.sport||'').toLowerCase(),'tournament'].filter(Boolean),
+      created: Date.now()
+    };
+    trips.push(trip);
+  }
   const hotel = planSelectedHotel !== null ? planHotelResults[planSelectedHotel] : null;
   const car = planSelectedCar !== null ? planCarResults[planSelectedCar] : null;
   trip.hotelName = hotel ? hotel.name : '';
@@ -855,7 +886,15 @@ function planSaveSelections() {
 }
 
 function viewTrip(tripId){
-  var trip=getTrips().find(function(t){return t.id===tripId;});
+  // Look up trip from fs_trips first, then fs_tourney_schedule
+  var trip=getTrips().find(function(t){return t.id===tripId||t.tourneyId===tripId;});
+  if (!trip) {
+    var tournaments=JSON.parse(localStorage.getItem('fs_tourney_schedule')||'[]');
+    var found=tournaments.find(function(t){return t.id===tripId||'trip-'+t.id===tripId;});
+    if (found) {
+      trip={id:'trip-'+found.id,tourneyId:found.id,name:found.name,destination:found.location||'',startDate:found.start||'',endDate:found.end||'',sport:found.sport,teams:found.teams,notes:found.times||'',travelers:3,budget:500,type:'tournament',tags:[(found.sport||'').toLowerCase(),'tournament'].filter(Boolean)};
+    }
+  }
   if(!trip)return;
   viewTripId = tripId;
   // Reset plan state
