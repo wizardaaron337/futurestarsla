@@ -92,10 +92,26 @@
     </div>
 </div>
 <script>
-    function openMap(loc) { if (loc) window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc), '_blank'); }
+    // —— Trip Status Store ——
+    function getStatuses() {
+        try { return JSON.parse(localStorage.getItem('fs_trip_statuses')) || {}; } catch(e) { return {}; }
+    }
+    function saveStatuses(s) { localStorage.setItem('fs_trip_statuses', JSON.stringify(s)); }
+    function setStatus(id, s) {
+        var all = getStatuses();
+        all[id] = s;
+        saveStatuses(all);
+        renderTrips();
+    }
+
+    function openMap(loc) {
+        if (loc) window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(loc), '_blank');
+    }
+
     function renderTrips() {
-        const list = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-        const container = document.getElementById('trip-list');
+        var list = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+        var statuses = getStatuses();
+        var container = document.getElementById('trip-list');
         document.getElementById('trip-count').textContent = list.length + ' tournament' + (list.length !== 1 ? 's' : '') + ' in the system';
 
         if (list.length === 0) {
@@ -103,44 +119,50 @@
             return;
         }
 
-        // Show 3 stages: need pack / out / returned (cycling through list)
-        const stages = ['need-pack', 'out', 'returned'];
-        let html = '';
-        list.forEach(function(t, i) {
-            var stage = stages[i % 3];
-            var icon, badgeClass, badgeText;
+        var html = '';
+        list.forEach(function(t) {
+            var stage = statuses[t.id] || 'need-pack';
+            var icon, badgeClass, badgeText, btn1, btn2;
+
             if (stage === 'need-pack') {
                 icon = '📦';
                 badgeClass = 'badge-need-pack';
                 badgeText = '⚠️ Needs Packing';
+                btn1 = '<button class="btn-sm btn-pack" onclick="location.href=\'pack-manager.html?tournament=' + encodeURIComponent(t.name) + '\'">📦 Pack</button>';
+                btn2 = '<button class="btn-sm" onclick="setStatus(' + t.id + ',\'out\')" style="background:rgba(100,181,246,0.1);color:var(--blue);border:1px solid rgba(100,181,246,0.2);">🚐 Mark Out</button>';
             } else if (stage === 'out') {
                 icon = '🚐';
                 badgeClass = 'badge-out';
                 badgeText = '🔵 Out on Trip';
+                btn1 = '<button class="btn-sm btn-gps" onclick="openMap(\'' + t.location + '\')">📍 Track</button>';
+                btn2 = '<button class="btn-sm" onclick="setStatus(' + t.id + ',\'returned\')" style="background:rgba(76,175,80,0.1);color:var(--green);border:1px solid rgba(76,175,80,0.2);">✅ Complete</button>';
             } else {
                 icon = '✅';
                 badgeClass = 'badge-returned';
                 badgeText = '✅ Completed';
+                btn1 = '<button class="btn-sm" onclick="setStatus(' + t.id + ',\'need-pack\')" style="background:rgba(255,167,38,0.1);color:var(--amber);border:1px solid rgba(255,167,38,0.2);">📦 Reopen</button>';
+                btn2 = '<button class="btn-sm btn-view" onclick="location.href=\'pj-planner.html?tournament=' + encodeURIComponent(t.name) + '\'">👁️ View Plans</button>';
             }
+
             var sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏟️';
             var dateStr = (t.start || '') + (t.end ? ' — ' + t.end : '');
             var teamsStr = t.teams ? '👥 ' + t.teams + ' teams' : '';
-            var dim = stage === 'returned' ? ' style="opacity:0.7;"' : '';
+            var dim = stage === 'returned' ? ' style="opacity:0.6;"' : '';
 
             html += '<div class="trip-card"' + dim + '>' +
                 '<div class="trip-icon">' + icon + '</div>' +
                 '<div class="trip-info">' +
                     '<div class="trip-name">' + sportIcon + ' ' + t.name + '</div>' +
                     '<div class="trip-meta">' +
-                        (dateStr ? '<span class="date">📅 ' + dateStr + '</span>' : '') +
+                        (dateStr ? '<span>📅 ' + dateStr + '</span>' : '') +
                         (t.location ? '<span>📍 ' + t.location + '</span>' : '') +
                         (teamsStr ? '<span>' + teamsStr + '</span>' : '') +
                     '</div>' +
                 '</div>' +
                 '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
                 '<div class="trip-actions">' +
-                    (stage === 'need-pack' ? '<button class="btn-sm btn-pack" onclick="location.href=\'pack-manager.html?tournament=' + encodeURIComponent(t.name) + '\'">📦 Pack</button>' : '') +
-                    (stage === 'out' ? '<button class="btn-sm btn-gps" onclick="openMap(\'' + t.location + '\')">📍 Track</button>' : '') +
+                    btn1 +
+                    btn2 +
                     '<button class="btn-sm btn-view" onclick="location.href=\'pj-planner.html?tournament=' + encodeURIComponent(t.name) + '\'">👁️ View</button>' +
                 '</div>' +
             '</div>';

@@ -576,6 +576,10 @@
         try {
             TRIPS = JSON.parse(localStorage.getItem('fs_trips_pack')) || [];
         } catch(e) { TRIPS = []; }
+        // Populate tourney dropdown on page load (before switchTab gets called by click)
+        requestAnimationFrame(function() {
+            populateTourneySelect();
+        });
         // Handle ?tournament= param
         (function(){
             var params = new URLSearchParams(window.location.search);
