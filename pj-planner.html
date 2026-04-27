@@ -858,10 +858,12 @@ function planSelectCar(idx) {
 
 function planUpdateSummary() {
   const car = planSelectedCar !== null ? planCarResults[planSelectedCar] : null;
-  document.getElementById('plan-sum-car-name').textContent = car ? car.name : 'Not selected';
-  document.getElementById('plan-sum-car-price').textContent = car ? `$${car.price}/day` : '-';
-  let total = car ? car.price * 3 : 0;
-  document.getElementById('plan-sum-total').textContent = `$${total}`;
+  // Pre-fill the car name text field when a car is selected via search
+  var carNameEl = document.getElementById('plan-car-name-text');
+  if (carNameEl && car) carNameEl.value = car.name;
+  var total = car ? car.price * 3 : 0;
+  var totalEl = document.getElementById('plan-sum-total');
+  if (totalEl) totalEl.textContent = '$' + total;
 }
 
 function planSaveSelections() {
@@ -984,10 +986,9 @@ function viewTrip(tripId){
     '<button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:Inter,sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search Cars</button>' +
     (showCar ? '<div id="plan-car-section" class="detail-section" style="display:none;"><h4>🚗 Car Rentals</h4><div class="plan-options-grid" id="plan-car-grid"></div></div>' : '') +
     '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
-      '<h4>📋 Bookings</h4>' +
+      '<h4>📋 Enter Booking Details</h4>' +
       '<div class="plan-confirm-field"><label>🏨 Hotel Name</label><input type="text" id="plan-hotel-name-text" placeholder="e.g. Marriott Downtown" value="' + (trip.hotelName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🏨 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="Confirmation #" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="text" id="plan-hotel-actual" placeholder="$" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' +
-      (showCar ? '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' : '') +
-      (showCar ? '<div class="plan-confirm-field"><label>🚗 Rental Company Name (if not using search)</label><input type="text" id="plan-car-name-text" placeholder="e.g. Enterprise" value="' + (trip.carName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🚗 Car Rental Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="Confirmation #" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="text" id="plan-car-actual" placeholder="$" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
+      (showCar ? '<div class="plan-confirm-field"><label>🚗 Rental Company Name</label><input type="text" id="plan-car-name-text" placeholder="e.g. Enterprise" value="' + (trip.carName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🚗 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="Confirmation #" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="text" id="plan-car-actual" placeholder="$" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
       '<div class="plan-summary-total"><span class="label">Est. Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
       '<div style="display:flex;gap:10px;margin-top:12px;"><button class="btn btn-primary" onclick="planConfirmBooking()" style="flex:1;">✅ Confirm & Save Actuals</button></div>' +
     '</div>' +
