@@ -65,11 +65,10 @@
             try {
                 const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
                 if (schedule.length === 0) {
-                    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-                    const examples = [
-                        { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: rand(50, 150), times: 'Sat 8:00 AM — Field 3' },
-                        { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: rand(30, 120), times: 'Sat 9:00 AM — Field 1' },
-                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: rand(40, 100), times: 'Sat 8:00 AM — Field 3' }
+                    var examples = [
+                        { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: 85, times: 'Sat 8:00 AM — Field 3' },
+                        { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: 48, times: 'Sat 9:00 AM — Field 1' },
+                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' }
                     ];
                     localStorage.setItem('fs_tourney_schedule', JSON.stringify(examples));
                 }

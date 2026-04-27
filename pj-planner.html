@@ -397,29 +397,41 @@ function seedData(){
       folders.push(tourFolder);
       saveFolders(folders);
     }
-    // Create trips for any tournament that doesnt have one yet
+    // Create or update trips for every tournament in the schedule
     tournaments.forEach(function(t){
       var exists = trips.find(function(tr){return tr.name === t.name;});
+      var tripData = {
+        id:'trip-' + t.id,
+        folderId:tourFolder.id,
+        name:t.name,
+        destination:t.location || '',
+        startDate:t.start || '',
+        endDate:t.end || '',
+        desc:t.sport + (t.teams ? ' — ' + t.teams + ' teams' : ''),
+        travelers:3,
+        budget:500,
+        type:'tournament',
+        tags:[t.sport ? t.sport.toLowerCase() : '', 'tournament'].filter(Boolean),
+        notes:t.times || '',
+        tourneyId:t.id,
+        sport:t.sport,
+        teams:t.teams,
+        created:Date.now(),
+        updated:Date.now()
+      };
       if (!exists) {
-        trips.push({
-          id:'trip-' + t.id,
-          folderId:tourFolder.id,
-          name:t.name,
-          destination:t.location || '',
-          startDate:t.start || '',
-          endDate:t.end || '',
-          desc:t.sport + (t.teams ? ' — ' + t.teams + ' teams' : ''),
-          travelers:3,
-          budget:500,
-          type:'tournament',
-          tags:[t.sport ? t.sport.toLowerCase() : '', 'tournament'].filter(Boolean),
-          notes:t.times || '',
-          tourneyId:t.id,
-          sport:t.sport,
-          teams:t.teams,
-          created:Date.now(),
-          updated:Date.now()
-        });
+        trips.push(tripData);
+      } else {
+        // Update existing trip data from schedule (desc, dates, teams etc stay current)
+        exists.destination = tripData.destination;
+        exists.startDate = tripData.startDate;
+        exists.endDate = tripData.endDate;
+        exists.desc = tripData.desc;
+        exists.sport = tripData.sport;
+        exists.teams = tripData.teams;
+        exists.notes = tripData.notes;
+        exists.tourneyId = tripData.tourneyId;
+        exists.updated = Date.now();
       }
     });
     saveTrips(trips);
