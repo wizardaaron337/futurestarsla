@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournaments — Future Stars LA</title>
+    <script src="auth-config.js?v=1777085641"></script>
+    <script src="nav-dropdown.js?v=1"></script>
+    <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="fs-utils.js?v=1"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; --green: #4CAF50; --red: #EF5350; }
+        body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 14px; }
+        .main { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+        .page-title { font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 24px; }
+
+        .form-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .form-card h3 { color: var(--gold); font-family: 'Cinzel', serif; font-size: 1em; margin-bottom: 14px; }
+        .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .form-group { flex: 1; min-width: 180px; }
+        .form-group label { display: block; color: var(--gray); font-size: 0.8em; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 12px; background: var(--black); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--white); font-size: 0.9em; outline: none;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+        .form-group select { cursor: pointer; }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-group input[type="date"] { color-scheme: dark; }
+
+        .btn { padding: 10px 24px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85em; cursor: pointer; white-space: nowrap; }
+        .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--black); }
+        .btn-danger { background: rgba(239,83,80,0.15); color: var(--red); border: 1px solid rgba(239,83,80,0.3); }
+        .btn-secondary { background: var(--black); border: 1px solid var(--border); color: var(--gray); }
+        .btn-sm { padding: 6px 14px; font-size: 0.78em; }
+        .btn:hover { filter: brightness(1.15); }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .schedule-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+        .schedule-card {
+            background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        }
+        .schedule-card .info { flex: 1; }
+        .schedule-card .name { color: var(--white); font-weight: 600; font-size: 0.95em; }
+        .schedule-card .details { color: var(--gray); font-size: 0.8em; margin-top: 2px; }
+        .schedule-card .badge {
+            display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.72em; font-weight: 600;
+        }
+        .badge-soccer { background: rgba(76,175,80,0.12); color: var(--green); }
+        .badge-baseball { background: rgba(239,83,80,0.12); color: var(--red); }
+        .badge-other { background: rgba(168,164,152,0.1); color: var(--gray); }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-dark); }
+        .empty-state .big { font-size: 3em; margin-bottom: 10px; }
+        .empty-state p { font-size: 0.9em; }
+
+        .sport-filter { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .sport-filter button {
+            padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border);
+            background: transparent; color: var(--gray); font-size: 0.8em; cursor: pointer; font-weight: 500;
+        }
+        .sport-filter button.active { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 700; }
+        .sport-filter button:hover:not(.active) { border-color: var(--gold); color: var(--white); }
+        @media (max-width: 600px) { .main { padding: 20px 14px; } .schedule-card { flex-direction: column; align-items: flex-start; } }
+    </style>
+    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
+</head>
+<body>
+<script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
+<div class="main">
+    <div class="page-title">🏆 Tournaments</div>
+    <div class="page-subtitle">Browse, search & manage tournament data</div>
+
+    <!-- Add Tournament Form -->
+    <div class="form-card">
+        <h3>➕ Add Tournament</h3>
+        <div class="form-row">
+            <div class="form-group" style="flex:2;">
+                <label>Tournament Name</label>
+                <input type="text" id="tourney-name" placeholder="e.g. Easter Classic" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Sport</label>
+                <select id="tourney-sport">
+                    <option value="Soccer">Soccer</option>
+                    <option value="Baseball">Baseball</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" id="tourney-start">
+            </div>
+            <div class="form-group">
+                <label>End Date</label>
+                <input type="date" id="tourney-end">
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="tourney-location" placeholder="City, State" autocomplete="off">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Times / Notes</label>
+                <textarea id="tourney-times" placeholder="e.g. Sat 8:00 AM — Field 3&#10;Sat 10:30 AM — Field 1&#10;Sun 9:00 AM — Championship"></textarea>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="addTournament()">✅ Add to Schedule</button>
+    </div>
+
+    <!-- Filter -->
+    <div class="sport-filter">
+        <button class="active" data-filter="all" onclick="setFilter('all',this)">All</button>
+        <button data-filter="Soccer" onclick="setFilter('Soccer',this)">⚽ Soccer</button>
+        <button data-filter="Baseball" onclick="setFilter('Baseball',this)">⚾ Baseball</button>
+    </div>
+
+    <!-- Schedule List -->
+    <div id="schedule-list"></div>
+</div>
+
+<script>
+let currentFilter = 'all';
+
+function getSchedule() {
+    return JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+}
+function saveSchedule(list) {
+    localStorage.setItem('fs_tourney_schedule', JSON.stringify(list));
+    render();
+}
+
+function addTournament() {
+    const name = document.getElementById('tourney-name').value.trim();
+    const sport = document.getElementById('tourney-sport').value;
+    const start = document.getElementById('tourney-start').value;
+    const end = document.getElementById('tourney-end').value;
+    const location = document.getElementById('tourney-location').value.trim();
+    const times = document.getElementById('tourney-times').value.trim();
+    if (!name) { alert('Enter a tournament name'); return; }
+    const list = getSchedule();
+    list.unshift({
+        id: Date.now(),
+        name, sport, start, end, location, times,
+        created: new Date().toISOString()
+    });
+    saveSchedule(list);
+    // Clear form
+    document.getElementById('tourney-name').value = '';
+    document.getElementById('tourney-start').value = '';
+    document.getElementById('tourney-end').value = '';
+    document.getElementById('tourney-location').value = '';
+    document.getElementById('tourney-times').value = '';
+}
+
+function deleteTournament(id) {
+    if (!confirm('Remove this tournament from the schedule?')) return;
+    let list = getSchedule();
+    list = list.filter(t => t.id !== id);
+    saveSchedule(list);
+}
+
+function editTournament(id) {
+    const list = getSchedule();
+    const t = list.find(x => x.id === id);
+    if (!t) return;
+    document.getElementById('tourney-name').value = t.name;
+    document.getElementById('tourney-sport').value = t.sport || 'Soccer';
+    document.getElementById('tourney-start').value = t.start || '';
+    document.getElementById('tourney-end').value = t.end || '';
+    document.getElementById('tourney-location').value = t.location || '';
+    document.getElementById('tourney-times').value = t.times || '';
+    deleteTournament(id);
+    document.getElementById('tourney-name').focus();
+}
+
+function setFilter(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.sport-filter button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+}
+
+function formatDate(d) {
+    if (!d) return '';
+    const date = new Date(d + 'T00:00:00');
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function render() {
+    const container = document.getElementById('schedule-list');
+    let list = getSchedule();
+    if (currentFilter !== 'all') {
+        list = list.filter(t => t.sport === currentFilter);
+    }
+    if (list.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="big">📅</div><p>No tournaments added yet. Use the form above to add one.</p></div>';
+        return;
+    }
+    container.innerHTML = list.map(t => {
+        const sportClass = t.sport === 'Soccer' ? 'badge-soccer' : t.sport === 'Baseball' ? 'badge-baseball' : 'badge-other';
+        const sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏅';
+        const dateStr = t.start ? formatDate(t.start) + (t.end ? ' — ' + formatDate(t.end) : '') : '';
+        return `
+            <div class="schedule-card">
+                <div class="info">
+                    <div class="name">${sportIcon} ${t.name}</div>
+                    <div class="details">
+                        ${dateStr ? dateStr + ' · ' : ''}
+                        ${t.location ? t.location + ' · ' : ''}
+                        <span class="badge ${sportClass}">${t.sport || 'Other'}</span>
+                    </div>
+                    ${t.times ? '<div style="color:var(--gray-dark);font-size:0.8em;margin-top:4px;white-space:pre-wrap;">' + t.times + '</div>' : ''}
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-secondary" onclick="editTournament(${t.id})">✏️</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTournament(${t.id})">🗑️</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+render();
+</script>
+</body>
+</html>

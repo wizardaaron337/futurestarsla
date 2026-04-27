@@ -31,6 +31,7 @@ PAGES=(
   "index.html"
   "signin.html"
   "inventory-v2.html"
+  "tournament-scraper.html"
   "tournaments.html"
   "trips.html"
   "trip-tracker.html"
