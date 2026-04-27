@@ -1033,8 +1033,7 @@ function viewTrip(tripId){
 
   html+='<div class="detail-section plan-finder-section" id="plan-finder">' +
     '<h4>' + (bookMode === 'hotel' ? '🏨 Find Hotel' : bookMode === 'car' ? '🚗 Find Car Rental' : '🏨 Find Hotel & Car Rental') + '</h4>' +
-    (showHotel ? '<div class="plan-search-field"><label>Location</label><input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="' + (trip.destination||'') + '"></div>' : '') +
-    (showCar && showBoth ? '<div class="plan-search-field"><label>Car Rental Location</label><input type="text" id="plan-car-loc" placeholder="Same as hotel if blank" value=""></div>' : '') +
+    '<div class="plan-search-field"><label>Location</label><input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="' + (trip.destination||'') + '"></div>' +
     '<div class="plan-examples">' +
       '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Atlanta, GA\'">Atlanta</span>' +
       '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Dallas, TX\'">Dallas</span>' +
