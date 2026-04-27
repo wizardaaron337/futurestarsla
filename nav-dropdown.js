@@ -381,9 +381,13 @@
     </style>
     `;
 
-    // Inject
-    document.head.insertAdjacentHTML('beforeend', navCSS);
-    document.body.insertAdjacentHTML('afterbegin', navHTML + '<div id="fs-nav-spacer"></div>');
+    // Inject - wait for body to exist (script may run in <head>)
+    function injectNav() {
+      if (!document.body) { setTimeout(injectNav, 10); return; }
+      document.head.insertAdjacentHTML('beforeend', navCSS);
+      document.body.insertAdjacentHTML('afterbegin', navHTML);
+    }
+    injectNav();
 
     // Close all dropdowns
     window.closeAllDropdowns = function(except) {
