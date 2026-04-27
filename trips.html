@@ -1,389 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trips — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
-    <script src="crew-data.js?v=1777085641"></script>
-    <script src="cost-data.js?v=1777085641"></script>
-    <script src="tournament-data.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1"></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --gold: #C9A227; --gold-dark: #B8941F;
-            --black: #0A0A0A; --black-card: #1A1A1A; --black-hover: #242424;
-            --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C;
-            --border: #2A2824; --green: #4CAF50; --red: #EF5350; --orange: #FF9800;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--black);
-            color: var(--white);
-            min-height: 100vh;
-            font-size: 14px;
-        }
-        .header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 20px; background: var(--black-card);
-            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
-        }
-        .logo-link {
-            display: flex; align-items: center; gap: 10px; text-decoration: none;
-        }
-        .logo-img {
-            width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
-            border: 2px solid var(--gold-dark);
-        }
-        .logo-text {
-            font-family: 'Cinzel', serif; font-size: 1.1em; font-weight: 700;
-            color: var(--gold); letter-spacing: 3px;
-        }
-        .user-info { display: flex; align-items: center; gap: 16px; }
-        .user-name { color: var(--gold); font-size: 0.8em; letter-spacing: 1px; }
-        .logout-btn {
-            padding: 6px 14px; background: transparent; border: 1px solid var(--border);
-            color: var(--gray); border-radius: 6px; font-size: 0.75em; cursor: pointer;
-        }
-        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
-        /* Page layout */
-        .page { padding: 20px; max-width: 100%; overflow-x: auto; }
-        .page-title {
-            font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700;
-            color: var(--gold); margin-bottom: 4px;
-        }
-        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 16px; }
-        /* Controls bar */
-        .controls {
-            display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-            margin-bottom: 14px;
-        }
-        .search-box {
-            padding: 10px 14px; background: var(--black-card); border: 1px solid var(--border);
-            border-radius: 8px; color: var(--white); font-size: 0.85em; outline: none;
-            min-width: 220px; flex: 1;
-        }
-        .search-box:focus { border-color: var(--gold); }
-        .filter-select {
-            padding: 10px 12px; background: var(--black-card); border: 1px solid var(--border);
-            border-radius: 8px; color: var(--white); font-size: 0.85em; outline: none; cursor: pointer;
-        }
-        .filter-select:focus { border-color: var(--gold); }
-        .toggle-past {
-            display: flex; align-items: center; gap: 8px;
-            padding: 8px 14px; background: var(--black-card); border: 1px solid var(--border);
-            border-radius: 8px; color: var(--gray); font-size: 0.8em; cursor: pointer;
-        }
-        .toggle-past:hover { border-color: var(--gold); }
-        .toggle-past input { accent-color: var(--gold); }
-        .row-count {
-            font-size: 0.8em; color: var(--gray-dark);
-            margin-left: auto; white-space: nowrap;
-        }
-        /* === DESKTOP TABLE === */
-        .trip-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            min-width: 1400px;
-        }
-        .trip-table thead th {
-            position: sticky; top: 60px; z-index: 10;
-            background: var(--black-card);
-            padding: 10px 10px;
-            border-bottom: 2px solid var(--gold-dark);
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
-            font-size: 0.7em;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-align: left;
-            white-space: nowrap;
-        }
-        .trip-table tbody tr {
-            border-bottom: 1px solid var(--border);
-            transition: background 0.15s;
-        }
-        .trip-table tbody tr:hover {
-            background: rgba(201,162,39,0.04);
-        }
-        .trip-table tbody td {
-            padding: 8px 10px;
-            color: var(--white);
-            vertical-align: middle;
-        }
-        .trip-table tbody td .alt {
-            color: var(--gray-dark);
-        }
-        .status-badge {
-            display: inline-block; padding: 3px 8px;
-            border-radius: 4px; font-size: 0.75em;
-            font-weight: 600; letter-spacing: 1px;
-        }
-        .status-badge.locked { background: rgba(76,175,80,0.12); color: var(--green); }
-        .status-badge.pending { background: rgba(255,152,0,0.12); color: var(--orange); }
-        .trip-table tbody tr.past { opacity: 0.45; }
-        .trip-table tbody tr.past:hover { opacity: 0.65; }
-        .empty-state {
-            text-align: center; padding: 60px 20px; color: var(--gray);
-        }
-        .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 8px; }
-        /* === MOBILE CARD VIEW === */
-        .trip-cards { display: none; }
-        .trip-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 10px;
-            transition: opacity 0.15s;
-        }
-        .trip-card.past { opacity: 0.5; }
-        .trip-card .card-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4px 12px;
-            font-size: 0.85em;
-        }
-        .trip-card .card-row .label {
-            color: var(--gray-dark);
-            font-size: 0.75em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .trip-card .card-row .value {
-            color: var(--white);
-            text-align: right;
-        }
-        .trip-card .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-        .trip-card .card-header h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 0.95em;
-            color: var(--gold);
-            margin: 0;
-            flex: 1;
-        }
-        .trip-card .card-header .sport-icon {
-            font-size: 1.1em;
-        }
-        @media (max-width: 768px) {
-            .page { padding: 12px; }
-            .page-title { font-size: 1.3em; }
-            .controls { flex-direction: column; align-items: stretch; }
-            .search-box { min-width: auto; }
-            /* Hide table, show cards */
-            #table-wrap { display: none; }
-            .trip-cards { display: block; }
-        }
+        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; }
+        body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 14px; }
+        .main { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .page-title { font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 24px; }
+        .empty-state { text-align: center; padding: 80px 20px; color: var(--gray-dark); }
+        .empty-state .big { font-size: 4em; margin-bottom: 16px; }
+        .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.2em; margin-bottom: 8px; }
+        .empty-state p { font-size: 0.9em; max-width: 400px; margin: 0 auto; line-height: 1.6; }
+        .empty-state .nav-hint { margin-top: 20px; font-size: 0.8em; color: var(--gray-dark); }
     </style>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="-1">
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-    <div class="page">
-        <div class="page-title">Trips</div>
-        <div class="page-subtitle" id="subtitle">Loading...</div>
-        <div class="controls">
-            <input type="text" class="search-box" id="search" placeholder="Search trip, state, crew..." oninput="render()">
-            <select class="filter-select" id="filter-sport" onchange="render()">
-                <option value="">All Sports</option>
-                <option value="Soccer">Soccer</option>
-                <option value="Baseball">Baseball</option>
-            </select>
-            <select class="filter-select" id="filter-status" onchange="render()">
-                <option value="">All Status</option>
-                <option value="LOCKED IN">Locked In</option>
-                <option value="PENDING">Pending</option>
-            </select>
-            <label class="toggle-past">
-                <input type="checkbox" id="show-past" onchange="render()">
-                <span>Show past</span>
-            </label>
-            <span class="row-count" id="row-count"></span>
-        </div>
-        <div id="table-wrap">
-            <table class="trip-table" id="trip-table">
-                <thead>
-                    <tr>
-                        <th>Sport</th>
-                        <th>Trip Name</th>
-                        <th>Age Group</th>
-                        <th>Teams</th>
-                        <th>Contact</th>
-                        <th>Status</th>
-                        <th>Month</th>
-                        <th>Dates</th>
-                        <th>State</th>
-                        <th>Crew</th>
-                        <th>Crew Needed</th>
-                        <th>Leave Date</th>
-                        <th>Leave Time</th>
-                        <th>Rental Return</th>
-                        <th>PEX Card</th>
-                        <th>PEX?</th>
-                        <th>Times Sent</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">Loading trip data...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- Mobile card view -->
-        <div class="trip-cards" id="trip-cards"></div>
+<script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
+<div class="main">
+    <div class="page-title">🚐 Trips</div>
+    <div class="page-subtitle">Tournament trips will show up here once scheduled.</div>
+    <div class="empty-state">
+        <div class="big">📍</div>
+        <h3>No Trips Yet</h3>
+        <p>Start by adding a tournament in the <strong>Schedules</strong> tab. Once tournaments are scheduled, trip details will appear here.</p>
+        <div class="nav-hint">📅 <strong>Schedules</strong> tab → Add Tournament → fills in here</div>
     </div>
-    <script>
-        const NAME = sessionStorage.getItem('fs_name') || 'User';
-        const MONTH_MAP = {
-            'jan':0, 'january':0, 'feb':1, 'febuary':1, 'february':1,
-            'mar':2, 'march':2, 'apr':3, 'april':3, 'may':4,
-            'jun':5, 'june':5, 'jul':6, 'july':6,
-            'aug':7, 'august':7, 'sep':8, 'sept':8, 'september':8,
-            'oct':9, 'october':9, 'nov':10, 'november':10, 'dec':11, 'december':11
-        };
-        function parseTripDate(trip) {
-            const monthStr = (trip.month || '').toLowerCase().trim();
-            const startStr = (trip.startDate || '').toLowerCase().trim();
-            const monthNum = MONTH_MAP[monthStr];
-            if (monthNum === undefined) return null;
-            const d = startStr.match(/(\d+)/);
-            return d ? new Date(2026, monthNum, parseInt(d[1])) : null;
-        }
-        function isPast(trip) {
-            const d = parseTripDate(trip);
-            if (!d) return false;
-            const today = new Date(); today.setHours(0,0,0,0);
-            return d < today;
-        }
-        function findTourney(tripName) {
-            if (typeof TOURNEY_DATA === 'undefined') return null;
-            const key = (tripName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-            for (const t of TOURNEY_DATA) {
-                const tk = (t.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-                if (tk === key || tk.includes(key) || key.includes(tk)) return t;
-            }
-            return null;
-        }
-        function render() {
-            const search = document.getElementById('search').value.toLowerCase();
-            const sport = document.getElementById('filter-sport').value;
-            const status = document.getElementById('filter-status').value;
-            const showPast = document.getElementById('show-past').checked;
-            let filtered = CREW_TRIPS.filter(t => {
-                if (search && !t.name.toLowerCase().includes(search) &&
-                    !t.state.toLowerCase().includes(search) &&
-                    !t.crew.toLowerCase().includes(search)) return false;
-                if (sport === 'Soccer' && (!t.sport || !t.sport.toLowerCase().includes('soccer'))) return false;
-                if (sport === 'Baseball') {
-                    const s = (t.sport||'').toLowerCase();
-                    if (!s.includes('baseball') && !s.includes('bb')) return false;
-                }
-                if (status) {
-                    if (status === 'LOCKED IN' && t.status !== 'LOCKED IN') return false;
-                    if (status === 'PENDING' && (t.status === 'LOCKED IN' || t.status === '')) return false;
-                }
-                if (!showPast && isPast(t)) return false;
-                return true;
-            });
-            filtered.sort((a, b) => {
-                const da = parseTripDate(a), db = parseTripDate(b);
-                if (!da && !db) return 0;
-                if (!da) return 1;
-                if (!db) return -1;
-                return da - db;
-            });
-            const tbody = document.getElementById('table-body');
-            const cardsEl = document.getElementById('trip-cards');
-            const countEl = document.getElementById('row-count');
-            countEl.textContent = `${filtered.length} trips`;
-            if (filtered.length === 0) {
-                const msg = '<tr><td colspan="17" style="text-align:center;padding:40px;color:var(--gray-dark);">No trips match your filters</td></tr>';
-                tbody.innerHTML = msg;
-                cardsEl.innerHTML = '<div class="empty-state"><h3>🔍</h3><p>No trips match your filters</p></div>';
-                return;
-            }
-            // Desktop table
-            tbody.innerHTML = filtered.map(t => {
-                const pastClass = isPast(t) ? 'past' : '';
-                const statusBadge = t.status === 'LOCKED IN' 
-                    ? '<span class="status-badge locked">LOCKED</span>'
-                    : '<span class="status-badge pending">PENDING</span>';
-                const sportDisplay = t.sport === 'BB' ? 'Baseball' : 
-                    (t.sport||'').toLowerCase() === 'baseball' ? 'Baseball' : t.sport || '—';
-                const tourney = findTourney(t.name);
-                const ageGroup = tourney ? tourney.ageGroup : '—';
-                const teams = tourney ? tourney.size : '—';
-                const contact = tourney ? tourney.contact : '—';
-                return `<tr class="${pastClass}">
-                    <td>${sportDisplay}</td>
-                    <td><strong>${t.name || '—'}</strong></td>
-                    <td>${ageGroup}</td>
-                    <td>${teams}</td>
-                    <td${contact && contact.length > 25 ? ' title="' + contact + '"' : ''}>${contact && contact.length > 25 ? contact.substring(0,22) + '...' : contact}</td>
-                    <td>${statusBadge}</td>
-                    <td>${t.month || '—'}</td>
-                    <td>${t.startDate || ''}${t.endDate ? ' — ' + t.endDate : ''}</td>
-                    <td>${t.state || '—'}</td>
-                    <td>${t.crew || ''}</td>
-                    <td>${t.crewNeeded || ''}</td>
-                    <td>${t.leaveDate || ''}</td>
-                    <td>${t.leaveTime || ''}</td>
-                    <td>${t.rentalReturn || ''}</td>
-                    <td>${t.pexCard || ''}</td>
-                    <td>${t.pexQuestion || ''}</td>
-                    <td>${t.leaveTimesSent || ''}</td>
-                </tr>`;
-            }).join('');
-            // Mobile cards - condensed view with key info
-            cardsEl.innerHTML = filtered.map(t => {
-                const pastClass = isPast(t) ? 'past' : '';
-                const statusBadge = t.status === 'LOCKED IN' 
-                    ? '<span class="status-badge locked" style="font-size:0.65em">LOCKED</span>'
-                    : '<span class="status-badge pending" style="font-size:0.65em">PENDING</span>';
-                const sportIcon = (t.sport||'').toLowerCase().includes('soccer') ? '⚽' : 
-                    ((t.sport||'').toLowerCase().includes('baseball') || t.sport === 'BB') ? '⚾' : '🏀';
-                return `<div class="trip-card ${pastClass}">
-                    <div class="card-header">
-                        <span class="sport-icon">${sportIcon}</span>
-                        <h3>${t.name || 'Unknown Trip'}</h3>
-                        ${statusBadge}
-                    </div>
-                    <div class="card-row">
-                        ${t.month || t.startDate ? '<span class="label">Dates</span><span class="value">' + (t.month||'') + ' ' + (t.startDate||'') + (t.endDate ? ' — ' + t.endDate : '') + '</span>' : ''}
-                        ${t.state ? '<span class="label">Location</span><span class="value">' + t.state + '</span>' : ''}
-                        ${t.crew ? '<span class="label">Crew</span><span class="value">' + t.crew + '</span>' : ''}
-                        ${t.leaveDate ? '<span class="label">Leave</span><span class="value">' + t.leaveDate + (t.leaveTime ? ' @ ' + t.leaveTime : '') + '</span>' : ''}
-                        ${t.pexCard ? '<span class="label">PEX</span><span class="value" style="color:var(--gold)">' + t.pexCard + '</span>' : ''}
-                        ${t.rentalReturn ? '<span class="label">Return</span><span class="value">' + t.rentalReturn + '</span>' : ''}
-                    </div>
-                </div>`;
-            }).join('');
-        }
-        function logout() {
-            localStorage.clear();
-            sessionStorage.clear();
-            window.location.href = 'signin.html';
-        }
-        document.getElementById('subtitle').textContent = `${CREW_TRIPS.length} trips loaded`;
-        render();
-    </script>
+</div>
 </body>
 </html>
