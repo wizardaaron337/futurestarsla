@@ -858,11 +858,10 @@ function planRenderHotels() {
     <div class="plan-option-card${planSelectedHotel === i ? ' selected' : ''}">
       <div class="plan-opt-name">${h.name} <span class="plan-opt-badge ${h.badge}">${h.badgeLabel}</span></div>
       <div class="plan-opt-rating"><span class="plan-opt-stars">${planRenderStars(h.rating)}</span> ${h.rating} (${h.reviews.toLocaleString()} reviews)</div>
-      <div class="plan-opt-price">$${h.price} <span>/night</span></div>
       <div class="plan-opt-address">📍 ${h.address}</div>
       <div class="plan-opt-amenities">${h.amenities.slice(0,3).map(function(a) { return '<span class="plan-opt-amenity">' + a + '</span>'; }).join('')}</div>
       <div class="plan-opt-actions">
-        <button class="plan-opt-btn book" onclick="planBookHotel(${i})">🏨 Book Hotel — $${h.price}/night</button>
+        <button class="plan-opt-btn book" onclick="planBookHotel(${i})">🏨 View & Book on Google</button>
       </div>
     </div>
   `; }).join('');
@@ -875,11 +874,10 @@ function planRenderCars() {
     <div class="plan-option-card${planSelectedCar === i ? ' selected' : ''}">
       <div class="plan-opt-name">${c.name} <span class="plan-opt-badge ${c.badge}">${c.badgeLabel}</span></div>
       <div class="plan-opt-rating"><span class="plan-opt-stars">${planRenderStars(c.rating)}</span> ${c.rating} (${c.reviews.toLocaleString()} reviews)</div>
-      <div class="plan-opt-price">$${c.price} <span>/day</span></div>
       <div class="plan-opt-address">📍 ${c.address} · 🚗 ${c.vehicle}</div>
       <div class="plan-opt-amenities">${c.amenities.slice(0,3).map(function(a) { return '<span class="plan-opt-amenity">' + a + '</span>'; }).join('')}</div>
       <div class="plan-opt-actions">
-        <button class="plan-opt-btn book" onclick="planBookCar(${i})">🚗 Book Car — $${c.price}/day</button>
+        <button class="plan-opt-btn book" onclick="planBookCar(${i})">🚗 View & Book on Google</button>
       </div>
     </div>
   `; }).join('');
