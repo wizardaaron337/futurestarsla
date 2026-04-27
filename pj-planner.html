@@ -1549,7 +1549,7 @@ function printTripSummary(tripId){
   const total = (night*(trip.hotelNights||1)) + (car*(trip.carDays||1)) + (trip.budget||0);
   const done = (trip.checklist||[]).filter(c=>c.done).length;
   const printWin = window.open('','_blank','width=800,height=600');
-  printWin.document.write('<!DOCTYPE html><html><head>
+  printWin.document.write('<!DOCTYPE html><html><head>' +
     '*{margin:0;padding:0;box-sizing:border-box;}' +
     'body{font-family:system-ui,sans-serif;background:#fff;color:#222;padding:40px;max-width:750px;margin:0 auto;}' +
     '.pheader{text-align:center;margin-bottom:30px;padding-bottom:20px;border-bottom:3px solid #C9A227;}' +
