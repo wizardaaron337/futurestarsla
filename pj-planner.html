@@ -950,11 +950,17 @@ function planConfirmBooking() {
   var trips = getTrips();
   var trip = trips.find(function(t) { return t.id === viewTripId || t.tourneyId === viewTripId; });
   if (!trip) { showToast('Save a hotel/car selection first'); return; }
-  var confNum = (document.getElementById('plan-conf-num') || {}).value;
-  if (confNum) trip.confNum = confNum.trim();
+  var hotelConf = (document.getElementById('plan-hotel-conf') || {}).value;
+  var carConf = (document.getElementById('plan-car-conf') || {}).value;
+  var hotelActual = (document.getElementById('plan-hotel-actual') || {}).value;
+  var carActual = (document.getElementById('plan-car-actual') || {}).value;
+  if (hotelConf) trip.hotelConf = hotelConf.trim();
+  if (carConf) trip.carConf = carConf.trim();
+  if (hotelActual) trip.hotelActual = parseFloat(hotelActual) || 0;
+  if (carActual) trip.carActual = parseFloat(carActual) || 0;
   trip.updated = Date.now();
   saveTrips(trips);
-  showToast('✅ Confirmation number saved!');
+  showToast('✅ Confirmation numbers & actual prices saved!');
   viewTrip(viewTripId);
 }
 
@@ -996,9 +1002,10 @@ function viewTrip(tripId){
   // Show saved hotel/car info if present
   if (trip.hotelName || trip.carName) {
     html+='<div class="detail-section"><h4>📋 Planned Bookings</h4><div class="cost-summary">' +
-      (trip.hotelName ? '<div class="cost-row"><span class="label">🏨 Hotel</span><span class="value">' + trip.hotelName + ' — $' + (trip.hotelPrice||0) + '/night</span></div>' : '') +
-      (trip.carName ? '<div class="cost-row"><span class="label">🚗 Rental</span><span class="value">' + trip.carName + ' — $' + (trip.carPrice||0) + '/day</span></div>' : '') +
-      (trip.confNum ? '<div class="cost-row"><span class="label">🔑 Confirmation #</span><span class="value" style="color:var(--green);">' + trip.confNum + ' ✅</span></div>' : '') +
+      (trip.hotelName ? '<div class="cost-row"><span class="label">🏨 Hotel (est.)</span><span class="value">' + trip.hotelName + ' — $' + (trip.hotelPrice||0) + '/night' + (trip.hotelConf ? ' ✅ <span style="color:var(--green);font-size:.8em;">#' + trip.hotelConf + '</span>' : '') + '</span></div>' : '') +
+      (trip.hotelActual ? '<div class="cost-row"><span class="label">🏨 Hotel (actual)</span><span class="value" style="color:var(--gold);">$' + trip.hotelActual + '</span></div>' : '') +
+      (trip.carName ? '<div class="cost-row"><span class="label">🚗 Rental (est.)</span><span class="value">' + trip.carName + ' — $' + (trip.carPrice||0) + '/day' + (trip.carConf ? ' ✅ <span style="color:var(--green);font-size:.8em;">#' + trip.carConf + '</span>' : '') + '</span></div>' : '') +
+      (trip.carActual ? '<div class="cost-row"><span class="label">🚗 Rental (actual)</span><span class="value" style="color:var(--gold);">$' + trip.carActual + '</span></div>' : '') +
       '</div></div>';
   }
 
@@ -1039,10 +1046,11 @@ function viewTrip(tripId){
     '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
       '<h4>📋 Selected Booking Summary</h4>' +
       (showHotel ? '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' : '') +
+      (showHotel ? '<div class="plan-confirm-field"><label>🏨 Hotel Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="number" id="plan-hotel-actual" placeholder="$ actual" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' : '') +
       (showCar ? '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' : '') +
+      (showCar ? '<div class="plan-confirm-field"><label>🚗 Car Rental Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="number" id="plan-car-actual" placeholder="$ actual" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
       '<div class="plan-summary-total"><span class="label">Est. Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
-      '<div class="plan-confirm-field"><label>🔑 Confirmation or Rental #</label><input type="text" id="plan-conf-num" placeholder="Enter confirmation number after booking" value="' + (trip.confNum||'') + '"></div>' +
-      '<div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-primary" onclick="planConfirmBooking()" style="flex:1;">✅ Confirm Booking</button></div>' +
+      '<div style="display:flex;gap:10px;margin-top:12px;"><button class="btn btn-primary" onclick="planConfirmBooking()" style="flex:1;">✅ Confirm & Save Actuals</button></div>' +
     '</div>' +
   '</div>';
 
