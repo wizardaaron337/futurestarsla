@@ -420,6 +420,11 @@ document.addEventListener('click', function(e) {
    RENDER: MAIN VIEW
    ═════════════════════════════════════════ */
 function renderMainView() {
+  // Clear any stale query param so back-to-tournaments works clean
+  if (window.location.search) {
+    var clean = window.location.pathname;
+    window.history.replaceState({}, '', clean);
+  }
   var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
   if (tournaments.length === 0) {
     seedData();
