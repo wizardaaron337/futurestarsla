@@ -839,7 +839,7 @@ function planRenderHotels() {
       <div class="plan-opt-amenities">${h.amenities.slice(0,4).map(a => `<span class="plan-opt-amenity">${a}</span>`).join('')}</div>
       <div class="plan-opt-actions">
         <button class="plan-opt-btn ${planSelectedHotel === i ? 'selected' : ''}" onclick="planSelectHotel(${i})">${planSelectedHotel === i ? '✓ SELECTED' : 'SELECT'}</button>
-        <button class="plan-opt-btn book" onclick="window.open('https://www.hotels.com/search.do?destination=${encodeURIComponent(planCurrentCity)}&adults=3','_blank')">BOOK</button>
+        <button class="plan-opt-btn book" onclick="window.open('https://www.google.com/search?q=' + encodeURIComponent(h.name + ' ' + planCurrentCity + ' hotel booking') + '&adults=3','_blank')">BOOK</button>
       </div>
     </div>
   `).join('');
@@ -857,7 +857,7 @@ function planRenderCars() {
       <div class="plan-opt-amenities">${c.amenities.slice(0,4).map(a => `<span class="plan-opt-amenity">${a}</span>`).join('')}</div>
       <div class="plan-opt-actions">
         <button class="plan-opt-btn ${planSelectedCar === i ? 'selected' : ''}" onclick="planSelectCar(${i})">${planSelectedCar === i ? '✓ SELECTED' : 'SELECT'}</button>
-        <button class="plan-opt-btn book" onclick="window.open('https://www.kayak.com/cars/' + encodeURIComponent(planCurrentCity) + '?pickup=anytime&dropoff=anytime&driversAge=25','_blank')">BOOK</button>
+        <button class="plan-opt-btn book" onclick="window.open('https://www.google.com/search?q=' + encodeURIComponent(c.name + ' ' + planCurrentCity + ' car rental') + '&driversAge=25','_blank')">BOOK</button>
       </div>
     </div>
   `).join('');
