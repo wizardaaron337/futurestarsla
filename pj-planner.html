@@ -283,6 +283,10 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .plan-summary-total{border-top:1px solid var(--border);padding-top:10px;margin-top:6px;display:flex;justify-content:space-between;align-items:center;}
 .plan-summary-total .label{font-family:'Cinzel',serif;color:var(--gold);font-size:.9em;}
 .plan-summary-total .value{font-family:'Cinzel',serif;color:var(--gold);font-size:1.2em;font-weight:700;}
+.plan-confirm-field{margin-top:10px;display:flex;flex-direction:column;gap:4px;}
+.plan-confirm-field label{font-size:.8em;color:var(--gray);font-weight:500;}
+.plan-confirm-field input{padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--black-light);color:var(--white);font-size:.9em;font-family:'Inter',sans-serif;outline:none;transition:border .2s;}
+.plan-confirm-field input:focus{border-color:var(--gold);}
 
 /* Booking link button in trip detail */
 .booking-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
@@ -918,50 +922,41 @@ function planSaveSelections() {
   var trips = getTrips();
   var trip = trips.find(function(t) { return t.id === viewTripId || t.tourneyId === viewTripId; });
   if (!trip) {
-    // Trip not in fs_trips yet — create it
     var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
     var t = tournaments.find(function(x) { return x.id === viewTripId || 'trip-'+x.id === viewTripId; });
     if (!t) return;
-    trip = {
-      id: 'trip-' + t.id,
-      tourneyId: t.id,
-      folderId: 'tournaments',
-      name: t.name,
-      destination: t.location || '',
-      startDate: t.start || '',
-      endDate: t.end || '',
-      sport: t.sport,
-      teams: t.teams,
-      travelers: 3,
-      budget: 500,
-      type: 'tournament',
-      tags: [(t.sport||'').toLowerCase(),'tournament'].filter(Boolean),
-      created: Date.now()
-    };
+    trip = { id: 'trip-' + t.id, tourneyId: t.id, folderId: 'tournaments', name: t.name, destination: t.location||'', startDate: t.start||'', endDate: t.end||'', sport: t.sport, teams: t.teams, travelers: 3, budget: 500, type: 'tournament', tags: [(t.sport||'').toLowerCase(),'tournament'].filter(Boolean), created: Date.now() };
     trips.push(trip);
   }
-  const hotel = planSelectedHotel !== null ? planHotelResults[planSelectedHotel] : null;
-  const car = planSelectedCar !== null ? planCarResults[planSelectedCar] : null;
-  trip.hotelName = hotel ? hotel.name : '';
-  trip.hotelPrice = hotel ? hotel.price : 0;
-  trip.hotelAddress = hotel ? hotel.address : '';
-  trip.hotelRating = hotel ? hotel.rating : 0;
-  trip.carName = car ? car.name : '';
-  trip.carPrice = car ? car.price : 0;
-  trip.carAddress = car ? car.address : '';
-  trip.carRating = car ? car.rating : 0;
+  var hotel = planSelectedHotel !== null ? planHotelResults[planSelectedHotel] : null;
+  var car = planSelectedCar !== null ? planCarResults[planSelectedCar] : null;
+  trip.hotelName = hotel ? hotel.name : (trip.hotelName || '');
+  trip.hotelPrice = hotel ? hotel.price : (trip.hotelPrice || 0);
+  trip.hotelAddress = hotel ? hotel.address : (trip.hotelAddress || '');
+  trip.hotelRating = hotel ? hotel.rating : (trip.hotelRating || 0);
+  trip.carName = car ? car.name : (trip.carName || '');
+  trip.carPrice = car ? car.price : (trip.carPrice || 0);
+  trip.carAddress = car ? car.address : (trip.carAddress || '');
+  trip.carRating = car ? car.rating : (trip.carRating || 0);
   trip.updated = Date.now();
   saveTrips(trips);
-  // Show inline success message, then refresh the view in-place
-  showToast('Hotel & car selections saved!');
-  var savedMsg = document.createElement('div');
-  savedMsg.style.cssText = 'text-align:center;padding:12px;background:rgba(76,175,80,0.1);border:1px solid var(--green);border-radius:10px;color:var(--green);font-weight:600;margin-bottom:12px;';
-  savedMsg.textContent = '✅ Bookings Saved!';
-  var summaryBox = document.getElementById('plan-summary-box');
-  if (summaryBox && summaryBox.parentNode) {
-    summaryBox.parentNode.insertBefore(savedMsg, summaryBox);
-  }
-  // Refresh the view in-place to show updated hotel/car info
+  showToast('✓ Booking info saved!');
+  // Refresh to show saved data
+  viewTrip(viewTripId);
+}
+
+function planConfirmBooking() {
+  if (!viewTripId) return;
+  var trips = getTrips();
+  var trip = trips.find(function(t) { return t.id === viewTripId || t.tourneyId === viewTripId; });
+  if (!trip) { showToast('Save a hotel/car selection first'); return; }
+  var hotelConf = (document.getElementById('plan-hotel-conf') || {}).value;
+  var carConf = (document.getElementById('plan-car-conf') || {}).value;
+  if (hotelConf) trip.hotelConf = hotelConf.trim();
+  if (carConf) trip.carConf = carConf.trim();
+  trip.updated = Date.now();
+  saveTrips(trips);
+  showToast('✅ Booking confirmed! Confirmation numbers saved.');
   viewTrip(viewTripId);
 }
 
@@ -1003,8 +998,8 @@ function viewTrip(tripId){
   // Show saved hotel/car info if present
   if (trip.hotelName || trip.carName) {
     html+='<div class="detail-section"><h4>📋 Planned Bookings</h4><div class="cost-summary">' +
-      (trip.hotelName ? '<div class="cost-row"><span class="label">🏨 Hotel</span><span class="value">' + trip.hotelName + ' — $' + (trip.hotelPrice||0) + '/night</span></div>' : '') +
-      (trip.carName ? '<div class="cost-row"><span class="label">🚗 Rental</span><span class="value">' + trip.carName + ' — $' + (trip.carPrice||0) + '/day</span></div>' : '') +
+      (trip.hotelName ? '<div class="cost-row"><span class="label">🏨 Hotel</span><span class="value">' + trip.hotelName + ' — $' + (trip.hotelPrice||0) + '/night' + (trip.hotelConf ? ' ✅ <span style="color:var(--green);font-size:.8em;">#' + trip.hotelConf + '</span>' : '') + '</span></div>' : '') +
+      (trip.carName ? '<div class="cost-row"><span class="label">🚗 Rental</span><span class="value">' + trip.carName + ' — $' + (trip.carPrice||0) + '/day' + (trip.carConf ? ' ✅ <span style="color:var(--green);font-size:.8em;">#' + trip.carConf + '</span>' : '') + '</span></div>' : '') +
       '</div></div>';
   }
 
@@ -1046,8 +1041,9 @@ function viewTrip(tripId){
       '<h4>📋 Selected Booking Summary</h4>' +
       (showHotel ? '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' : '') +
       (showCar ? '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' : '') +
-      '<div class="plan-summary-total"><span class="label">Estimated Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
-      '<div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-primary" onclick="planSaveSelections()" style="flex:1;">💾 Save to Trip</button></div>' +
+      (showHotel ? '<div class="plan-confirm-field"><label>🏨 Hotel Confirmation #</label><input type="text" id="plan-hotel-conf" placeholder="Enter confirmation number after booking" value="' + (trip.hotelConf||'') + '"></div>' : '') +
+      (showCar ? '<div class="plan-confirm-field"><label>🚗 Car Rental Confirmation #</label><input type="text" id="plan-car-conf" placeholder="Enter confirmation number after booking" value="' + (trip.carConf||'') + '"></div>' : '') +
+      '<div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-primary" onclick="planConfirmBooking()" style="flex:1;">✅ Confirm Booking</button></div>' +
     '</div>' +
   '</div>';
 
