@@ -1619,6 +1619,26 @@ document.addEventListener('keydown',e=>{
    INIT
    ═════════════════════════════════════════ */
 seedData();
+
+// Live update: re-render when schedule data changes
+window.addEventListener('storage', function(e) {
+  if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trip_statuses') {
+    seedData();
+    if (currentFolderId) renderFolderView(currentFolderId);
+    else renderFolderList();
+  }
+});
+var _pjLastHash = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+setInterval(function() {
+  var now = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+  if (now !== _pjLastHash) {
+    _pjLastHash = now;
+    seedData();
+    if (currentFolderId) renderFolderView(currentFolderId);
+    else renderFolderList();
+  }
+}, 4000);
+
 // Handle ?tournament= param — find the trip and open it
 var urlParams = new URLSearchParams(window.location.search);
 var tourParam = urlParams.get('tournament');

@@ -68,7 +68,8 @@
                     var examples = [
                         { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: 85, times: 'Sat 8:00 AM — Field 3' },
                         { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: 48, times: 'Sat 9:00 AM — Field 1' },
-                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' }
+                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' },
+                        { id: 1700000004, name: 'Memorial Day Classic', sport: 'Baseball', start: '2026-05-25', end: '2026-05-28', location: 'New Orleans, LA', teams: 72, times: 'Mon 7:00 AM — Field 5' }
                     ];
                     localStorage.setItem('fs_tourney_schedule', JSON.stringify(examples));
                 }
@@ -198,6 +199,21 @@
         });
         container.innerHTML = html;
     }
+
+    // Live update: re-render whenever schedule data changes (cross-tab or same-tab)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trip_statuses') renderTrips();
+    });
+    // Also poll every 3 seconds in case same-tab edits don't fire storage event
+    setInterval(function() {
+      var now = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+      if (now !== window._lastScheduleHash) {
+        window._lastScheduleHash = now;
+        renderTrips();
+      }
+    }, 3000);
+    window._lastScheduleHash = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+
     renderTrips();
 </script>
 </body>
