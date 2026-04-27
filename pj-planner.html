@@ -103,8 +103,12 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .btn-tm{font-size:.75em;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:var(--black-light);color:var(--white);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
 .btn-tm:hover{background:var(--black-hover);}
 .btn-tm-view{background:rgba(100,181,246,0.1);color:var(--blue);border-color:rgba(100,181,246,0.2);}
-.btn-tm-hotel{background:linear-gradient(135deg,rgba(255,193,7,0.15),rgba(255,152,0,0.15));color:var(--gold);border-color:rgba(255,193,7,0.2);}
-.btn-tm-car{background:linear-gradient(135deg,rgba(33,150,243,0.15),rgba(3,169,244,0.15));color:var(--blue);border-color:rgba(33,150,243,0.2);}
+.btn-tm-book{background:var(--gold);color:var(--black);border:none;font-weight:700;}
+.dropdown-wrap{position:relative;display:inline-block;}
+.book-dropdown{display:none;position:absolute;top:100%;left:0;background:var(--black-card);border:1px solid var(--border);border-radius:10px;padding:6px;z-index:100;min-width:180px;box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+.book-dropdown.show{display:flex;flex-direction:column;gap:4px;}
+.book-dd-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:.82em;font-weight:500;color:var(--white);cursor:pointer;background:none;border:none;text-align:left;width:100%;font-family:'Inter',sans-serif;transition:all .15s;}
+.book-dd-item:hover{background:var(--black-hover);color:var(--gold);}
 .trip-card:hover{border-color:var(--gold-dark);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
 .trip-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:10px;}
 .trip-card-title{font-family:'Cinzel',serif;font-size:1.05em;color:var(--white);letter-spacing:1px;line-height:1.3;flex:1;}
@@ -393,6 +397,26 @@ function seedData(){
 }
 
 /* ═════════════════════════════════════════
+   DROPDOWN HELPERS
+   ═════════════════════════════════════════ */
+function toggleBookDD(id) {
+  closeAllDD();
+  var el = document.getElementById('book-dd-' + id);
+  if (el) el.classList.toggle('show');
+}
+function closeAllDD() {
+  document.querySelectorAll('.book-dropdown.show').forEach(function(el) { el.classList.remove('show'); });
+}
+function planOpenFlight(dest) {
+  if (!dest) { showToast('No destination set'); return; }
+  closeAllDD();
+  window.open('https://www.google.com/travel/flights?q=flights+to+' + encodeURIComponent(dest) + '&adults=3', '_blank');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dropdown-wrap')) closeAllDD();
+});
+
+/* ═════════════════════════════════════════
    RENDER: MAIN VIEW
    ═════════════════════════════════════════ */
 function renderMainView() {
@@ -446,9 +470,14 @@ function renderMainView() {
         '<div class="tm-meta">📍 ' + dest + ' · 👥 ' + (t.teams || '—') + ' teams</div>' +
         '<div class="tm-status"><span>🏨</span>' + hotelStatus + '<span style="margin-left:12px;">🚗</span>' + carStatus + '</div>' +
         '<div class="tm-actions">' +
-          '<button class="btn-tm btn-tm-view" onclick="viewTrip(\'' + tripId + '\')">📅 View & Book</button>' +
-          '<button class="btn-tm btn-tm-hotel" onclick="window._bookTab=\'hotel\';viewTrip(\'' + tripId + '\')">🏨 Hotel</button>' +
-          '<button class="btn-tm btn-tm-car" onclick="window._bookTab=\'car\';viewTrip(\'' + tripId + '\')">🚗 Car</button>' +
+          '<div class="dropdown-wrap">' +
+            '<button class="btn-tm btn-tm-book" onclick="toggleBookDD(\'' + tripId + '\')">📅 Book Trip</button>' +
+            '<div class="book-dropdown" id="book-dd-' + tripId + '">' +
+              '<button class="book-dd-item" onclick="window._bookTab=\'hotel\';closeAllDD();viewTrip(\'' + tripId + '\')">🏨 Book Hotel</button>' +
+              '<button class="book-dd-item" onclick="window._bookTab=\'car\';closeAllDD();viewTrip(\'' + tripId + '\')">🚗 Rent Car</button>' +
+              '<button class="book-dd-item" onclick="planOpenFlight(\'' + (t.location||'') + '\')">✈️ Book Flight</button>' +
+            '</div>' +
+          '</div>' +
         '</div></div>';
     });
     h += '</div>';
@@ -810,7 +839,7 @@ function planRenderHotels() {
       <div class="plan-opt-amenities">${h.amenities.slice(0,4).map(a => `<span class="plan-opt-amenity">${a}</span>`).join('')}</div>
       <div class="plan-opt-actions">
         <button class="plan-opt-btn ${planSelectedHotel === i ? 'selected' : ''}" onclick="planSelectHotel(${i})">${planSelectedHotel === i ? '✓ SELECTED' : 'SELECT'}</button>
-        <button class="plan-opt-btn book" onclick="window.open('https://www.hotels.com/search.do?destination=${encodeURIComponent(planCurrentCity)}','_blank')">BOOK</button>
+        <button class="plan-opt-btn book" onclick="window.open('https://www.hotels.com/search.do?destination=${encodeURIComponent(planCurrentCity)}&adults=3','_blank')">BOOK</button>
       </div>
     </div>
   `).join('');
@@ -828,7 +857,7 @@ function planRenderCars() {
       <div class="plan-opt-amenities">${c.amenities.slice(0,4).map(a => `<span class="plan-opt-amenity">${a}</span>`).join('')}</div>
       <div class="plan-opt-actions">
         <button class="plan-opt-btn ${planSelectedCar === i ? 'selected' : ''}" onclick="planSelectCar(${i})">${planSelectedCar === i ? '✓ SELECTED' : 'SELECT'}</button>
-        <button class="plan-opt-btn book" onclick="window.open('https://www.kayak.com/cars/${encodeURIComponent(planCurrentCity)}','_blank')">BOOK</button>
+        <button class="plan-opt-btn book" onclick="window.open('https://www.kayak.com/cars/' + encodeURIComponent(planCurrentCity) + '?pickup=anytime&dropoff=anytime&driversAge=25','_blank')">BOOK</button>
       </div>
     </div>
   `).join('');
@@ -962,10 +991,11 @@ function viewTrip(tripId){
   if(trip.destination){
     var searchDest=encodeURIComponent(trip.destination);
     html+='<div class="detail-section"><h4>🔗 Quick Bookings</h4><div class="booking-links">' +
-      '<a href="https://www.hotels.com/search.do?destination=' + searchDest + '" target="_blank" class="booking-link hotel">🏨 Hotels.com</a>' +
-      '<a href="https://www.booking.com/searchresults.html?ss=' + searchDest + '" target="_blank" class="booking-link hotel">🏨 Booking.com</a>' +
-      '<a href="https://www.kayak.com/cars/' + trip.destination.split(',')[0].trim().toLowerCase() + '" target="_blank" class="booking-link car">🚗 Kayak Cars</a>' +
+      '<a href="https://www.hotels.com/search.do?destination=' + searchDest + '&adults=3" target="_blank" class="booking-link hotel">🏨 Hotels.com</a>' +
+      '<a href="https://www.booking.com/searchresults.html?ss=' + searchDest + '&adults=3" target="_blank" class="booking-link hotel">🏨 Booking.com</a>' +
+      '<a href="https://www.kayak.com/cars/' + encodeURIComponent(trip.destination) + '?pickup=anytime&dropoff=anytime&driversAge=25" target="_blank" class="booking-link car">🚗 Kayak Cars</a>' +
       '<a href="https://www.enterprise.com/en/car-rental/locations/us/' + trip.destination.split(',')[0].trim().toLowerCase() + '.html" target="_blank" class="booking-link car">🚗 Enterprise</a>' +
+      '<a href="https://www.google.com/travel/flights?q=flights+to+' + searchDest + '&adults=3" target="_blank" class="booking-link flight">✈️ Flights</a>' +
       '<a href="https://www.google.com/maps/search/?api=1&query=' + searchDest + '" target="_blank" class="booking-link flight">🗺️ Map</a>' +
       '</div></div>';
   }
