@@ -342,6 +342,10 @@
                 <div class="footer">Future Stars Sports Co &copy; 2026</div>
             `;
             setTimeout(renderHome, 50);
+            setInterval(renderHome, 4000);
+            window.addEventListener('storage', function(e) {
+              if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trips') renderHome();
+            });
         }
 
         function renderHome() {
