@@ -20,20 +20,18 @@
     const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
     const ROLE_PAGES = (typeof AUTH_CONFIG !== 'undefined') ? AUTH_CONFIG.roles : {
-        owner: ['index', 'tournaments', 'inventory-v2', 'trips', 'team', 'tournament-scraper', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'departments', 'privacy', 'contact'],
-        logistics: ['index', 'tournaments', 'trips', 'team', 'tournament-scraper', 'pj-planner', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
-        tournament: ['index', 'tournaments', 'trips', 'team', 'inventory-v2', 'tournament-scraper', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
+        owner: ['index', 'tournament-scraper', 'inventory-v2', 'trips', 'team', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'departments', 'privacy', 'contact'],
+        logistics: ['index', 'tournament-scraper', 'trips', 'team', 'pj-planner', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
+        tournament: ['index', 'tournament-scraper', 'trips', 'team', 'inventory-v2', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
         inventory: ['index', 'inventory-v2', 'sortly-upload', 'pack-manager', 'team', 'trip-tracker', 'privacy', 'contact']
     };
 
     const ALL_ITEMS = (typeof AUTH_CONFIG !== 'undefined') ? AUTH_CONFIG.navItems : [
         { page: 'index', label: 'Home', icon: '🏠', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-        { page: 'tournaments', label: 'Tournaments', icon: '🏆', roles: ['owner', 'logistics', 'tournament'] },
+        { page: 'tournament-scraper', label: 'Schedules', icon: '📅', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'inventory-v2', label: 'Inventory', icon: '📦', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trips', label: 'Trips', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'team', label: 'Team', icon: '👥', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-
-        { page: 'tournament-scraper', label: 'Schedules', icon: '⏰', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'pack-manager', label: 'Pack Manager', icon: '📦', roles: ['owner', 'tournament', 'inventory'] },
         { page: 'pj-planner', label: 'PJ Trip Maker', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', roles: ['owner', 'inventory', 'tournament'] },
@@ -70,7 +68,7 @@
             {
                 tab: 'Operations',
                 icon: '⚡',
-                children: ['tournaments', 'inventory-v2', 'trips', 'tournament-scraper']
+                children: ['tournament-scraper', 'inventory-v2', 'trips']
             },
             {
                 tab: 'Planning',
