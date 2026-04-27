@@ -519,6 +519,7 @@
                         <span style="color:var(--gray-dark);">Sport</span><span id="preview-sport"></span>
                         <span style="color:var(--gray-dark);">Dates</span><span id="preview-dates"></span>
                         <span style="color:var(--gray-dark);">Location</span><span id="preview-location"></span>
+                        <span style="color:var(--gray-dark);">Teams</span><span id="preview-teams"></span>
                     </div>
                 </div>
                 <input type="hidden" id="trip-name">
@@ -595,7 +596,8 @@
                     opt.value = t.id;
                     const sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏟️';
                     const dateStr = t.start ? t.start + (t.end ? ' — ' + t.end : '') : '';
-                    opt.textContent = sportIcon + ' ' + t.name + (dateStr ? ' (' + dateStr + ')' : '');
+                    const teamStr = t.teams ? ' 👥 ' + t.teams + ' teams' : '';
+                    opt.textContent = sportIcon + ' ' + t.name + (dateStr ? ' (' + dateStr + ')' : '') + teamStr;
                     sel.appendChild(opt);
                 });
             } catch(e) {}
@@ -623,6 +625,8 @@
                 const dateStr = t.start ? t.start + (t.end ? ' through ' + t.end : '') : '—';
                 document.getElementById('preview-dates').textContent = dateStr;
                 document.getElementById('preview-location').textContent = t.location || '—';
+                const teamCount = t.teams || 0;
+                document.getElementById('preview-teams').textContent = teamCount ? teamCount + ' teams' : '—';
                 preview.style.display = 'block';
                 // Clear previous jersey selection
                 selectedJerseys = [];
@@ -630,6 +634,15 @@
                 // Auto-set picker filter to match sport
                 if (t.sport === 'Soccer') filterPicker('soccer');
                 else if (t.sport === 'Baseball') filterPicker('baseball');
+                // Auto-suggest jersey quantities based on team count
+                if (teamCount > 0) {
+                    // Estimate 15 players per team, round up to nearest 5
+                    const suggestedQty = Math.ceil(teamCount * 15 / 5) * 5;
+                    selectedJerseys.forEach((item, idx) => {
+                        selectedJerseys[idx].qty = suggestedQty;
+                    });
+                    updateSelectedSection();
+                }
             } catch(e) {}
         }
         // ─── Jersey Picker ─────────────────────────────────────
@@ -674,7 +687,19 @@
             if (idx >= 0) {
                 selectedJerseys.splice(idx, 1);
             } else {
-                selectedJerseys.push({ name, sport, qty: 10, size: 'Mixed' });
+                // Calculate suggested qty from selected tournament's team count
+                let suggestedQty = 10;
+                try {
+                    const id = document.getElementById('tourney-select').value;
+                    if (id) {
+                        const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                        const t = schedule.find(x => x.id == id);
+                        if (t && t.teams > 0) {
+                            suggestedQty = Math.ceil(t.teams * 15 / 5) * 5;
+                        }
+                    }
+                } catch(e) {}
+                selectedJerseys.push({ name, sport, qty: suggestedQty, size: 'Mixed' });
             }
             renderJerseyPicker();
         }

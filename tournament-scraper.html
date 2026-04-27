@@ -107,7 +107,11 @@
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group" style="flex:1;">
+                <label>Number of Teams</label>
+                <input type="number" id="tourney-teams" placeholder="e.g. 8" min="0" max="999" autocomplete="off">
+            </div>
+            <div class="form-group" style="flex:3;">
                 <label>Times / Notes</label>
                 <textarea id="tourney-times" placeholder="e.g. Sat 8:00 AM — Field 3&#10;Sat 10:30 AM — Field 1&#10;Sun 9:00 AM — Championship"></textarea>
             </div>
@@ -143,12 +147,13 @@ function addTournament() {
     const start = document.getElementById('tourney-start').value;
     const end = document.getElementById('tourney-end').value;
     const location = document.getElementById('tourney-location').value.trim();
+    const teams = parseInt(document.getElementById('tourney-teams').value) || 0;
     const times = document.getElementById('tourney-times').value.trim();
     if (!name) { alert('Enter a tournament name'); return; }
     const list = getSchedule();
     list.unshift({
         id: Date.now(),
-        name, sport, start, end, location, times,
+        name, sport, start, end, location, teams, times,
         created: new Date().toISOString()
     });
     saveSchedule(list);
@@ -157,6 +162,7 @@ function addTournament() {
     document.getElementById('tourney-start').value = '';
     document.getElementById('tourney-end').value = '';
     document.getElementById('tourney-location').value = '';
+    document.getElementById('tourney-teams').value = '';
     document.getElementById('tourney-times').value = '';
 }
 
@@ -176,6 +182,7 @@ function editTournament(id) {
     document.getElementById('tourney-start').value = t.start || '';
     document.getElementById('tourney-end').value = t.end || '';
     document.getElementById('tourney-location').value = t.location || '';
+    document.getElementById('tourney-teams').value = t.teams || '';
     document.getElementById('tourney-times').value = t.times || '';
     deleteTournament(id);
     document.getElementById('tourney-name').focus();
@@ -217,6 +224,7 @@ function render() {
                         ${t.location ? t.location + ' · ' : ''}
                         <span class="badge ${sportClass}">${t.sport || 'Other'}</span>
                     </div>
+                    ${t.teams ? '<span style="color:var(--gray-dark);">👥 ' + t.teams + ' teams</span>' : ''}
                     ${t.times ? '<div style="color:var(--gray-dark);font-size:0.8em;margin-top:4px;white-space:pre-wrap;">' + t.times + '</div>' : ''}
                 </div>
                 <div class="btn-group">
