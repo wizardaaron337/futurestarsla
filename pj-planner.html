@@ -1087,9 +1087,9 @@ function liveRefresh() {
 window.addEventListener('storage', function(e) {
   if (e.key === 'fs_tourney_schedule') { liveRefresh(); }
 });
-var _pjLast = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+var _pjLast = JSON.stringify(localStorage.getItem('fs_tourney_schedule') + '|' + localStorage.getItem('fs_trips'));
 setInterval(function() {
-  var now = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+  var now = JSON.stringify(localStorage.getItem('fs_tourney_schedule') + '|' + localStorage.getItem('fs_trips'));
   if (now !== _pjLast) {
     _pjLast = now;
     liveRefresh();
