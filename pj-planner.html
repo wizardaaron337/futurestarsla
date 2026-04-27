@@ -844,7 +844,14 @@ function planBookHotel(i) {
   planSelectHotel(i);
   planSaveSelections();
   var url = h.bookingUrl || 'https://www.hotels.com/search.do?destination=' + encodeURIComponent(planCurrentCity) + '&adults=3';
-  window.open(url, '_blank');
+  // Create a temporary <a> to bypass popup blockers
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function planBookCar(i) {
@@ -853,7 +860,13 @@ function planBookCar(i) {
   planSelectCar(i);
   planSaveSelections();
   var url = c.bookingUrl || 'https://www.kayak.com/cars/' + encodeURIComponent(planCurrentCity) + '?pickup=anytime&dropoff=anytime&driversAge=25';
-  window.open(url, '_blank');
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function planRenderHotels() {
