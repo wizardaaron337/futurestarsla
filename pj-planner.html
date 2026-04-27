@@ -813,18 +813,25 @@ function planRenderStars(rating) {
 }
 
 function planFindOptions() {
-  const hotelLoc = document.getElementById('plan-hotel-loc').value.trim();
-  const carLoc = document.getElementById('plan-car-loc').value.trim() || hotelLoc;
-  if (!hotelLoc) { showToast('Enter a hotel location first'); return; }
-  planHotelResults = generateHotels(hotelLoc);
-  planCarResults = generateCars(carLoc || hotelLoc);
-  planCurrentCity = hotelLoc.split(',')[0].trim();
-  planRenderHotels();
-  planRenderCars();
-  document.getElementById('plan-hotel-section').style.display = 'block';
-  document.getElementById('plan-car-section').style.display = 'block';
+  var hotelLoc = document.getElementById('plan-hotel-loc');
+  if (!hotelLoc) { showToast('Enter a location first'); return; }
+  var locVal = hotelLoc.value.trim();
+  if (!locVal) { showToast('Enter a location first'); return; }
+  planCurrentCity = locVal.split(',')[0].trim();
+  var mode = window._bookTab || 'all';
+  if (mode === 'all' || mode === 'hotel') {
+    planHotelResults = generateHotels(locVal);
+    planRenderHotels();
+    var hSec = document.getElementById('plan-hotel-section');
+    if (hSec) { hSec.style.display = 'block'; hSec.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  }
+  if (mode === 'all' || mode === 'car') {
+    planCarResults = generateCars(locVal);
+    planRenderCars();
+    var cSec = document.getElementById('plan-car-section');
+    if (cSec) { cSec.style.display = 'block'; }
+  }
   document.getElementById('plan-summary-box').style.display = 'block';
-  document.getElementById('plan-hotel-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function planRenderHotels() {
@@ -1000,27 +1007,28 @@ function viewTrip(tripId){
       '</div></div>';
   }
 
-  // Find Hotel & Car section
+  // Find Hotel & Car section — only show what was requested
+  var bookMode = window._bookTab || 'all';
+  var showHotel = (bookMode === 'all' || bookMode === 'hotel');
+  var showCar = (bookMode === 'all' || bookMode === 'car');
+  var showBoth = (bookMode === 'all');
+
   html+='<div class="detail-section plan-finder-section" id="plan-finder">' +
-    '<h4>🏨 Find Hotel & Car Rental</h4>' +
-    '<div class="plan-search-row">' +
-      '<div class="plan-search-field"><label>Hotel Location</label><input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="' + (trip.destination||'') + '"></div>' +
-      '<div class="plan-search-field"><label>Car Rental Location</label><input type="text" id="plan-car-loc" placeholder="Same as hotel if blank" value=""></div>' +
-    '</div>' +
+    '<h4>' + (bookMode === 'hotel' ? '🏨 Find Hotel' : bookMode === 'car' ? '🚗 Find Car Rental' : '🏨 Find Hotel & Car Rental') + '</h4>' +
+    (showHotel ? '<div class="plan-search-field"><label>Location</label><input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="' + (trip.destination||'') + '"></div>' : '') +
+    (showCar && showBoth ? '<div class="plan-search-field"><label>Car Rental Location</label><input type="text" id="plan-car-loc" placeholder="Same as hotel if blank" value=""></div>' : '') +
     '<div class="plan-examples">' +
-      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Atlanta, GA\';document.getElementById(\'plan-car-loc\').value=\'\';">Atlanta</span>' +
-      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Dallas, TX\';document.getElementById(\'plan-car-loc\').value=\'\';">Dallas</span>' +
-      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Lafayette, LA\';document.getElementById(\'plan-car-loc\').value=\'\';">Lafayette</span>' +
+      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Atlanta, GA\'">Atlanta</span>' +
+      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Dallas, TX\'">Dallas</span>' +
+      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Lafayette, LA\'">Lafayette</span>' +
     '</div>' +
-    '<button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:Inter,sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search Hotels & Cars</button>' +
-    '<div id="plan-hotel-section" class="detail-section" style="display:none;margin-top:16px;"><h4>🏨 Hotels</h4><div class="plan-options-grid" id="plan-hotel-grid"></div></div>' +
-    '<div id="plan-car-section" class="detail-section" style="display:none;"><h4>🚗 Car Rentals</h4><div class="plan-options-grid" id="plan-car-grid"></div></div>' +
+    '<button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:Inter,sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search ' + (bookMode === 'hotel' ? 'Hotels' : bookMode === 'car' ? 'Cars' : 'Hotels & Cars') + '</button>' +
+    (showHotel ? '<div id="plan-hotel-section" class="detail-section" style="display:none;margin-top:16px;"><h4>🏨 Hotels</h4><div class="plan-options-grid" id="plan-hotel-grid"></div></div>' : '') +
+    (showCar ? '<div id="plan-car-section" class="detail-section" style="display:none;"><h4>🚗 Car Rentals</h4><div class="plan-options-grid" id="plan-car-grid"></div></div>' : '') +
     '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
       '<h4>📋 Selected Booking Summary</h4>' +
-      '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div>' +
-      '<div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' +
-      '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div>' +
-      '<div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' +
+      (showHotel ? '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' : '') +
+      (showCar ? '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' : '') +
       '<div class="plan-summary-total"><span class="label">Estimated Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
       '<div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-primary" onclick="planSaveSelections()" style="flex:1;">💾 Save to Trip</button></div>' +
     '</div>' +
