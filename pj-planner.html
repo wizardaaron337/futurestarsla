@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PJ Trip Maker — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
-    <script src="crew-data.js?v=1777085641"></script>
+
     <script src="nav-dropdown.js?v=1"></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
@@ -229,24 +229,7 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 }
 
 /* Crew Trips Card */
-.crew-section{margin-bottom:32px;}
-.crew-section h3{font-family:'Cinzel',serif;color:var(--gold);font-size:1em;margin-bottom:14px;letter-spacing:1px;display:flex;align-items:center;gap:10px;}
-.crew-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
-.crew-card{background:var(--black-card);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .3s;}
-.crew-card:hover{border-color:var(--gold-dark);}
-.crew-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.crew-card-name{font-family:'Cinzel',serif;color:var(--white);font-size:.95em;}
-.crew-card-status{padding:3px 10px;border-radius:6px;font-size:.7em;font-weight:600;}
-.crew-card-status.locked{background:rgba(76,175,80,0.1);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
-.crew-card-status.tentative{background:rgba(255,152,0,0.1);color:var(--orange);border:1px solid rgba(255,152,0,0.2);}
-.crew-card-meta{display:flex;flex-wrap:wrap;gap:6px;font-size:.78em;color:var(--gray);margin-bottom:8px;}
-.crew-card-meta span{display:flex;align-items:center;gap:4px;}
-.crew-card-actions{display:flex;gap:6px;margin-top:8px;}
-.crew-card-actions a{padding:5px 10px;border-radius:6px;font-size:.75em;text-decoration:none;transition:all .2s;font-weight:500;}
-.crew-book-btn{background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.2);color:var(--gold);}
-.crew-book-btn:hover{background:rgba(201,162,39,0.2);}
-.crew-plan-btn{background:rgba(100,181,246,0.1);border:1px solid rgba(100,181,246,0.2);color:var(--blue);}
-.crew-plan-btn:hover{background:rgba(100,181,246,0.2);}
+
 
 /* Plan tab styles for hotel/car search in view modal */
 .plan-finder-section{border:1px solid rgba(201,162,39,0.15);background:rgba(201,162,39,0.02);}
@@ -461,51 +444,7 @@ function renderFolderList(){
   const trips=getTrips();
   const app=document.getElementById('app');
 
-  // Get PJ's assigned trips from CREW_TRIPS
-  let crewHtml='';
-  if(typeof CREW_TRIPS !== 'undefined'){
-    const myTrips = CREW_TRIPS.filter(t => {
-      const crew = (t.crew || '').toLowerCase();
-      return crew.includes('pj') || crew.includes('logistics');
-    });
-    const upcoming = myTrips.filter(t => t.status && t.status.toUpperCase() !== 'DONE' && t.status.toUpperCase() !== 'COMPLETED');
-    if(upcoming.length > 0){
-      const monthOrder = ['January','Febuary','February','March','April','May','June','July','August','September','October','November','December'];
-      upcoming.sort((a,b)=>monthOrder.indexOf(a.month||'') - monthOrder.indexOf(b.month||''));
-      crewHtml = `<div class="crew-section">
-        <h3>🚐 My Upcoming Trips (${upcoming.length})</h3>
-        <div class="crew-grid">
-          ${upcoming.slice(0,12).map(t => {
-            const statusClass = (t.status||'').toUpperCase() === 'LOCKED IN' ? 'locked' : 'tentative';
-            const type = (t.sport||'').toLowerCase() === 'baseball' ? '⚾' : (t.sport||'').toLowerCase() === 'soccer' ? '⚽' : '🏆';
-            const dest = t.location || (t.name + (t.state ? ', ' + t.state : ''));
-            const destEnc = encodeURIComponent(dest || t.name || '');
-            return `<div class="crew-card">
-              <div class="crew-card-header">
-                <div class="crew-card-name">${type} ${t.name}</div>
-                <span class="crew-card-status ${statusClass}">${t.status||''}</span>
-              </div>
-              <div class="crew-card-meta">
-                <span>📅 ${t.month || ''} ${t.startDate || ''}${t.endDate ? '-' + t.endDate : ''}</span>
-                <span>📍 ${dest}</span>
-              </div>
-              <div class="crew-card-meta" style="color:var(--gold);">
-                <span>👥 ${t.crew || ''}</span>
-                ${t.pexCard ? '<span>💳 PEX: ' + t.pexCard + '</span>' : ''}
-              </div>
-              <div class="crew-card-actions">
-                <a href="https://www.hotels.com/search.do?destination=${encodeURIComponent(dest || t.name)}" target="_blank" class="crew-book-btn">🏨 Hotel</a>
-                <a href="https://www.kayak.com/cars/${encodeURIComponent((dest||t.name).replace(', ','-').replace(' ','-'))}" target="_blank" class="crew-book-btn">🚗 Rental</a>
-                <a href="trip-planner.html" class="crew-plan-btn">📝 Plan</a>
-              </div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>`;
-    }
-  }
-
-  let html=crewHtml + `
+  let html=`
     <div class="page-header">
       <div>
         <div class="welcome">Trip Maker</div>
