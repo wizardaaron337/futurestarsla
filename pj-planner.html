@@ -491,8 +491,7 @@ function renderMainView() {
           '<div class="dropdown-wrap">' +
             '<button class="btn-tm btn-tm-book" onclick="toggleBookDD(\'' + tripId + '\')">📅 Book Trip</button>' +
             '<div class="book-dropdown" id="book-dd-' + tripId + '">' +
-              '<button class="book-dd-item" onclick="window._bookTab=\'hotel\';closeAllDD();viewTrip(\'' + tripId + '\')">🏨 Book Hotel</button>' +
-              '<button class="book-dd-item" onclick="window._bookTab=\'car\';closeAllDD();viewTrip(\'' + tripId + '\')">🚗 Rent Car</button>' +
+                  '<button class="book-dd-item" onclick="window._bookTab=\'car\';closeAllDD();viewTrip(\'' + tripId + '\')">🚗 Rent Car</button>' +
               '<button class="book-dd-item" onclick="planOpenFlight(\'' + (t.location||'') + '\')">✈️ Book Flight</button>' +
             '</div>' +
           '</div>' +
@@ -777,9 +776,7 @@ function deleteCurrentTrip(){
 let viewTripId = null;
 
 // Plan tab state
-let planHotelResults = [];
 let planCarResults = [];
-let planSelectedHotel = null;
 let planSelectedCar = null;
 let planCurrentCity = '';
 
@@ -793,20 +790,6 @@ function getCityPricing(loc) {
   else if (city.includes('lexington') || city.includes('louisville') || city.includes('knoxville')) { hotelBase = 115; carBase = 52; }
   else if (city.includes('birmingham') || city.includes('mobile') || city.includes('huntsville')) { hotelBase = 120; carBase = 55; }
   return { hotelBase, carBase };
-}
-
-function generateHotels(loc) {
-  const { hotelBase } = getCityPricing(loc);
-  const city = loc.split(',')[0].trim();
-  const cityEnc = encodeURIComponent(city);
-  const state = loc.includes(',') ? loc.split(',')[1].trim().toUpperCase() : '';
-  var addr = city + (state ? ', ' + state : '');
-  return [
-    { name: 'Hampton Inn & Suites', badge: 'best', badgeLabel: 'BEST VALUE', price: hotelBase, rating: 4.5, reviews: 1243, address: addr, amenities: ['Free Breakfast', 'Free WiFi', 'Free Parking', 'Pool', 'Gym'], distance: '1.2 miles to downtown', bookingUrl: 'https://www.google.com/search?q=' + encodeURIComponent('Hampton Inn ' + addr + ' price per night') },
-    { name: 'Holiday Inn Express', badge: 'cheap', badgeLabel: 'CHEAPEST', price: Math.round(hotelBase * 0.85), rating: 4.2, reviews: 892, address: addr, amenities: ['Free Breakfast', 'Free WiFi', 'Free Parking', 'Business Center'], distance: '2.8 miles to downtown', bookingUrl: 'https://www.google.com/search?q=' + encodeURIComponent('Holiday Inn Express ' + addr + ' price per night') },
-    { name: 'Marriott Courtyard', badge: 'rated', badgeLabel: 'HIGHEST RATED', price: Math.round(hotelBase * 1.25), rating: 4.7, reviews: 2156, address: addr, amenities: ['Restaurant', 'Bar', 'Gym', 'Free WiFi', 'Room Service'], distance: '0.3 miles to downtown', bookingUrl: 'https://www.google.com/search?q=' + encodeURIComponent('Courtyard Marriott ' + addr + ' price per night') },
-    { name: 'La Quinta Inn & Suites', badge: 'close', badgeLabel: 'CLOSEST', price: Math.round(hotelBase * 0.95), rating: 4.0, reviews: 678, address: addr, amenities: ['Free Breakfast', 'Free WiFi', 'Airport Shuttle', 'Parking'], distance: '0.8 miles to airport', bookingUrl: 'https://www.google.com/search?q=' + encodeURIComponent('La Quinta ' + addr + ' price per night') }
-  ];
 }
 
 function generateCars(loc) {
@@ -835,27 +818,12 @@ function planFindOptions() {
   var locVal = hotelLoc.value.trim();
   if (!locVal) { showToast('Enter a location first'); return; }
   planCurrentCity = locVal.split(',')[0].trim();
-  var mode = window._bookTab || 'all';
-  if (mode === 'all' || mode === 'hotel') {
-    planHotelResults = generateHotels(locVal);
-    planRenderHotels();
-    var hSec = document.getElementById('plan-hotel-section');
-    if (hSec) { hSec.style.display = 'block'; hSec.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-  }
-  if (mode === 'all' || mode === 'car') {
-    planCarResults = generateCars(locVal);
-    planRenderCars();
-    var cSec = document.getElementById('plan-car-section');
-    if (cSec) { cSec.style.display = 'block'; }
-  }
-  document.getElementById('plan-summary-box').style.display = 'block';
-}
-
-function planBookHotel(i) {
-  var h = planHotelResults[i];
-  if (!h) return;
-  planSelectHotel(i);
-  planSaveSelections();
+  planCarResults = generateCars(locVal);
+  planRenderCars();
+  var cSec = document.getElementById('plan-car-section');
+  if (cSec) { cSec.style.display = 'block'; cSec.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  var sb = document.getElementById('plan-summary-box');
+  if (sb) sb.style.display = 'block';
 }
 
 function planBookCar(i) {
@@ -863,23 +831,6 @@ function planBookCar(i) {
   if (!c) return;
   planSelectCar(i);
   planSaveSelections();
-}
-
-function planRenderHotels() {
-  var grid = document.getElementById('plan-hotel-grid');
-  if (!grid) return;
-  grid.innerHTML = planHotelResults.map(function(h, i) { return `
-    <div class="plan-option-card${planSelectedHotel === i ? ' selected' : ''}">
-      <div class="plan-opt-name">${h.name} <span class="plan-opt-badge ${h.badge}">${h.badgeLabel}</span></div>
-      <div class="plan-opt-rating"><span class="plan-opt-stars">${planRenderStars(h.rating)}</span> ${h.rating} (${h.reviews.toLocaleString()} reviews)</div>
-      <div class="plan-opt-price-badge">≈$${h.price}<span class="sub">/night est.</span></div>
-      <div class="plan-opt-address">📍 ${h.address}</div>
-      <div class="plan-opt-amenities">${h.amenities.slice(0,3).map(function(a) { return '<span class="plan-opt-amenity">' + a + '</span>'; }).join('')}</div>
-      <div class="plan-opt-actions">
-        <a href="${h.bookingUrl}" target="_blank" rel="noopener" class="plan-opt-btn book" onclick="planBookHotel(${i})">🏨 Check Rates</a>
-      </div>
-    </div>
-  `; }).join('');
 }
 
 function planRenderCars() {
@@ -899,12 +850,6 @@ function planRenderCars() {
   `; }).join('');
 }
 
-function planSelectHotel(idx) {
-  planSelectedHotel = idx;
-  planRenderHotels();
-  planUpdateSummary();
-}
-
 function planSelectCar(idx) {
   planSelectedCar = idx;
   planRenderCars();
@@ -912,15 +857,10 @@ function planSelectCar(idx) {
 }
 
 function planUpdateSummary() {
-  const hotel = planSelectedHotel !== null ? planHotelResults[planSelectedHotel] : null;
   const car = planSelectedCar !== null ? planCarResults[planSelectedCar] : null;
-  document.getElementById('plan-sum-hotel-name').textContent = hotel ? hotel.name : 'Not selected';
-  document.getElementById('plan-sum-hotel-price').textContent = hotel ? `$${hotel.price}/night` : '-';
   document.getElementById('plan-sum-car-name').textContent = car ? car.name : 'Not selected';
   document.getElementById('plan-sum-car-price').textContent = car ? `$${car.price}/day` : '-';
-  let total = 0;
-  if (hotel) total += hotel.price * 2;
-  if (car) total += car.price * 3;
+  let total = car ? car.price * 3 : 0;
   document.getElementById('plan-sum-total').textContent = `$${total}`;
 }
 
@@ -935,12 +875,7 @@ function planSaveSelections() {
     trip = { id: 'trip-' + t.id, tourneyId: t.id, folderId: 'tournaments', name: t.name, destination: t.location||'', startDate: t.start||'', endDate: t.end||'', sport: t.sport, teams: t.teams, travelers: 3, budget: 500, type: 'tournament', tags: [(t.sport||'').toLowerCase(),'tournament'].filter(Boolean), created: Date.now() };
     trips.push(trip);
   }
-  var hotel = planSelectedHotel !== null ? planHotelResults[planSelectedHotel] : null;
   var car = planSelectedCar !== null ? planCarResults[planSelectedCar] : null;
-  trip.hotelName = hotel ? hotel.name : (trip.hotelName || '');
-  trip.hotelPrice = hotel ? hotel.price : (trip.hotelPrice || 0);
-  trip.hotelAddress = hotel ? hotel.address : (trip.hotelAddress || '');
-  trip.hotelRating = hotel ? hotel.rating : (trip.hotelRating || 0);
   trip.carName = car ? car.name : (trip.carName || '');
   trip.carPrice = car ? car.price : (trip.carPrice || 0);
   trip.carAddress = car ? car.address : (trip.carAddress || '');
@@ -988,9 +923,7 @@ function viewTrip(tripId){
   if(!trip)return;
   viewTripId = tripId;
   // Reset plan state
-  planHotelResults = [];
   planCarResults = [];
-  planSelectedHotel = null;
   planSelectedCar = null;
   planCurrentCity = '';
 
@@ -1037,27 +970,22 @@ function viewTrip(tripId){
       '</div></div>';
   }
 
-  // Find Hotel & Car section — only show what was requested
-  var bookMode = window._bookTab || 'all';
-  var showHotel = (bookMode === 'all' || bookMode === 'hotel');
-  var showCar = (bookMode === 'all' || bookMode === 'car');
-  var showBoth = (bookMode === 'all');
+  // Only show car search — hotels are manually entered
+  var showCar = (window._bookTab !== 'hotel');
 
   html+='<div class="detail-section plan-finder-section" id="plan-finder">' +
-    '<h4>' + (bookMode === 'hotel' ? '🏨 Find Hotel' : bookMode === 'car' ? '🚗 Find Car Rental' : '🏨 Find Hotel & Car Rental') + '</h4>' +
+    '<h4>🚗 Book Rental Car</h4>' +
     '<div class="plan-search-field"><label>Location</label><input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="' + (trip.destination||'') + '"></div>' +
     '<div class="plan-examples">' +
       '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Atlanta, GA\'">Atlanta</span>' +
       '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Dallas, TX\'">Dallas</span>' +
       '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Lafayette, LA\'">Lafayette</span>' +
     '</div>' +
-    '<button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:Inter,sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search ' + (bookMode === 'hotel' ? 'Hotels' : bookMode === 'car' ? 'Cars' : 'Hotels & Cars') + '</button>' +
-    (showHotel ? '<div id="plan-hotel-section" class="detail-section" style="display:none;margin-top:16px;"><h4>🏨 Hotels</h4><div class="plan-options-grid" id="plan-hotel-grid"></div></div>' : '') +
+    '<button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:Inter,sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search Cars</button>' +
     (showCar ? '<div id="plan-car-section" class="detail-section" style="display:none;"><h4>🚗 Car Rentals</h4><div class="plan-options-grid" id="plan-car-grid"></div></div>' : '') +
     '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
-      '<h4>📋 Selected Booking Summary</h4>' +
-      (showHotel ? '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' : '') +
-      (showHotel ? '<div class="plan-confirm-field"><label>🏨 Hotel Name (if not using search above)</label><input type="text" id="plan-hotel-name-text" placeholder="e.g. Marriott Downtown" value="' + (trip.hotelName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🏨 Hotel Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="Confirmation #" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="text" id="plan-hotel-actual" placeholder="$" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' : '') +
+      '<h4>📋 Bookings</h4>' +
+      '<div class="plan-confirm-field"><label>🏨 Hotel Name</label><input type="text" id="plan-hotel-name-text" placeholder="e.g. Marriott Downtown" value="' + (trip.hotelName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🏨 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="Confirmation #" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="text" id="plan-hotel-actual" placeholder="$" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' +
       (showCar ? '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' : '') +
       (showCar ? '<div class="plan-confirm-field"><label>🚗 Rental Company Name (if not using search)</label><input type="text" id="plan-car-name-text" placeholder="e.g. Enterprise" value="' + (trip.carName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🚗 Car Rental Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="Confirmation #" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="text" id="plan-car-actual" placeholder="$" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
       '<div class="plan-summary-total"><span class="label">Est. Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
@@ -1073,17 +1001,11 @@ function viewTrip(tripId){
 
   document.getElementById('app').innerHTML = html;
 
-  // Auto-search hotels and cars only when booking (not when viewing details)
+  // Auto-search cars only when booking (not when viewing details)
   if (window._bookTab !== undefined) {
     planFindOptions();
   }
-  // Scroll to hotel/car section if triggered by big buttons
-  if (window._bookTab === 'hotel') {
-    setTimeout(function() {
-      var el = document.getElementById('plan-finder');
-      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
-    }, 500);
-  } else if (window._bookTab === 'car') {
+  if (window._bookTab === 'car') {
     setTimeout(function() {
       var el = document.getElementById('plan-car-section');
       if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
