@@ -3,450 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournament Schedules — Future Stars</title>
+    <title>Tournament Schedule — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
-    <script src="crew-data.js?v=1777085641"></script>
-    <script src="tournament-data.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1"></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --gold: #C9A227; --gold-dark: #B8941F;
-            --black: #0A0A0A; --black-card: #1A1A1A; --black-hover: #242424;
-            --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C;
-            --border: #2A2824; --green: #4CAF50; --red: #EF5350; --orange: #FFA726;
+        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; --green: #4CAF50; --red: #EF5350; }
+        body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 14px; }
+        .main { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+        .page-title { font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 24px; }
+
+        .form-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .form-card h3 { color: var(--gold); font-family: 'Cinzel', serif; font-size: 1em; margin-bottom: 14px; }
+        .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .form-group { flex: 1; min-width: 180px; }
+        .form-group label { display: block; color: var(--gray); font-size: 0.8em; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 12px; background: var(--black); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--white); font-size: 0.9em; outline: none;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--black);
-            color: var(--white);
-            min-height: 100vh;
-            font-size: 14px;
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+        .form-group select { cursor: pointer; }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-group input[type="date"] { color-scheme: dark; }
+
+        .btn { padding: 10px 24px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85em; cursor: pointer; white-space: nowrap; }
+        .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--black); }
+        .btn-danger { background: rgba(239,83,80,0.15); color: var(--red); border: 1px solid rgba(239,83,80,0.3); }
+        .btn-secondary { background: var(--black); border: 1px solid var(--border); color: var(--gray); }
+        .btn-sm { padding: 6px 14px; font-size: 0.78em; }
+        .btn:hover { filter: brightness(1.15); }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .schedule-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+        .schedule-card {
+            background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
         }
-        .header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 20px; background: var(--black-card);
-            border-bottom: 1px solid var(--border);
+        .schedule-card .info { flex: 1; }
+        .schedule-card .name { color: var(--white); font-weight: 600; font-size: 0.95em; }
+        .schedule-card .details { color: var(--gray); font-size: 0.8em; margin-top: 2px; }
+        .schedule-card .badge {
+            display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.72em; font-weight: 600;
         }
-        .logo-link {
-            display: flex; align-items: center; gap: 10px; text-decoration: none;
-        }
-        .logo-img { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--gold-dark); }
-        .logo-text {
-            font-family: 'Cinzel', serif; font-size: 1.1em; font-weight: 700;
-            color: var(--gold); letter-spacing: 3px;
-        }
-        .user-info { display: flex; align-items: center; gap: 16px; }
-        .user-name { color: var(--gold); font-size: 0.8em; letter-spacing: 1px; }
-        .logout-btn {
-            padding: 6px 14px; background: transparent; border: 1px solid var(--border);
-            color: var(--gray); border-radius: 6px; font-size: 0.75em; cursor: pointer;
-        }
-        .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .main { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
-        .page-title {
-            font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700;
-            color: var(--gold); margin-bottom: 4px;
-        }
-        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 20px; }
-        .search-bar {
-            display: flex; gap: 10px; margin-bottom: 20px;
-        }
-        .search-bar input {
-            flex: 1; padding: 12px 16px; background: var(--black-card);
-            border: 1px solid var(--border); border-radius: 8px; color: var(--white);
-            font-size: 0.95em; outline: none;
-        }
-        .search-bar input:focus { border-color: var(--gold); }
-        .search-bar button {
-            padding: 12px 24px; background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            border: none; border-radius: 8px; color: var(--black);
-            font-weight: 700; cursor: pointer; font-size: 0.9em; white-space: nowrap;
-        }
-        .search-bar button:hover { filter: brightness(1.1); }
-        .search-bar button.secondary {
-            background: var(--black-card);
-            color: var(--gray);
-            border: 1px solid var(--border);
-        }
-        .results { display: flex; flex-direction: column; gap: 10px; }
-        .tourney-card {
-            background: var(--black-card); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden;
-        }
-        .tourney-card .card-header {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            padding: 16px 20px; cursor: pointer;
-        }
-        .tourney-card .card-header:hover { background: var(--black-hover); }
-        .tourney-card h3 {
-            font-family: 'Cinzel', serif; color: var(--gold); font-size: 1em;
-            margin-bottom: 4px;
-        }
-        .tourney-card .meta {
-            color: var(--gray); font-size: 0.85em; line-height: 1.6;
-        }
-        .tourney-card .meta strong { color: var(--white); }
-        .card-actions {
-            display: flex; gap: 6px; flex-shrink: 0;
-        }
-        .btn-sm {
-            padding: 6px 12px; border-radius: 6px; border: none;
-            cursor: pointer; font-size: 0.8em; font-weight: 600;
-            white-space: nowrap;
-        }
-        .btn-lookup { background: rgba(100,181,246,0.15); color: #64B5F6; border: 1px solid rgba(100,181,246,0.3); }
-        .btn-go { background: rgba(201,162,39,0.12); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); text-decoration: none; display: inline-block; }
-        .btn-clear { background: transparent; color: var(--gray-dark); border: 1px solid transparent; }
-        .btn-lookup:hover, .btn-go:hover, .btn-clear:hover { filter: brightness(1.2); }
-        .card-body { padding: 0 20px 16px 20px; }
-        .schedule-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-            margin-top: 10px;
-        }
-        @media (max-width: 600px) { .schedule-grid { grid-template-columns: 1fr; } }
-        .game-card {
-            background: var(--black); border: 1px solid var(--border);
-            border-radius: 8px; padding: 12px;
-        }
-        .game-card .game-time {
-            font-size: 1.2em; font-weight: 700; color: var(--gold);
-        }
-        .game-card .game-detail {
-            font-size: 0.85em; color: var(--gray); margin-top: 4px;
-        }
-        .game-card .game-field {
-            font-size: 0.8em; color: var(--gray-dark); margin-top: 2px;
-        }
-        .status-badge {
-            display: inline-block; padding: 3px 10px; border-radius: 4px;
-            font-size: 0.75em; font-weight: 600;
-        }
-        .status-badge.loading { background: rgba(255,167,38,0.1); color: var(--orange); }
-        .status-badge.found { background: rgba(76,175,80,0.1); color: var(--green); }
-        .status-badge.fail { background: rgba(239,83,80,0.1); color: var(--red); }
-        .status-badge.info { background: rgba(100,181,246,0.1); color: #64B5F6; }
-        .status-badge.saved { background: rgba(201,162,39,0.1); color: var(--gold); }
-        .empty-state {
-            text-align: center; padding: 60px 20px; color: var(--gray-dark);
-        }
+        .badge-soccer { background: rgba(76,175,80,0.12); color: var(--green); }
+        .badge-baseball { background: rgba(239,83,80,0.12); color: var(--red); }
+        .badge-other { background: rgba(168,164,152,0.1); color: var(--gray); }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-dark); }
         .empty-state .big { font-size: 3em; margin-bottom: 10px; }
-        .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 6px; }
         .empty-state p { font-size: 0.9em; }
-        .source-link {
-            margin-top: 8px; font-size: 0.8em;
+
+        .sport-filter { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .sport-filter button {
+            padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border);
+            background: transparent; color: var(--gray); font-size: 0.8em; cursor: pointer; font-weight: 500;
         }
-        .source-link a {
-            color: #64B5F6; text-decoration: none;
-        }
-        .source-link a:hover { text-decoration: underline; }
-        /* Manual URL entry (collapsed by default) */
-        .manual-toggle {
-            background: none; border: none; color: var(--gray-dark);
-            cursor: pointer; font-size: 0.8em; margin-top: 8px;
-        }
-        .manual-toggle:hover { color: var(--gray); }
-        .manual-url-row {
-            display: flex; gap: 8px; align-items: center; margin-top: 8px;
-            display: none;
-        }
-        .manual-url-row.open { display: flex; }
-        .manual-url-row input {
-            flex: 1; padding: 8px 12px; background: var(--black);
-            border: 1px solid var(--border); border-radius: 6px; color: var(--white);
-            font-size: 0.85em; outline: none;
-        }
-        .manual-url-row input:focus { border-color: var(--gold); }
+        .sport-filter button.active { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 700; }
+        .sport-filter button:hover:not(.active) { border-color: var(--gold); color: var(--white); }
+        @media (max-width: 600px) { .main { padding: 20px 14px; } .schedule-card { flex-direction: column; align-items: flex-start; } }
     </style>
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>
-    <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
-    <div class="main">
-        <div class="page-title">Tournament Schedules</div>
-        <div class="page-subtitle">Select a tournament and click <strong>🔍 Lookup</strong> — it'll find the website and scrape game times automatically</div>
-        <div class="search-bar">
-            <input type="text" id="search" placeholder="Search tournament by name, sport, or state..." oninput="filterTourneys()">
+<script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
+<div class="main">
+    <div class="page-title">📅 Tournament Schedule</div>
+    <div class="page-subtitle">Add tournaments to the schedule with dates, times, and notes.</div>
+
+    <!-- Add Tournament Form -->
+    <div class="form-card">
+        <h3>➕ Add Tournament</h3>
+        <div class="form-row">
+            <div class="form-group" style="flex:2;">
+                <label>Tournament Name</label>
+                <input type="text" id="tourney-name" placeholder="e.g. Easter Classic" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Sport</label>
+                <select id="tourney-sport">
+                    <option value="Soccer">Soccer</option>
+                    <option value="Baseball">Baseball</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
         </div>
-        <div id="tourney-list"></div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" id="tourney-start">
+            </div>
+            <div class="form-group">
+                <label>End Date</label>
+                <input type="date" id="tourney-end">
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="tourney-location" placeholder="City, State" autocomplete="off">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Times / Notes</label>
+                <textarea id="tourney-times" placeholder="e.g. Sat 8:00 AM — Field 3&#10;Sat 10:30 AM — Field 1&#10;Sun 9:00 AM — Championship"></textarea>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="addTournament()">✅ Add to Schedule</button>
     </div>
-    <script>
-        const NAME = sessionStorage.getItem('fs_name') || 'User';
-        // ---------- stored data (per tournament) ----------
-        const STORED_KEY = 'fs_tourney_times_v2';
-        function getAllData() {
-            return JSON.parse(localStorage.getItem(STORED_KEY) || '{}');
-        }
-        function getData(name) {
-            return getAllData()[name] || null;
-        }
-        function setData(name, data) {
-            const all = getAllData();
-            all[name] = data;
-            localStorage.setItem(STORED_KEY, JSON.stringify(all));
-        }
-        function clearData(name) {
-            const all = getAllData();
-            delete all[name];
-            localStorage.setItem(STORED_KEY, JSON.stringify(all));
-            render();
-        }
-        // ---------- rendering ----------
-        function render() {
-            const list = document.getElementById('tourney-list');
-            const search = document.getElementById('search').value.toLowerCase();
-            if (typeof TOURNEY_DATA === 'undefined' || !TOURNEY_DATA.length) {
-                list.innerHTML = '<div class="empty-state"><div class="big">😕</div><h3>No tournament data loaded</h3></div>';
-                return;
-            }
-            let filtered = TOURNEY_DATA;
-            if (search) {
-                filtered = TOURNEY_DATA.filter(t => 
-                    (t.name || '').toLowerCase().includes(search) ||
-                    (t.sport || '').toLowerCase().includes(search) ||
-                    (t.state || '').toLowerCase().includes(search)
-                );
-            }
-            // Dedup by name
-            const seen = new Set();
-            filtered = filtered.filter(t => {
-                const key = t.name.toLowerCase().trim();
-                if (seen.has(key)) return false;
-                seen.add(key);
-                return true;
-            });
-            if (filtered.length === 0) {
-                list.innerHTML = '<div class="empty-state"><div class="big">🔍</div><h3>No tournaments match "<strong>' + search + '</strong>"</h3></div>';
-                return;
-            }
-            list.innerHTML = filtered.map(t => {
-                const saved = getData(t.name);
-                const status = saved ? saved.status : null;
-                const times = saved ? (saved.times || []) : [];
-                const url = saved ? (saved.url || '') : (t.site || '');
-                
-                let badge = '';
-                if (url && !saved) badge = '<span class="status-badge found">✅ Site available</span>';
-                else if (status === 'loading') badge = '<span class="status-badge loading">⏳ Loading...</span>';
-                else if (status === 'found') badge = '<span class="status-badge found">✅ ' + (times.length === 0 ? 'Site found, no schedule' : times.length + ' games found') + '</span>';
-                else if (status === 'no-site') badge = '<span class="status-badge fail">❌ No site found</span>';
-                else if (status === 'error') badge = '<span class="status-badge fail">⚠️ Error</span>';
-                else if (status === 'manual') badge = '<span class="status-badge saved">💾 Saved URL</span>';
-                return `
-                    <div class="tourney-card">
-                        <div class="card-header" onclick="document.getElementById('body-${t.name.replace(/[^a-z0-9]/gi,'')}').classList.toggle('hidden')">
-                            <div>
-                                <h3>${t.name}</h3>
-                                <div class="meta">
-                                    ${t.sport ? t.sport + ' · ' : ''}${t.ageGroup ? t.ageGroup + ' · ' : ''}${t.size ? t.size + ' teams · ' : ''}${t.state || ''}
-                                    ${t.contact ? ' · <strong>Contact:</strong> ' + t.contact : ''}
-                                </div>
-                            </div>
-                            <div class="card-actions">
-                                ${badge}
-                                <button class="btn-sm btn-lookup" onclick="event.stopPropagation();lookupTournament('${t.name.replace(/'/g,"\\'")}','${(t.state||'').replace(/'/g,"\\'")}')">🔍 Lookup</button>
-                                ${url ? '<a class="btn-sm btn-go" href="'+url+'" target="_blank" onclick="event.stopPropagation()">Open ↗</a>' : ''}
-                                ${!url && t.site ? '<a class="btn-sm btn-go" href="'+t.site+'" target="_blank" onclick="event.stopPropagation()">Open ↗</a>' : ''}
-                                ${saved ? '<button class="btn-sm btn-clear" onclick="event.stopPropagation();clearData(\''+t.name.replace(/'/g,"\\'")+'\')">✕</button>' : ''}
-                            </div>
-                        </div>
-                        <div class="card-body" id="body-${t.name.replace(/[^a-z0-9]/gi,'')}" style="display:${times.length > 0 || status === 'no-site' ? 'block' : 'none'}">
-                            ${times.length > 0 ? `
-                                <div class="schedule-grid">
-                                    ${times.map(g => `
-                                        <div class="game-card">
-                                            <div class="game-time">${g.time || '?'}</div>
-                                            ${g.detail ? '<div class="game-detail">'+g.detail+'</div>' : ''}
-                                            ${g.field ? '<div class="game-field">📍 '+g.field+'</div>' : ''}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            ` : ''}
-                            ${status === 'no-site' ? '<div style="color:var(--red);font-size:0.85em">Could not automatically find a website for this tournament.</div>' : ''}
-                            ${status === 'error' ? '<div style="color:var(--orange);font-size:0.85em">${saved ? saved.message || "Something went wrong" : "Something went wrong"}</div>' : ''}
-                            ${status === 'manual' ? '<div style="color:var(--gray-dark);font-size:0.85em">URL saved — click Open to visit the site</div>' : ''}
-                            ${url ? '<div class="source-link"><a href="'+url+'" target="_blank">🔗 Source: ' + url + '</a></div>' : ''}
-                            ${!url && t.site ? '<div class="source-link"><a href="'+t.site+'" target="_blank">🔗 Tournament Site ↗</a></div>' : ''}
-                        </div>
+
+    <!-- Filter -->
+    <div class="sport-filter">
+        <button class="active" data-filter="all" onclick="setFilter('all',this)">All</button>
+        <button data-filter="Soccer" onclick="setFilter('Soccer',this)">⚽ Soccer</button>
+        <button data-filter="Baseball" onclick="setFilter('Baseball',this)">⚾ Baseball</button>
+    </div>
+
+    <!-- Schedule List -->
+    <div id="schedule-list"></div>
+</div>
+
+<script>
+let currentFilter = 'all';
+
+function getSchedule() {
+    return JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+}
+function saveSchedule(list) {
+    localStorage.setItem('fs_tourney_schedule', JSON.stringify(list));
+    render();
+}
+
+function addTournament() {
+    const name = document.getElementById('tourney-name').value.trim();
+    const sport = document.getElementById('tourney-sport').value;
+    const start = document.getElementById('tourney-start').value;
+    const end = document.getElementById('tourney-end').value;
+    const location = document.getElementById('tourney-location').value.trim();
+    const times = document.getElementById('tourney-times').value.trim();
+    if (!name) { alert('Enter a tournament name'); return; }
+    const list = getSchedule();
+    list.unshift({
+        id: Date.now(),
+        name, sport, start, end, location, times,
+        created: new Date().toISOString()
+    });
+    saveSchedule(list);
+    // Clear form
+    document.getElementById('tourney-name').value = '';
+    document.getElementById('tourney-start').value = '';
+    document.getElementById('tourney-end').value = '';
+    document.getElementById('tourney-location').value = '';
+    document.getElementById('tourney-times').value = '';
+}
+
+function deleteTournament(id) {
+    if (!confirm('Remove this tournament from the schedule?')) return;
+    let list = getSchedule();
+    list = list.filter(t => t.id !== id);
+    saveSchedule(list);
+}
+
+function editTournament(id) {
+    const list = getSchedule();
+    const t = list.find(x => x.id === id);
+    if (!t) return;
+    document.getElementById('tourney-name').value = t.name;
+    document.getElementById('tourney-sport').value = t.sport || 'Soccer';
+    document.getElementById('tourney-start').value = t.start || '';
+    document.getElementById('tourney-end').value = t.end || '';
+    document.getElementById('tourney-location').value = t.location || '';
+    document.getElementById('tourney-times').value = t.times || '';
+    deleteTournament(id);
+    document.getElementById('tourney-name').focus();
+}
+
+function setFilter(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.sport-filter button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+}
+
+function formatDate(d) {
+    if (!d) return '';
+    const date = new Date(d + 'T00:00:00');
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function render() {
+    const container = document.getElementById('schedule-list');
+    let list = getSchedule();
+    if (currentFilter !== 'all') {
+        list = list.filter(t => t.sport === currentFilter);
+    }
+    if (list.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="big">📅</div><p>No tournaments added yet. Use the form above to add one.</p></div>';
+        return;
+    }
+    container.innerHTML = list.map(t => {
+        const sportClass = t.sport === 'Soccer' ? 'badge-soccer' : t.sport === 'Baseball' ? 'badge-baseball' : 'badge-other';
+        const sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏅';
+        const dateStr = t.start ? formatDate(t.start) + (t.end ? ' — ' + formatDate(t.end) : '') : '';
+        return `
+            <div class="schedule-card">
+                <div class="info">
+                    <div class="name">${sportIcon} ${t.name}</div>
+                    <div class="details">
+                        ${dateStr ? dateStr + ' · ' : ''}
+                        ${t.location ? t.location + ' · ' : ''}
+                        <span class="badge ${sportClass}">${t.sport || 'Other'}</span>
                     </div>
-                `;
-            }).join('');
-        }
-        // ---------- search the web for a tournament ----------
-        function lookupTournament(name, state) {
-            // Mark as loading
-            setData(name, { status: 'loading', times: [], url: '' });
-            render();
-            // Build search query
-            let query = encodeURIComponent(name);
-            if (state) query += '%20' + encodeURIComponent(state);
-            query += '%20soccer%20tournament%20schedule';
-            // Use a search endpoint to find the tournament site
-            // We'll try multiple search strategies
-            const searchUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(
-                'https://html.duckduckgo.com/html/?q=' + query
-            );
-            fetch(searchUrl)
-                .then(r => {
-                    if (!r.ok) throw new Error('Search failed');
-                    return r.text();
-                })
-                .then(html => {
-                    // Extract links from search results
-                    const links = [];
-                    const linkRegex = /<a[^>]+class="result__a"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
-                    let m;
-                    while ((m = linkRegex.exec(html)) !== null) {
-                        const href = m[1];
-                        const text = m[2].replace(/<[^>]+>/g, '').trim();
-                        if (href && !href.includes('twitter.com') && !href.includes('facebook.com')) {
-                            links.push({ href, text });
-                        }
-                    }
-                    // If DuckDuckGo failed, try a different pattern (class might differ)
-                    if (links.length === 0) {
-                        const altRegex = /<a[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
-                        while ((m = altRegex.exec(html)) !== null) {
-                            const href = m[1];
-                            const text = m[2].replace(/<[^>]+>/g, '').trim();
-                            if (href && !href.includes('duckduckgo') && !href.includes('twitter.com') && !href.includes('facebook.com')) {
-                                links.push({ href, text });
-                            }
-                        }
-                    }
-                    // Filter for likely tournament/soccer sites
-                    const keywords = ['tournament', 'soccer', 'football', 'schedule', 'gotsoccer', 'tourneymachine', 'event', name.toLowerCase().split(' ').slice(0,2).join(' ')];
-                    let best = null;
-                    let bestScore = 0;
-                    
-                    for (const link of links) {
-                        let score = 0;
-                        const t = (link.text + ' ' + link.href).toLowerCase();
-                        for (const kw of keywords) {
-                            if (t.includes(kw)) score++;
-                        }
-                        if (link.href.includes('gotsoccer.com') || link.href.includes('tourneymachine.com')) score += 3;
-                        if (link.href.includes('events') || link.href.includes('schedules')) score += 1;
-                        if (score > bestScore) {
-                            bestScore = score;
-                            best = link;
-                        }
-                    }
-                    if (best && bestScore > 0) {
-                        // Found a site — now scrape it
-                        scrapePage(name, best.href);
-                    } else {
-                        // Try searching GotSoccer directly
-                        const gsQuery = encodeURIComponent(name.split(' ').slice(0,3).join(' '));
-                        const gsUrl = 'https://home.gotsoccer.com/events.aspx?q=' + gsQuery;
-                        scrapePage(name, gsUrl);
-                    }
-                })
-                .catch(err => {
-                    // Final fallback: try GotSoccer search
-                    const gsUrl = 'https://home.gotsoccer.com/events.aspx?q=' + encodeURIComponent(name.split(' ').slice(0,3).join(' '));
-                    scrapePage(name, gsUrl);
-                });
-        }
-        // ---------- scrape a page for game times ----------
-        function scrapePage(tourneyName, url) {
-            setData(tourneyName, { status: 'loading', times: [], url: url });
-            render();
-            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-            fetch(proxyUrl)
-                .then(r => {
-                    if (!r.ok) throw new Error('Could not load page');
-                    return r.text();
-                })
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const bodyText = doc.body ? doc.body.textContent : '';
-                    let times = [];
-                    // Strategy 1: Tables
-                    const tables = doc.querySelectorAll('table');
-                    tables.forEach(table => {
-                        const rows = table.querySelectorAll('tr');
-                        rows.forEach(row => {
-                            const cells = row.querySelectorAll('td, th');
-                            const text = Array.from(cells).map(c => c.textContent.trim()).filter(Boolean);
-                            const rowText = text.join(' ');
-                            const m = rowText.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
-                            if (m && text.length >= 2) {
-                                const time = m[1].toUpperCase();
-                                const detail = text.filter(t => t !== m[0].trim()).join(' — ').substring(0, 200);
-                                times.push({ time, detail, field: '' });
-                            }
-                        });
-                    });
-                    // Strategy 2: Lines with times
-                    if (times.length < 3) {
-                        const lines = bodyText.split('\n').map(l => l.trim()).filter(Boolean);
-                        const seen = new Set();
-                        lines.forEach(line => {
-                            const m = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm)?)/);
-                            if (m && line.length > 10 && line.length < 300) {
-                                const time = m[1].toUpperCase();
-                                const key = time + line.substring(0, 50);
-                                if (seen.has(key)) return;
-                                seen.add(key);
-                                const detail = line.replace(m[0], '').trim().substring(0, 200);
-                                times.push({ time, detail, field: '' });
-                            }
-                        });
-                    }
-                    // Dedup
-                    const seen = new Set();
-                    times = times.filter(t => {
-                        const key = t.time + t.detail;
-                        if (seen.has(key)) return false;
-                        seen.add(key);
-                        return true;
-                    });
-                    // Sort by time
-                    times.sort((a, b) => {
-                        const toMins = (t) => {
-                            const m = t.match(/(\d+):(\d+)\s*(AM|PM)?/i);
-                            if (!m) return 0;
-                            let h = parseInt(m[1]), min = parseInt(m[2]);
-                            if (m[3]) {
-                                if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
-                                if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
-                            }
-                            return h * 60 + min;
-                        };
-                        return toMins(a.time) - toMins(b.time);
-                    });
-                    setData(tourneyName, {
-                        status: 'found',
-                        times: times,
-                        url: url,
-                        scrapeDate: new Date().toISOString()
-                    });
-                    render();
-                })
-                .catch(err => {
-                    setData(tourneyName, {
-                        status: 'error',
-                        times: [],
-                        url: url,
-                        message: err.message || 'Could not load the page'
-                    });
-                    render();
-                });
-        }
-        function filterTourneys() {
-            render();
-        }
-        function logout() {
-            localStorage.clear();
-            sessionStorage.clear();
-            window.location.href = 'signin.html';
-        }
-        render();
-    </script>
+                    ${t.times ? '<div style="color:var(--gray-dark);font-size:0.8em;margin-top:4px;white-space:pre-wrap;">' + t.times + '</div>' : ''}
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-secondary" onclick="editTournament(${t.id})">✏️</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTournament(${t.id})">🗑️</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+render();
+</script>
 </body>
 </html>
