@@ -307,7 +307,6 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 <div class="modal-overlay" id="trip-modal" onclick="if(event.target===this)closeTripModal()"></div>
 
 <!-- View Trip Modal -->
-<div class="modal-overlay" id="view-modal" onclick="if(event.target===this)closeViewModal()"></div>
 
 <script>
 const NAME=sessionStorage.getItem('fs_name')||'User';
@@ -866,197 +865,86 @@ function viewTrip(tripId){
   planSelectedCar = null;
   planCurrentCity = '';
 
-  const days=countDays(trip.startDate,trip.endDate);
-  const modal=document.getElementById('view-modal');
+  var days=countDays(trip.startDate,trip.endDate);
+  var typeColors={roadtrip:'var(--blue)',family:'var(--green)',business:'var(--gold)',adventure:'var(--orange)',tournament:'var(--purple)',other:'var(--gray)'};
 
-  const typeColors={roadtrip:'var(--blue)',family:'var(--green)',business:'var(--gold)',adventure:'var(--orange)',tournament:'var(--purple)',other:'var(--gray)'};
+  var html='<div class="page-header" style="margin-bottom:8px;">' +
+    '<button onclick="renderMainView()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:1em;padding:4px 0;">← Back to Tournaments</button>' +
+    '<div><div class="welcome">' + trip.name + '</div>' +
+    '<div class="subtitle">' + (trip.destination || '') + '</div></div>' +
+    '</div><div class="detail-view">';
 
-  let html=`
-    <div class="modal" style="max-width:750px;">
-      <button class="modal-close" onclick="closeViewModal()">&times;</button>
-      <div class="detail-view">
-        <div class="detail-header">
-          <div>
-            <div class="detail-title">${trip.name}</div>
-            <div class="detail-subtitle">Tournaments • ${trip.destination}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="color:${typeColors[trip.type]||'var(--gray)'};font-size:.85em;text-transform:uppercase;letter-spacing:2px;">${trip.type||'Other'}</div>
-            <div style="font-family:Cinzel,serif;color:var(--gold);font-size:1.8em;font-weight:700;">$${trip.budget||0}</div>
-          </div>
-        </div>
-  `;
-
-  // Details section
-  html+=`
-    <div class="detail-section">
-      <h4>📍 Trip Info</h4>
-      <div class="detail-row"><span class="label">Destination</span><span class="value">${trip.destination}</span></div>
-      <div class="detail-row"><span class="label">Dates</span><span class="value">${formatDate(trip.startDate)} - ${formatDate(trip.endDate)} (${days} days)</span></div>
-      <div class="detail-row"><span class="label">Travelers</span><span class="value">${trip.travelers||1} people</span></div>
-    </div>
-  `;
-
-  if(trip.tags&&trip.tags.length){
-    html+=`
-      <div class="detail-section">
-        <h4>🏷️ Tags</h4>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          ${trip.tags.map(t=>`<span class="trip-tag">#${t}</span>`).join('')}
-        </div>
-      </div>
-    `;
-  }
-
-  // Booking links
-  const dest = trip.destination || '';
-  if(dest){
-    const searchDest = encodeURIComponent(dest);
-    html+=`
-      <div class="detail-section">
-        <h4>🔗 Quick Bookings</h4>
-        <div class="booking-links">
-          <a href="https://www.hotels.com/search.do?destination=${searchDest}" target="_blank" class="booking-link hotel">🏨 Hotels.com</a>
-          <a href="https://www.booking.com/searchresults.html?ss=${searchDest}" target="_blank" class="booking-link hotel">🏨 Booking.com</a>
-          <a href="https://www.kayak.com/cars/${searchDest.replace(/%2C%20/g,'-').toLowerCase()}" target="_blank" class="booking-link car">🚗 Kayak Cars</a>
-          <a href="https://www.enterprise.com/en/car-rental/locations/us/${dest.split(',')[0].trim().toLowerCase()}.html" target="_blank" class="booking-link car">🚗 Enterprise</a>
-          <a href="https://www.google.com/travel/flights?q=flights+to+${searchDest}" target="_blank" class="booking-link flight">✈️ Flights</a>
-          <a href="https://www.google.com/maps/search/?api=1&query=${searchDest}" target="_blank" class="booking-link flight">🗺️ Map</a>
-        </div>
-      </div>
-    `;
-  }
+  html+='<div class="detail-section"><h4>📍 Trip Info</h4>' +
+    '<div class="detail-row"><span class="label">Destination</span><span class="value">' + (trip.destination||'') + '</span></div>' +
+    '<div class="detail-row"><span class="label">Dates</span><span class="value">' + formatDate(trip.startDate) + ' - ' + formatDate(trip.endDate) + ' (' + days + ' days)</span></div>' +
+    '<div class="detail-row"><span class="label">Sport</span><span class="value">' + (trip.sport||'—') + '</span></div>' +
+    '<div class="detail-row"><span class="label">Teams</span><span class="value">' + (trip.teams||'—') + '</span></div>' +
+    '</div>';
 
   // Show saved hotel/car info if present
   if (trip.hotelName || trip.carName) {
-    html+=`
-      <div class="detail-section">
-        <h4>📋 Planned Bookings</h4>
-        <div class="cost-summary">
-          ${trip.hotelName ? `<div class="cost-row"><span class="label">🏨 Hotel</span><span class="value">${trip.hotelName} — $${trip.hotelPrice}/night</span></div>` : ''}
-          ${trip.carName ? `<div class="cost-row"><span class="label">🚗 Rental</span><span class="value">${trip.carName} — $${trip.carPrice}/day</span></div>` : ''}
-        </div>
-      </div>
-    `;
-  }
-
-  // Cost estimate
-  const nightly = trip.hotelRate || 0;
-  const carDaily = trip.carRate || 0;
-  const nights = trip.hotelNights || Math.ceil(days/2) || 1;
-  const carDays = trip.carDays || days || 1;
-  const hotelTotal = nightly * nights;
-  const carTotal = carDaily * carDays;
-  const total = hotelTotal + carTotal + (trip.budget || 0);
-  if(nightly > 0 || carDaily > 0){
-    html+=`
-      <div class="detail-section">
-        <h4>💰 Cost Estimate</h4>
-        <div class="cost-summary">
-          ${nightly > 0 ? `<div class="cost-row"><span class="label">🏨 Hotel (${nights} nights × $${nightly})</span><span class="value">$${hotelTotal}</span></div>` : ''}
-          ${carDaily > 0 ? `<div class="cost-row"><span class="label">🚗 Rental (${carDays} days × $${carDaily})</span><span class="value">$${carTotal}</span></div>` : ''}
-          ${trip.budget ? `<div class="cost-row"><span class="label">💰 Trip Budget</span><span class="value">$${trip.budget}</span></div>` : ''}
-          <div class="cost-row total"><span class="label">Estimated Total</span><span class="value">$${total}</span></div>
-        </div>
-      </div>
-    `;
-  }
-
-  if(trip.desc){
-    html+=`
-      <div class="detail-section">
-        <h4>📝 Description</h4>
-        <p style="color:var(--gray);line-height:1.7;font-size:.9em;">${trip.desc}</p>
-      </div>
-    `;
-  }
-
-  // Checklist
-  if(trip.checklist&&trip.checklist.length){
-    const done=trip.checklist.filter(c=>c.done).length;
-    const pct=trip.checklist.length>0?Math.round(done/trip.checklist.length*100):0;
-    html+=`
-      <div class="detail-section">
-        <h4>✅ Checklist (${done}/${trip.checklist.length})</h4>
-        <div style="background:var(--black-light);border-radius:8px;padding:12px;">
-          <div style="height:6px;background:var(--border);border-radius:3px;margin-bottom:10px;overflow:hidden;">
-            <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:3px;transition:width .3s;"></div>
-          </div>
-          ${trip.checklist.map(c=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;color:${c.done?'var(--gray)':'var(--white)'};font-size:.85em;"><span style="color:${c.done?'var(--green)':'var(--gray-dark)'};">${c.done?'✅':'⬜'}</span><span style="${c.done?'text-decoration:line-through;opacity:.6':''}">${c.text}</span></div>`).join('')}
-        </div>
-      </div>
-    `;
+    html+='<div class="detail-section"><h4>📋 Planned Bookings</h4><div class="cost-summary">' +
+      (trip.hotelName ? '<div class="cost-row"><span class="label">🏨 Hotel</span><span class="value">' + trip.hotelName + ' — $' + (trip.hotelPrice||0) + '/night</span></div>' : '') +
+      (trip.carName ? '<div class="cost-row"><span class="label">🚗 Rental</span><span class="value">' + trip.carName + ' — $' + (trip.carPrice||0) + '/day</span></div>' : '') +
+      '</div></div>';
   }
 
   if(trip.notes){
-    html+=`
-      <div class="detail-section">
-        <h4>🔒 Private Notes</h4>
-        <p style="color:var(--gray);line-height:1.7;font-size:.9em;white-space:pre-wrap;">${trip.notes}</p>
-      </div>
-    `;
+    html+='<div class="detail-section"><h4>📝 Notes</h4><p style="color:var(--gray);line-height:1.7;font-size:.9em;white-space:pre-wrap;">' + trip.notes + '</p></div>';
   }
 
-  // Find Hotel & Car section (always visible)
-  html+=`
-    <div class="detail-section plan-finder-section">
-      <h4>🏨 Find Hotel & Car Rental</h4>
-      <div class="plan-search-row">
-        <div class="plan-search-field">
-          <label>Hotel Location</label>
-          <input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="${trip.destination || ''}">
-        </div>
-        <div class="plan-search-field">
-          <label>Car Rental Location</label>
-          <input type="text" id="plan-car-loc" placeholder="Same as hotel if blank" value="">
-        </div>
-      </div>
-      <div class="plan-examples">
-        <span class="plan-chip" onclick="document.getElementById('plan-hotel-loc').value='Atlanta, GA';document.getElementById('plan-car-loc').value='';">Atlanta</span>
-        <span class="plan-chip" onclick="document.getElementById('plan-hotel-loc').value='Dallas, TX';document.getElementById('plan-car-loc').value='';">Dallas</span>
-        <span class="plan-chip" onclick="document.getElementById('plan-hotel-loc').value='Lafayette, LA';document.getElementById('plan-car-loc').value='';">Lafayette</span>
-      </div>
-      <button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:'Inter',sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search Hotels & Cars</button>
-      <div id="plan-hotel-section" class="detail-section" style="display:none;margin-top:16px;">
-        <h4>🏨 Hotels</h4>
-        <div class="plan-options-grid" id="plan-hotel-grid"></div>
-      </div>
-      <div id="plan-car-section" class="detail-section" style="display:none;">
-        <h4>🚗 Car Rentals</h4>
-        <div class="plan-options-grid" id="plan-car-grid"></div>
-      </div>
-      <div id="plan-summary-box" class="plan-summary" style="display:none;">
-        <h4>📋 Selected Booking Summary</h4>
-        <div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div>
-        <div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>
-        <div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div>
-        <div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>
-        <div class="plan-summary-total"><span class="label">Estimated Total</span><span class="value" id="plan-sum-total">$0</span></div>
-        <div style="display:flex;gap:10px;margin-top:16px;">
-          <button class="btn btn-primary" onclick="planSaveSelections()" style="flex:1;">💾 Save to Trip</button>
-        </div>
-      </div>
-    </div>`;
+  // Quick Booking links
+  if(trip.destination){
+    var searchDest=encodeURIComponent(trip.destination);
+    html+='<div class="detail-section"><h4>🔗 Quick Bookings</h4><div class="booking-links">' +
+      '<a href="https://www.hotels.com/search.do?destination=' + searchDest + '" target="_blank" class="booking-link hotel">🏨 Hotels.com</a>' +
+      '<a href="https://www.booking.com/searchresults.html?ss=' + searchDest + '" target="_blank" class="booking-link hotel">🏨 Booking.com</a>' +
+      '<a href="https://www.kayak.com/cars/' + trip.destination.split(',')[0].trim().toLowerCase() + '" target="_blank" class="booking-link car">🚗 Kayak Cars</a>' +
+      '<a href="https://www.enterprise.com/en/car-rental/locations/us/' + trip.destination.split(',')[0].trim().toLowerCase() + '.html" target="_blank" class="booking-link car">🚗 Enterprise</a>' +
+      '<a href="https://www.google.com/maps/search/?api=1&query=' + searchDest + '" target="_blank" class="booking-link flight">🗺️ Map</a>' +
+      '</div></div>';
+  }
 
-  html+=`
-        <div class="detail-actions">
-          <button class="btn btn-primary" onclick="closeViewModal();openTripModal('${trip.id}');">✏️ Edit Trip</button>
-          <button class="btn btn-success" onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trip.destination)}','_blank')">🗺️ Open Map</button>
-          <button class="btn btn-secondary" onclick="printTripSummary('${trip.id}')">🖨️ Print</button>
-          <button class="btn btn-danger" style="margin-left:auto;" onclick="closeViewModal();deleteTrip('${trip.id}');">🗑️ Delete</button>
-        </div>
-      </div>
-    </div>
-  `;
+  // Find Hotel & Car section
+  html+='<div class="detail-section plan-finder-section" id="plan-finder">' +
+    '<h4>🏨 Find Hotel & Car Rental</h4>' +
+    '<div class="plan-search-row">' +
+      '<div class="plan-search-field"><label>Hotel Location</label><input type="text" id="plan-hotel-loc" placeholder="e.g. Lafayette, LA" value="' + (trip.destination||'') + '"></div>' +
+      '<div class="plan-search-field"><label>Car Rental Location</label><input type="text" id="plan-car-loc" placeholder="Same as hotel if blank" value=""></div>' +
+    '</div>' +
+    '<div class="plan-examples">' +
+      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Atlanta, GA\';document.getElementById(\'plan-car-loc\').value=\'\';">Atlanta</span>' +
+      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Dallas, TX\';document.getElementById(\'plan-car-loc\').value=\'\';">Dallas</span>' +
+      '<span class="plan-chip" onclick="document.getElementById(\'plan-hotel-loc\').value=\'Lafayette, LA\';document.getElementById(\'plan-car-loc\').value=\'\';">Lafayette</span>' +
+    '</div>' +
+    '<button class="btn btn-primary" onclick="planFindOptions()" style="width:100%;padding:12px;border-radius:10px;font-family:Inter,sans-serif;font-size:.9em;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);">🔍 Search Hotels & Cars</button>' +
+    '<div id="plan-hotel-section" class="detail-section" style="display:none;margin-top:16px;"><h4>🏨 Hotels</h4><div class="plan-options-grid" id="plan-hotel-grid"></div></div>' +
+    '<div id="plan-car-section" class="detail-section" style="display:none;"><h4>🚗 Car Rentals</h4><div class="plan-options-grid" id="plan-car-grid"></div></div>' +
+    '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
+      '<h4>📋 Selected Booking Summary</h4>' +
+      '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div>' +
+      '<div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' +
+      '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div>' +
+      '<div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' +
+      '<div class="plan-summary-total"><span class="label">Estimated Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
+      '<div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-primary" onclick="planSaveSelections()" style="flex:1;">💾 Save to Trip</button></div>' +
+    '</div>' +
+  '</div>';
 
-  modal.innerHTML=html;
-  modal.classList.add('active');
+  html+='<div class="detail-actions">' +
+    '<button class="btn btn-success" onclick="window.open(\'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(trip.destination||'') + '\',\'_blank\')">🗺️ Open Map</button>' +
+    '<button class="btn btn-secondary" onclick="printTripSummary(\'' + trip.id + '\')">🖨️ Print</button>' +
+    '<button class="btn btn-danger" onclick="deleteTrip(\'' + trip.id + '\')">🗑️ Delete</button>' +
+  '</div></div>';
+
+  document.getElementById('app').innerHTML = html;
+
   // Auto-search hotels and cars based on trip destination
   planFindOptions();
   // Scroll to hotel/car section if triggered by big buttons
   if (window._bookTab === 'hotel') {
     setTimeout(function() {
-      var el = document.querySelector('.plan-finder-section');
+      var el = document.getElementById('plan-finder');
       if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
     }, 500);
   } else if (window._bookTab === 'car') {
@@ -1068,7 +956,7 @@ function viewTrip(tripId){
   window._bookTab = null;
 }
 
-function closeViewModal(){document.getElementById('view-modal').classList.remove('active');}
+function closeViewModal(){renderMainView();}
 
 /* ═════════════════════════════════════════
    UTILITIES
