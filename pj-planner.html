@@ -270,8 +270,10 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .plan-opt-btn{padding:8px 16px;border-radius:6px;font-size:.78em;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:var(--black-light);color:var(--gray);font-family:'Inter',sans-serif;}
 .plan-opt-btn:hover{border-color:var(--gold);color:var(--gold);}
 .plan-opt-btn.selected{background:var(--gold-10);border-color:var(--gold);color:var(--gold);}
-.plan-opt-btn.book{background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;color:var(--black);}
-.plan-opt-btn.book:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(201,162,39,0.3);}
+.plan-opt-btn.book,a.plan-opt-btn.book{background:linear-gradient(135deg,var(--gold-dark),var(--gold));border:none;color:var(--black);text-decoration:none;display:inline-block;}
+.plan-opt-btn.book:hover,a.plan-opt-btn.book:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(201,162,39,0.3);}
+.plan-opt-price-badge{font-family:'Cinzel',serif;font-size:1.05em;font-weight:700;color:var(--gold);margin:4px 0 2px;}
+.plan-opt-price-badge .sub{font-size:.6em;font-weight:400;color:var(--gray);font-family:'Inter',sans-serif;margin-left:4px;}
 
 .plan-summary{background:var(--black-light);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:16px;}
 .plan-summary h4{font-family:'Cinzel',serif;color:var(--gold);font-size:.85em;margin-bottom:12px;letter-spacing:1px;}
@@ -843,15 +845,6 @@ function planBookHotel(i) {
   if (!h) return;
   planSelectHotel(i);
   planSaveSelections();
-  var url = h.bookingUrl || 'https://www.hotels.com/search.do?destination=' + encodeURIComponent(planCurrentCity) + '&adults=3';
-  // Create a temporary <a> to bypass popup blockers
-  var a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 }
 
 function planBookCar(i) {
@@ -859,14 +852,6 @@ function planBookCar(i) {
   if (!c) return;
   planSelectCar(i);
   planSaveSelections();
-  var url = c.bookingUrl || 'https://www.kayak.com/cars/' + encodeURIComponent(planCurrentCity) + '?pickup=anytime&dropoff=anytime&driversAge=25';
-  var a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 }
 
 function planRenderHotels() {
@@ -876,10 +861,11 @@ function planRenderHotels() {
     <div class="plan-option-card${planSelectedHotel === i ? ' selected' : ''}">
       <div class="plan-opt-name">${h.name} <span class="plan-opt-badge ${h.badge}">${h.badgeLabel}</span></div>
       <div class="plan-opt-rating"><span class="plan-opt-stars">${planRenderStars(h.rating)}</span> ${h.rating} (${h.reviews.toLocaleString()} reviews)</div>
+      <div class="plan-opt-price-badge">≈$${h.price}<span class="sub">/night est.</span></div>
       <div class="plan-opt-address">📍 ${h.address}</div>
       <div class="plan-opt-amenities">${h.amenities.slice(0,3).map(function(a) { return '<span class="plan-opt-amenity">' + a + '</span>'; }).join('')}</div>
       <div class="plan-opt-actions">
-        <button class="plan-opt-btn book" onclick="planBookHotel(${i})">🏨 View & Book on Google</button>
+        <a href="${h.bookingUrl}" target="_blank" rel="noopener" class="plan-opt-btn book" onclick="planBookHotel(${i})">🏨 Check Rates</a>
       </div>
     </div>
   `; }).join('');
@@ -892,10 +878,11 @@ function planRenderCars() {
     <div class="plan-option-card${planSelectedCar === i ? ' selected' : ''}">
       <div class="plan-opt-name">${c.name} <span class="plan-opt-badge ${c.badge}">${c.badgeLabel}</span></div>
       <div class="plan-opt-rating"><span class="plan-opt-stars">${planRenderStars(c.rating)}</span> ${c.rating} (${c.reviews.toLocaleString()} reviews)</div>
+      <div class="plan-opt-price-badge">≈$${c.price}<span class="sub">/day est.</span></div>
       <div class="plan-opt-address">📍 ${c.address} · 🚗 ${c.vehicle}</div>
       <div class="plan-opt-amenities">${c.amenities.slice(0,3).map(function(a) { return '<span class="plan-opt-amenity">' + a + '</span>'; }).join('')}</div>
       <div class="plan-opt-actions">
-        <button class="plan-opt-btn book" onclick="planBookCar(${i})">🚗 View & Book on Google</button>
+        <a href="${c.bookingUrl}" target="_blank" rel="noopener" class="plan-opt-btn book" onclick="planBookCar(${i})">🚗 Check Rates</a>
       </div>
     </div>
   `; }).join('');
