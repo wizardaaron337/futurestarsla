@@ -92,6 +92,7 @@
     </div>
 </div>
 <script>
+    function openMap(loc) { if (loc) window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc), '_blank'); }
     function renderTrips() {
         const list = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
         const container = document.getElementById('trip-list');
@@ -138,9 +139,9 @@
                 '</div>' +
                 '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
                 '<div class="trip-actions">' +
-                    (stage === 'need-pack' ? '<button class="btn-sm btn-pack">📦 Pack</button>' : '') +
-                    (stage === 'out' ? '<button class="btn-sm btn-gps">📍 Track</button>' : '') +
-                    '<button class="btn-sm btn-view">👁️ View</button>' +
+                    (stage === 'need-pack' ? '<button class="btn-sm btn-pack" onclick="location.href=\'pack-manager.html?tournament=' + encodeURIComponent(t.name) + '\'">📦 Pack</button>' : '') +
+                    (stage === 'out' ? '<button class="btn-sm btn-gps" onclick="openMap(\'' + t.location + '\')">📍 Track</button>' : '') +
+                    '<button class="btn-sm btn-view" onclick="location.href=\'pj-planner.html?tournament=' + encodeURIComponent(t.name) + '\'">👁️ View</button>' +
                 '</div>' +
             '</div>';
         });

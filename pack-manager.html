@@ -576,6 +576,21 @@
         try {
             TRIPS = JSON.parse(localStorage.getItem('fs_trips_pack')) || [];
         } catch(e) { TRIPS = []; }
+        // Handle ?tournament= param
+        (function(){
+            var params = new URLSearchParams(window.location.search);
+            var tourParam = params.get('tournament');
+            if (tourParam) {
+                try {
+                    var schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                    var found = schedule.find(function(t){return t.name === tourParam;});
+                    if (found) {
+                        // Store param for after dropdown loads
+                        window._pendingTournamentId = found.id;
+                    }
+                } catch(e){}
+            }
+        })();
         // ─── Tab Switching ─────────────────────────────────────
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -603,6 +618,12 @@
                     opt.textContent = sportIcon + ' ' + t.name + (dateStr ? ' (' + dateStr + ')' : '') + teamStr;
                     sel.appendChild(opt);
                 });
+                // Auto-select if ?tournament= param was set
+                if (window._pendingTournamentId) {
+                    sel.value = window._pendingTournamentId;
+                    onSelectTournament();
+                    window._pendingTournamentId = null;
+                }
             } catch(e) {}
         }
         function onSelectTournament() {

@@ -387,7 +387,43 @@ function seedData(){
     ];
     saveFolders(folders);
   }
-  if(trips.length===0){
+  // Sync tournaments from schedule into trips
+  var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+  if (tournaments.length > 0) {
+    // Ensure there's a Tournament Tours folder
+    var tourFolder = folders.find(function(f){return f.name==='Tournament Tours';});
+    if (!tourFolder) {
+      tourFolder = {id:'folder-tour',name:'Tournament Tours',desc:'Tournament hotel & car bookings',color:'gold',icon:'🏆',public:false,password:'',created:Date.now(),updated:Date.now()};
+      folders.push(tourFolder);
+      saveFolders(folders);
+    }
+    // Create trips for any tournament that doesnt have one yet
+    tournaments.forEach(function(t){
+      var exists = trips.find(function(tr){return tr.name === t.name;});
+      if (!exists) {
+        trips.push({
+          id:'trip-' + t.id,
+          folderId:tourFolder.id,
+          name:t.name,
+          destination:t.location || '',
+          startDate:t.start || '',
+          endDate:t.end || '',
+          desc:t.sport + (t.teams ? ' — ' + t.teams + ' teams' : ''),
+          travelers:3,
+          budget:500,
+          type:'tournament',
+          tags:[t.sport ? t.sport.toLowerCase() : '', 'tournament'].filter(Boolean),
+          notes:t.times || '',
+          tourneyId:t.id,
+          sport:t.sport,
+          teams:t.teams,
+          created:Date.now(),
+          updated:Date.now()
+        });
+      }
+    });
+    saveTrips(trips);
+  } else if(trips.length===0){
     trips=[
       {id:'trip-1',folderId:'folder-1',name:'Lafayette Tournament',destination:'Lafayette, LA',startDate:'2026-05-15',endDate:'2026-05-17',desc:'Weekend soccer tournament with crew',travelers:3,budget:500,type:'tournament',tags:['soccer','louisiana'],notes:'Hotel booked. Need car rental.',created:Date.now(),updated:Date.now()},
       {id:'trip-2',folderId:'folder-2',name:'Texas Road Trip',destination:'Dallas, TX',startDate:'2026-06-10',endDate:'2026-06-14',desc:'Multi-city tour hitting Dallas and Houston',travelers:4,budget:1200,type:'roadtrip',tags:['texas','long-haul'],notes:'',created:Date.now(),updated:Date.now()},
@@ -1614,7 +1650,25 @@ document.addEventListener('keydown',e=>{
    INIT
    ═════════════════════════════════════════ */
 seedData();
-renderFolderList();
+// Handle ?tournament= param — find the trip and open it
+var urlParams = new URLSearchParams(window.location.search);
+var tourParam = urlParams.get('tournament');
+if (tourParam) {
+  var trips = getTrips();
+  var found = trips.find(function(t){return t.name === tourParam;});
+  if (found) {
+    var folders = getFolders();
+    var f = folders.find(function(f){return f.id === found.folderId;});
+    if (f) {
+      currentFolderId = f.id;
+      renderFolderView(f.id);
+      // Auto-open the trip view modal with hotel/car finder
+      setTimeout(function(){ viewTrip(found.id); }, 300);
+    }
+  }
+} else {
+  renderFolderList();
+}
 
 // Particles & Progress Bar
 (function(){
