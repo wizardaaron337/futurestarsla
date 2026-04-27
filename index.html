@@ -140,6 +140,7 @@
 
         .main-content {
             max-width: 900px;
+            width: 100%;
             margin: 0 auto;
             padding: 24px 20px;
         }
@@ -244,6 +245,8 @@
             .home-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .quick-links { flex-direction: column; }
+            .quick-link { text-align: center; }
         }
         .trip-card .badge.need { background: rgba(239,83,80,0.15); color: var(--red); }
 
@@ -300,10 +303,20 @@
             color: var(--gray-dark);
         }
 
-        @media (max-width: 600px) {
-            .header-bar { padding: 12px 16px; }
+        @media (max-width: 768px) {
+            .header-bar { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
             .main-content { padding: 16px; }
             .trip-card { flex-wrap: wrap; }
+            .landing h1 { font-size: 1.5em; }
+            .landing .subtitle { font-size: 0.75em; }
+            .landing p { max-width: 100%; padding: 0 10px; }
+            .stat-card { padding: 12px 8px; }
+            .stat-num { font-size: 1.4em; }
+            table { font-size: 0.85em; }
+            input, select, button, textarea { font-size: 16px !important; }
+            h1 { font-size: 1.4em; }
+            h2 { font-size: 1.15em; }
+            h3 { font-size: 1em; }
         }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">

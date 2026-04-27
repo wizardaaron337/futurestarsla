@@ -118,6 +118,7 @@
         .nav a.active { color: var(--gold); background: rgba(201,162,39,0.08); }
         .main {
             max-width: 1400px;
+            width: 100%;
             margin: 0 auto;
             padding: 40px 30px;
         }
@@ -392,9 +393,14 @@
         @media (max-width: 768px) {
             .header { flex-direction: column; gap: 15px; padding: 15px 20px; }
             .nav { padding: 10px 20px; }
-            .main { padding: 30px 20px; }
+            .main { padding: 30px 20px; width: 100%; }
             .trips-grid { grid-template-columns: 1fr; }
             .tabs { overflow-x: auto; }
+            table { font-size: 0.85em; overflow-x: auto; display: block; }
+            input, select, button, textarea { font-size: 16px !important; }
+            h1 { font-size: 1.4em; }
+            h2 { font-size: 1.15em; }
+            .welcome { font-size: 1.4em; }
         }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">

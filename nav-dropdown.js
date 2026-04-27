@@ -1,6 +1,7 @@
 /**
  * Future Stars LA - Top Navigation Bar with Dropdowns
  * Sits at the top of every page with sorted, grouped dropdown menus
+ * Includes responsive hamburger menu for mobile
  */
 
 (function() {
@@ -126,7 +127,28 @@
         return html;
     }
     var tabsHtml = buildTabs();
-    var navHTML = '<div id="fs-top-nav"><div id="fs-top-nav-inner"><a href="index.html" id="fs-nav-brand">Future Stars</a><div id="fs-nav-tabs">' + tabsHtml + '</div><div id="fs-nav-right"><span id="dark-mode-toggle" style="display:inline-flex;align-items:center;"></span><span id="fs-nav-user">' + userName + '</span><button id="fs-nav-logout" onclick="fsNavLogout()" title="Log Out">🚪</button></div></div></div><div id="fs-nav-spacer"></div>';
+
+    // Build mobile menu items
+    function buildMobileMenu() {
+        var navItems = getNavItems();
+        var html = '<div id="fs-mobile-menu">';
+        html += '<button id="fs-mobile-close" onclick="closeFsMobile()" aria-label="Close menu">&times;</button>';
+        html += '<div class="fs-mobile-brand">Future Stars</div>';
+        for (var i = 0; i < navItems.length; i++) {
+            var item = navItems[i];
+            if (item.divider) {
+                html += '<div class="fs-mobile-divider"></div>';
+                continue;
+            }
+            var href = item.page === 'index' ? 'signin.html' : item.page + suffix;
+            var act = isActive(item.page) ? ' active' : '';
+            html += '<a href="' + href + '" class="fs-mobile-item' + act + '" onclick="closeFsMobile()"><span>' + item.icon + '</span><span>' + item.label + '</span></a>';
+        }
+        html += '</div>';
+        return html;
+    }
+
+    var navHTML = '<div id="fs-top-nav"><div id="fs-top-nav-inner"><a href="index.html" id="fs-nav-brand">Future Stars</a><button id="fs-hamburger" onclick="toggleFsMobile()" aria-label="Menu">☰</button><div id="fs-nav-tabs">' + tabsHtml + '</div>' + buildMobileMenu() + '<div id="fs-nav-right"><span id="dark-mode-toggle" style="display:inline-flex;align-items:center;"></span><span id="fs-nav-user">' + userName + '</span><button id="fs-nav-logout" onclick="fsNavLogout()" title="Log Out">🚪</button></div></div></div><div id="fs-nav-spacer"></div>';
 
     const navCSS = `
     <style id="fs-nav-styles">
@@ -335,37 +357,92 @@
             background: rgba(201,162,39,0.06);
         }
 
-        /* Mobile: dropdowns become full-width if needed */
-        @media (max-width: 640px) {
+        /* ── Hamburger button ── */
+        #fs-hamburger {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #F8F6F0;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 8px;
+            line-height: 1;
+            z-index: 100001;
+        }
+
+        /* ── Mobile menu overlay ── */
+        #fs-mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10,10,12,0.98);
+            z-index: 100000;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        #fs-mobile-menu.open {
+            display: block;
+        }
+        #fs-mobile-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #A8A498;
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .fs-mobile-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            color: rgba(168,164,152,0.8);
+            text-decoration: none;
+            font-size: 1.1em;
+            border-radius: 12px;
+            transition: all 0.15s;
+        }
+        .fs-mobile-item:hover, .fs-mobile-item.active {
+            background: rgba(201,162,39,0.1);
+            color: #E8C84B;
+        }
+        .fs-mobile-divider {
+            height: 1px;
+            background: rgba(201,162,39,0.1);
+            margin: 8px 16px;
+        }
+        .fs-mobile-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4em;
+            color: #C9A227;
+            letter-spacing: 3px;
+            padding: 16px 20px 24px;
+            border-bottom: 1px solid rgba(201,162,39,0.1);
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 768px) {
+            #fs-hamburger {
+                display: block;
+            }
+            #fs-nav-tabs {
+                display: none;
+            }
             #fs-top-nav-inner {
-                padding: 0 8px;
-                gap: 4px;
+                padding: 0 12px;
+                gap: 8px;
             }
             #fs-nav-brand {
-                font-size: 0.75em;
-                padding-right: 10px;
-            }
-            .fs-tab-btn {
-                font-size: 0.72em;
-                padding: 0 8px;
-            }
-            #fs-nav-user {
-                display: none;
-            }
-            .fs-dropdown {
-                min-width: 160px;
-            }
-        }
-        @media (max-width: 480px) {
-            .fs-tab-btn {
-                font-size: 0.65em;
-                padding: 0 5px;
-            }
-            .fs-tab-icon {
-                font-size: 0.85em;
-            }
-            .fs-tab-arrow {
-                display: none;
+                font-size: 0.9em;
+                padding-right: 12px;
             }
         }
     </style>
@@ -420,6 +497,18 @@
             closeAllDropdowns();
         }
     });
+
+    // Hamburger toggle
+    window.toggleFsMobile = function() {
+        const menu = document.getElementById('fs-mobile-menu');
+        if (menu) menu.classList.toggle('open');
+        document.body.style.overflow = menu && menu.classList.contains('open') ? 'hidden' : '';
+    };
+    window.closeFsMobile = function() {
+        const menu = document.getElementById('fs-mobile-menu');
+        if (menu) menu.classList.remove('open');
+        document.body.style.overflow = '';
+    };
 
     // Logout
     window.fsNavLogout = function() {
