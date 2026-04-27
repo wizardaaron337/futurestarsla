@@ -138,6 +138,8 @@
             border-color: var(--gold);
         }
         /* Sport filter buttons */
+        .progress-wrap { background: var(--black); border-radius: 6px; height: 8px; margin-top: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 6px; transition: width 0.3s; }
         .sport-filters {
             display: flex;
             gap: 6px;
@@ -536,9 +538,10 @@
                 </div>
                 <div class="jersey-grid" id="jersey-picker"></div>
                 <div id="selected-items-section" style="display:none;">
-                    <h4 style="font-size:0.75em;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">
+                    <h4 style="font-size:0.75em;color:var(--gray);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">
                         ✅ Selected Jerseys — Set Quantities & Sizes
                     </h4>
+                    <div id="total-progress" style="font-size:0.82em;color:var(--gray-dark);margin-bottom:8px;"></div>
                     <div class="selected-section">
                         <div id="selected-items"></div>
                     </div>
@@ -634,15 +637,6 @@
                 // Auto-set picker filter to match sport
                 if (t.sport === 'Soccer') filterPicker('soccer');
                 else if (t.sport === 'Baseball') filterPicker('baseball');
-                // Auto-suggest jersey quantities based on team count
-                if (teamCount > 0) {
-                    // Estimate 15 players per team, round up to nearest 5
-                    const suggestedQty = Math.ceil(teamCount * 15 / 5) * 5;
-                    selectedJerseys.forEach((item, idx) => {
-                        selectedJerseys[idx].qty = suggestedQty;
-                    });
-                    updateSelectedSection();
-                }
             } catch(e) {}
         }
         // ─── Jersey Picker ─────────────────────────────────────
@@ -682,12 +676,17 @@
             });
             renderJerseyPicker();
         }
+        function getSuggestedTotal(teams) {
+            if (teams >= 100) return 425;
+            if (teams >= 50) return 350;
+            return teams * 15;
+        }
         function toggleJersey(name, sport) {
             const idx = selectedJerseys.findIndex(s => s.name === name);
             if (idx >= 0) {
                 selectedJerseys.splice(idx, 1);
             } else {
-                // Calculate suggested qty from selected tournament's team count
+                // Calculate suggested qty per jersey style
                 let suggestedQty = 10;
                 try {
                     const id = document.getElementById('tourney-select').value;
@@ -695,7 +694,14 @@
                         const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
                         const t = schedule.find(x => x.id == id);
                         if (t && t.teams > 0) {
-                            suggestedQty = Math.ceil(t.teams * 15 / 5) * 5;
+                            // Distribute suggested total across all selected + this new one
+                            const totalGoal = getSuggestedTotal(t.teams);
+                            const count = selectedJerseys.length + 1;
+                            suggestedQty = Math.ceil(totalGoal / count / 5) * 5;
+                            // Also update existing jerseys to redistribute evenly
+                            selectedJerseys.forEach((item, i) => {
+                                selectedJerseys[i].qty = suggestedQty;
+                            });
                         }
                     }
                 } catch(e) {}
@@ -729,6 +735,24 @@
                 </div>`;
             });
             container.innerHTML = html;
+            // Show total vs suggested goal
+            const total = selectedJerseys.reduce((s, i) => s + i.qty, 0);
+            const progressEl = document.getElementById('total-progress');
+            try {
+                const id = document.getElementById('tourney-select').value;
+                if (id) {
+                    const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                    const t = schedule.find(x => x.id == id);
+                    if (t && t.teams > 0) {
+                        const goal = getSuggestedTotal(t.teams);
+                        const pct = Math.min(100, Math.round(total / goal * 100));
+                        progressEl.innerHTML = `📊 <b>${total}</b> / <strong>${goal}</strong> suggested total <span style="color:var(--gold);">(${t.teams} teams)</span>
+                            <div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+                        return;
+                    }
+                }
+            } catch(e) {}
+            progressEl.innerHTML = `📊 <b>${total}</b> total jerseys`;
         }
         function getSizeOptions(sport) {
             if (sport === 'baseball') {
@@ -740,6 +764,7 @@
             if (selectedJerseys[idx]) {
                 selectedJerseys[idx].qty = parseInt(val) || 1;
             }
+            updateSelectedSection();
         }
         function updateItemSize(idx, val) {
             if (selectedJerseys[idx]) {
