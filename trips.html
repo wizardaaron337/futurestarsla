@@ -129,7 +129,7 @@
                 badgeClass = 'badge-need-pack';
                 badgeText = '⚠️ Needs Packing';
                 btn1 = '<button class="btn-sm btn-pack" onclick="location.href=\'pack-manager.html?tournament=' + encodeURIComponent(t.name) + '\'">📦 Pack</button>';
-                btn2 = '<button class="btn-sm" onclick="setStatus(' + t.id + ',\'out\')" style="background:rgba(100,181,246,0.1);color:var(--blue);border:1px solid rgba(100,181,246,0.2);">🚐 Mark Out</button>';
+                btn2 = '<button class="btn-sm btn-view" onclick="location.href=\'pj-planner.html?tournament=' + encodeURIComponent(t.name) + '\'">🏨 Book Hotel & Car</button>';
             } else if (stage === 'out') {
                 icon = '🚐';
                 badgeClass = 'badge-out';
