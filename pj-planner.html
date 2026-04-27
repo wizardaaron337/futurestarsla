@@ -250,6 +250,7 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 
 /* Plan tab styles for hotel/car search in view modal */
 .plan-tabs{display:flex;gap:4px;margin-bottom:20px;background:var(--black-light);border-radius:10px;padding:4px;}
+.tab-content{transition:opacity .2s;}
 .plan-tab{padding:10px 20px;border-radius:8px;border:none;background:transparent;color:var(--gray);font-family:'Inter',sans-serif;font-size:.85em;cursor:pointer;transition:all .2s;font-weight:500;}
 .plan-tab.active{background:var(--gold-10);color:var(--gold);}
 .plan-tab:hover:not(.active){color:var(--white);}
@@ -1270,7 +1271,7 @@ function planSaveSelections() {
 }
 
 function viewTrip(tripId){
-  const trip=getTrips().find(t=>t.id===tripId);
+  var trip=getTrips().find(function(t){return t.id===tripId;});
   if(!trip)return;
   viewTripId = tripId;
   // Reset plan state
@@ -1308,7 +1309,7 @@ function viewTrip(tripId){
       <button class="plan-tab active" id="plan-tab-details" onclick="planSwitchTab('details')">📋 Details</button>
       <button class="plan-tab" id="plan-tab-plan" onclick="planSwitchTab('plan')">📝 Plan It</button>
     </div>
-    <div id="plan-tab-content-details">
+    <div id="plan-tab-content-details" class="tab-content">
   `;
 
   html+=`
@@ -1425,7 +1426,7 @@ function viewTrip(tripId){
 
   // Plan tab content (hidden by default)
   html+=`
-    <div id="plan-tab-content-plan" style="display:none;">
+    <div id="plan-tab-content-plan" class="tab-content" style="display:none;background:rgba(201,162,39,0.02);border:1px solid rgba(201,162,39,0.1);border-radius:8px;padding:16px;">
       <div class="detail-section">
         <h4>🏨 Find Hotel & Car Rental</h4>
         <div class="plan-search-row">
@@ -1482,10 +1483,16 @@ function viewTrip(tripId){
 }
 
 function planSwitchTab(tab) {
-  document.querySelectorAll('#view-modal .plan-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('plan-tab-' + tab).classList.add('active');
-  document.getElementById('plan-tab-content-details').style.display = tab === 'details' ? 'block' : 'none';
-  document.getElementById('plan-tab-content-plan').style.display = tab === 'plan' ? 'block' : 'none';
+  console.log('planSwitchTab called with:', tab);
+  var tabs = document.querySelectorAll('#view-modal .plan-tab');
+  if (tabs) tabs.forEach(function(t) { t.classList.remove('active'); });
+  var tabBtn = document.getElementById('plan-tab-' + tab);
+  if (tabBtn) tabBtn.classList.add('active');
+  var detailsContent = document.getElementById('plan-tab-content-details');
+  var planContent = document.getElementById('plan-tab-content-plan');
+  console.log('detailsContent:', detailsContent, 'planContent:', planContent);
+  if (detailsContent) detailsContent.style.display = tab === 'details' ? 'block' : 'none';
+  if (planContent) planContent.style.display = tab === 'plan' ? 'block' : 'none';
 }
 
 function closeViewModal(){document.getElementById('view-modal').classList.remove('active');}
