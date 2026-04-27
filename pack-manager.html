@@ -506,31 +506,25 @@
         <!-- TAB: Create Trip -->
         <div class="tab-content active" id="tab-create">
             <div class="form-card">
-                <h3>📋 Trip Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Trip Name</label>
-                        <input type="text" id="trip-name" placeholder="e.g. Easter Classic" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input type="date" id="trip-date">
+                <h3>📋 Select Tournament</h3>
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label>Choose a tournament from the schedule</label>
+                    <select id="tourney-select" onchange="onSelectTournament()">
+                        <option value="">— Select a Tournament —</option>
+                    </select>
+                </div>
+                <div id="tourney-preview" style="display:none;background:var(--black);border:1px solid var(--border);border-radius:8px;padding:12px;">
+                    <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:0.85em;">
+                        <span style="color:var(--gray-dark);">Tournament</span><span id="preview-name" style="font-weight:600;"></span>
+                        <span style="color:var(--gray-dark);">Sport</span><span id="preview-sport"></span>
+                        <span style="color:var(--gray-dark);">Dates</span><span id="preview-dates"></span>
+                        <span style="color:var(--gray-dark);">Location</span><span id="preview-location"></span>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="trip-location" placeholder="City, State" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label>Sport</label>
-                        <select id="trip-sport">
-                            <option value="baseball">⚾ Baseball</option>
-                            <option value="soccer">⚽ Soccer</option>
-                            <option value="both">🏟️ Both</option>
-                        </select>
-                    </div>
-                </div>
+                <input type="hidden" id="trip-name">
+                <input type="hidden" id="trip-date">
+                <input type="hidden" id="trip-location">
+                <input type="hidden" id="trip-sport" value="baseball">
             </div>
             <div class="form-card">
                 <h3>👕 Pick Jerseys</h3>
@@ -585,10 +579,58 @@
             if (tab === 'create') {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
                 document.getElementById('tab-create').classList.add('active');
+                populateTourneySelect();
             } else {
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
                 document.getElementById('tab-trips').classList.add('active');
             }
+        }
+        function populateTourneySelect() {
+            const sel = document.getElementById('tourney-select');
+            sel.innerHTML = '<option value="">— Select a Tournament —</option>';
+            try {
+                const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                schedule.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t.id;
+                    const sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏟️';
+                    const dateStr = t.start ? t.start + (t.end ? ' — ' + t.end : '') : '';
+                    opt.textContent = sportIcon + ' ' + t.name + (dateStr ? ' (' + dateStr + ')' : '');
+                    sel.appendChild(opt);
+                });
+            } catch(e) {}
+        }
+        function onSelectTournament() {
+            const id = document.getElementById('tourney-select').value;
+            const preview = document.getElementById('tourney-preview');
+            if (!id) {
+                preview.style.display = 'none';
+                return;
+            }
+            try {
+                const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                const t = schedule.find(x => x.id == id);
+                if (!t) return;
+                // Auto-fill hidden fields
+                document.getElementById('trip-name').value = t.name;
+                document.getElementById('trip-date').value = t.start || '';
+                document.getElementById('trip-location').value = t.location || '';
+                const sportVal = t.sport === 'Soccer' ? 'soccer' : 'baseball';
+                document.getElementById('trip-sport').value = sportVal;
+                // Show preview
+                document.getElementById('preview-name').textContent = t.name;
+                document.getElementById('preview-sport').textContent = (t.sport === 'Soccer' ? '⚽ Soccer' : t.sport === 'Baseball' ? '⚾ Baseball' : '🏟️ Other');
+                const dateStr = t.start ? t.start + (t.end ? ' through ' + t.end : '') : '—';
+                document.getElementById('preview-dates').textContent = dateStr;
+                document.getElementById('preview-location').textContent = t.location || '—';
+                preview.style.display = 'block';
+                // Clear previous jersey selection
+                selectedJerseys = [];
+                renderJerseyPicker();
+                // Auto-set picker filter to match sport
+                if (t.sport === 'Soccer') filterPicker('soccer');
+                else if (t.sport === 'Baseball') filterPicker('baseball');
+            } catch(e) {}
         }
         // ─── Jersey Picker ─────────────────────────────────────
         function renderJerseyPicker() {
@@ -715,9 +757,12 @@
             switchTab('trips');
         }
         function clearForm() {
+            document.getElementById('tourney-select').value = '';
+            document.getElementById('tourney-preview').style.display = 'none';
             document.getElementById('trip-name').value = '';
             document.getElementById('trip-date').value = '';
             document.getElementById('trip-location').value = '';
+            document.getElementById('trip-sport').value = 'baseball';
             selectedJerseys = [];
             renderJerseyPicker();
         }
@@ -767,6 +812,7 @@
         function saveTrips() {
             localStorage.setItem('fs_trips_pack', JSON.stringify(TRIPS));
             renderTrips();
+            populateTourneySelect();
         }
         function markShipped(id) {
             const trip = TRIPS.find(t => t.id === id);
