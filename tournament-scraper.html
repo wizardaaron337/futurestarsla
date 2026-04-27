@@ -67,6 +67,22 @@
         .sport-filter button:hover:not(.active) { border-color: var(--gold); color: var(--white); }
         @media (max-width: 600px) { .main { padding: 20px 14px; } .schedule-card { flex-direction: column; align-items: flex-start; } }
     </style>
+    <script>
+        (function(){
+            try {
+                const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                if (schedule.length === 0) {
+                    const randTeams = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+                    const examples = [
+                        { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: randTeams(50, 150), times: 'Sat 8:00 AM — Field 3' },
+                        { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: randTeams(30, 120), times: 'Sat 9:00 AM — Field 1' },
+                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: randTeams(40, 100), times: 'Sat 8:00 AM — Field 3' }
+                    ];
+                    localStorage.setItem('fs_tourney_schedule', JSON.stringify(examples));
+                }
+            } catch(e) {}
+        })();
+    </script>
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>

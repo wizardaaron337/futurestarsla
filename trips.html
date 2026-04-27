@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --black-hover: #242424; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; --green: #4CAF50; --red: #EF5350; --amber: #FFA726; --blue: #64B5F6; }
+        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; --green: #4CAF50; --red: #EF5350; --amber: #FFA726; --blue: #64B5F6; }
         body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 14px; }
         .main { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
         .page-title { font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
@@ -22,14 +22,11 @@
             border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
             display: flex; align-items: center; gap: 16px;
         }
-        .trip-icon {
-            font-size: 2.2em; width: 48px; text-align: center; flex-shrink: 0;
-        }
+        .trip-icon { font-size: 2.2em; width: 48px; text-align: center; flex-shrink: 0; }
         .trip-info { flex: 1; min-width: 0; }
         .trip-name { font-weight: 700; font-size: 1em; color: var(--white); margin-bottom: 2px; }
         .trip-meta { color: var(--gray); font-size: 0.82em; }
         .trip-meta span { margin-right: 14px; }
-        .trip-meta .date { color: var(--gray-dark); }
 
         .badge {
             display: inline-block; padding: 4px 14px; border-radius: 20px;
@@ -54,78 +51,102 @@
             font-size: 0.8em; padding: 20px; border-top: 1px solid var(--border);
         }
         .example-hint span { color: var(--gold); }
+
+        .trip-count { color: var(--gray-dark); font-size: 0.85em; margin-bottom: 16px; }
         @media (max-width: 600px) {
             .trip-card { flex-wrap: wrap; }
             .trip-actions { width: 100%; margin-top: 8px; }
         }
     </style>
+    <script>
+        // Seed example data on first visit
+        (function(){
+            if (localStorage.getItem('fs_examples_seeded') === '1') return;
+            try {
+                const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                if (schedule.length === 0) {
+                    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+                    const examples = [
+                        { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: rand(50, 150), times: 'Sat 8:00 AM — Field 3' },
+                        { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: rand(30, 120), times: 'Sat 9:00 AM — Field 1' },
+                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: rand(40, 100), times: 'Sat 8:00 AM — Field 3' }
+                    ];
+                    localStorage.setItem('fs_tourney_schedule', JSON.stringify(examples));
+                }
+                localStorage.setItem('fs_examples_seeded', '1');
+            } catch(e) {}
+        })();
+    </script>
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>
 <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
 <div class="main">
     <div class="page-title">🚐 Trips</div>
-    <div class="page-subtitle">Each tournament becomes a trip. Here's what it'll look like at each stage.</div>
-
-    <!-- Example 1: Needs Packing -->
-    <div class="trip-card">
-        <div class="trip-icon">📦</div>
-        <div class="trip-info">
-            <div class="trip-name">🥇 Easter Classic ⚽</div>
-            <div class="trip-meta">
-                <span class="date">📅 Apr 18 — Apr 20</span>
-                <span>📍 Lafayette, LA</span>
-                <span>👥 6 travelers</span>
-            </div>
-        </div>
-        <span class="badge badge-need-pack">⚠️ Needs Packing</span>
-        <div class="trip-actions">
-            <button class="btn-sm btn-pack">📦 Pack</button>
-            <button class="btn-sm btn-view">👁️ View</button>
-        </div>
-    </div>
-
-    <!-- Example 2: Packed & Out on Trip -->
-    <div class="trip-card">
-        <div class="trip-icon">🚐</div>
-        <div class="trip-info">
-            <div class="trip-name">🏆 Gulf Coast Showcase ⚾</div>
-            <div class="trip-meta">
-                <span class="date">📅 May 2 — May 5</span>
-                <span>📍 Biloxi, MS</span>
-                <span>👥 8 travelers</span>
-                <span>🏨 Days Inn</span>
-            </div>
-        </div>
-        <span class="badge badge-out">🔵 Out on Trip</span>
-        <div class="trip-actions">
-            <button class="btn-sm btn-gps">📍 Track</button>
-            <button class="btn-sm btn-view">👁️ View</button>
-        </div>
-    </div>
-
-    <!-- Example 3: Returned / Completed -->
-    <div class="trip-card" style="opacity:0.7;">
-        <div class="trip-icon">✅</div>
-        <div class="trip-info">
-            <div class="trip-name">🌟 Spring Championship ⚽</div>
-            <div class="trip-meta">
-                <span class="date">📅 Mar 10 — Mar 13</span>
-                <span>📍 Dallas, TX</span>
-                <span>👥 5 travelers</span>
-                <span>✔️ All gear returned</span>
-            </div>
-        </div>
-        <span class="badge badge-returned">✅ Completed</span>
-        <div class="trip-actions">
-            <button class="btn-sm btn-view">👁️ View</button>
-        </div>
-    </div>
-
+    <div class="page-subtitle">Each tournament automatically becomes a trip in the system.</div>
+    <div class="trip-count" id="trip-count"></div>
+    <div id="trip-list"></div>
     <div class="example-hint">
-        ⭐ These are <span>examples</span> to show how the page will work.
-        Add a tournament in <span>Schedules</span> to make your first real trip appear here.
+        ⭐ These <span>example tournaments</span> are seeded into the system to show how everything connects.
+        Add real ones in <span>Schedules</span> — they count in the Pack Manager dropdown, trip list, and everywhere else.
     </div>
 </div>
+<script>
+    function renderTrips() {
+        const list = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+        const container = document.getElementById('trip-list');
+        document.getElementById('trip-count').textContent = list.length + ' tournament' + (list.length !== 1 ? 's' : '') + ' in the system';
+
+        if (list.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--gray-dark);"><div style="font-size:4em;margin-bottom:16px;">📍</div><p>No tournaments yet. Add one in <strong>Schedules</strong>.</p></div>';
+            return;
+        }
+
+        // Show 3 stages: need pack / out / returned (cycling through list)
+        const stages = ['need-pack', 'out', 'returned'];
+        let html = '';
+        list.forEach(function(t, i) {
+            var stage = stages[i % 3];
+            var icon, badgeClass, badgeText;
+            if (stage === 'need-pack') {
+                icon = '📦';
+                badgeClass = 'badge-need-pack';
+                badgeText = '⚠️ Needs Packing';
+            } else if (stage === 'out') {
+                icon = '🚐';
+                badgeClass = 'badge-out';
+                badgeText = '🔵 Out on Trip';
+            } else {
+                icon = '✅';
+                badgeClass = 'badge-returned';
+                badgeText = '✅ Completed';
+            }
+            var sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏟️';
+            var dateStr = (t.start || '') + (t.end ? ' — ' + t.end : '');
+            var teamsStr = t.teams ? '👥 ' + t.teams + ' teams' : '';
+            var dim = stage === 'returned' ? ' style="opacity:0.7;"' : '';
+
+            html += '<div class="trip-card"' + dim + '>' +
+                '<div class="trip-icon">' + icon + '</div>' +
+                '<div class="trip-info">' +
+                    '<div class="trip-name">' + sportIcon + ' ' + t.name + '</div>' +
+                    '<div class="trip-meta">' +
+                        (dateStr ? '<span class="date">📅 ' + dateStr + '</span>' : '') +
+                        (t.location ? '<span>📍 ' + t.location + '</span>' : '') +
+                        (teamsStr ? '<span>' + teamsStr + '</span>' : '') +
+                    '</div>' +
+                '</div>' +
+                '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
+                '<div class="trip-actions">' +
+                    (stage === 'need-pack' ? '<button class="btn-sm btn-pack">📦 Pack</button>' : '') +
+                    (stage === 'out' ? '<button class="btn-sm btn-gps">📍 Track</button>' : '') +
+                    '<button class="btn-sm btn-view">👁️ View</button>' +
+                '</div>' +
+            '</div>';
+        });
+        container.innerHTML = html;
+    }
+    renderTrips();
+</script>
 </body>
 </html>
