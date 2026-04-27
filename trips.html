@@ -11,16 +11,53 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; }
+        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --black-hover: #242424; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; --green: #4CAF50; --red: #EF5350; --amber: #FFA726; --blue: #64B5F6; }
         body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 14px; }
-        .main { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .main { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
         .page-title { font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
         .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 24px; }
-        .empty-state { text-align: center; padding: 80px 20px; color: var(--gray-dark); }
-        .empty-state .big { font-size: 4em; margin-bottom: 16px; }
-        .empty-state h3 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.2em; margin-bottom: 8px; }
-        .empty-state p { font-size: 0.9em; max-width: 400px; margin: 0 auto; line-height: 1.6; }
-        .empty-state .nav-hint { margin-top: 20px; font-size: 0.8em; color: var(--gray-dark); }
+
+        .trip-card {
+            background: var(--black-card); border: 1px solid var(--border);
+            border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .trip-icon {
+            font-size: 2.2em; width: 48px; text-align: center; flex-shrink: 0;
+        }
+        .trip-info { flex: 1; min-width: 0; }
+        .trip-name { font-weight: 700; font-size: 1em; color: var(--white); margin-bottom: 2px; }
+        .trip-meta { color: var(--gray); font-size: 0.82em; }
+        .trip-meta span { margin-right: 14px; }
+        .trip-meta .date { color: var(--gray-dark); }
+
+        .badge {
+            display: inline-block; padding: 4px 14px; border-radius: 20px;
+            font-size: 0.72em; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap;
+        }
+        .badge-need-pack { background: rgba(255,167,38,0.12); color: var(--amber); border: 1px solid rgba(255,167,38,0.2); }
+        .badge-packed { background: rgba(76,175,80,0.12); color: var(--green); border: 1px solid rgba(76,175,80,0.2); }
+        .badge-out { background: rgba(100,181,246,0.12); color: var(--blue); border: 1px solid rgba(100,181,246,0.2); }
+        .badge-returned { background: rgba(168,164,152,0.1); color: var(--gray); border: 1px solid rgba(168,164,152,0.15); }
+
+        .trip-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .btn-sm {
+            padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer;
+            font-size: 0.78em; font-weight: 600; white-space: nowrap;
+        }
+        .btn-pack { background: rgba(255,167,38,0.12); color: var(--amber); border: 1px solid rgba(255,167,38,0.2); }
+        .btn-view { background: rgba(100,181,246,0.12); color: var(--blue); border: 1px solid rgba(100,181,246,0.2); }
+        .btn-gps { background: rgba(76,175,80,0.12); color: var(--green); border: 1px solid rgba(76,175,80,0.2); }
+
+        .example-hint {
+            text-align: center; margin-top: 30px; color: var(--gray-dark);
+            font-size: 0.8em; padding: 20px; border-top: 1px solid var(--border);
+        }
+        .example-hint span { color: var(--gold); }
+        @media (max-width: 600px) {
+            .trip-card { flex-wrap: wrap; }
+            .trip-actions { width: 100%; margin-top: 8px; }
+        }
     </style>
     <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
@@ -28,12 +65,66 @@
 <script>if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){window.location.href="index.html";}</script>
 <div class="main">
     <div class="page-title">🚐 Trips</div>
-    <div class="page-subtitle">Tournament trips will show up here once scheduled.</div>
-    <div class="empty-state">
-        <div class="big">📍</div>
-        <h3>No Trips Yet</h3>
-        <p>Start by adding a tournament in the <strong>Schedules</strong> tab. Once tournaments are scheduled, trip details will appear here.</p>
-        <div class="nav-hint">📅 <strong>Schedules</strong> tab → Add Tournament → fills in here</div>
+    <div class="page-subtitle">Each tournament becomes a trip. Here's what it'll look like at each stage.</div>
+
+    <!-- Example 1: Needs Packing -->
+    <div class="trip-card">
+        <div class="trip-icon">📦</div>
+        <div class="trip-info">
+            <div class="trip-name">🥇 Easter Classic ⚽</div>
+            <div class="trip-meta">
+                <span class="date">📅 Apr 18 — Apr 20</span>
+                <span>📍 Lafayette, LA</span>
+                <span>👥 6 travelers</span>
+            </div>
+        </div>
+        <span class="badge badge-need-pack">⚠️ Needs Packing</span>
+        <div class="trip-actions">
+            <button class="btn-sm btn-pack">📦 Pack</button>
+            <button class="btn-sm btn-view">👁️ View</button>
+        </div>
+    </div>
+
+    <!-- Example 2: Packed & Out on Trip -->
+    <div class="trip-card">
+        <div class="trip-icon">🚐</div>
+        <div class="trip-info">
+            <div class="trip-name">🏆 Gulf Coast Showcase ⚾</div>
+            <div class="trip-meta">
+                <span class="date">📅 May 2 — May 5</span>
+                <span>📍 Biloxi, MS</span>
+                <span>👥 8 travelers</span>
+                <span>🏨 Days Inn</span>
+            </div>
+        </div>
+        <span class="badge badge-out">🔵 Out on Trip</span>
+        <div class="trip-actions">
+            <button class="btn-sm btn-gps">📍 Track</button>
+            <button class="btn-sm btn-view">👁️ View</button>
+        </div>
+    </div>
+
+    <!-- Example 3: Returned / Completed -->
+    <div class="trip-card" style="opacity:0.7;">
+        <div class="trip-icon">✅</div>
+        <div class="trip-info">
+            <div class="trip-name">🌟 Spring Championship ⚽</div>
+            <div class="trip-meta">
+                <span class="date">📅 Mar 10 — Mar 13</span>
+                <span>📍 Dallas, TX</span>
+                <span>👥 5 travelers</span>
+                <span>✔️ All gear returned</span>
+            </div>
+        </div>
+        <span class="badge badge-returned">✅ Completed</span>
+        <div class="trip-actions">
+            <button class="btn-sm btn-view">👁️ View</button>
+        </div>
+    </div>
+
+    <div class="example-hint">
+        ⭐ These are <span>examples</span> to show how the page will work.
+        Add a tournament in <span>Schedules</span> to make your first real trip appear here.
     </div>
 </div>
 </body>
