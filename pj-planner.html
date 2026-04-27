@@ -957,10 +957,14 @@ function planConfirmBooking() {
   var trips = getTrips();
   var trip = trips.find(function(t) { return t.id === viewTripId || t.tourneyId === viewTripId; });
   if (!trip) { showToast('Save a hotel/car selection first'); return; }
+  var hotelNameEl = document.getElementById('plan-hotel-name-text');
+  var carNameEl = document.getElementById('plan-car-name-text');
   var hotelConf = (document.getElementById('plan-hotel-conf') || {}).value;
   var carConf = (document.getElementById('plan-car-conf') || {}).value;
   var hotelActual = (document.getElementById('plan-hotel-actual') || {}).value;
   var carActual = (document.getElementById('plan-car-actual') || {}).value;
+  if (hotelNameEl && hotelNameEl.value.trim()) trip.hotelName = hotelNameEl.value.trim();
+  if (carNameEl && carNameEl.value.trim()) trip.carName = carNameEl.value.trim();
   if (hotelConf) trip.hotelConf = hotelConf.trim();
   if (carConf) trip.carConf = carConf.trim();
   if (hotelActual) trip.hotelActual = parseFloat(hotelActual) || 0;
@@ -1053,9 +1057,9 @@ function viewTrip(tripId){
     '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
       '<h4>📋 Selected Booking Summary</h4>' +
       (showHotel ? '<div class="plan-summary-row"><span class="label">🏨 Hotel</span><span class="value" id="plan-sum-hotel-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-hotel-price" style="color:var(--gold);">-</span></div>' : '') +
-      (showHotel ? '<div class="plan-confirm-field"><label>🏨 Hotel Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="number" id="plan-hotel-actual" placeholder="$ actual" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' : '') +
+      (showHotel ? '<div class="plan-confirm-field"><label>🏨 Hotel Name (if not using search above)</label><input type="text" id="plan-hotel-name-text" placeholder="e.g. Marriott Downtown" value="' + (trip.hotelName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🏨 Hotel Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="Confirmation #" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="text" id="plan-hotel-actual" placeholder="$" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' : '') +
       (showCar ? '<div class="plan-summary-row"><span class="label">🚗 Rental Car</span><span class="value" id="plan-sum-car-name">Not selected</span></div><div class="plan-summary-row" style="text-align:right;padding-top:0;"><span class="label"></span><span class="value" id="plan-sum-car-price" style="color:var(--gold);">-</span></div>' : '') +
-      (showCar ? '<div class="plan-confirm-field"><label>🚗 Car Rental Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="number" id="plan-car-actual" placeholder="$ actual" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
+      (showCar ? '<div class="plan-confirm-field"><label>🚗 Rental Company Name (if not using search)</label><input type="text" id="plan-car-name-text" placeholder="e.g. Enterprise" value="' + (trip.carName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🚗 Car Rental Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="Confirmation #" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="text" id="plan-car-actual" placeholder="$" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
       '<div class="plan-summary-total"><span class="label">Est. Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
       '<div style="display:flex;gap:10px;margin-top:12px;"><button class="btn btn-primary" onclick="planConfirmBooking()" style="flex:1;">✅ Confirm & Save Actuals</button></div>' +
     '</div>' +
