@@ -4,19 +4,11 @@
  */
 
 (function() {
-    // Restore auth from localStorage to sessionStorage (survives build ID page reload)
-    if (!sessionStorage.getItem('fs_auth') && localStorage.getItem('fs_auth')) {
-        sessionStorage.setItem('fs_auth', localStorage.getItem('fs_auth'));
-        sessionStorage.setItem('fs_role', localStorage.getItem('fs_role'));
-        sessionStorage.setItem('fs_name', localStorage.getItem('fs_name'));
-    }
+    // Only show nav for authenticated users (session-only, no localStorage fallback)
+    if (!sessionStorage.getItem('fs_auth')) return;
 
-    // Only show nav for authenticated users
-    const isAuth = !!sessionStorage.getItem('fs_auth') || !!localStorage.getItem('fs_auth');
-    if (!isAuth) return;
-
-    const userRole = sessionStorage.getItem('fs_role') || localStorage.getItem('fs_role') || 'owner';
-    const userName = sessionStorage.getItem('fs_name') || localStorage.getItem('fs_name') || 'User';
+    const userRole = sessionStorage.getItem('fs_role') || 'owner';
+    const userName = sessionStorage.getItem('fs_name') || 'User';
     const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
     const ROLE_PAGES = (typeof AUTH_CONFIG !== 'undefined') ? AUTH_CONFIG.roles : {

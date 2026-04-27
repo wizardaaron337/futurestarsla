@@ -198,15 +198,11 @@
             if (AUTH_CONFIG.verifyPassword(username, password)) {
                 msg.className = 'msg success';
                 msg.textContent = 'Welcome, ' + user.name + '!';
-                // Save to both storages so auth survives build ID reloads
+                // Session only — page refresh requires re-login
                 ['fs_auth', 'fs_role', 'fs_name'].forEach(k => sessionStorage.removeItem(k));
-                ['fs_auth', 'fs_role', 'fs_name'].forEach(k => localStorage.removeItem(k));
                 sessionStorage.setItem('fs_auth', username);
                 sessionStorage.setItem('fs_role', user.role);
                 sessionStorage.setItem('fs_name', user.name);
-                localStorage.setItem('fs_auth', username);
-                localStorage.setItem('fs_role', user.role);
-                localStorage.setItem('fs_name', user.name);
                 setTimeout(() => window.location.href = 'index.html' + (location.hostname.includes('pages.dev') ? '?r=' + Date.now() : ''), 500);
             } else {
                 msg.className = 'msg error';
