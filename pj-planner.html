@@ -326,7 +326,17 @@ function saveTrips(t){localStorage.setItem(DB.trips,JSON.stringify(t));}
 function seedData(){
   var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
   var trips = getTrips();
-  if (tournaments.length === 0 && trips.length === 0) { return; }
+  // Seed example tournaments if schedule is empty
+  if (tournaments.length === 0) {
+    var examples = [
+      { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: 85, times: 'Sat 8:00 AM — Field 3' },
+      { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: 48, times: 'Sat 9:00 AM — Field 1' },
+      { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' },
+      { id: 1700000004, name: 'Memorial Day Classic', sport: 'Baseball', start: '2026-05-25', end: '2026-05-28', location: 'New Orleans, LA', teams: 72, times: 'Mon 7:00 AM — Field 5' }
+    ];
+    localStorage.setItem('fs_tourney_schedule', JSON.stringify(examples));
+    tournaments = examples;
+  }
   tournaments.forEach(function(t) {
     var existing = trips.find(function(tr) { return tr.tourneyId === t.id; });
     var tripData = {

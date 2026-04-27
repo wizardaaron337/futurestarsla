@@ -15,9 +15,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trip Tracker — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
-    <script src="crew-data.js?v=1777085641"></script>
-    <script src="cost-data.js?v=1777085641"></script>
-    <script src="tournament-data.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1"></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
@@ -427,73 +424,34 @@
         <div id="content-out" class="tab-content" style="display:none;"></div>
         <div id="content-completed" class="tab-content" style="display:none;"></div>
     </div>
-    <!-- Pack Modal -->
-    <div class="modal-overlay" id="pack-modal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2>Pack Jerseys for Trip</h2>
-            <div id="pack-form"></div>
-            <div style="margin-top:20px; display:flex; gap:10px;">
-                <button class="btn btn-primary" onclick="savePack()">Save Packing List</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
-    <!-- Check In Modal -->
-    <div class="modal-overlay" id="checkin-modal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2>Check In Returned Jerseys</h2>
-            <div id="checkin-form"></div>
-            <div style="margin-top:20px; display:flex; gap:10px;">
-                <button class="btn btn-success" onclick="saveCheckIn()">Complete Check-In</button>
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-    </div>
     <script>
         const NAME = sessionStorage.getItem('fs_name') || 'User';
         
-        // Trip status storage
-        const STORAGE_KEY = 'fs_trip_status';
-        const PACKING_KEY = 'fs_trip_packing';
-        const RETURNS_KEY = 'fs_trip_returns';
-        function getTripData() {
-            const status = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            const packing = JSON.parse(localStorage.getItem(PACKING_KEY) || '{}');
-            const returns = JSON.parse(localStorage.getItem(RETURNS_KEY) || '{}');
-            return { status, packing, returns };
+        // Use unified status system from other pages
+        function getTournaments() {
+            var t = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+            if (t.length === 0) {
+                t = [
+                    { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: 85, times: 'Sat 8:00 AM — Field 3' },
+                    { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: 48, times: 'Sat 9:00 AM — Field 1' },
+                    { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' },
+                    { id: 1700000004, name: 'Memorial Day Classic', sport: 'Baseball', start: '2026-05-25', end: '2026-05-28', location: 'New Orleans, LA', teams: 72, times: 'Mon 7:00 AM — Field 5' }
+                ];
+                localStorage.setItem('fs_tourney_schedule', JSON.stringify(t));
+            }
+            return t;
         }
-        function setTripStatus(tripId, status) {
-            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            data[tripId] = status;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        function getStatuses() {
+            try { return JSON.parse(localStorage.getItem('fs_trip_statuses')) || {}; } catch(e) { return {}; }
+        }
+        function saveStatuses(s) { localStorage.setItem('fs_trip_statuses', JSON.stringify(s)); }
+        function setStatus(id, s) {
+            var all = getStatuses();
+            all[id] = s;
+            saveStatuses(all);
             render();
         }
-        function setTripPacking(tripId, jerseys) {
-            const data = JSON.parse(localStorage.getItem(PACKING_KEY) || '{}');
-            data[tripId] = jerseys;
-            localStorage.setItem(PACKING_KEY, JSON.stringify(data));
-        }
-        function setTripReturns(tripId, jerseys) {
-            const data = JSON.parse(localStorage.getItem(RETURNS_KEY) || '{}');
-            data[tripId] = jerseys;
-            localStorage.setItem(RETURNS_KEY, JSON.stringify(data));
-        }
-        let currentTripId = null;
-        let currentModal = null;
-        // Jersey catalog
-        const JERSEY_CATALOG = {
-            'Soccer': ['Ronaldo Blue','Ronaldo Red','Ronaldo White','Ronaldo Special','Ronaldo WC',
-                       'Messi Special','Messi PSG','Messi Tribute',
-                       'Yamal Special','Yamal Black','Yamal Barca','Yamal Kobe','Yamal Pink','Yamal Flower','Yamal Snake',
-                       'Neymar Yellow','Neymar Tribute',
-                       'France Mbappe','Pulisic AC Milan','Gimenez'],
-            'Baseball': ['Ohtahni Dodgers','Harper Phillies','Judge Yankees','Acuna Jr Braves',
-                        'Betts Dodgers','Tatis Jr','Turner Phillies','Whit Royals','Soto Mets',
-                        'De LaCruz Reds','Crews Nationals','Skenes Pirates','Holliday Orioles',
-                        'Trout Angels','Crow','Mariners','Freeman','Alverez','Henderson','Guerrero']
-        };
+
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tab).classList.add('active');
@@ -501,187 +459,56 @@
             document.getElementById('content-' + tab).style.display = 'block';
             render();
         }
-        function getTripStatus(trip) {
-            const { status } = getTripData();
-            return status[trip.id] || 'upcoming';
-        }
         function render() {
-            const { status, packing, returns } = getTripData();
-            const activeTab = document.querySelector('.tab.active').id.replace('tab-', '');
-            // Categorize trips
-            const upcoming = [];
-            const out = [];
-            const completed = [];
-            CREW_TRIPS.forEach(trip => {
-                const s = status[trip.id] || 'upcoming';
-                if (s === 'upcoming') upcoming.push(trip);
-                else if (s === 'out') out.push(trip);
-                else if (s === 'completed') completed.push(trip);
+            var list = getTournaments();
+            var statuses = getStatuses();
+            var activeTab = document.querySelector('.tab.active').id.replace('tab-', '');
+            var upcoming = [];
+            var out = [];
+            var completed = [];
+            list.forEach(function(t) {
+                var s = statuses[t.id] || 'need-pack';
+                if (s === 'need-pack' || s === 'upcoming') upcoming.push(t);
+                else if (s === 'out') out.push(t);
+                else if (s === 'returned' || s === 'completed') completed.push(t);
             });
             document.getElementById('count-upcoming').textContent = upcoming.length;
             document.getElementById('count-out').textContent = out.length;
             document.getElementById('count-completed').textContent = completed.length;
-            // Render active tab
-            if (activeTab === 'upcoming') renderTrips(upcoming, 'upcoming');
-            else if (activeTab === 'out') renderTrips(out, 'out');
-            else if (activeTab === 'completed') renderTrips(completed, 'completed');
+            if (activeTab === 'upcoming') renderCards(upcoming, 'upcoming');
+            else if (activeTab === 'out') renderCards(out, 'out');
+            else if (activeTab === 'completed') renderCards(completed, 'completed');
         }
-        function renderTrips(trips, type) {
-            const container = document.getElementById('content-' + type);
+        function renderCards(trips, type) {
+            var container = document.getElementById('content-' + type);
             if (trips.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--gray);"><h3 style="font-family:Cinzel,serif; color:var(--gold); margin-bottom:10px;">No ${type} trips</h3></div>`;
+                container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--gray);"><h3 style="font-family:Cinzel,serif;color:var(--gold);margin-bottom:10px;">No ' + type + ' trips</h3></div>';
                 return;
             }
-            container.innerHTML = '<div class="trips-grid">' + trips.map(trip => {
-                const { packing: packingData, returns: returnsData } = getTripData();
-                const tripPacking = packingData[trip.id] || {};
-                const tripReturns = returnsData[trip.id] || {};
-                const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
-                let jerseyHtml = '';
-                let returnHtml = '';
-                if (Object.keys(tripPacking).length > 0) {
-                    jerseyHtml = `
-                        <div class="jersey-section">
-                            <h4>📦 Packed Jerseys</h4>
-                            <div class="jersey-grid">
-                                ${Object.entries(tripPacking).map(([name, qty]) => `
-                                    <div class="jersey-item">
-                                        <span class="jersey-name">${name}</span>
-                                        <span class="jersey-qty">${qty}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                }
-                if (Object.keys(tripReturns).length > 0) {
-                    returnHtml = `
-                        <div class="return-report">
-                            <h5>✅ Returned Jerseys</h5>
-                            ${Object.entries(tripReturns).map(([name, qty]) => `
-                                <div class="return-item">
-                                    <span>${name}</span>
-                                    <span style="color:var(--green); font-weight:600;">${qty}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
-                let actionsHtml = '';
+            var html = '<div class="trips-grid">';
+            trips.forEach(function(trip) {
+                var sportIcon = trip.sport === 'Soccer' ? '⚽' : trip.sport === 'Baseball' ? '⚾' : '🏟️';
+                var dateStr = (trip.start || '') + (trip.end ? ' — ' + trip.end : '');
+                var loc = trip.location || '—';
+                var teams = trip.teams || '—';
+                var typeLabel = type === 'upcoming' ? 'NEEDS PACKING' : type === 'out' ? 'OUT NOW' : 'COMPLETED';
+                var statusClass = type === 'upcoming' ? 'status-upcoming' : type === 'out' ? 'status-out' : 'status-completed';
+                var actionsHtml = '';
                 if (type === 'upcoming') {
-                    actionsHtml = `
-                        <div class="actions">
-                            <button class="btn btn-primary" onclick="openPackModal('${trip.id}')">📦 Pack Jerseys</button>
-                            <button class="btn btn-success" onclick="markOut('${trip.id}')">🚐 Mark Out</button>
-                        </div>
-                    `;
+                    actionsHtml = '<div class="actions"><button class="btn btn-primary" onclick="location.href=\'pack-manager.html?tournament=' + encodeURIComponent(trip.name) + '\'">📦 Pack</button><button class="btn btn-success" onclick="setStatus(' + trip.id + ',\'out\')">🚐 Mark Out</button></div>';
                 } else if (type === 'out') {
-                    actionsHtml = `
-                        <div class="actions">
-                            <button class="btn btn-success" onclick="openCheckInModal('${trip.id}')">📥 Check In</button>
-                            <button class="btn btn-secondary" onclick="markCompleted('${trip.id}')">✅ Complete</button>
-                        </div>
-                    `;
+                    actionsHtml = '<div class="actions"><a href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(loc) + '" target="_blank" class="btn btn-primary">📍 Track</a><button class="btn btn-secondary" onclick="setStatus(' + trip.id + ',\'returned\')">✅ Mark Complete</button></div>';
                 }
-                return `
-                    <div class="trip-card">
-                        <div class="trip-header">
-                            <div class="trip-name">${trip.name}</div>
-                            <div class="trip-status status-${type}">${type.toUpperCase()}</div>
-                        </div>
-                        <div class="trip-meta">
-                            <span class="meta-tag sport">${sportType}</span>
-                            <span class="meta-tag">${trip.state || '—'}</span>
-                            <span class="meta-tag">${trip.month || '—'}</span>
-                            ${trip.crew ? `<span class="meta-tag">${trip.crew}</span>` : ''}
-                        </div>
-                        <div style="color:var(--gray); font-size:0.88em; line-height:1.7;">
-                            ${trip.startDate ? `<div>📅 ${trip.startDate}${trip.endDate ? ' — ' + trip.endDate : ''}</div>` : ''}
-                        </div>
-                        ${jerseyHtml}
-                        ${returnHtml}
-                        ${actionsHtml}
-                    </div>
-                `;
-            }).join('') + '</div>';
-        }
-        function markOut(tripId) {
-            setTripStatus(tripId, 'out');
-        }
-        function markCompleted(tripId) {
-            setTripStatus(tripId, 'completed');
-        }
-        function openPackModal(tripId) {
-            currentTripId = tripId;
-            currentModal = 'pack';
-            const trip = CREW_TRIPS.find(t => t.id === tripId);
-            const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
-            const jerseys = JERSEY_CATALOG[sportType] || JERSEY_CATALOG['Soccer'];
-            document.getElementById('pack-form').innerHTML = `
-                <p style="color:var(--gray); margin-bottom:16px;">Packing for: <strong style="color:var(--gold);">${trip.name}</strong></p>
-                ${jerseys.map(j => `
-                    <div class="jersey-input-row">
-                        <span class="jersey-label">${j}</span>
-                        <input type="number" id="pack-${j.replace(/\s+/g,'-')}" min="0" value="0" placeholder="0">
-                    </div>
-                `).join('')}
-            `;
-            document.getElementById('pack-modal').classList.add('active');
-        }
-        function savePack() {
-            const trip = CREW_TRIPS.find(t => t.id === currentTripId);
-            const sportType = trip.sport.toLowerCase().includes('baseball') || trip.sport === 'BB' ? 'Baseball' : 'Soccer';
-            const jerseys = JERSEY_CATALOG[sportType] || JERSEY_CATALOG['Soccer'];
-            const packed = {};
-            jerseys.forEach(j => {
-                const val = document.getElementById('pack-' + j.replace(/\s+/g,'-')).value;
-                if (val && parseInt(val) > 0) {
-                    packed[j] = parseInt(val);
-                }
+                html += '<div class="trip-card"><div class="trip-header"><div class="trip-name">' + sportIcon + ' ' + trip.name + '</div><div class="trip-status ' + statusClass + '">' + typeLabel + '</div></div>' +
+                    '<div class="trip-meta"><span class="meta-tag sport">' + (trip.sport || '—') + '</span><span class="meta-tag">' + loc + '</span><span class="meta-tag">👥 ' + teams + ' teams</span></div>' +
+                    '<div style="color:var(--gray);font-size:0.88em;line-height:1.7;">' +
+                        (dateStr ? '<div>📅 ' + dateStr + '</div>' : '') +
+                    '</div>' +
+                    actionsHtml +
+                '</div>';
             });
-            setTripPacking(currentTripId, packed);
-            closeModal();
-            render();
-        }
-        function openCheckInModal(tripId) {
-            currentTripId = tripId;
-            currentModal = 'checkin';
-            const { packing: packingData } = getTripData();
-            const tripPacking = packingData[tripId] || {};
-            if (Object.keys(tripPacking).length === 0) {
-                alert('No packing list found for this trip');
-                return;
-            }
-            document.getElementById('checkin-form').innerHTML = `
-                <p style="color:var(--gray); margin-bottom:16px;">Report returned jerseys:</p>
-                ${Object.entries(tripPacking).map(([name, packedQty]) => `
-                    <div class="jersey-input-row">
-                        <span class="jersey-label">${name} <small style="color:var(--gray);">(packed: ${packedQty})</small></span>
-                        <input type="number" id="return-${name.replace(/\s+/g,'-')}" min="0" max="${packedQty}" value="${packedQty}" placeholder="0">
-                    </div>
-                `).join('')}
-            `;
-            document.getElementById('checkin-modal').classList.add('active');
-        }
-        function saveCheckIn() {
-            const { packing: packingData } = getTripData();
-            const tripPacking = packingData[currentTripId] || {};
-            const returned = {};
-            Object.keys(tripPacking).forEach(name => {
-                const val = document.getElementById('return-' + name.replace(/\s+/g,'-')).value;
-                if (val && parseInt(val) > 0) {
-                    returned[name] = parseInt(val);
-                }
-            });
-            setTripReturns(currentTripId, returned);
-            closeModal();
-            render();
-        }
-        function closeModal() {
-            document.getElementById('pack-modal').classList.remove('active');
-            document.getElementById('checkin-modal').classList.remove('active');
-            currentTripId = null;
-            currentModal = null;
+            html += '</div>';
+            container.innerHTML = html;
         }
         function logout() {
             localStorage.clear();
@@ -690,6 +517,13 @@
         }
         // Init
         render();
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trip_statuses') render();
+        });
+        setInterval(function() {
+            var h = JSON.stringify(localStorage.getItem('fs_tourney_schedule') + '|' + localStorage.getItem('fs_trip_statuses'));
+            if (h !== window._ttLast) { window._ttLast = h; render(); }
+        }, 3000);
     </script>
     <script>
         // Particles & Progress Bar

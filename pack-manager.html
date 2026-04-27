@@ -612,7 +612,17 @@
             const sel = document.getElementById('tourney-select');
             sel.innerHTML = '<option value="">— Select a Tournament —</option>';
             try {
-                const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                var schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+                // Seed example tournaments if empty
+                if (schedule.length === 0) {
+                    schedule = [
+                        { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: 85, times: 'Sat 8:00 AM — Field 3' },
+                        { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: 48, times: 'Sat 9:00 AM — Field 1' },
+                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' },
+                        { id: 1700000004, name: 'Memorial Day Classic', sport: 'Baseball', start: '2026-05-25', end: '2026-05-28', location: 'New Orleans, LA', teams: 72, times: 'Mon 7:00 AM — Field 5' }
+                    ];
+                    localStorage.setItem('fs_tourney_schedule', JSON.stringify(schedule));
+                }
                 schedule.forEach(t => {
                     const opt = document.createElement('option');
                     opt.value = t.id;
