@@ -83,46 +83,25 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .view-toggle button.active{background:var(--gold-10);color:var(--gold);}
 .view-toggle button:hover:not(.active){color:var(--white);}
 
-/* Folder Cards */
-.folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:40px;}
-.folder-card{background:var(--black-card);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
-.folder-card:hover{border-color:var(--gold-dark);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.5);}
-.folder-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;opacity:.8;transition:opacity .3s;}
-.folder-card:hover::before{opacity:1;}
-.folder-card.drag-over{border-color:var(--gold);background:var(--gold-10);transform:scale(1.02);}
-.folder-color-bar{position:absolute;top:0;left:0;right:0;height:4px;}
-.folder-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.folder-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4em;background:var(--black-light);border:1px solid var(--border);}
-.folder-title{font-family:'Cinzel',serif;font-size:.95em;color:var(--white);letter-spacing:1px;margin-bottom:2px;}
-.folder-meta{font-size:.78em;color:var(--gray);}
-.folder-stats{display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
-.folder-stat{text-align:center;}
-.folder-stat-value{font-family:'Cinzel',serif;font-size:1.3em;color:var(--gold);font-weight:700;}
-.folder-stat-label{font-size:.7em;color:var(--gray);text-transform:uppercase;letter-spacing:1px;}
-.folder-actions{display:flex;gap:6px;margin-top:12px;opacity:0;transition:opacity .2s;}
-.folder-card:hover .folder-actions{opacity:1;}
-
-/* Share Badge */
-.share-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;font-size:.7em;font-weight:600;}
-.share-public{background:rgba(76,175,80,0.1);color:var(--green);border:1px solid rgba(76,175,80,0.2);}
-.share-private{background:rgba(168,164,152,0.1);color:var(--gray);border:1px solid rgba(168,164,152,0.2);}
-
-/* Trip Cards (inside folder view) */
-.trips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;}
-.trip-card{background:var(--black-card);border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .3s;position:relative;cursor:grab;}
+/* Tournament Trip Cards */
+.tournament-strip{display:flex;flex-direction:column;gap:12px;}
+.trip-card{background:var(--black-card);border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .3s;position:relative;cursor:pointer;}
 .trip-card:hover{border-color:var(--gold-dark);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
-.trip-card.dragging{opacity:.5;cursor:grabbing;}
-.trip-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px;}
-.trip-card-title{font-family:'Cinzel',serif;font-size:.95em;color:var(--white);letter-spacing:1px;line-height:1.3;flex:1;}
-.trip-card-type{padding:4px 10px;border-radius:6px;font-size:.7em;font-weight:600;letter-spacing:.5px;border:1px solid;white-space:nowrap;}
-.trip-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.trip-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:10px;}
+.trip-card-title{font-family:'Cinzel',serif;font-size:1.05em;color:var(--white);letter-spacing:1px;line-height:1.3;flex:1;}
+.trip-card-date{font-size:.78em;color:var(--gray-dark);white-space:nowrap;}
+.trip-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;font-size:.85em;color:var(--gray);}
 .trip-tag{padding:3px 10px;background:var(--black-light);border:1px solid var(--border);border-radius:6px;font-size:.78em;color:var(--gray);}
 .trip-tag i{color:var(--gold);margin-right:4px;}
 .trip-desc{color:var(--gray);font-size:.85em;line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.trip-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);}
-.trip-budget{font-family:'Cinzel',serif;color:var(--gold);font-size:1.1em;font-weight:700;}
-.trip-travelers{font-size:.8em;color:var(--gray);}
-.trip-actions{display:flex;gap:6px;}
+.trip-booking-status{display:flex;flex-direction:column;gap:4px;padding:8px 0;border-top:1px solid var(--border);font-size:.9em;}
+.trip-view-link{display:inline-block;margin-top:4px;font-size:.8em;color:var(--gold);cursor:pointer;text-decoration:none;}
+.trip-view-link:hover{text-decoration:underline;}
+.trip-big-buttons{display:flex;gap:10px;margin-top:8px;width:100%;}
+.btn-hotel{flex:1;padding:14px 20px;border-radius:50px;font-size:1em;font-weight:700;letter-spacing:.5px;cursor:pointer;border:none;font-family:'Inter',sans-serif;background:linear-gradient(135deg,#FFD700,#DAA520);color:var(--black);box-shadow:0 4px 15px rgba(218,165,32,0.3);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-hotel:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(218,165,32,0.4);}
+.btn-car{flex:1;padding:14px 20px;border-radius:50px;font-size:1em;font-weight:700;letter-spacing:.5px;cursor:pointer;border:none;font-family:'Inter',sans-serif;background:linear-gradient(135deg,#64B5F6,#2196F3);color:var(--white);box-shadow:0 4px 15px rgba(33,150,243,0.3);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-car:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(33,150,243,0.4);}
 
 /* Type colors */
 .type-roadtrip{color:var(--blue);border-color:rgba(100,181,246,.3);background:rgba(100,181,246,.08);}
@@ -217,11 +196,9 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
   .main{padding:30px 20px;}
   .page-header{flex-direction:column;align-items:flex-start;}
   .welcome{font-size:1.6em;}
-  .folders-grid,.trips-grid{grid-template-columns:1fr;}
   .form-row{grid-template-columns:1fr;}
   .controls-bar{flex-direction:column;align-items:stretch;}
   .search-box{width:100%;}
-  .folder-actions{opacity:1;}
 }
 @media(max-width:480px){
   html{font-size:14px;}
@@ -329,347 +306,115 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 <!-- Create/Edit Trip Modal -->
 <div class="modal-overlay" id="trip-modal" onclick="if(event.target===this)closeTripModal()"></div>
 
-<!-- Create/Edit Folder Modal -->
-<div class="modal-overlay" id="folder-modal" onclick="if(event.target===this)closeFolderModal()"></div>
-
-<!-- Share Modal -->
-<div class="modal-overlay" id="share-modal" onclick="if(event.target===this)closeShareModal()"></div>
-
 <!-- View Trip Modal -->
 <div class="modal-overlay" id="view-modal" onclick="if(event.target===this)closeViewModal()"></div>
 
 <script>
 const NAME=sessionStorage.getItem('fs_name')||'User';
 
-
-
 /* ═════════════════════════════════════════
    DATA STORE
    ═════════════════════════════════════════ */
-const DB={folders:'fs_folders',trips:'fs_trips'};
+const DB={trips:'fs_trips'};
 
-function getFolders(){return JSON.parse(localStorage.getItem(DB.folders)||'[]');}
 function getTrips(){return JSON.parse(localStorage.getItem(DB.trips)||'[]');}
-function saveFolders(f){localStorage.setItem(DB.folders,JSON.stringify(f));}
 function saveTrips(t){localStorage.setItem(DB.trips,JSON.stringify(t));}
 
-const FOLDER_COLORS={
-  gold:'#C9A227',blue:'#64B5F6',green:'#4CAF50',red:'#EF5350',
-  purple:'#B829DD',orange:'#FF9800',teal:'#009688',pink:'#E91E63'
-};
-
-// Seed data if empty
+/* ═════════════════════════════════════════
+   SEED DATA — sync tournaments to trips
+   ═════════════════════════════════════════ */
 function seedData(){
-  let folders=getFolders();
-  let trips=getTrips();
-  if(folders.length===0){
-    folders=[
-      {id:'folder-1',name:'Spring 2026',desc:'Spring tournament season',color:'gold',icon:'🌸',public:false,password:'',created:Date.now(),updated:Date.now()},
-      {id:'folder-2',name:'Summer Road Trips',desc:'Long haul summer tours',color:'blue',icon:'☀️',public:true,password:'',created:Date.now(),updated:Date.now()},
-      {id:'folder-3',name:'Fall Baseball',desc:'Baseball tournaments',color:'green',icon:'⚾',public:false,password:'',created:Date.now(),updated:Date.now()}
-    ];
-    saveFolders(folders);
-  }
-  // Sync tournaments from schedule into trips
   var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-  if (tournaments.length > 0) {
-    // Ensure there's a Tournament Tours folder
-    var tourFolder = folders.find(function(f){return f.name==='Tournament Tours';});
-    if (!tourFolder) {
-      tourFolder = {id:'folder-tour',name:'Tournament Tours',desc:'Tournament hotel & car bookings',color:'gold',icon:'🏆',public:false,password:'',created:Date.now(),updated:Date.now()};
-      folders.push(tourFolder);
-      saveFolders(folders);
+  var trips = getTrips();
+  if (tournaments.length === 0 && trips.length === 0) { return; }
+  tournaments.forEach(function(t) {
+    var existing = trips.find(function(tr) { return tr.tourneyId === t.id; });
+    var tripData = {
+      id: 'trip-' + t.id,
+      folderId: 'tournaments',
+      name: t.name,
+      destination: t.location || '',
+      startDate: t.start || '',
+      endDate: t.end || '',
+      desc: t.sport + (t.teams ? ' — ' + t.teams + ' teams' : ''),
+      travelers: 3,
+      budget: 500,
+      type: 'tournament',
+      tags: [t.sport ? t.sport.toLowerCase() : '', 'tournament'].filter(Boolean),
+      notes: t.times || '',
+      tourneyId: t.id,
+      sport: t.sport,
+      teams: t.teams,
+      created: Date.now(),
+      updated: Date.now()
+    };
+    if (!existing) {
+      trips.push(tripData);
+    } else {
+      existing.destination = tripData.destination;
+      existing.startDate = tripData.startDate;
+      existing.endDate = tripData.endDate;
+      existing.desc = tripData.desc;
+      existing.sport = tripData.sport;
+      existing.teams = tripData.teams;
+      existing.notes = tripData.notes;
+      existing.updated = Date.now();
     }
-    // Create or update trips for every tournament in the schedule
-    tournaments.forEach(function(t){
-      var exists = trips.find(function(tr){return tr.name === t.name;});
-      var tripData = {
-        id:'trip-' + t.id,
-        folderId:tourFolder.id,
-        name:t.name,
-        destination:t.location || '',
-        startDate:t.start || '',
-        endDate:t.end || '',
-        desc:t.sport + (t.teams ? ' — ' + t.teams + ' teams' : ''),
-        travelers:3,
-        budget:500,
-        type:'tournament',
-        tags:[t.sport ? t.sport.toLowerCase() : '', 'tournament'].filter(Boolean),
-        notes:t.times || '',
-        tourneyId:t.id,
-        sport:t.sport,
-        teams:t.teams,
-        created:Date.now(),
-        updated:Date.now()
-      };
-      if (!exists) {
-        trips.push(tripData);
-      } else {
-        // Update existing trip data from schedule (desc, dates, teams etc stay current)
-        exists.destination = tripData.destination;
-        exists.startDate = tripData.startDate;
-        exists.endDate = tripData.endDate;
-        exists.desc = tripData.desc;
-        exists.sport = tripData.sport;
-        exists.teams = tripData.teams;
-        exists.notes = tripData.notes;
-        exists.tourneyId = tripData.tourneyId;
-        exists.updated = Date.now();
-      }
-    });
-    saveTrips(trips);
-  } else if(trips.length===0){
-    trips=[
-      {id:'trip-1',folderId:'folder-1',name:'Lafayette Tournament',destination:'Lafayette, LA',startDate:'2026-05-15',endDate:'2026-05-17',desc:'Weekend soccer tournament with crew',travelers:3,budget:500,type:'tournament',tags:['soccer','louisiana'],notes:'Hotel booked. Need car rental.',created:Date.now(),updated:Date.now()},
-      {id:'trip-2',folderId:'folder-2',name:'Texas Road Trip',destination:'Dallas, TX',startDate:'2026-06-10',endDate:'2026-06-14',desc:'Multi-city tour hitting Dallas and Houston',travelers:4,budget:1200,type:'roadtrip',tags:['texas','long-haul'],notes:'',created:Date.now(),updated:Date.now()},
-      {id:'trip-3',folderId:'folder-3',name:'Boilingbrook Classic',destination:'Chicago, IL',startDate:'2026-09-05',endDate:'2026-09-07',desc:'Labor Day baseball tournament',travelers:2,budget:800,type:'tournament',tags:['baseball','illinois'],notes:'',created:Date.now(),updated:Date.now()}
-    ];
-    saveTrips(trips);
-  }
+  });
+  saveTrips(trips);
 }
 
 /* ═════════════════════════════════════════
-   STATE
+   RENDER: MAIN VIEW
    ═════════════════════════════════════════ */
-let currentFolderId=null;
-let searchQuery='';
-let filterType='all';
-let viewMode='grid';
-
-/* ═════════════════════════════════════════
-   RENDER: FOLDER LIST
-   ═════════════════════════════════════════ */
-function renderFolderList(){
-  const folders=getFolders().sort((a,b)=>b.updated-a.updated);
-  const trips=getTrips();
-  const app=document.getElementById('app');
-
-  let html=`
-    <div class="page-header">
-      <div>
-        <div class="welcome">Trip Maker</div>
-        <div class="subtitle">${folders.length} folder${folders.length!==1?'s':''} • ${trips.length} trip${trips.length!==1?'s':''}</div>
-      </div>
-    </div>
-    <div class="controls-bar">
-      <input type="text" class="search-box" placeholder="Search folders..." value="${searchQuery}" oninput="searchQuery=this.value;renderFolderList();">
-      <button class="btn btn-primary" onclick="openFolderModal()">+ New Folder</button>
-    </div>
-  `;
-
-  let displayFolders=folders;
-  if(searchQuery){
-    const q=searchQuery.toLowerCase();
-    displayFolders=folders.filter(f=>f.name.toLowerCase().includes(q)||(f.desc||'').toLowerCase().includes(q));
-  }
-
-  if(displayFolders.length===0){
-    html+=`
-      <div class="empty-state">
-        <div class="empty-state-icon">📁</div>
-        <h3>${searchQuery?'No folders match your search':'No folders yet'}</h3>
-        <p>${searchQuery?'Try a different search term':'Create your first folder to start organizing trips'}</p>
-      </div>
-    `;
-    app.innerHTML=html;
+function renderMainView() {
+  var trips = getTrips().filter(function(t) { return t.folderId === 'tournaments'; });
+  var app = document.getElementById('app');
+  
+  var html = '<div class="page-header">' +
+    '<div><div class="welcome">Trip Maker</div>' +
+    '<div class="subtitle">' + trips.length + ' tournament' + (trips.length !== 1 ? 's' : '') + ' — book hotels & cars for each</div></div>' +
+    '</div>';
+  
+  if (trips.length === 0) {
+    html += '<div class="empty-state"><div class="empty-state-icon">🏟️</div><h3>No tournaments yet</h3><p>Add tournaments in the <strong>Schedules</strong> tab first.</p></div>';
+    app.innerHTML = html;
     return;
   }
-
-  html+=`<div class="folders-grid">`;
-  html+=displayFolders.map(folder=>{
-    const folderTrips=trips.filter(t=>t.folderId===folder.id);
-    const color=FOLDER_COLORS[folder.color]||FOLDER_COLORS.gold;
-    const shareBadge=folder.public
-      ?`<span class="share-badge share-public">🌐 Public</span>`
-      :`<span class="share-badge share-private">🔒 Private</span>`;
-
-    return`
-      <div class="folder-card" 
-           onclick="openFolder('${folder.id}')"
-           ondragover="event.preventDefault();this.classList.add('drag-over')"
-           ondragleave="this.classList.remove('drag-over')"
-           ondrop="handleDrop(event,'${folder.id}')"
-           style="--folder-color:${color}">
-        <div class="folder-color-bar" style="background:${color}"></div>
-        <div class="folder-header">
-          <div class="folder-icon" style="border-color:${color}33">${folder.icon||'📁'}</div>
-          <div style="flex:1;min-width:0;">
-            <div class="folder-title" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">${folder.name}${shareBadge}</div>
-            <div class="folder-meta">${folder.desc||'No description'}</div>
-          </div>
-        </div>
-        <div class="folder-stats">
-          <div class="folder-stat">
-            <div class="folder-stat-value">${folderTrips.length}</div>
-            <div class="folder-stat-label">Trips</div>
-          </div>
-          <div class="folder-stat">
-            <div class="folder-stat-value">${formatDate(folder.updated)}</div>
-            <div class="folder-stat-label">Updated</div>
-          </div>
-        </div>
-        <div class="folder-actions" onclick="event.stopPropagation()">
-          <button class="btn-icon" onclick="openShareModal('${folder.id}')" title="Share">🔗</button>
-          <button class="btn-icon" onclick="openFolderModal('${folder.id}')" title="Edit">✏️</button>
-          <button class="btn-icon" onclick="deleteFolder('${folder.id}')" title="Delete">🗑️</button>
-        </div>
-      </div>
-    `;
-  }).join('');
-  html+=`</div>`;
-
-  app.innerHTML=html;
-}
-
-/* ═════════════════════════════════════════
-   RENDER: FOLDER VIEW (TRIPS INSIDE)
-   ═════════════════════════════════════════ */
-function renderFolderView(folderId){
-  const folder=getFolders().find(f=>f.id===folderId);
-  if(!folder){currentFolderId=null;renderFolderList();return;}
-  currentFolderId=folderId;
-
-  const allTrips=getTrips();
-  let folderTrips=allTrips.filter(t=>t.folderId===folderId).sort((a,b)=>b.updated-a.updated);
-
-  // Apply filters
-  if(searchQuery){
-    const q=searchQuery.toLowerCase();
-    folderTrips=folderTrips.filter(t=>t.name.toLowerCase().includes(q)||t.destination.toLowerCase().includes(q)||(t.tags||[]).some(tag=>tag.toLowerCase().includes(q)));
-  }
-  if(filterType!=='all'){
-    folderTrips=folderTrips.filter(t=>t.type===filterType);
-  }
-
-  const app=document.getElementById('app');
-
-  let html=`
-    <div class="breadcrumb">
-      <a href="#" onclick="currentFolderId=null;renderFolderList();return false;">Trip Maker</a>
-      <span class="breadcrumb-sep">›</span>
-      <span style="color:var(--white);">${folder.name}</span>
-    </div>
-    <div class="page-header">
-      <div>
-        <div class="welcome">${folder.icon||'📁'} ${folder.name}</div>
-        <div class="subtitle">${folder.desc||''} • ${folderTrips.length} trip${folderTrips.length!==1?'s':''}</div>
-      </div>
-    </div>
-    <div class="controls-bar">
-      <button class="btn btn-primary" onclick="openTripModal()">+ Create New Trip</button>
-      <input type="text" class="search-box" style="flex:0 1 300px;" placeholder="Search trips..." value="${searchQuery}" oninput="searchQuery=this.value;renderFolderView('${folderId}');">
-      <select class="filter-select" onchange="filterType=this.value;renderFolderView('${folderId}');">
-        <option value="all" ${filterType==='all'?'selected':''}>All Types</option>
-        <option value="roadtrip" ${filterType==='roadtrip'?'selected':''}>Road Trip</option>
-        <option value="family" ${filterType==='family'?'selected':''}>Family</option>
-        <option value="business" ${filterType==='business'?'selected':''}>Business</option>
-        <option value="adventure" ${filterType==='adventure'?'selected':''}>Adventure</option>
-        <option value="tournament" ${filterType==='tournament'?'selected':''}>Tournament</option>
-      </select>
-      <div class="view-toggle">
-        <button class="${viewMode==='grid'?'active':''}" onclick="viewMode='grid';renderFolderView('${folderId}');">⊞ Grid</button>
-        <button class="${viewMode==='list'?'active':''}" onclick="viewMode='list';renderFolderView('${folderId}');">☰ List</button>
-      </div>
-      <button class="btn btn-secondary btn-sm" onclick="openShareModal('${folder.id}')">🔗 Share</button>
-      <button class="btn btn-secondary btn-sm" onclick="openFolderModal('${folder.id}')">✏️ Edit Folder</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteFolder('${folder.id}')">🗑️ Delete</button>
-    </div>
-  `;
-
-  if(folderTrips.length===0){
-    html+=`
-      <div class="empty-state">
-        <div class="empty-state-icon">✈️</div>
-        <h3>${searchQuery||filterType!=='all'?'No matching trips':'No trips in this folder yet'}</h3>
-        <p>${searchQuery||filterType!=='all'?'Adjust your search or filters':'Click "Create New Trip" to add your first trip'}</p>
-      </div>
-    `;
-    app.innerHTML=html;
-    return;
-  }
-
-  if(viewMode==='grid'){
-    html+=`<div class="trips-grid">`;
-    html+=folderTrips.map(trip=>renderTripCard(trip)).join('');
-    html+=`</div>`;
-  }else{
-    html+=`<div style="display:flex;flex-direction:column;gap:12px;">`;
-    html+=folderTrips.map(trip=>renderTripListItem(trip)).join('');
-    html+=`</div>`;
-  }
-
-  app.innerHTML=html;
-}
-
-function renderTripCard(trip){
-  const typeClass='type-'+(trip.type||'other');
-  const typeLabel=(trip.type||'other').charAt(0).toUpperCase()+(trip.type||'other').slice(1);
-  const days=countDays(trip.startDate,trip.endDate);
-  const tags=(trip.tags||[]).map(tag=>`<span class="trip-tag">#${tag}</span>`).join('');
-
-  return`
-    <div class="trip-card" draggable="true" ondragstart="handleDragStart(event,'${trip.id}')" ondragend="handleDragEnd(event)">
-      <div class="trip-card-header">
-        <div class="trip-card-title">${trip.name}</div>
-        <span class="trip-card-type ${typeClass}">${typeLabel}</span>
-      </div>
-      <div class="trip-meta">
-        <span class="trip-tag">📍 ${trip.destination}</span>
-        <span class="trip-tag">📅 ${formatDateShort(trip.startDate)}${days>1?' - '+formatDateShort(trip.endDate):''}</span>
-        <span class="trip-tag">👥 ${trip.travelers||1}</span>
-        ${days>0?`<span class="trip-tag">🕐 ${days} day${days!==1?'s':''}</span>`:''}
-      </div>
-      <div class="accommodation-badges" style="display:flex;gap:4px;margin-top:4px;">
-        ${trip.hotelName ? '<span class="trip-tag" style="color:var(--green);">🏨 ✅</span>' : '<span class="trip-tag" style="color:var(--gray-dark);">🏨 ❌</span>'}
-        ${trip.carName ? '<span class="trip-tag" style="color:var(--green);">🚗 ✅</span>' : '<span class="trip-tag" style="color:var(--gray-dark);">🚗 ❌</span>'}
-      </div>
-      ${trip.desc?`<div class="trip-desc">${trip.desc}</div>`:''}
-      ${tags?`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">${tags}</div>`:''}
-      <div class="trip-footer">
-        <div>
-          <div class="trip-budget">$${trip.budget||0}</div>
-          <div class="budget-bar"><div class="budget-bar-fill" style="width:${Math.min((trip.budget||0)/2000*100,100)}%;background:linear-gradient(90deg,var(--gold),var(--gold-light));"></div></div>
-        </div>
-        <div class="trip-actions" onclick="event.stopPropagation()">
-          <button class="btn-icon" onclick="viewTrip('${trip.id}')" title="View">👁️</button>
-          <button class="btn-icon" onclick="openTripModal('${trip.id}')" title="Edit">✏️</button>
-          <button class="btn-icon" onclick="deleteTrip('${trip.id}')" title="Delete">🗑️</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderTripListItem(trip){
-  const typeClass='type-'+(trip.type||'other');
-  const typeLabel=(trip.type||'other').charAt(0).toUpperCase()+(trip.type||'other').slice(1);
-  const days=countDays(trip.startDate,trip.endDate);
-
-  return`
-    <div class="trip-card" style="display:flex;align-items:center;gap:16px;padding:16px 22px;" draggable="true" ondragstart="handleDragStart(event,'${trip.id}')" ondragend="handleDragEnd(event)" onclick="viewTrip('${trip.id}')">
-      <div style="font-size:1.5em;">✈️</div>
-      <div style="flex:1;min-width:0;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
-          <span style="font-family:Cinzel,serif;color:var(--white);font-size:.95em;">${trip.name}</span>
-          <span class="trip-card-type ${typeClass}" style="font-size:.65em;">${typeLabel}</span>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:.8em;color:var(--gray);">
-          <span>📍 ${trip.destination}</span>
-          <span>📅 ${formatDateShort(trip.startDate)}${days>1?' - '+formatDateShort(trip.endDate):''}</span>
-          <span>👥 ${trip.travelers||1}</span>
-          <span>💰 $${trip.budget||0}</span>
-        </div>
-        <div class="accommodation-badges" style="display:flex;gap:4px;margin-top:4px;">
-          ${trip.hotelName ? '<span class="trip-tag" style="color:var(--green);">🏨 ✅</span>' : '<span class="trip-tag" style="color:var(--gray-dark);">🏨 ❌</span>'}
-          ${trip.carName ? '<span class="trip-tag" style="color:var(--green);">🚗 ✅</span>' : '<span class="trip-tag" style="color:var(--gray-dark);">🚗 ❌</span>'}
-        </div>
-      </div>
-      <div class="trip-actions" onclick="event.stopPropagation()">
-        <button class="btn-icon" onclick="openTripModal('${trip.id}')" title="Edit">✏️</button>
-        <button class="btn-icon" onclick="deleteTrip('${trip.id}')" title="Delete">🗑️</button>
-      </div>
-    </div>
-  `;
+  
+  html += '<div class="tournament-strip">';
+  trips.forEach(function(trip) {
+    var sportIcon = trip.sport === 'Soccer' ? '⚽' : trip.sport === 'Baseball' ? '⚾' : '🏟️';
+    var dates = (trip.startDate || '') + (trip.endDate ? ' — ' + trip.endDate : '');
+    var hotelStatus = trip.hotelName ? '<span style="color:var(--green);font-size:0.8em;">✅ ' + trip.hotelName + ' $' + (trip.hotelPrice || 0) + '/night</span>' : '<span style="color:var(--red);font-size:0.8em;">❌ Not Booked</span>';
+    var carStatus = trip.carName ? '<span style="color:var(--green);font-size:0.8em;">✅ ' + trip.carName + ' $' + (trip.carPrice || 0) + '/day</span>' : '<span style="color:var(--red);font-size:0.8em;">❌ Not Booked</span>';
+    
+    html += '<div class="trip-card" onclick="viewTrip(\'' + trip.id + '\')">' +
+      '<div class="trip-card-header">' +
+        '<div class="trip-card-title">' + sportIcon + ' ' + trip.name + '</div>' +
+        '<span class="trip-card-date">' + dates + '</span>' +
+      '</div>' +
+      '<div class="trip-meta">' +
+        (trip.destination ? '<span>📍 ' + trip.destination + '</span>' : '') +
+        '<span>👥 ' + (trip.teams || '—') + ' teams</span>' +
+      '</div>' +
+      '<div class="trip-booking-status">' +
+        '<div style="display:flex;gap:16px;align-items:center;">' +
+          '<span>🏨</span>' + hotelStatus +
+        '</div>' +
+        '<div style="display:flex;gap:16px;align-items:center;">' +
+          '<span>🚗</span>' + carStatus +
+        '</div>' +
+      '</div>' +
+      '<div class="trip-view-link" onclick="event.stopPropagation();viewTrip(\'' + trip.id + '\')">📅 View & Book &gt;&gt;</div>' +
+      '<div class="trip-big-buttons" onclick="event.stopPropagation()">' +
+        '<button class="btn btn-hotel" onclick="window._bookTab=\'hotel\';viewTrip(\'' + trip.id + '\')">🏨 BOOK HOTEL</button>' +
+        '<button class="btn btn-car" onclick="window._bookTab=\'car\';viewTrip(\'' + trip.id + '\')">🚗 BOOK CAR</button>' +
+      '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  app.innerHTML = html;
 }
 
 /* ═════════════════════════════════════════
@@ -838,7 +583,7 @@ function saveTrip(){
 
   const trip={
     id:editingTripId||'trip-'+Date.now(),
-    folderId:currentFolderId||'folder-1',
+    folderId:'tournaments',
     name,destination:dest,
     startDate:start,endDate:end,
     type:document.getElementById('t-type').value,
@@ -864,10 +609,9 @@ function saveTrip(){
     trips.push(trip);
   }
   saveTrips(trips);
-  updateFolderTimestamp(trip.folderId);
   closeTripModal();
   showToast(editingTripId?'Trip updated!':'Trip created!');
-  if(currentFolderId)renderFolderView(currentFolderId);else renderFolderList();
+  renderMainView();
 }
 
 // Checklist functions (used by inline onclick in trip modal)
@@ -930,183 +674,12 @@ function deleteTrip(id){
   const trips=getTrips().filter(t=>t.id!==id);
   saveTrips(trips);
   showToast('Trip deleted');
-  if(currentFolderId)renderFolderView(currentFolderId);else renderFolderList();
+  renderMainView();
 }
 
 function deleteCurrentTrip(){
   if(editingTripId)deleteTrip(editingTripId);
   closeTripModal();
-}
-
-// Folder Modal
-let editingFolderId=null;
-
-function openFolderModal(folderId){
-  editingFolderId=folderId||null;
-  const modal=document.getElementById('folder-modal');
-  let folder={color:'gold',icon:'📁',public:false};
-  if(folderId){folder=getFolders().find(f=>f.id===folderId)||folder;}
-
-  const colorOptions=Object.entries(FOLDER_COLORS).map(([key,color])=>`
-    <div class="color-option ${folder.color===key?'active':''}" style="background:${color}" data-color="${key}" onclick="selectFolderColor(this)"></div>
-  `).join('');
-
-  modal.innerHTML=`
-    <div class="modal">
-      <button class="modal-close" onclick="closeFolderModal()">&times;</button>
-      <h2>${folderId?'Edit Folder':'New Folder'}</h2>
-      <div class="form-group">
-        <label>Folder Name *</label>
-        <input type="text" id="f-name" placeholder="e.g., Spring 2026" value="${folder.name||''}">
-      </div>
-      <div class="form-group">
-        <label>Icon</label>
-        <input type="text" id="f-icon" placeholder="Emoji icon e.g. 📁" value="${folder.icon||'📁'}">
-      </div>
-      <div class="form-group">
-        <label>Color</label>
-        <div class="color-picker">${colorOptions}</div>
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="f-desc" placeholder="What's this folder for?">${folder.desc||''}</textarea>
-      </div>
-      <div class="form-group">
-        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
-          <input type="checkbox" id="f-public" ${folder.public?'checked':''}>
-          <span>Make this folder public (shareable)</span>
-        </label>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="saveFolder()">${folderId?'Update Folder':'Create Folder'}</button>
-        <button class="btn btn-secondary" onclick="closeFolderModal()">Cancel</button>
-        ${folderId?'<button class="btn btn-danger" style="margin-left:auto;" onclick="deleteCurrentFolder()">Delete Folder</button>':''}
-      </div>
-    </div>
-  `;
-  modal.classList.add('active');
-}
-
-function closeFolderModal(){document.getElementById('folder-modal').classList.remove('active');editingFolderId=null;}
-
-let selectedFolderColor='gold';
-function selectFolderColor(el){
-  document.querySelectorAll('.color-option').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  selectedFolderColor=el.dataset.color;
-}
-
-function saveFolder(){
-  const name=document.getElementById('f-name').value.trim();
-  if(!name){showToast('Folder name is required');return;}
-
-  const folder={
-    id:editingFolderId||'folder-'+Date.now(),
-    name,
-    icon:document.getElementById('f-icon').value||'📁',
-    color:selectedFolderColor,
-    desc:document.getElementById('f-desc').value,
-    public:document.getElementById('f-public').checked,
-    password:'',
-    created:editingFolderId?(getFolders().find(f=>f.id===editingFolderId)?.created||Date.now()):Date.now(),
-    updated:Date.now()
-  };
-
-  const folders=getFolders();
-  if(editingFolderId){
-    const idx=folders.findIndex(f=>f.id===editingFolderId);
-    if(idx>=0){folder.public=folders[idx].public;folder.password=folders[idx].password||'';folders[idx]=folder;}
-  }else{
-    folders.push(folder);
-  }
-  saveFolders(folders);
-  closeFolderModal();
-  showToast(editingFolderId?'Folder updated!':'Folder created!');
-  renderFolderList();
-}
-
-function deleteFolder(id){
-  if(!confirm('Delete this folder? All trips inside will also be deleted.'))return;
-  const trips=getTrips().filter(t=>t.folderId!==id);
-  saveTrips(trips);
-  const folders=getFolders().filter(f=>f.id!==id);
-  saveFolders(folders);
-  showToast('Folder deleted');
-  if(currentFolderId===id){currentFolderId=null;renderFolderList();}else renderFolderList();
-}
-
-function deleteCurrentFolder(){
-  if(editingFolderId)deleteFolder(editingFolderId);
-  closeFolderModal();
-}
-
-// Share Modal
-function openShareModal(folderId){
-  const folder=getFolders().find(f=>f.id===folderId);
-  if(!folder)return;
-  const modal=document.getElementById('share-modal');
-  const shareUrl=`https://futurestarsla.com/shared-folder.html?f=${btoa(folderId).replace(/=/g,'')}`;
-
-  modal.innerHTML=`
-    <div class="modal">
-      <button class="modal-close" onclick="closeShareModal()">&times;</button>
-      <h2>🔗 Share "${folder.name}"</h2>
-      <div class="form-group">
-        <label>Share Link</label>
-        <div class="share-url">
-          <input type="text" value="${shareUrl}" readonly id="share-url-input">
-          <button class="btn btn-primary btn-sm" onclick="copyShareUrl()">Copy</button>
-        </div>
-      </div>
-      <div class="share-options">
-        <label>
-          <input type="checkbox" id="share-public-toggle" ${folder.public?'checked':''} onchange="togglePublic('${folderId}',this.checked)">
-          <span>Anyone with link can view</span>
-        </label>
-        <label>
-          <input type="checkbox" id="share-password-toggle" ${folder.password?'checked':''} onchange="togglePassword('${folderId}',this.checked)">
-          <span>Password protect</span>
-        </label>
-        <div id="password-field" style="display:${folder.password?'block':'none'};margin-top:10px;">
-          <input type="text" id="share-password" placeholder="Enter password" value="${folder.password||''}" style="width:100%;padding:10px;background:var(--black-light);border:1px solid var(--border);border-radius:8px;color:var(--white);">
-          <button class="btn btn-primary btn-sm" style="margin-top:8px;" onclick="setPassword('${folderId}')">Set Password</button>
-        </div>
-      </div>
-      <button class="btn btn-secondary" onclick="closeShareModal()">Done</button>
-    </div>
-  `;
-  modal.classList.add('active');
-}
-
-function closeShareModal(){document.getElementById('share-modal').classList.remove('active');}
-
-function copyShareUrl(){
-  const input=document.getElementById('share-url-input');
-  input.select();
-  document.execCommand('copy');
-  showToast('Link copied to clipboard!');
-}
-
-function togglePublic(folderId,isPublic){
-  const folders=getFolders();
-  const f=folders.find(x=>x.id===folderId);
-  if(f){f.public=isPublic;f.updated=Date.now();saveFolders(folders);showToast(isPublic?'Folder is now public':'Folder is now private');}
-}
-
-function togglePassword(folderId,hasPassword){
-  document.getElementById('password-field').style.display=hasPassword?'block':'none';
-  if(!hasPassword){
-    const folders=getFolders();
-    const f=folders.find(x=>x.id===folderId);
-    if(f){f.password='';f.updated=Date.now();saveFolders(folders);showToast('Password removed');}
-  }
-}
-
-function setPassword(folderId){
-  const pwd=document.getElementById('share-password').value.trim();
-  const folders=getFolders();
-  const f=folders.find(x=>x.id===folderId);
-  if(f){f.password=pwd;f.updated=Date.now();saveFolders(folders);showToast('Password set');}
 }
 
 // View Trip Detail
@@ -1283,7 +856,6 @@ function viewTrip(tripId){
   planSelectedCar = null;
   planCurrentCity = '';
 
-  const folder=getFolders().find(f=>f.id===trip.folderId);
   const days=countDays(trip.startDate,trip.endDate);
   const modal=document.getElementById('view-modal');
 
@@ -1296,7 +868,7 @@ function viewTrip(tripId){
         <div class="detail-header">
           <div>
             <div class="detail-title">${trip.name}</div>
-            <div class="detail-subtitle">${folder?folder.name:'No folder'} • ${trip.destination}</div>
+            <div class="detail-subtitle">Tournaments • ${trip.destination}</div>
           </div>
           <div style="text-align:right;">
             <div style="color:${typeColors[trip.type]||'var(--gray)'};font-size:.85em;text-transform:uppercase;letter-spacing:2px;">${trip.type||'Other'}</div>
@@ -1471,33 +1043,22 @@ function viewTrip(tripId){
   modal.classList.add('active');
   // Auto-search hotels and cars based on trip destination
   planFindOptions();
+  // Scroll to hotel/car section if triggered by big buttons
+  if (window._bookTab === 'hotel') {
+    setTimeout(function() {
+      var el = document.querySelector('.plan-finder-section');
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 500);
+  } else if (window._bookTab === 'car') {
+    setTimeout(function() {
+      var el = document.getElementById('plan-car-section');
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 500);
+  }
+  window._bookTab = null;
 }
 
 function closeViewModal(){document.getElementById('view-modal').classList.remove('active');}
-
-/* ═════════════════════════════════════════
-   DRAG & DROP
-   ═════════════════════════════════════════ */
-let draggedTripId=null;
-
-function handleDragStart(e,tripId){draggedTripId=tripId;e.dataTransfer.effectAllowed='move';e.target.classList.add('dragging');}
-function handleDragEnd(e){e.target.classList.remove('dragging');draggedTripId=null;}
-function handleDrop(e,folderId){
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
-  if(!draggedTripId)return;
-  const trips=getTrips();
-  const trip=trips.find(t=>t.id===draggedTripId);
-  if(trip&&trip.folderId!==folderId){
-    trip.folderId=folderId;
-    trip.updated=Date.now();
-    saveTrips(trips);
-    updateFolderTimestamp(folderId);
-    updateFolderTimestamp(trip.folderId);
-    showToast('Trip moved to folder');
-    renderFolderList();
-  }
-}
 
 /* ═════════════════════════════════════════
    UTILITIES
@@ -1519,15 +1080,9 @@ function countDays(start,end){
   const diff=Math.ceil((e-s)/(1000*60*60*24));
   return diff>0?diff+1:0;
 }
-function updateFolderTimestamp(folderId){
-  const folders=getFolders();
-  const f=folders.find(x=>x.id===folderId);
-  if(f){f.updated=Date.now();saveFolders(folders);}
-}
 function printTripSummary(tripId){
   const trip=getTrips().find(t=>t.id===tripId);
   if(!trip)return;
-  const folder=getFolders().find(f=>f.id===trip.folderId);
   const days=countDays(trip.startDate,trip.endDate);
   const night=trip.hotelRate||0;
   const car=trip.carRate||0;
@@ -1566,7 +1121,7 @@ function printTripSummary(tripId){
     '.bcard .ad{font-size:.8em;color:#888;}' +
     '@media print{body{padding:20px;}}</style></head><body>' +
     '<div class="pheader"><h1>' + trip.name + '</h1>' +
-    '<p>' + (folder?folder.name+' &bull; ':'') + trip.destination + '</p></div>' +
+    '<p>' + trip.destination + '</p></div>' +
     '<section><h2>Trip Info</h2>' +
     '<div class="row"><span class="lbl">Dates</span><span class="val">' + formatDate(trip.startDate) + ' &mdash; ' + formatDate(trip.endDate) + ' (' + days + ' day' + (days!==1?'s':'') + ')</span></div>' +
     '<div class="row"><span class="lbl">Travelers</span><span class="val">' + (trip.travelers||1) + ' people</span></div>' +
@@ -1611,7 +1166,7 @@ function logout(){localStorage.clear();sessionStorage.clear();window.location.hr
    ═════════════════════════════════════════ */
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    closeTripModal();closeFolderModal();closeShareModal();closeViewModal();
+    closeTripModal();closeViewModal();
   }
 });
 
@@ -1619,23 +1174,22 @@ document.addEventListener('keydown',e=>{
    INIT
    ═════════════════════════════════════════ */
 seedData();
+renderMainView();
 
 // Live update: re-render when schedule data changes
 window.addEventListener('storage', function(e) {
-  if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trip_statuses') {
+  if (e.key === 'fs_tourney_schedule') {
     seedData();
-    if (currentFolderId) renderFolderView(currentFolderId);
-    else renderFolderList();
+    renderMainView();
   }
 });
-var _pjLastHash = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
+var _pjLast = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
 setInterval(function() {
   var now = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
-  if (now !== _pjLastHash) {
-    _pjLastHash = now;
+  if (now !== _pjLast) {
+    _pjLast = now;
     seedData();
-    if (currentFolderId) renderFolderView(currentFolderId);
-    else renderFolderList();
+    renderMainView();
   }
 }, 4000);
 
@@ -1643,20 +1197,10 @@ setInterval(function() {
 var urlParams = new URLSearchParams(window.location.search);
 var tourParam = urlParams.get('tournament');
 if (tourParam) {
-  var trips = getTrips();
-  var found = trips.find(function(t){return t.name === tourParam;});
+  var found = getTrips().find(function(t) { return t.name === tourParam; });
   if (found) {
-    var folders = getFolders();
-    var f = folders.find(function(f){return f.id === found.folderId;});
-    if (f) {
-      currentFolderId = f.id;
-      renderFolderView(f.id);
-      // Auto-open the trip view modal with hotel/car finder
-      setTimeout(function(){ viewTrip(found.id); }, 300);
-    }
+    setTimeout(function() { viewTrip(found.id); }, 300);
   }
-} else {
-  renderFolderList();
 }
 
 // Particles & Progress Bar
