@@ -20,9 +20,9 @@
     const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
 
     const ROLE_PAGES = (typeof AUTH_CONFIG !== 'undefined') ? AUTH_CONFIG.roles : {
-        owner: ['index', 'tournament-scraper', 'inventory-v2', 'trips', 'team', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'departments', 'privacy', 'contact'],
-        logistics: ['index', 'tournament-scraper', 'trips', 'team', 'pj-planner', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
-        tournament: ['index', 'tournament-scraper', 'trips', 'team', 'inventory-v2', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'trip-plans', 'privacy', 'contact'],
+        owner: ['index', 'tournament-scraper', 'inventory-v2', 'trips', 'team', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'departments', 'privacy', 'contact'],
+        logistics: ['index', 'tournament-scraper', 'trips', 'team', 'pj-planner', 'trip-tracker', 'privacy', 'contact'],
+        tournament: ['index', 'tournament-scraper', 'trips', 'team', 'inventory-v2', 'pack-manager', 'pj-planner', 'sortly-upload', 'trip-tracker', 'privacy', 'contact'],
         inventory: ['index', 'inventory-v2', 'sortly-upload', 'pack-manager', 'team', 'trip-tracker', 'privacy', 'contact']
     };
 
@@ -36,7 +36,7 @@
         { page: 'pj-planner', label: 'PJ Trip Maker', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trip-tracker', label: 'Trip Tracker', icon: '📍', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-        { page: 'trip-plans', label: 'Trip Plans', icon: '🗺️', roles: ['owner', 'logistics', 'tournament'] },
+        { page: label: 'Trip Plans', icon: '🗺️', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'departments', label: 'Departments', icon: '🏢', roles: ['owner'] },
         { divider: true },
         { page: 'privacy', label: 'Privacy', icon: '🔒', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
@@ -73,7 +73,7 @@
             {
                 tab: 'Planning',
                 icon: '🗺️',
-                children: ['pack-manager', 'pj-planner', 'trip-plans', 'trip-tracker']
+                children: ['pack-manager', 'pj-planner', 'trip-tracker']
             },
             {
                 tab: 'Tools',
