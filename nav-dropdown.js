@@ -36,7 +36,7 @@
         { page: 'pj-planner', label: 'PJ Trip Maker', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trip-tracker', label: 'Trip Tracker', icon: '📍', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
-        { page: label: 'Trip Plans', icon: '🗺️', roles: ['owner', 'logistics', 'tournament'] },
+
         { page: 'departments', label: 'Departments', icon: '🏢', roles: ['owner'] },
         { divider: true },
         { page: 'privacy', label: 'Privacy', icon: '🔒', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
