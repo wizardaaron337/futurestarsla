@@ -86,6 +86,25 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 /* Tournament Trip Cards */
 .tournament-strip{display:flex;flex-direction:column;gap:12px;}
 .trip-card{background:var(--black-card);border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .3s;position:relative;cursor:pointer;}
+.section-label{font-family:'Cinzel',serif;font-size:1em;color:var(--gold);padding:12px 0 6px;display:flex;align-items:center;gap:8px;}
+.section-label:not(:first-child){border-top:1px solid var(--border);margin-top:12px;padding-top:16px;}
+.badge-sm{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:11px;font-size:.72em;font-weight:700;padding:0 6px;}
+.badge-red{background:rgba(244,67,54,0.15);color:#f44336;}
+.badge-green{background:rgba(76,175,80,0.15);color:#4caf50;}
+.tournament-strip{display:flex;flex-direction:column;gap:8px;}
+.tourney-mini{background:var(--black-card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;transition:all .2s;cursor:pointer;}
+.tourney-mini:hover{border-color:var(--gold-dark);}
+.tm-header{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.tm-title{font-family:'Cinzel',serif;font-size:.88em;color:var(--white);}
+.tm-date{font-size:.72em;color:var(--gray-dark);white-space:nowrap;}
+.tm-meta{font-size:.78em;color:var(--gray);margin:3px 0;}
+.tm-status{font-size:.78em;color:var(--gray);margin:3px 0;display:flex;align-items:center;gap:4px;}
+.tm-actions{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.btn-tm{font-size:.75em;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:var(--black-light);color:var(--white);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.btn-tm:hover{background:var(--black-hover);}
+.btn-tm-view{background:rgba(100,181,246,0.1);color:var(--blue);border-color:rgba(100,181,246,0.2);}
+.btn-tm-hotel{background:linear-gradient(135deg,rgba(255,193,7,0.15),rgba(255,152,0,0.15));color:var(--gold);border-color:rgba(255,193,7,0.2);}
+.btn-tm-car{background:linear-gradient(135deg,rgba(33,150,243,0.15),rgba(3,169,244,0.15));color:var(--blue);border-color:rgba(33,150,243,0.2);}
 .trip-card:hover{border-color:var(--gold-dark);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
 .trip-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:10px;}
 .trip-card-title{font-family:'Cinzel',serif;font-size:1.05em;color:var(--white);letter-spacing:1px;line-height:1.3;flex:1;}
@@ -377,7 +396,6 @@ function seedData(){
    RENDER: MAIN VIEW
    ═════════════════════════════════════════ */
 function renderMainView() {
-  // Read straight from fs_tourney_schedule — no fs_trips dependency
   var tournaments = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
   if (tournaments.length === 0) {
     seedData();
@@ -395,43 +413,51 @@ function renderMainView() {
     app.innerHTML = html;
     return;
   }
-  
-  html += '<div class="tournament-strip">';
+
+  // Split into Need Booking (unbooked) and Booked
+  var needBooking = [];
+  var booked = [];
+  var pjTrips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
   tournaments.forEach(function(t) {
-    // Merge in hotel/car data from fs_trips if available
-    var pjTrips = JSON.parse(localStorage.getItem('fs_trips') || '[]');
     var pjMatch = pjTrips.find(function(p) { return p.name === t.name || p.tourneyId === t.id; });
-    var trip = pjMatch || t;
-    var sportIcon = trip.sport === 'Soccer' ? '⚽' : trip.sport === 'Baseball' ? '⚾' : '🏟️';
-    var dates = (trip.startDate || '') + (trip.endDate ? ' — ' + trip.endDate : '');
-    var hotelStatus = trip.hotelName ? '<span style="color:var(--green);font-size:0.8em;">✅ ' + trip.hotelName + ' $' + (trip.hotelPrice || 0) + '/night</span>' : '<span style="color:var(--red);font-size:0.8em;">❌ Not Booked</span>';
-    var carStatus = trip.carName ? '<span style="color:var(--green);font-size:0.8em;">✅ ' + trip.carName + ' $' + (trip.carPrice || 0) + '/day</span>' : '<span style="color:var(--red);font-size:0.8em;">❌ Not Booked</span>';
-    
-    html += '<div class="trip-card" onclick="viewTrip(\'' + trip.id + '\')">' +
-      '<div class="trip-card-header">' +
-        '<div class="trip-card-title">' + sportIcon + ' ' + trip.name + '</div>' +
-        '<span class="trip-card-date">' + dates + '</span>' +
-      '</div>' +
-      '<div class="trip-meta">' +
-        (trip.destination ? '<span>📍 ' + trip.destination + '</span>' : '') +
-        '<span>👥 ' + (trip.teams || '—') + ' teams</span>' +
-      '</div>' +
-      '<div class="trip-booking-status">' +
-        '<div style="display:flex;gap:16px;align-items:center;">' +
-          '<span>🏨</span>' + hotelStatus +
-        '</div>' +
-        '<div style="display:flex;gap:16px;align-items:center;">' +
-          '<span>🚗</span>' + carStatus +
-        '</div>' +
-      '</div>' +
-      '<div class="trip-view-link" onclick="event.stopPropagation();viewTrip(\'' + trip.id + '\')">📅 View & Book &gt;&gt;</div>' +
-      '<div class="trip-big-buttons" onclick="event.stopPropagation()">' +
-        '<button class="btn btn-hotel" onclick="window._bookTab=\'hotel\';viewTrip(\'' + trip.id + '\')">🏨 BOOK HOTEL</button>' +
-        '<button class="btn btn-car" onclick="window._bookTab=\'car\';viewTrip(\'' + trip.id + '\')">🚗 BOOK CAR</button>' +
-      '</div>' +
-    '</div>';
+    var trip = pjMatch || {};
+    t._hotelName = trip.hotelName || '';
+    t._carName = trip.carName || '';
+    t._hotelPrice = trip.hotelPrice || 0;
+    t._carPrice = trip.carPrice || 0;
+    t._pjId = trip.id || '';
+    if (trip.hotelName && trip.carName) { booked.push(t); }
+    else { needBooking.push(t); }
   });
-  html += '</div>';
+
+  function renderSection(list, label, icon, badgeClass) {
+    if (list.length === 0) return '';
+    var h = '<div class="section-label">' + icon + ' ' + label + ' <span class="badge-sm ' + badgeClass + '">' + list.length + '</span></div><div class="tournament-strip">';
+    list.forEach(function(t) {
+      var sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏟️';
+      var dest = t.location || '';
+      var dates = (t.start || '') + (t.end ? ' — ' + t.end : '');
+      var hotelStatus = t._hotelName ? '<span style="color:var(--green);font-size:.8em;">✅ Booked</span>' : '<span style="color:var(--red);font-size:.78em;">❌ Not Booked</span>';
+      var carStatus = t._carName ? '<span style="color:var(--green);font-size:.8em;">✅ Booked</span>' : '<span style="color:var(--red);font-size:.78em;">❌ Not Booked</span>';
+      var tripId = t._pjId || 'trip-' + t.id;
+
+      h += '<div class="tourney-mini">' +
+        '<div class="tm-header"><span class="tm-title">' + sportIcon + ' ' + t.name + '</span><span class="tm-date">' + dates + '</span></div>' +
+        '<div class="tm-meta">📍 ' + dest + ' · 👥 ' + (t.teams || '—') + ' teams</div>' +
+        '<div class="tm-status"><span>🏨</span>' + hotelStatus + '<span style="margin-left:12px;">🚗</span>' + carStatus + '</div>' +
+        '<div class="tm-actions">' +
+          '<button class="btn-tm btn-tm-view" onclick="viewTrip(\'' + tripId + '\')">📅 View & Book</button>' +
+          '<button class="btn-tm btn-tm-hotel" onclick="window._bookTab=\'hotel\';viewTrip(\'' + tripId + '\')">🏨 Hotel</button>' +
+          '<button class="btn-tm btn-tm-car" onclick="window._bookTab=\'car\';viewTrip(\'' + tripId + '\')">🚗 Car</button>' +
+        '</div></div>';
+    });
+    h += '</div>';
+    return h;
+  }
+
+  html += renderSection(needBooking, 'Need Booking', '🔴', 'badge-red');
+  html += renderSection(booked, 'Booked', '✅', 'badge-green');
+
   app.innerHTML = html;
 }
 
