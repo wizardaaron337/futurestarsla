@@ -104,6 +104,8 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .btn-tm:hover{background:var(--black-hover);}
 .btn-tm-view{background:rgba(100,181,246,0.1);color:var(--blue);border-color:rgba(100,181,246,0.2);}
 .btn-tm-book{background:var(--gold);color:var(--black);border:none;font-weight:700;}
+.btn-tm-info{background:var(--black-light);color:var(--gray);border:1px solid var(--border);font-weight:500;}
+.btn-tm-info:hover{border-color:var(--gold);color:var(--gold);}
 .dropdown-wrap{position:relative;display:inline-block;}
 .book-dropdown{display:none;position:absolute;top:100%;left:0;background:var(--black-card);border:1px solid var(--border);border-radius:10px;padding:6px;z-index:100;min-width:180px;box-shadow:0 8px 30px rgba(0,0,0,0.5);}
 .book-dropdown.show{display:flex;flex-direction:column;gap:4px;}
@@ -481,6 +483,7 @@ function renderMainView() {
         '<div class="tm-meta">📍 ' + dest + ' · 👥 ' + (t.teams || '—') + ' teams</div>' +
         '<div class="tm-status"><span>🏨</span>' + hotelStatus + '<span style="margin-left:12px;">🚗</span>' + carStatus + '</div>' +
         '<div class="tm-actions">' +
+          '<button class="btn-tm btn-tm-info" onclick="window._bookTab=undefined;viewTrip(\'' + tripId + '\')">📋 Details</button>' +
           '<div class="dropdown-wrap">' +
             '<button class="btn-tm btn-tm-book" onclick="toggleBookDD(\'' + tripId + '\')">📅 Book Trip</button>' +
             '<div class="book-dropdown" id="book-dd-' + tripId + '">' +
@@ -1062,8 +1065,10 @@ function viewTrip(tripId){
 
   document.getElementById('app').innerHTML = html;
 
-  // Auto-search hotels and cars based on trip destination
-  planFindOptions();
+  // Auto-search hotels and cars only when booking (not when viewing details)
+  if (window._bookTab !== undefined) {
+    planFindOptions();
+  }
   // Scroll to hotel/car section if triggered by big buttons
   if (window._bookTab === 'hotel') {
     setTimeout(function() {
