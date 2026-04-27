@@ -50,7 +50,7 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .nav a.active{color:var(--gold);background:var(--gold-10);}
 
 /* Main */
-.main{max-width:1400px;margin:0 auto;padding:40px 30px;}
+.main{max-width:1400px;width:100%;margin:0 auto;padding:40px 30px;}
 .page-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px;flex-wrap:wrap;gap:16px;}
 .welcome{font-family:'Cinzel',serif;font-size:2.2em;font-weight:700;color:var(--gold);letter-spacing:1px;}
 .subtitle{color:var(--gray);font-size:1em;}
@@ -218,12 +218,16 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 @media(max-width:768px){
   .header{flex-direction:column;gap:15px;padding:15px 20px;}
   .nav{padding:10px 20px;}
-  .main{padding:30px 20px;}
+  .main{padding:30px 20px;width:100%;}
   .page-header{flex-direction:column;align-items:flex-start;}
   .welcome{font-size:1.6em;}
   .form-row{grid-template-columns:1fr;}
   .controls-bar{flex-direction:column;align-items:stretch;}
   .search-box{width:100%;}
+  table{font-size:0.85em;overflow-x:auto;display:block;}
+  input,select,button,textarea{font-size:16px !important;}
+  h1{font-size:1.4em;}
+  h2{font-size:1.15em;}
 }
 @media(max-width:480px){
   html{font-size:14px;}

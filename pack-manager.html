@@ -52,7 +52,7 @@
         .logo-text { font-family: 'Cinzel', serif; font-size: 1.1em; color: var(--gold); font-weight: 700; letter-spacing: 2px; }
         .user-info { display: flex; align-items: center; gap: 12px; }
         .user-name { font-size: 0.85em; color: var(--gray); }
-        .main { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .main { max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px; }
         .page-title {
             font-family: 'Cinzel', serif;
             font-size: 1.4em;
@@ -474,6 +474,13 @@
             .jersey-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .selected-item { flex-direction: column; align-items: flex-start; }
             .selected-item .name { min-width: auto; }
+            table { font-size: 0.85em; overflow-x: auto; display: block; }
+            input, select, button, textarea { font-size: 16px !important; }
+            h1 { font-size: 1.3em; }
+            h2 { font-size: 1.1em; }
+            .header { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
+            .tabs { overflow-x: auto; }
+            .form-row { grid-template-columns: 1fr; }
         }
         @media print {
             .no-print { display: none !important; }
@@ -995,6 +1002,7 @@
                         font-family: 'Inter', Arial, sans-serif;
                         padding: 40px;
                         max-width: 800px;
+                        width: 100%;
                         margin: 0 auto;
                         background: white;
                         color: #111;
