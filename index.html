@@ -339,7 +339,7 @@
             // Show home page with trip data
             document.getElementById('app-root').innerHTML = `
                 <div class="main-content" id="home-content">
-                    <div class="loading-pulse">Loading trips...</div>
+                    <div class="loading-pulse">Welcome to Future Stars</div>
                 </div>
                 <div class="footer">Future Stars Sports Co &copy; 2026</div>
             `;
@@ -514,65 +514,50 @@
                 `;
             }
 
-            // Count badges
-            const allCounts = all.length;
-            const upCount = upcoming.length;
-            const packCount = needPack.length;
-            const outCount = currentlyOut.length;
-            const doneCount = completed.length;
-
-            // Inventory stats
-            const bb = typeof INVENTORY !== 'undefined' && INVENTORY.baseball ? Object.keys(INVENTORY.baseball).length : 0;
-            const sc = typeof INVENTORY !== 'undefined' && INVENTORY.soccer ? Object.keys(INVENTORY.soccer).length : 0;
-            const totalStyles = bb + sc;
+            // Fresh start — all stats at 0
+            const allCounts = 0;
+            const upCount = 0;
+            const packCount = 0;
+            const outCount = 0;
+            const doneCount = 0;
+            const bb = 0;
+            const sc = 0;
+            const totalStyles = 0;
 
             content.innerHTML = `
                 <div class="home-stats" style="margin-bottom:20px;">
                     <div class="stat-card">
-                        <div class="stat-num">${allCounts}</div>
+                        <div class="stat-num">0</div>
                         <div class="stat-label">Total Trips</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">${packCount}</div>
+                        <div class="stat-num">0</div>
                         <div class="stat-label">Need Packing</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">${outCount}</div>
+                        <div class="stat-num">0</div>
                         <div class="stat-label">Currently Out</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">${upCount}</div>
+                        <div class="stat-num">0</div>
                         <div class="stat-label">Upcoming</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">${totalStyles}</div>
+                        <div class="stat-num">0</div>
                         <div class="stat-label">Jersey Styles</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">⚾ ${bb}</div>
+                        <div class="stat-num">⚾ 0</div>
                         <div class="stat-label">Baseball</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">⚽ ${sc}</div>
+                        <div class="stat-num">⚽ 0</div>
                         <div class="stat-label">Soccer</div>
                     </div>
                 </div>
                 <div style="height:8px"></div>
-                <h3 class="section-title">🔗 Quick Links</h3>
+                <h3 class="section-title">🚀 Get Started</h3>
                 <div class="quick-links" style="margin-bottom:24px;">${quickLinks}</div>
-                ${tripSection('📦 Need to Pack', '📦 pack', needPack, t => {
-                    if (t.status === 'LOCKED IN') return '<span class="badge need">Needs Packing</span>';
-                    return '<span class="badge pending">Unassigned</span>';
-                })}
-                <div style="height:20px"></div>
-                ${tripSection('🚐 Currently Out', '🚐 out', currentlyOut, () => '<span class="badge pending">In Field</span>')}
-                <div style="height:20px"></div>
-                ${tripSection('📅 Upcoming Trips', '📅 upcoming', upcoming, t => {
-                    if (t.status === 'LOCKED IN') return '<span class="badge locked">Locked In</span>';
-                    return '<span class="badge pending">Pending</span>';
-                })}
-                <div style="height:20px"></div>
-                ${tripSection('✅ Completed', '✅ complete', completed, () => '<span class="badge locked">Returned</span>')}
             `;
         }
 
@@ -584,13 +569,9 @@
         }
 
         function signOut() {
-            sessionStorage.removeItem('fs_auth');
-            sessionStorage.removeItem('fs_role');
-            sessionStorage.removeItem('fs_name');
-            localStorage.removeItem('fs_auth');
-            localStorage.removeItem('fs_role');
-            localStorage.removeItem('fs_name');
-            window.location.href = 'index.html' + (location.hostname.includes('pages.dev') ? '?r=' + Date.now() : '');
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = 'index.html';
         }
 
         // Run home render when data is loaded
