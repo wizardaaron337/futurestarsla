@@ -508,6 +508,44 @@
         }
 
         // ========== START PACKING ==========
+        // ========== SIZE BIN DEFINITIONS ==========
+        // How we pack: grouped by size into bins
+        var SOCCER_SIZE_BINS = [
+            { id: 'bin-soc-22-24', label: 'Bin 1: 22s & 24s', sizes: ['20','22','24'], icon: '📦', color: '#42A5F5' },
+            { id: 'bin-soc-26-L', label: 'Bin 2: 26s & L', sizes: ['26','28','L'], icon: '📦', color: '#AB47BC' },
+            { id: 'bin-soc-S-M-XL', label: 'Bin 3: S · M · XL & Duffle', sizes: ['S','M','XL','extra'], icon: '👜', color: '#FF9800' },
+        ];
+        // For baseball, just group by size naturally
+        var BASEBALL_SIZE_BINS = [
+            { id: 'bin-bb-YS-YM', label: 'YS · YM · YL', sizes: ['YS','YM','YL'], icon: '📦', color: '#4CAF50' },
+            { id: 'bin-bb-YXL-AS', label: 'YXL · AS', sizes: ['YXL','AS'], icon: '📦', color: '#42A5F5' },
+        ];
+
+        function getBinsForSport(sport) {
+            if (sport === 'Soccer') return SOCCER_SIZE_BINS;
+            if (sport === 'Baseball') return BASEBALL_SIZE_BINS;
+            return [];
+        }
+
+        function getSizeFromItemName(name) {
+            var m = name.match(/\(([^)]+)\)$/);
+            return m ? m[1] : null;
+        }
+
+        function getJerseyBaseName(name) {
+            return name.replace(/\s*\([^)]+\)$/, '');
+        }
+
+        function assignToBin(size, sport) {
+            if (!size) return 'gear';
+            var bins = getBinsForSport(sport);
+            for (var i = 0; i < bins.length; i++) {
+                if (bins[i].sizes.indexOf(size) !== -1) return bins[i].id;
+            }
+            return 'gear'; // non-jersey items go to gear
+        }
+
+        // ========== START PACKING ==========
         function startPacking() {
             var loadoutIds = Array.from(document.querySelectorAll('.packing-loadout-cb:checked')).map(function(cb) { return parseInt(cb.value); });
             var tourneyIds = Array.from(document.querySelectorAll('.packing-tourney-cb:checked')).map(function(cb) { return parseInt(cb.value); });
@@ -525,16 +563,12 @@
             var allTourneys = getTournaments();
             var selectedTourneys = allTourneys.filter(function(t) { return tourneyIds.indexOf(t.id) !== -1; });
 
-            // Get or init pack state for these tours
             var packState = getPackState();
-            var sessionId = 'ps_' + Date.now();
 
-            // Calculate total jerseys needed
             var totalTeams = selectedTourneys.reduce(function(sum, t) { return sum + (t.teams || 0); }, 0);
             var estJerseys = estimateJerseyCount(totalTeams);
             var totalSites = new Set(selectedTourneys.map(function(t) { return t.address || t.location || 'Main Site'; })).size;
 
-            // Group loadout items into sport-based chunks
             var html = '';
 
             // ——- Summary bar ——-
@@ -543,136 +577,172 @@
                 '<div class="psb-stat"><div class="psb-num">' + totalSites + '</div><div class="psb-label">Sites</div></div>' +
                 '<div class="psb-stat"><div class="psb-num">' + totalTeams + '</div><div class="psb-label">Teams</div></div>' +
                 '<div class="psb-stat"><div class="psb-num">~' + estJerseys + '</div><div class="psb-label">Jerseys Needed</div></div>' +
-                '<div class="psb-stat"><div class="psb-num">' + selectedLoadouts.reduce(function(s,l) { return s + l.items.length; }, 0) + '</div><div class="psb-label">Item Types</div></div>' +
+                '<div class="psb-stat"><div class="psb-num">' + selectedLoadouts.reduce(function(s,l) { return s + l.items.length; }, 0) + '</div><div class="psb-label">Loadout Items</div></div>' +
             '</div>';
 
             // ——- Per-tournament packing cards ——-
             selectedTourneys.forEach(function(tourney) {
                 var tId = 't_' + tourney.id;
-                if (!packState[tId]) packState[tId] = { items: {}, created: Date.now() };
+                if (!packState[tId]) packState[tId] = { bins: {}, created: Date.now() };
                 var state = packState[tId];
+                if (!state.bins) state.bins = {};
 
-                // Loadout items that apply to this tournament
-                // Filter loadout items by sport match
-                var applicableItems = [];
+                var tourneyTeams = tourney.teams || 0;
+                var sport = tourney.sport === 'Baseball' ? 'Baseball' : 'Soccer';
+                var icon = sport === 'Soccer' ? '⚽' : '⚾';
+
+                // ——- Group all loadout items by size bin ——-
+                var binContents = {}; // binId -> { items: {jerseyBase: {sizes: {size: need}}, count:0, packed:0 }
+
+                // Initialize all bins for this sport
+                var bins = getBinsForSport(sport);
+                bins.forEach(function(b) { binContents[b.id] = { label: b.label, icon: b.icon, color: b.color, items: {}, count: 0, packed: 0, need: 0 }; });
+                binContents['gear'] = { label: 'Gear / Accessories', icon: '🎒', color: '#999', items: {}, count: 0, packed: 0, need: 0 };
+
+                // Collapse all loadout items into bins
                 selectedLoadouts.forEach(function(ld) {
                     ld.items.forEach(function(item) {
-                        applicableItems.push({
-                            ldName: ld.name,
-                            name: item.name,
-                            baseQty: item.qty,
-                            id: item.id
-                        });
+                        var size = getSizeFromItemName(item.name);
+                        var binId = assignToBin(size, sport);
+                        var baseName = size ? getJerseyBaseName(item.name) : item.name;
+
+                        var need = item.qty;
+                        if (size) {
+                            need = calcJerseyNeed(baseName, size, tourneyTeams);
+                            need = Math.max(need, 1);
+                        }
+
+                        if (!binContents[binId]) {
+                            // Fallback: put it in gear
+                            binContents['gear'] = binContents['gear'] || { label: 'Gear', icon: '🎒', color: '#999', items: {}, count: 0, packed: 0, need: 0 };
+                            binId = 'gear';
+                        }
+
+                        var bc = binContents[binId];
+                        var key = size ? baseName + ' (' + size + ')' : baseName;
+                        if (!bc.items[key]) {
+                            bc.items[key] = { name: key, displayName: baseName, size: size || '', need: 0, packed: 0, from: [] };
+                        }
+                        bc.items[key].need += need;
+                        if (bc.items[key].from.indexOf(ld.name) === -1) bc.items[key].from.push(ld.name);
+
+                        // Restore packed state
+                        var packedVal = state.bins[binId] && state.bins[binId][key] !== undefined ? state.bins[binId][key] : 0;
+                        bc.items[key].packed = packedVal;
                     });
                 });
 
-                // Calculate needed per item
-                var tourneyTeams = tourney.teams || 0;
-                var itemRows = applicableItems.map(function(item) {
-                    var need = item.baseQty;
-                    // If it's a jersey (has parentheses with size), scale by team count
-                    var parenMatch = item.name.match(/\(([^)]+)\)$/);
-                    if (parenMatch) {
-                        var size = parenMatch[1];
-                        var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
-                        var totalStock = getJerseyTotalStock(sport);
-                        need = calcJerseyNeed(item.name, size, tourneyTeams);
-                    }
-                    return { name: item.name, ldName: item.ldName, need: Math.max(need, 1), itemId: item.id };
+                // Calculate totals per bin
+                var totalAllNeed = 0;
+                var totalAllPacked = 0;
+                var totalAllChecked = 0;
+                var totalAllItems = 0;
+                Object.keys(binContents).forEach(function(binId) {
+                    var bc = binContents[binId];
+                    bc.need = Object.values(bc.items).reduce(function(s, it) { return s + it.need; }, 0);
+                    bc.packed = Object.values(bc.items).reduce(function(s, it) { return s + it.packed; }, 0);
+                    bc.count = Object.keys(bc.items).length;
+                    totalAllNeed += bc.need;
+                    totalAllPacked += bc.packed;
+                    totalAllItems += bc.count;
                 });
 
-                // Merge rows with same name
-                var merged = {};
-                itemRows.forEach(function(r) {
-                    if (!merged[r.name]) merged[r.name] = { name: r.name, ldNames: [], need: 0, itemId: r.itemId };
-                    merged[r.name].ldNames.push(r.ldName);
-                    merged[r.name].need += r.need;
-                });
-                var rows = Object.values(merged);
-
-                var itemsPacked = 0;
-                var itemsNeeded = 0;
-                var itemsChecked = 0;
-
-                rows.forEach(function(r) {
-                    var key = r.name;
-                    var packed = state.items[key] || 0;
-                    itemsPacked += packed;
-                    itemsNeeded += r.need;
-                    if (packed >= r.need) itemsChecked++;
-                });
-
-                var progressPct = itemsNeeded > 0 ? Math.round((itemsPacked / itemsNeeded) * 100) : 0;
+                var progressPct = totalAllNeed > 0 ? Math.round((totalAllPacked / totalAllNeed) * 100) : 0;
                 if (progressPct > 100) progressPct = 100;
 
                 var dateStr = tourney.start ? new Date(tourney.start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD';
-                var icon = tourney.sport === 'Soccer' ? '⚽' : tourney.sport === 'Baseball' ? '⚾' : '🏅';
 
+                // —— Tournament card header ——
                 html += '<div class="tourney-pack-card" id="tpc-' + tId + '">' +
                     '<div class="tpc-header">' +
                         '<div>' +
                             '<div class="tpc-name">' + icon + ' ' + tourney.name + '</div>' +
-                            '<div class="tpc-meta">' + dateStr + ' · ' + (tourney.location || 'Location TBD') + (tourney.address ? ' (' + tourney.address + ')' : '') + ' · ' + tourneyTeams + ' teams</div>' +
+                            '<div class="tpc-meta">' + dateStr + ' · ' + (tourney.location || 'Location TBD') + (tourney.address ? ' (' + tourney.address + ')' : '') + ' · ' + tourneyTeams + ' teams · ~' + estimateJerseyCount(tourneyTeams) + ' jerseys est.</div>' +
                         '</div>' +
                         '<div class="btn-group">' +
                             '<button class="btn btn-sm btn-secondary" onclick="resetPacked(' + tourney.id + ')">↺ Reset</button>' +
                             '<button class="btn btn-sm btn-primary" onclick="printTourneySheet(' + tourney.id + ')">🖨️ Print</button>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="tpc-progress"><div class="fill" style="width:' + progressPct + '%;"></div></div>' +
+                    '<div class="tpc-progress"><div class="fill" style="width:' + progressPct + '%;background:' + (progressPct >= 100 ? 'var(--green)' : 'linear-gradient(90deg, var(--gold), var(--green))') + ';"></div></div>' +
                     '<div class="tpc-stats">' +
-                        '<span><strong>' + itemsPacked + '</strong> / ' + itemsNeeded + ' items packed</span>' +
-                        '<span><strong>' + itemsChecked + '</strong> / ' + rows.length + ' item types complete</span>' +
-                        '<span style="color:' + (progressPct >= 100 ? 'var(--green)' : 'var(--gold)') + ';">' + progressPct + '% done</span>' +
+                        '<span>📦 <strong>' + totalAllPacked + '</strong> / ' + totalAllNeed + ' items · ' + progressPct + '%</span>' +
+                        '<span>📋 ' + totalAllItems + ' item types across ' + Object.keys(binContents).filter(function(b) { return binContents[b].count > 0; }).length + ' bins</span>' +
                     '</div>';
 
-                // —— Jersey count estimate box ——
-                if (tourneyTeams > 0) {
-                    html += '<div class="jersey-count-estimate">' +
-                        '<strong>📊 Jersey estimate:</strong> ~' + estimateJerseyCount(tourneyTeams) + ' jerseys needed for ' + tourneyTeams + ' teams (recommended). ' +
-                        'Adjust the packed quantity below if stock is low.' +
-                    '</div>';
-                }
+                // —— Render each bin ——
+                Object.keys(binContents).forEach(function(binId) {
+                    var bc = binContents[binId];
+                    if (bc.count === 0) return;
 
-                // —— Item rows ——
-                rows.forEach(function(r) {
-                    var key = r.name;
-                    var packed = state.items[key] || 0;
-                    var shortfall = r.need - packed;
-                    var statusClass = packed >= r.need ? 'ok' : (packed > 0 ? 'short' : 'low');
-                    var statusText = packed >= r.need ? '✅ Done' : (packed > 0 ? '⚠️ Partial' : '❌ Needs');
-                    var isJersey = r.name.indexOf('(') > -1;
-                    var stockNote = '';
+                    var binPct = bc.need > 0 ? Math.round((bc.packed / bc.need) * 100) : 0;
+                    if (binPct > 100) binPct = 100;
+                    var binDone = bc.packed >= bc.need && bc.need > 0;
 
-                    if (isJersey) {
-                        // Try to match against inventory to show real stock
-                        var sport1 = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
-                        var inv = INVENTORY[sport1] || {};
-                        var jerseyBase = r.name.replace(/\s*\([^)]+\)$/, '');
-                        var sizeMatch = r.name.match(/\(([^)]+)\)$/);
-                        var size = sizeMatch ? sizeMatch[1] : '';
-                        var realStock = 0;
-                        if (inv[jerseyBase] && inv[jerseyBase].sizes[size]) {
-                            realStock = inv[jerseyBase].sizes[size];
+                    html += '<div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px;margin-top:10px;">' +
+                        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+                            '<div><strong style="color:' + bc.color + ';">' + bc.icon + ' ' + bc.label + '</strong> <span style="color:var(--gray);font-size:0.8em;">' + bc.count + ' item types</span></div>' +
+                            '<div style="font-size:0.85em;font-weight:600;color:' + (binDone ? 'var(--green)' : 'var(--gold)') + ';">' + bc.packed + ' / ' + bc.need + ' · ' + binPct + '%</div>' +
+                        '</div>' +
+                        '<div class="tpc-progress" style="height:4px;margin-bottom:8px;"><div class="fill" style="width:' + binPct + '%;background:' + (binDone ? 'var(--green)' : bc.color) + ';"></div></div>';
+
+                    // Item rows within this bin
+                    Object.keys(bc.items).sort().forEach(function(key) {
+                        var it = bc.items[key];
+                        var packed = it.packed;
+                        var need = it.need;
+                        var statusClass = packed >= need ? 'ok' : (packed > 0 ? 'short' : 'low');
+                        var statusText = packed >= need ? '✅ Done' : (packed > 0 ? '⚠️ ' + (need - packed) + ' short' : '❌ Needs ' + need);
+                        var safeKey = key.replace(/'/g, "\\'");
+
+                        // Find real stock from inventory or Sortly
+                        var stockNote = '';
+                        var realStock = null;
+                        if (it.size) {
+                            var s = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
+                            if (useSortlyApi && window.SORTLY_API_DEMO) {
+                                realStock = getSortlyJerseyStock(it.displayName, it.size);
+                                var loc = getSortlyItemLocation(it.displayName, it.size);
+                                if (realStock !== null) {
+                                    stockNote = '<div class="pir-note">🏪 In stock: ' + realStock + ' · ' + (loc || '') + (packed > realStock ? ' · ⚠️ over-packed!' : '') + '</div>';
+                                } else {
+                                    stockNote = '<div class="pir-note">🏪 No Sortly record</div>';
+                                }
+                            } else {
+                                var inv = INVENTORY[s] || {};
+                                if (inv[it.displayName] && inv[it.displayName].sizes[it.size]) {
+                                    realStock = inv[it.displayName].sizes[it.size];
+                                    stockNote = '<div class="pir-note">🏪 Stock: ' + realStock + (packed > realStock ? ' · ⚠️ over-packed!' : '') + '</div>';
+                                }
+                            }
                         }
-                        if (realStock > 0) {
-                            stockNote = '<div class="pir-note">🏪 ' + realStock + ' in stock (per inventory)' + (packed > realStock ? ' — ⚠️ packed more than stock shows!' : '') + '</div>';
-                        } else {
-                            stockNote = '<div class="pir-note">🏪 No stock record for this exact size combo</div>';
-                        }
-                    }
 
-                    html += '<div class="pack-item-row" id="pir-' + tId + '-' + key.replace(/[^a-zA-Z0-9]/g, '_') + '">' +
-                        '<input type="checkbox" class="pir-check" ' + (packed >= r.need ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',\'' + key.replace(/'/g, "\\'") + '\',this)">' +
-                        '<span class="pir-name">' + r.name + '</span>' +
-                        '<span class="pir-needed">Need: ' + r.need + '</span>' +
-                        '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',\'' + key.replace(/'/g, "\\'") + '\',this)">' +
-                        '<span class="pir-status ' + statusClass + '">' + statusText + '</span>' +
-                        stockNote +
-                    '</div>';
+                        // Compute need-for-bin display: show how many total in this bin
+                        html += '<div class="pack-item-row" id="pir-' + tId + '-' + binId + '-' + key.replace(/[^a-zA-Z0-9]/g, '_') + '">' +
+                            '<input type="checkbox" class="pir-check" ' + (packed >= need ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',\\'' + safeKey + '\\',\\'' + binId + '\\',this)">' +
+                            '<span class="pir-name">' + it.displayName + (it.size ? ' <span style="color:var(--gray-dark);font-size:0.85em;">(' + it.size + ')</span>' : '') + '</span>' +
+                            '<span class="pir-needed">' + need + '</span>' +
+                            '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',\\'' + safeKey + '\\',\\'' + binId + '\\',this)">' +
+                            '<span class="pir-status ' + statusClass + '">' + statusText + '</span>' +
+                            stockNote +
+                        '</div>';
+                    });
+
+                    html += '</div>'; // end bin
                 });
 
-                html += '</div>';
+                html += '</div>'; // end tourney card
+
+                // Save bin state back
+                Object.keys(binContents).forEach(function(binId) {
+                    if (!state.bins[binId]) state.bins[binId] = {};
+                    Object.keys(binContents[binId].items).forEach(function(key) {
+                        // Restore already-saved values, don't overwrite
+                        if (state.bins[binId][key] === undefined) {
+                            state.bins[binId][key] = 0;
+                        }
+                    });
+                });
             });
 
             // —— Global Actions ——
@@ -694,7 +764,8 @@
         function getTourneyState(tourneyId) {
             var state = getPackState();
             var tId = 't_' + tourneyId;
-            if (!state[tId]) state[tId] = { items: {}, created: Date.now() };
+            if (!state[tId]) state[tId] = { bins: {}, created: Date.now() };
+            if (!state[tId].bins) state[tId].bins = {};
             return { state: state, tId: tId, packState: state[tId] };
         }
 
@@ -702,18 +773,17 @@
             startPacking();
         }
 
-        function updatePackedQty(tourneyId, itemName, input) {
+        function updatePackedQty(tourneyId, itemName, binId, input) {
             var val = parseInt(input.value) || 0;
             var ctx = getTourneyState(tourneyId);
-            ctx.packState.items[itemName] = val;
+            if (!ctx.packState.bins[binId]) ctx.packState.bins[binId] = {};
+            ctx.packState.bins[binId][itemName] = val;
             savePackState(ctx.state);
-            // Update the checkbox and status
-            startPacking(); // Re-render all for consistent state
+            startPacking();
         }
 
-        function togglePackedItem(tourneyId, itemName, checkbox) {
+        function togglePackedItem(tourneyId, itemName, binId, checkbox) {
             var ctx = getTourneyState(tourneyId);
-            // Find the need for this item
             var tourneys = getTournaments();
             var tourney = tourneys.find(function(t) { return t.id === tourneyId; });
             if (!tourney) return;
@@ -729,18 +799,18 @@
                         var baseNeed = item.qty;
                         var parenMatch = itemName.match(/\(([^)]+)\)$/);
                         if (parenMatch) {
-                            var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
-                            baseNeed = calcJerseyNeed(itemName, parenMatch[1], tourney.teams || 0);
+                            baseNeed = calcJerseyNeed(item.name, parenMatch[1], tourney.teams || 0);
                         }
                         need += Math.max(baseNeed, 1);
                     }
                 });
             });
 
+            if (!ctx.packState.bins[binId]) ctx.packState.bins[binId] = {};
             if (checkbox.checked) {
-                ctx.packState.items[itemName] = Math.max(ctx.packState.items[itemName] || 0, need);
+                ctx.packState.bins[binId][itemName] = Math.max(ctx.packState.bins[binId][itemName] || 0, need);
             } else {
-                ctx.packState.items[itemName] = 0;
+                ctx.packState.bins[binId][itemName] = 0;
             }
             savePackState(ctx.state);
             startPacking();
@@ -753,7 +823,6 @@
 
             tourneyIds.forEach(function(tId) {
                 var ctx = getTourneyState(tId);
-                // Find items and needs for this tourney
                 var tourneys = getTournaments();
                 var tourney = tourneys.find(function(t) { return t.id === tId; });
                 if (!tourney) return;
@@ -762,15 +831,23 @@
                 var allLoadouts = getLoadouts();
                 var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
 
+                var sport = tourney.sport === 'Baseball' ? 'Baseball' : 'Soccer';
+                var bins = getBinsForSport(sport);
+
                 selectedLoadouts.forEach(function(ld) {
                     ld.items.forEach(function(item) {
+                        var size = getSizeFromItemName(item.name);
+                        var baseName = size ? getJerseyBaseName(item.name) : item.name;
+                        var binId = assignToBin(size, sport);
+
                         var need = item.qty;
-                        var parenMatch = item.name.match(/\(([^)]+)\)$/);
-                        if (parenMatch) {
-                            need = calcJerseyNeed(item.name, parenMatch[1], tourney.teams || 0);
+                        if (size) {
+                            need = calcJerseyNeed(baseName, size, tourney.teams || 0);
                         }
                         need = Math.max(need, 1);
-                        ctx.packState.items[item.name] = need;
+
+                        if (!ctx.packState.bins[binId]) ctx.packState.bins[binId] = {};
+                        ctx.packState.bins[binId][item.name] = need;
                     });
                 });
             });
@@ -782,8 +859,8 @@
             if (!confirm('Reset all packing counts?')) return;
             var state = getPackState();
             Object.keys(state).forEach(function(key) {
-                if (key.startsWith('t_')) {
-                    state[key].items = {};
+                if (key.startsWith('t_') && state[key].bins) {
+                    state[key].bins = {};
                 }
             });
             savePackState(state);
@@ -794,7 +871,7 @@
             if (!confirm('Reset packing for this tournament?')) return;
             var state = getPackState();
             var tId = 't_' + tourneyId;
-            if (state[tId]) state[tId].items = {};
+            if (state[tId]) state[tId].bins = {};
             savePackState(state);
             startPacking();
         }
@@ -807,37 +884,56 @@
 
             var state = getPackState();
             var tId = 't_' + tourneyId;
-            var tState = state[tId] || { items: {} };
+            var tState = state[tId] || { bins: {} };
+            if (!tState.bins) tState.bins = {};
 
             var loadoutIds = Array.from(document.querySelectorAll('.packing-loadout-cb:checked')).map(function(cb) { return parseInt(cb.value); });
             var allLoadouts = getLoadouts();
             var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
 
-            var items = [];
+            var sport = tourney.sport === 'Baseball' ? 'Baseball' : 'Soccer';
+            var bins = getBinsForSport(sport);
+
+            // Group items by bin
+            var binItems = {};
+            bins.forEach(function(b) { binItems[b.id] = { label: b.label, icon: b.icon, items: [] }; });
+            binItems['gear'] = { label: 'Gear', icon: '🎒', items: [] };
+
             selectedLoadouts.forEach(function(ld) {
                 ld.items.forEach(function(item) {
+                    var size = getSizeFromItemName(item.name);
+                    var baseName = size ? getJerseyBaseName(item.name) : item.name;
+                    var binId = assignToBin(size, sport);
+                    if (!binItems[binId]) binId = 'gear';
+
                     var need = item.qty;
-                    var parenMatch = item.name.match(/\(([^)]+)\)$/);
-                    if (parenMatch) {
-                        var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
-                        need = calcJerseyNeed(item.name, parenMatch[1], tourney.teams || 0);
+                    if (size) {
+                        need = calcJerseyNeed(baseName, size, tourney.teams || 0);
                     }
                     need = Math.max(need, 1);
-                    items.push({ name: item.name, need: need, packed: tState.items[item.name] || 0 });
+
+                    var packed = (tState.bins[binId] && tState.bins[binId][item.name]) || 0;
+                    binItems[binId].items.push({ name: item.name, need: need, packed: packed, size: size || '' });
                 });
             });
 
             var w = window.open('', '_blank');
             var today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            var rowsHtml = items.map(function(it) {
-                return '<div class="print-check-row">' +
-                    '<div class="checkbox"></div>' +
-                    '<span class="item-detail">' + it.name + '</span>' +
-                    '<span style="font-size:0.8em;color:#999;margin:0 12px;">Need: ' + it.need + ' | Packed: ' + it.packed + '</span>' +
-                    '<span class="item-qty">Need: ' + it.need + '</span>' +
-                '</div>';
-            }).join('');
+            var rowsHtml = '';
+            Object.keys(binItems).forEach(function(binId) {
+                var grp = binItems[binId];
+                if (grp.items.length === 0) return;
+                rowsHtml += '<div class="print-bin-header">' + grp.icon + ' ' + grp.label + '</div>';
+                grp.items.forEach(function(it) {
+                    rowsHtml += '<div class="print-check-row">' +
+                        '<div class="checkbox"></div>' +
+                        '<span class="item-detail">' + it.name + '</span>' +
+                        '<span style="font-size:0.8em;color:#999;margin:0 12px;">Need: ' + it.need + ' | Packed: ' + it.packed + '</span>' +
+                        '<span class="item-qty">' + it.need + '</span>' +
+                    '</div>';
+                });
+            });
 
             w.document.write('<!DOCTYPE html><html><head><title>Packing Sheet — ' + tourney.name + '</title>' +
                 '<style>' +
@@ -850,6 +946,7 @@
                     '.info strong { color:#111; }' +
                     '.print-card { border:1px solid #ddd; border-radius:8px; padding:16px; }' +
                     '.print-card h4 { font-size:1em; border-bottom:2px solid #C9A227; padding-bottom:8px; margin-bottom:10px; color:#333; }' +
+                    '.print-bin-header { font-weight:700; font-size:1em; color:#333; margin:12px 0 6px; padding:4px 0; border-bottom:1px solid #ddd; }' +
                     '.print-check-row { display:flex; align-items:center; gap:12px; padding:10px 4px; border-bottom:1px dashed #eee; }' +
                     '.print-check-row:last-child { border-bottom:none; }' +
                     '.print-check-row .checkbox { width:22px;height:22px;border:2px solid #999;border-radius:4px;flex-shrink:0; }' +
