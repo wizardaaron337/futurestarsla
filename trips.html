@@ -209,6 +209,7 @@
     window.addEventListener('storage', function(e) {
       if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trip_statuses') renderTrips();
     });
+    window.addEventListener('fs-sync-merged', function() { renderTrips(); });
     // Also poll every 3 seconds in case same-tab edits don't fire storage event
     setInterval(function() {
       var now = JSON.stringify(localStorage.getItem('fs_tourney_schedule'));
