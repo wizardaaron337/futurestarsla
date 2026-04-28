@@ -89,40 +89,60 @@
         .toggle-switch.active .knob { left: 22px; }
         .data-source-bar .ds-stats { margin-left: auto; color: var(--gray-dark); font-size: 0.78em; }
 
-        /* Packing section styles */
-        .tourney-pack-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
-        .tourney-pack-card .tpc-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-        .tourney-pack-card .tpc-name { font-weight: 600; color: var(--gold); font-size: 0.95em; }
-        .tourney-pack-card .tpc-meta { color: var(--gray); font-size: 0.78em; }
-        .tourney-pack-card .tpc-stats { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.82em; margin-bottom: 10px; padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: 8px; }
-        .tourney-pack-card .tpc-stats span { color: var(--gray); }
-        .tourney-pack-card .tpc-stats strong { color: var(--white); }
-        .tourney-pack-card .tpc-progress { height: 6px; background: var(--black); border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
-        .tourney-pack-card .tpc-progress .fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 4px; transition: width 0.3s; }
-        .pack-item-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-        .pack-item-row:last-child { border-bottom: none; }
-        .pack-item-row .pir-check { width: 18px; height: 18px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
-        .pack-item-row .pir-name { font-size: 0.82em; flex: 1; min-width: 120px; }
-        .pack-item-row .pir-needed { color: var(--gold); font-size: 0.78em; font-weight: 600; }
-        .pack-item-row .pir-packed { width: 60px; padding: 4px 6px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; text-align: center; outline: none; }
+        /* Packing section styles - COMPACT */
+        .packing-summary-bar { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 10px; background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.15); border-radius: 8px; margin-bottom: 10px; }
+        .packing-summary-bar .psb-stat { text-align: center; flex: 1; min-width: 60px; }
+        .packing-summary-bar .psb-stat .psb-num { font-size: 1.1em; font-weight: 700; color: var(--gold); }
+        .packing-summary-bar .psb-stat .psb-label { font-size: 0.65em; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 1px; }
+
+        .tourney-pack-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+        .tourney-pack-card .tpc-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; }
+        .tourney-pack-card .tpc-name { font-weight: 600; color: var(--gold); font-size: 0.85em; }
+        .tourney-pack-card .tpc-meta { color: var(--gray); font-size: 0.7em; }
+        /* Compact summary boxes row */
+        .tpc-summary-row { display: flex; gap: 4px; margin: 2px 0 4px; }
+        .tpc-summary-row .tpc-sum-box { flex: 1; text-align: center; padding: 3px 4px; border-radius: 4px; font-size: 0.72em; min-width: 0; }
+        .tpc-summary-row .tpc-sum-box .sum-num { font-weight: 700; font-size: 1em; }
+        .tpc-summary-row .tpc-sum-box .sum-label { font-size: 0.65em; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.3px; }
+        .tpc-summary-row .tpc-sum-box.sum-need { background: rgba(201,162,39,0.08); color: var(--gold); }
+        .tpc-summary-row .tpc-sum-box.sum-packed { background: rgba(76,175,80,0.1); color: var(--green); }
+        .tpc-summary-row .tpc-sum-box.sum-short { background: rgba(239,83,80,0.1); color: var(--red); }
+        .tpc-summary-row .tpc-sum-box.sum-done { background: rgba(76,175,80,0.15); color: var(--green); }
+        .tpc-summary-row .tpc-sum-box.sum-pct { background: rgba(66,165,245,0.08); color: var(--blue); }
+        .tpc-summary-row .tpc-sum-box.sum-items { background: rgba(255,152,0,0.08); color: var(--orange); }
+
+        .tourney-pack-card .tpc-progress { height: 4px; background: var(--black); border-radius: 3px; margin-bottom: 6px; overflow: hidden; }
+        .tourney-pack-card .tpc-progress .fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 3px; transition: width 0.3s; }
+
+        /* Compact item rows - single-line grid */
+        .pack-item-row { display: grid; grid-template-columns: 20px 1fr 28px 44px auto; align-items: center; gap: 4px; padding: 2px 0; border-bottom: none; font-size: 0.78em; }
+        .pack-item-row .pir-check { width: 14px; height: 14px; accent-color: var(--green); cursor: pointer; justify-self: center; }
+        .pack-item-row .pir-name { font-size: inherit; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--gray); }
+        .pack-item-row .pir-needed { color: var(--gray-dark); font-size: 0.75em; text-align: right; }
+        .pack-item-row .pir-packed { width: 100%; padding: 2px 4px; background: var(--black); border: 1px solid var(--border); border-radius: 4px; color: var(--white); font-size: 0.78em; text-align: center; outline: none; min-width: 0; }
         .pack-item-row .pir-packed:focus { border-color: var(--gold); }
-        .pack-item-row .pir-status { font-size: 0.75em; padding: 2px 8px; border-radius: 4px; min-width: 50px; text-align: center; }
+        .pack-item-row .pir-status { font-size: 0.65em; padding: 1px 4px; border-radius: 3px; text-align: center; white-space: nowrap; }
         .pack-item-row .pir-status.ok { color: var(--green); }
         .pack-item-row .pir-status.short { color: var(--orange); }
         .pack-item-row .pir-status.low { color: var(--red); }
-        .pack-item-row .pir-status.stocked { color: var(--blue); font-size: 0.68em; }
-        .pack-item-row .pir-note { font-size: 0.7em; color: var(--gray-dark); width: 100%; padding-left: 26px; font-style: italic; }
+        .pack-item-row .pir-note { font-size: 0.65em; color: var(--gray-dark); grid-column: 1 / -1; padding-left: 0; font-style: italic; padding: 1px 0 0 24px; }
 
-        .jersey-count-estimate { padding: 8px 12px; background: rgba(201,162,39,0.06); border: 1px solid rgba(201,162,39,0.12); border-radius: 8px; margin-bottom: 14px; font-size: 0.82em; line-height: 1.6; }
+        /* Bin header within a tournament card */
+        .bin-section { padding: 0; margin: 3px 0 0; }
+        .bin-header { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; margin-bottom: 2px; border-bottom: 1px solid rgba(255,255,255,0.06); cursor: pointer; user-select: none; }
+        .bin-header:hover { opacity: 0.8; }
+        .bin-header .bin-label { font-weight: 600; font-size: 0.75em; }
+        .bin-header .bin-meta { font-size: 0.7em; color: var(--gray-dark); }
+        .bin-header .bin-progress { height: 3px; background: var(--black); border-radius: 2px; overflow: hidden; flex: 1; max-width: 80px; margin: 0 8px; }
+        .bin-header .bin-progress .fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+        .bin-header .bin-status { font-size: 0.72em; font-weight: 600; min-width: 50px; text-align: right; }
+        .bin-header.bin-collapsed + .bin-items { display: none; }
+
+        .packing-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .packing-actions button { flex: 1; min-width: 90px; padding: 8px 14px; font-size: 0.78em; }
+
+        .jersey-count-estimate { padding: 6px 10px; background: rgba(201,162,39,0.06); border: 1px solid rgba(201,162,39,0.12); border-radius: 6px; margin-bottom: 8px; font-size: 0.78em; line-height: 1.5; }
         .jersey-count-estimate strong { color: var(--gold); }
-
-        .packing-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .packing-actions button { flex: 1; min-width: 120px; }
-
-        .packing-summary-bar { display: flex; gap: 14px; flex-wrap: wrap; padding: 12px; background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.15); border-radius: 10px; margin-bottom: 16px; }
-        .packing-summary-bar .psb-stat { text-align: center; flex: 1; min-width: 70px; }
-        .packing-summary-bar .psb-stat .psb-num { font-size: 1.3em; font-weight: 700; color: var(--gold); }
-        .packing-summary-bar .psb-stat .psb-label { font-size: 0.7em; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
         @media (max-width: 768px) {
             .main { padding: 12px; }
@@ -131,8 +151,12 @@
             .form-row { flex-direction: column; }
             .form-group { min-width: auto; }
             .tourney-pack-card .tpc-header { flex-direction: column; }
-            .pack-item-row { font-size: 0.9em; }
-            .packing-summary-bar .psb-stat { min-width: 50px; }
+            .pack-item-row { font-size: 0.82em; grid-template-columns: 18px 1fr 26px 40px auto; gap: 3px; }
+            .pack-item-row .pir-packed { font-size: 0.82em; padding: 3px 3px; }
+            .pack-item-row .pir-status { font-size: 0.7em; }
+            .packing-summary-bar .psb-stat { min-width: 40px; }
+            .tpc-summary-row .tpc-sum-box { font-size: 0.68em; padding: 2px 3px; }
+            .tpc-summary-row .tpc-sum-box .sum-num { font-size: 0.9em; }
         }
         @media print {
             .no-print { display: none !important; }
@@ -608,14 +632,12 @@
                 var icon = sport === 'Soccer' ? '⚽' : '⚾';
 
                 // ——- Group all loadout items by size bin ——-
-                var binContents = {}; // binId -> { items: {jerseyBase: {sizes: {size: need}}, count:0, packed:0 }
+                var binContents = {};
 
-                // Initialize all bins for this sport
                 var bins = getBinsForSport(sport);
                 bins.forEach(function(b) { binContents[b.id] = { label: b.label, icon: b.icon, color: b.color, items: {}, count: 0, packed: 0, need: 0 }; });
                 binContents['gear'] = { label: 'Gear / Accessories', icon: '🎒', color: '#999', items: {}, count: 0, packed: 0, need: 0 };
 
-                // Collapse all loadout items into bins
                 selectedLoadouts.forEach(function(ld) {
                     ld.items.forEach(function(item) {
                         var size = getSizeFromItemName(item.name);
@@ -629,7 +651,6 @@
                         }
 
                         if (!binContents[binId]) {
-                            // Fallback: put it in gear
                             binContents['gear'] = binContents['gear'] || { label: 'Gear', icon: '🎒', color: '#999', items: {}, count: 0, packed: 0, need: 0 };
                             binId = 'gear';
                         }
@@ -642,7 +663,6 @@
                         bc.items[key].need += need;
                         if (bc.items[key].from.indexOf(ld.name) === -1) bc.items[key].from.push(ld.name);
 
-                        // Restore packed state
                         var packedVal = state.bins[binId] && state.bins[binId][key] !== undefined ? state.bins[binId][key] : 0;
                         bc.items[key].packed = packedVal;
                     });
@@ -651,7 +671,6 @@
                 // Calculate totals per bin
                 var totalAllNeed = 0;
                 var totalAllPacked = 0;
-                var totalAllChecked = 0;
                 var totalAllItems = 0;
                 Object.keys(binContents).forEach(function(binId) {
                     var bc = binContents[binId];
@@ -666,27 +685,37 @@
                 var progressPct = totalAllNeed > 0 ? Math.round((totalAllPacked / totalAllNeed) * 100) : 0;
                 if (progressPct > 100) progressPct = 100;
 
+                var shortCount = totalAllNeed - totalAllPacked;
+                if (shortCount < 0) shortCount = 0;
+                var allDone = totalAllPacked >= totalAllNeed && totalAllNeed > 0;
+
                 var dateStr = tourney.start ? new Date(tourney.start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD';
 
-                // —— Tournament card header ——
+                // —— Tournament card ——
                 html += '<div class="tourney-pack-card" id="tpc-' + tId + '">' +
                     '<div class="tpc-header">' +
                         '<div>' +
-                            '<div class="tpc-name">' + icon + ' ' + tourney.name + '</div>' +
-                            '<div class="tpc-meta">' + dateStr + ' · ' + (tourney.location || 'Location TBD') + (tourney.address ? ' (' + tourney.address + ')' : '') + ' · ' + tourneyTeams + ' teams · ~' + estimateJerseyCount(tourneyTeams) + ' jerseys est.</div>' +
+                            '<div class="tpc-name">' + icon + ' ' + tourney.name + ' <span style="font-weight:400;color:var(--gray);font-size:0.8em;">' + dateStr + (tourney.location ? ' · ' + tourney.location : '') + '</span></div>' +
+                            '<div class="tpc-meta">' + tourneyTeams + ' teams · ~' + estimateJerseyCount(tourneyTeams) + ' jerseys · ' + (tourney.address || '') + '</div>' +
                         '</div>' +
                         '<div class="btn-group">' +
-                            '<button class="btn btn-sm btn-secondary" onclick="resetPacked(' + tourney.id + ')">↺ Reset</button>' +
-                            '<button class="btn btn-sm btn-primary" onclick="printTourneySheet(' + tourney.id + ')">🖨️ Print</button>' +
+                            '<button class="btn btn-xs btn-secondary" onclick="resetPacked(' + tourney.id + ')">↺</button>' +
+                            '<button class="btn btn-xs btn-primary" onclick="printTourneySheet(' + tourney.id + ')">🖨</button>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="tpc-progress"><div class="fill" style="width:' + progressPct + '%;background:' + (progressPct >= 100 ? 'var(--green)' : 'linear-gradient(90deg, var(--gold), var(--green))') + ';"></div></div>' +
-                    '<div class="tpc-stats">' +
-                        '<span>📦 <strong>' + totalAllPacked + '</strong> / ' + totalAllNeed + ' items · ' + progressPct + '%</span>' +
-                        '<span>📋 ' + totalAllItems + ' item types across ' + Object.keys(binContents).filter(function(b) { return binContents[b].count > 0; }).length + ' bins</span>' +
-                    '</div>';
 
-                // —— Render each bin ——
+                    // —— Summary boxes ——
+                    '<div class="tpc-summary-row">' +
+                        '<div class="tpc-sum-box sum-need"><div class="sum-num">' + totalAllNeed + '</div><div class="sum-label">Need</div></div>' +
+                        '<div class="tpc-sum-box sum-packed"><div class="sum-num">' + totalAllPacked + '</div><div class="sum-label">Packed</div></div>' +
+                        '<div class="tpc-sum-box ' + (shortCount > 0 ? 'sum-short' : 'sum-done') + '"><div class="sum-num">' + (shortCount > 0 ? '−' + shortCount : '✅') + '</div><div class="sum-label">' + (shortCount > 0 ? 'Short' : 'Done') + '</div></div>' +
+                        '<div class="tpc-sum-box sum-pct"><div class="sum-num">' + progressPct + '%</div><div class="sum-label">Done</div></div>' +
+                        '<div class="tpc-sum-box sum-items"><div class="sum-num">' + totalAllItems + '</div><div class="sum-label">Types</div></div>' +
+                    '</div>' +
+
+                    '<div class="tpc-progress"><div class="fill" style="width:' + progressPct + '%;background:' + (progressPct >= 100 ? 'var(--green)' : 'linear-gradient(90deg, var(--gold), var(--green))') + ';"></div></div>';
+
+                // —— Render each bin (collapsible, click header to toggle) ——
                 Object.keys(binContents).forEach(function(binId) {
                     var bc = binContents[binId];
                     if (bc.count === 0) return;
@@ -695,23 +724,26 @@
                     if (binPct > 100) binPct = 100;
                     var binDone = bc.packed >= bc.need && bc.need > 0;
 
-                    html += '<div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:12px;margin-top:10px;">' +
-                        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-                            '<div><strong style="color:' + bc.color + ';">' + bc.icon + ' ' + bc.label + '</strong> <span style="color:var(--gray);font-size:0.8em;">' + bc.count + ' item types</span></div>' +
-                            '<div style="font-size:0.85em;font-weight:600;color:' + (binDone ? 'var(--green)' : 'var(--gold)') + ';">' + bc.packed + ' / ' + bc.need + ' · ' + binPct + '%</div>' +
-                        '</div>' +
-                        '<div class="tpc-progress" style="height:4px;margin-bottom:8px;"><div class="fill" style="width:' + binPct + '%;background:' + (binDone ? 'var(--green)' : bc.color) + ';"></div></div>';
+                    html += '<div class="bin-section">' +
+                        '<div class="bin-header" onclick="this.classList.toggle(\'bin-collapsed\');this.querySelector(\'.bin-arrow\').textContent=this.classList.contains(\'bin-collapsed\')?\'▶\':\'▼\';">' +
+                            '<span class="bin-label" style="color:' + bc.color + ';">' + bc.icon + ' ' + bc.label + '</span>' +
+                            '<span class="bin-meta">' + bc.count + '</span>' +
+                            '<div class="bin-progress"><div class="fill" style="width:' + binPct + '%;background:' + (binDone ? 'var(--green)' : bc.color) + ';"></div></div>' +
+                            '<span class="bin-status" style="color:' + (binDone ? 'var(--green)' : 'var(--gold)') + ';">' + bc.packed + '/' + bc.need + '</span>' +
+                            '<span class="bin-arrow" style="font-size:0.6em;color:var(--gray-dark);margin-left:4px;">▼</span>' +
+                        '</div>';
 
                     // Item rows within this bin
+                    html += '<div class="bin-items">';
                     Object.keys(bc.items).sort().forEach(function(key) {
                         var it = bc.items[key];
                         var packed = it.packed;
                         var need = it.need;
-                        var statusClass = packed >= need ? 'ok' : (packed > 0 ? 'short' : 'low');
-                        var statusText = packed >= need ? '✅ Done' : (packed > 0 ? '⚠️ ' + (need - packed) + ' short' : '❌ Needs ' + need);
+                        var done = packed >= need;
+                        var statusClass = done ? 'ok' : (packed > 0 ? 'short' : 'low');
+                        var statusChar = done ? '✓' : (packed > 0 ? '−' + (need - packed) : '✗' + need);
                         var safeKey = key.replace(/'/g, "\\'");
 
-                        // Find real stock from inventory or Sortly
                         var stockNote = '';
                         var realStock = null;
                         if (it.size) {
@@ -719,32 +751,31 @@
                             if (useSortlyApi && window.SORTLY_API_DEMO) {
                                 realStock = getSortlyJerseyStock(it.displayName, it.size);
                                 var loc = getSortlyItemLocation(it.displayName, it.size);
-                                if (realStock !== null) {
-                                    stockNote = '<div class="pir-note">🏪 In stock: ' + realStock + ' · ' + (loc || '') + (packed > realStock ? ' · ⚠️ over-packed!' : '') + '</div>';
-                                } else {
-                                    stockNote = '<div class="pir-note">🏪 No Sortly record</div>';
+                                if (realStock !== null && packed > realStock) {
+                                    stockNote = '<div class="pir-note">⚠️ Stock: ' + realStock + (loc ? ' · ' + loc : '') + ' — over-packed!</div>';
                                 }
                             } else {
                                 var inv = INVENTORY[s] || {};
                                 if (inv[it.displayName] && inv[it.displayName].sizes[it.size]) {
                                     realStock = inv[it.displayName].sizes[it.size];
-                                    stockNote = '<div class="pir-note">🏪 Stock: ' + realStock + (packed > realStock ? ' · ⚠️ over-packed!' : '') + '</div>';
+                                    if (packed > realStock) {
+                                        stockNote = '<div class="pir-note">⚠️ Stock: ' + realStock + ' — over-packed!</div>';
+                                    }
                                 }
                             }
                         }
 
-                        // Compute need-for-bin display: show how many total in this bin
                         html += '<div class="pack-item-row" id="pir-' + tId + '-' + binId + '-' + key.replace(/[^a-zA-Z0-9]/g, '_') + '">' +
-                            '<input type="checkbox" class="pir-check" ' + (packed >= need ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
-                            '<span class="pir-name">' + it.displayName + (it.size ? ' <span style="color:var(--gray-dark);font-size:0.85em;">(' + it.size + ')</span>' : '') + '</span>' +
+                            '<input type="checkbox" class="pir-check" ' + (done ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
+                            '<span class="pir-name"' + (it.size ? '' : '') + '>' + it.displayName + (it.size ? ' <span style="color:var(--gray-dark);font-size:0.85em;">(' + it.size + ')</span>' : '') + '</span>' +
                             '<span class="pir-needed">' + need + '</span>' +
                             '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
-                            '<span class="pir-status ' + statusClass + '">' + statusText + '</span>' +
+                            '<span class="pir-status ' + statusClass + '">' + statusChar + '</span>' +
                             stockNote +
                         '</div>';
                     });
-
-                    html += '</div>'; // end bin
+                    html += '</div>'; // end bin-items
+                    html += '</div>'; // end bin-section
                 });
 
                 html += '</div>'; // end tourney card
