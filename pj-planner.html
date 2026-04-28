@@ -1166,6 +1166,7 @@ function liveRefresh() {
 }
 window.addEventListener('storage', function(e) {
   if (e.key === 'fs_tourney_schedule') { liveRefresh(); }
+window.addEventListener('fs-sync-merged', function() { _pjLast = null; liveRefresh(); });
 });
 var _pjLast = JSON.stringify(localStorage.getItem('fs_tourney_schedule') + '|' + localStorage.getItem('fs_trips'));
 setInterval(function() {
