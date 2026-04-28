@@ -39,7 +39,7 @@
         .loadout-card .loadout-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .loadout-card .loadout-name { font-weight: 600; color: var(--gold); font-size: 0.95em; }
         .loadout-card .loadout-count { color: var(--gray); font-size: 0.75em; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 10px; }
-        .loadout-card .loadout-items { display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto; }
+        .loadout-card .loadout-items { display: flex; flex-direction: column; gap: 4px; max-height: 250px; overflow-y: auto; }
         .loadout-card .loadout-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: rgba(255,255,255,0.03); border-radius: 6px; font-size: 0.82em; }
         .loadout-card .loadout-item .li-name { color: var(--white); }
         .loadout-card .loadout-item .li-qty { color: var(--gold); font-weight: 600; }
@@ -47,64 +47,71 @@
         .loadout-card .loadout-edit-row input { flex: 1; padding: 6px 10px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; outline: none; }
         .loadout-card .loadout-edit-row input:focus { border-color: var(--gold); }
         .loadout-card .loadout-edit-row input[type="number"] { flex: 0 0 60px; }
-
         .tab-bar { display: flex; gap: 4px; margin-bottom: 20px; background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }
         .tab-bar button { flex: 1; padding: 10px; border: none; background: transparent; color: var(--gray); font-weight: 500; font-size: 0.85em; cursor: pointer; border-radius: 8px; transition: all 0.15s; }
         .tab-bar button.active { background: var(--gold); color: var(--black); font-weight: 700; }
-
-        .packing-summary { margin-top: 16px; }
-        .packing-summary h3 { margin-bottom: 10px; }
-        .packing-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 4px; font-size: 0.85em; }
-        .packing-item .pi-name { color: var(--white); font-weight: 500; }
-        .packing-item .pi-qty { color: var(--gold); font-weight: 700; font-size: 1.1em; }
-        .packing-item .pi-from { color: var(--gray); font-size: 0.78em; }
-        .packing-total { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; padding: 12px; background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.15); border-radius: 10px; }
-        .packing-total .pt-stat { text-align: center; flex: 1; min-width: 80px; }
-        .packing-total .pt-stat .pt-num { font-size: 1.4em; font-weight: 700; color: var(--gold); }
-        .packing-total .pt-stat .pt-label { font-size: 0.7em; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
         .empty-state { text-align: center; padding: 40px 20px; }
         .empty-state .big { font-size: 2.5em; margin-bottom: 10px; }
         .empty-state p { color: var(--gray); font-size: 0.9em; }
         .empty-state .small { color: var(--gray-dark); font-size: 0.8em; margin-top: 4px; }
-
-        /* Sport filter tabs inside loadouts */
         .sport-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
         .sport-tabs button { padding: 6px 18px; border: 1px solid var(--border); border-radius: 20px; background: transparent; color: var(--gray); font-size: 0.8em; cursor: pointer; transition: all 0.15s; }
         .sport-tabs button:hover { border-color: var(--gold); color: var(--gold); }
         .sport-tabs button.active { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 600; }
-
-        /* Jersey grid for inventory browser */
         .jersey-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 8px; }
         .jersey-card { background: var(--black); border: 1px solid var(--border); border-radius: 10px; padding: 12px; transition: all 0.15s; }
-        .jersey-card:hover { border-color: var(--gold-dark); background: var(--black-light); }
+        .jersey-card:hover { border-color: var(--gold-dark); }
         .jersey-card .jersey-name { font-weight: 500; font-size: 0.85em; }
         .jersey-card .jersey-stock { color: var(--gray); font-size: 0.75em; margin: 2px 0 6px; }
         .jersey-card .jersey-actions { display: flex; gap: 4px; flex-wrap: wrap; }
-
-        /* Loadout/custom item inline */
         .inline-input { display: flex; gap: 6px; align-items: center; margin-top: 8px; }
         .inline-input input { flex: 1; padding: 6px 10px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; outline: none; }
         .inline-input input:focus { border-color: var(--gold); }
         .inline-input input[type="number"] { flex: 0 0 60px; }
-
         .loadout-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 10px 0; }
         .loadout-select-grid label { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; font-size: 0.85em; transition: all 0.15s; }
         .loadout-select-grid label:hover { background: rgba(201,162,39,0.08); }
         .loadout-select-grid input[type="checkbox"] { accent-color: var(--gold); width: 16px; height: 16px; }
-
-        .print-sheet-section { margin-top: 16px; }
-        .print-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; page-break-inside: avoid; }
-        .print-card h4 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.95em; border-bottom: 2px solid var(--gold); padding-bottom: 6px; margin-bottom: 10px; }
-        .print-check-row { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px dashed var(--border); }
-        .print-check-row:last-child { border-bottom: none; }
-        .print-check-row .checkbox { width: 20px; height: 20px; border: 2px solid var(--gray); border-radius: 4px; flex-shrink: 0; }
-        .print-check-row .item-detail { font-size: 0.85em; }
-        .print-check-row .item-qty { color: var(--gold); font-weight: 700; margin-left: auto; font-size: 0.85em; }
-
         .quick-add-bar { display: flex; gap: 6px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
         .quick-add-bar select { padding: 6px 10px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; outline: none; }
         .quick-add-bar input[type="number"] { width: 60px; padding: 6px 10px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; outline: none; }
         .quick-add-bar select:focus, .quick-add-bar input:focus { border-color: var(--gold); }
+        .quick-add-bar span.label { color: var(--gray); font-size: 0.82em; }
+
+        /* Packing section styles */
+        .tourney-pack-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+        .tourney-pack-card .tpc-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .tourney-pack-card .tpc-name { font-weight: 600; color: var(--gold); font-size: 0.95em; }
+        .tourney-pack-card .tpc-meta { color: var(--gray); font-size: 0.78em; }
+        .tourney-pack-card .tpc-stats { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.82em; margin-bottom: 10px; padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: 8px; }
+        .tourney-pack-card .tpc-stats span { color: var(--gray); }
+        .tourney-pack-card .tpc-stats strong { color: var(--white); }
+        .tourney-pack-card .tpc-progress { height: 6px; background: var(--black); border-radius: 4px; margin-bottom: 10px; overflow: hidden; }
+        .tourney-pack-card .tpc-progress .fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 4px; transition: width 0.3s; }
+        .pack-item-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .pack-item-row:last-child { border-bottom: none; }
+        .pack-item-row .pir-check { width: 18px; height: 18px; accent-color: var(--green); cursor: pointer; flex-shrink: 0; }
+        .pack-item-row .pir-name { font-size: 0.82em; flex: 1; min-width: 120px; }
+        .pack-item-row .pir-needed { color: var(--gold); font-size: 0.78em; font-weight: 600; }
+        .pack-item-row .pir-packed { width: 60px; padding: 4px 6px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; text-align: center; outline: none; }
+        .pack-item-row .pir-packed:focus { border-color: var(--gold); }
+        .pack-item-row .pir-status { font-size: 0.75em; padding: 2px 8px; border-radius: 4px; min-width: 50px; text-align: center; }
+        .pack-item-row .pir-status.ok { color: var(--green); }
+        .pack-item-row .pir-status.short { color: var(--orange); }
+        .pack-item-row .pir-status.low { color: var(--red); }
+        .pack-item-row .pir-status.stocked { color: var(--blue); font-size: 0.68em; }
+        .pack-item-row .pir-note { font-size: 0.7em; color: var(--gray-dark); width: 100%; padding-left: 26px; font-style: italic; }
+
+        .jersey-count-estimate { padding: 8px 12px; background: rgba(201,162,39,0.06); border: 1px solid rgba(201,162,39,0.12); border-radius: 8px; margin-bottom: 14px; font-size: 0.82em; line-height: 1.6; }
+        .jersey-count-estimate strong { color: var(--gold); }
+
+        .packing-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .packing-actions button { flex: 1; min-width: 120px; }
+
+        .packing-summary-bar { display: flex; gap: 14px; flex-wrap: wrap; padding: 12px; background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.15); border-radius: 10px; margin-bottom: 16px; }
+        .packing-summary-bar .psb-stat { text-align: center; flex: 1; min-width: 70px; }
+        .packing-summary-bar .psb-stat .psb-num { font-size: 1.3em; font-weight: 700; color: var(--gold); }
+        .packing-summary-bar .psb-stat .psb-label { font-size: 0.7em; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
         @media (max-width: 768px) {
             .main { padding: 12px; }
@@ -112,14 +119,13 @@
             .jersey-grid { grid-template-columns: 1fr 1fr; }
             .form-row { flex-direction: column; }
             .form-group { min-width: auto; }
+            .tourney-pack-card .tpc-header { flex-direction: column; }
+            .pack-item-row { font-size: 0.9em; }
+            .packing-summary-bar .psb-stat { min-width: 50px; }
         }
         @media print {
             .no-print { display: none !important; }
             body { background: white; color: black; }
-            .print-card { border: 1px solid #ddd; background: white; }
-            .print-card h4 { color: #333; border-bottom-color: #C9A227; }
-            .print-check-row { border-bottom-color: #eee; }
-            .print-check-row .checkbox { border-color: #666; }
         }
     </style>
 </head>
@@ -127,12 +133,12 @@
     <div id="nav-root"></div>
     <div class="main">
         <div class="page-title">📦 Pack Manager</div>
-        <div class="page-subtitle">Create loadouts from our jersey inventory, build packing lists, and print checklists</div>
+        <div class="page-subtitle">Create loadouts from our jersey inventory, pack for tournaments, and track what's been packed</div>
 
         <!-- Tabs -->
         <div class="tab-bar">
             <button class="active" data-tab="loadouts" onclick="switchTab('loadouts',this)">📋 Loadouts</button>
-            <button data-tab="packing" onclick="switchTab('packing',this)">🎒 Pack & Print</button>
+            <button data-tab="packing" onclick="switchTab('packing',this)">🎒 Pack Tournaments</button>
         </div>
 
         <!-- === LOADOUTS TAB === -->
@@ -158,12 +164,11 @@
                 </div>
             </div>
 
-            <!-- Inventory Jersey Browser -->
             <div class="card">
                 <h3>👕 Add Jerseys to Loadout</h3>
-                <p class="sub">Select a loadout below, then click any jersey to add it (with all sizes and quantities from inventory).</p>
+                <p class="sub">Select a loadout below, then click any jersey to add it with all sizes & quantities from our inventory.</p>
                 <div class="quick-add-bar">
-                    <span style="color:var(--gray);font-size:0.82em;">Add to:</span>
+                    <span class="label">Add to:</span>
                     <select id="target-loadout-select">
                         <option value="">— Create a loadout first —</option>
                     </select>
@@ -173,70 +178,116 @@
                     <button data-sport="baseball" onclick="filterJerseys('baseball',this)">⚾ Baseball</button>
                     <button data-sport="soccer" onclick="filterJerseys('soccer',this)">⚽ Soccer</button>
                 </div>
-                <div id="jersey-browser" class="jersey-grid">
-                    <p style="color:var(--gray);">Loading jerseys...</p>
-                </div>
+                <div id="jersey-browser" class="jersey-grid"></div>
             </div>
 
-            <!-- Existing Loadouts -->
-            <div id="loadout-list">
-                <div class="empty-state"><div class="big">📦</div><p>No loadouts created yet.</p><div class="small">Create one above, then tap jerseys to add them.</div></div>
-            </div>
+            <div id="loadout-list"></div>
         </div>
 
-        <!-- === PACKING TAB === -->
+        <!-- === PACK TOURNAMENTS TAB === -->
         <div id="tab-packing" style="display:none;">
             <div class="card">
-                <h3>🎒 Build Your Packing List</h3>
-                <p style="color:var(--gray);font-size:0.85em;margin-bottom:12px;">Select loadouts and tournaments, then calculate & print a packing checklist.</p>
+                <h3>🎒 Pack for Tournaments</h3>
+                <p class="sub">Select loadouts and tournaments, then pack each item. The system calculates how many you need based on team count, and you can override if stock is low.</p>
                 <div id="packing-loadouts-select">
                     <label style="display:block;color:var(--gray);font-size:0.75em;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">1. Select Loadouts</label>
-                    <div id="packing-loadout-checkboxes" style="margin-bottom:16px;">
-                        <p style="color:var(--gray-dark);font-size:0.85em;">No loadouts created yet. Create some in the Loadouts tab first.</p>
-                    </div>
+                    <div id="packing-loadout-checkboxes" style="margin-bottom:14px;"></div>
                 </div>
                 <div id="packing-tournaments-select">
                     <label style="display:block;color:var(--gray);font-size:0.75em;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">2. Select Tournaments</label>
-                    <div id="packing-tourney-checkboxes" style="margin-bottom:16px;">
-                        <p style="color:var(--gray-dark);font-size:0.85em;">No upcoming tournaments in the schedule.</p>
-                    </div>
+                    <div id="packing-tourney-checkboxes" style="margin-bottom:14px;"></div>
                 </div>
-                <div class="btn-group">
-                    <button class="btn btn-success" onclick="calculatePackingList()">📊 Calculate Packing List</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('packing-results').style.display='none';">Clear</button>
-                </div>
+                <button class="btn btn-success" onclick="startPacking()">📦 Start Packing</button>
             </div>
-            <div id="packing-results" style="display:none;">
-                <div class="card packing-summary">
-                    <h3>📦 Packing List</h3>
-                    <div class="packing-total" id="packing-total-stats"></div>
-                    <div id="packing-items-list" style="margin-top:12px;"></div>
-                    <div class="btn-group" style="margin-top:12px;">
-                        <button class="btn btn-primary" onclick="printPackingList()">🖨️ Print Checklist</button>
-                    </div>
-                </div>
-            </div>
+
+            <div id="packing-results" style="display:none;"></div>
         </div>
     </div>
 
     <script>
-        // === CORE DATA ===
+        // ========== CORE DATA ==========
         function getLoadouts() { return JSON.parse(localStorage.getItem('fs_loadouts') || '[]'); }
         function saveLoadouts(list) { localStorage.setItem('fs_loadouts', JSON.stringify(list)); renderLoadouts(); refreshLoadoutSelectors(); }
+        function getTournaments() { return JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]'); }
+        function getPackState() { return JSON.parse(localStorage.getItem('fs_pack_state') || '{}'); }
+        function savePackState(state) { localStorage.setItem('fs_pack_state', JSON.stringify(state)); }
 
         let jerseyFilter = 'all';
+        let currentTab = 'loadouts';
 
-        // === CREATE LOADOUT ===
+        // ========== JERSEY NEEDS CALCULATION ==========
+        // Estimate total jerseys needed based on team count
+        // 0-100 teams → 375-450 jerseys total
+        // 100+ teams → 450+ jerseys
+        function estimateJerseyCount(teams) {
+            if (teams <= 0) return 0;
+            if (teams <= 40)  return Math.round(375 + (teams / 40) * 50);
+            if (teams <= 70)  return Math.round(425 + ((teams - 40) / 30) * 25);
+            if (teams <= 100) return Math.round(450 + ((teams - 70) / 30) * 20);
+            return Math.round(470 + (teams - 100) * 0.8);
+        }
+
+        // Calculate how many of a specific jersey+size to pack for a given team count
+        // Uses real inventory ratios across both sports
+        function calcJerseyNeed(jerseyName, size, teams) {
+            if (teams <= 0) return 1;
+            var totalEstimate = estimateJerseyCount(teams);
+
+            // Sum ALL jersey stock across baseball + soccer
+            var allStock = 0;
+            ['baseball', 'soccer'].forEach(function(s) {
+                var inv = INVENTORY[s] || {};
+                Object.keys(inv).forEach(function(n) { allStock += inv[n].total; });
+            });
+            if (allStock <= 0) return Math.max(5, Math.round(totalEstimate * 0.01));
+
+            // Find this specific jersey+size
+            var thisJerseyStock = 0;
+            var thisSport = INVENTORY.baseball && INVENTORY.baseball[jerseyName] ? 'baseball' :
+                            (INVENTORY.soccer && INVENTORY.soccer[jerseyName] ? 'soccer' : null);
+            if (thisSport) {
+                var j = INVENTORY[thisSport][jerseyName];
+                if (j.sizes[size] !== undefined) {
+                    thisJerseyStock = j.sizes[size];
+                }
+            }
+
+            // If we have real stock for this exact item, use proportional allocation
+            if (thisJerseyStock > 0) {
+                var proportion = thisJerseyStock / allStock;
+                return Math.max(1, Math.round(totalEstimate * proportion));
+            }
+
+            // Fallback: roughly distribute across all jerseys
+            var totalJerseyNames = 0;
+            ['baseball', 'soccer'].forEach(function(s) {
+                var inv = INVENTORY[s] || {};
+                Object.keys(inv).forEach(function(n) {
+                    var j = inv[n];
+                    Object.keys(j.sizes).forEach(function(sz) {
+                        if (j.sizes[sz] > 0) totalJerseyNames++;
+                    });
+                });
+            });
+            return Math.max(1, Math.round(totalEstimate / Math.max(totalJerseyNames, 1)));
+        }
+
+        // Total stock for a given sport (Baseball/Soccer)
+        function getJerseyTotalStock(sport) {
+            var inv = INVENTORY[sport] || {};
+            return Object.values(inv).reduce(function(sum, j) { return sum + j.total; }, 0);
+        }
+
+        // ========== LOADOUTS ==========
         function createLoadout() {
-            const name = document.getElementById('load-name').value.trim();
-            const customItem = document.getElementById('load-custom-item').value.trim();
-            const customQty = parseInt(document.getElementById('load-custom-qty').value) || 1;
+            var name = document.getElementById('load-name').value.trim();
+            var customItem = document.getElementById('load-custom-item').value.trim();
+            var customQty = parseInt(document.getElementById('load-custom-qty').value) || 1;
             if (!name) { alert('Enter a loadout name'); return; }
-            const list = getLoadouts();
-            const items = [];
+            var list = getLoadouts();
+            var items = [];
             if (customItem) items.push({ id: Date.now() + 1, name: customItem, qty: customQty });
-            const loadout = { id: Date.now(), name: name, items: items, created: new Date().toISOString() };
-            list.unshift(loadout);
+            list.unshift({ id: Date.now(), name: name, items: items, created: new Date().toISOString() });
             saveLoadouts(list);
             document.getElementById('load-name').value = '';
             document.getElementById('load-custom-item').value = '';
@@ -246,75 +297,30 @@
 
         function deleteLoadout(id) {
             if (!confirm('Delete this loadout?')) return;
-            saveLoadouts(getLoadouts().filter(l => l.id !== id));
-        }
-
-        // === ADD JERSEY TO LOADOUT ===
-        function getTargetLoadoutId() {
-            var sel = document.getElementById('target-loadout-select');
-            return parseInt(sel.value) || null;
+            saveLoadouts(getLoadouts().filter(function(l) { return l.id !== id; }));
         }
 
         function addJerseyToLoadout(jerseyName, sport) {
-            var ldId = getTargetLoadoutId();
+            var ldId = parseInt(document.getElementById('target-loadout-select').value);
             if (!ldId) { alert('Select a loadout first from the dropdown above.'); return; }
             var list = getLoadouts();
-            var ld = list.find(l => l.id === ldId);
-            if (!ld) { alert('Loadout not found.'); return; }
-
-            var inventory = INVENTORY[sport] || {};
-            var jersey = inventory[jerseyName];
-            if (!jersey) { alert('Jersey data not found.'); return; }
-
-            // Create items: one per size that has stock > 0
-            var sizeLabels = Object.keys(jersey.sizes);
-            sizeLabels.forEach(function(size) {
+            var ld = list.find(function(l) { return l.id === ldId; });
+            if (!ld) return;
+            var jersey = (INVENTORY[sport] || {})[jerseyName];
+            if (!jersey) return;
+            Object.keys(jersey.sizes).forEach(function(size) {
                 var qty = jersey.sizes[size];
                 if (qty > 0) {
                     var itemName = jerseyName + ' (' + size + ')';
-                    // Check if already exists — if so, update qty
                     var existing = ld.items.find(function(it) { return it.name === itemName; });
-                    if (existing) {
-                        existing.qty += qty;
-                    } else {
-                        ld.items.push({ id: Date.now() + Math.random(), name: itemName, qty: qty });
-                    }
+                    if (existing) { existing.qty += qty; }
+                    else { ld.items.push({ id: Date.now() + Math.random(), name: itemName, qty: qty }); }
                 }
             });
             saveLoadouts(list);
         }
 
-        function addAllJerseysToLoadout(sport) {
-            var ldId = getTargetLoadoutId();
-            if (!ldId) { alert('Select a loadout first from the dropdown above.'); return; }
-            var list = getLoadouts();
-            var ld = list.find(l => l.id === ldId);
-            if (!ld) { alert('Loadout not found.'); return; }
-
-            if (!confirm('Add ALL ' + sport + ' jerseys to "' + ld.name + '"?')) return;
-
-            var inventory = INVENTORY[sport] || {};
-            Object.keys(inventory).forEach(function(jerseyName) {
-                var jersey = inventory[jerseyName];
-                var sizeLabels = Object.keys(jersey.sizes);
-                sizeLabels.forEach(function(size) {
-                    var qty = jersey.sizes[size];
-                    if (qty > 0) {
-                        var itemName = jerseyName + ' (' + size + ')';
-                        var existing = ld.items.find(function(it) { return it.name === itemName; });
-                        if (existing) {
-                            existing.qty += qty;
-                        } else {
-                            ld.items.push({ id: Date.now() + Math.random(), name: itemName, qty: qty });
-                        }
-                    }
-                });
-            });
-            saveLoadouts(list);
-        }
-
-        // === ADD CUSTOM ITEM TO LOADOUT ===
-        function addCustomItemToLoadout(ldId) {
+        function addCustomItem(ldId) {
             var nameInput = document.getElementById('li-add-name-' + ldId);
             var qtyInput = document.getElementById('li-add-qty-' + ldId);
             if (!nameInput || !qtyInput) return;
@@ -322,7 +328,7 @@
             var qty = parseInt(qtyInput.value) || 1;
             if (!name) return;
             var list = getLoadouts();
-            var ld = list.find(l => l.id === ldId);
+            var ld = list.find(function(l) { return l.id === ldId; });
             if (!ld) return;
             ld.items.push({ id: Date.now() + Math.random(), name: name, qty: qty });
             saveLoadouts(list);
@@ -332,13 +338,12 @@
 
         function removeLoadoutItem(ldId, itemId) {
             var list = getLoadouts();
-            var ld = list.find(l => l.id === ldId);
+            var ld = list.find(function(l) { return l.id === ldId; });
             if (!ld) return;
             ld.items = ld.items.filter(function(it) { return it.id !== itemId; });
             saveLoadouts(list);
         }
 
-        // === RENDER LOADOUTS ===
         function renderLoadouts() {
             var container = document.getElementById('loadout-list');
             var list = getLoadouts();
@@ -347,19 +352,17 @@
                 return;
             }
             container.innerHTML = '<div class="loadout-grid">' + list.map(function(l) {
-                var itemCount = l.items.length;
                 return '<div class="loadout-card">' +
                     '<div class="loadout-header">' +
                         '<span class="loadout-name">' + l.name + '</span>' +
                         '<div class="btn-group">' +
-                            '<span class="loadout-count">' + itemCount + ' item' + (itemCount !== 1 ? 's' : '') + '</span>' +
+                            '<span class="loadout-count">' + l.items.length + ' item' + (l.items.length !== 1 ? 's' : '') + '</span>' +
                             '<button class="btn btn-xs btn-danger" onclick="deleteLoadout(' + l.id + ')">🗑️</button>' +
                         '</div>' +
                     '</div>' +
                     '<div class="loadout-items">' +
-                        (itemCount === 0 ? '<div style="color:var(--gray-dark);font-size:0.8em;padding:8px;">No items yet</div>' : '') +
+                        (l.items.length === 0 ? '<div style="color:var(--gray-dark);font-size:0.8em;padding:8px;">No items yet</div>' : '') +
                         l.items.map(function(it) {
-                            var isSize = it.name.indexOf('(') > -1;
                             return '<div class="loadout-item">' +
                                 '<span class="li-name">' + it.name + '</span>' +
                                 '<div class="btn-group">' +
@@ -372,13 +375,13 @@
                     '<div class="inline-input">' +
                         '<input type="text" id="li-add-name-' + l.id + '" placeholder="Add item..." autocomplete="off">' +
                         '<input type="number" id="li-add-qty-' + l.id + '" placeholder="Qty" min="1" value="1">' +
-                        '<button class="btn btn-sm btn-primary" onclick="addCustomItemToLoadout(' + l.id + ')">+</button>' +
+                        '<button class="btn btn-sm btn-primary" onclick="addCustomItem(' + l.id + ')">+</button>' +
                     '</div>' +
                 '</div>';
             }).join('') + '</div>';
         }
 
-        // === JERSEY BROWSER ===
+        // ========== JERSEY BROWSER ==========
         function filterJerseys(sport, btn) {
             jerseyFilter = sport;
             document.querySelectorAll('.sport-tabs button').forEach(function(b) { b.classList.remove('active'); });
@@ -393,7 +396,7 @@
                 html += renderSportJerseys('baseball', '⚾');
             }
             if (jerseyFilter === 'all' || jerseyFilter === 'soccer') {
-                if (jerseyFilter === 'all' && Object.keys(INVENTORY.baseball).length > 0) {
+                if (jerseyFilter === 'all' && Object.keys(INVENTORY.baseball || {}).length > 0) {
                     html += '<div style="grid-column:1/-1;font-size:0.8em;color:var(--gold);margin:4px 0;padding:6px 0;border-bottom:1px solid var(--border);">⚽ Soccer</div>';
                 }
                 html += renderSportJerseys('soccer', '⚽');
@@ -404,14 +407,11 @@
         function renderSportJerseys(sport, icon) {
             var inventory = INVENTORY[sport] || {};
             var names = Object.keys(inventory);
-            if (names.length === 0) return '';
             return names.map(function(name) {
                 var j = inventory[name];
-                var total = j.total;
-                var sizeCount = Object.keys(j.sizes).length;
                 return '<div class="jersey-card">' +
                     '<div class="jersey-name">' + icon + ' ' + name + '</div>' +
-                    '<div class="jersey-stock">' + total + ' in stock · ' + sizeCount + ' sizes</div>' +
+                    '<div class="jersey-stock">' + j.total + ' in stock · ' + Object.keys(j.sizes).length + ' sizes</div>' +
                     '<div class="jersey-actions">' +
                         '<button class="btn btn-xs btn-primary" onclick="addJerseyToLoadout(\'' + name.replace(/'/g, "\\'") + '\',\'' + sport + '\')">+ to Loadout</button>' +
                     '</div>' +
@@ -419,20 +419,15 @@
             }).join('');
         }
 
-        // === LOADOUT SELECTOR REFRESH ===
         function refreshLoadoutSelectors() {
             var list = getLoadouts();
             var sel = document.getElementById('target-loadout-select');
-            if (list.length === 0) {
-                sel.innerHTML = '<option value="">— Create a loadout first —</option>';
-            } else {
-                sel.innerHTML = list.map(function(l) {
-                    return '<option value="' + l.id + '">' + l.name + ' (' + l.items.length + ' items)</option>';
-                }).join('');
-            }
+            sel.innerHTML = list.length === 0
+                ? '<option value="">— Create a loadout first —</option>'
+                : list.map(function(l) { return '<option value="' + l.id + '">' + l.name + ' (' + l.items.length + ' items)</option>'; }).join('');
         }
 
-        // === PACKING TAB ===
+        // ========== PACK TOURNAMENTS ==========
 
         function switchTab(tab, btn) {
             currentTab = tab;
@@ -443,174 +438,415 @@
             if (tab === 'packing') populatePackingSelectors();
         }
 
-        function getTournaments() {
-            return JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-        }
-
         function populatePackingSelectors() {
             var loadouts = getLoadouts();
-            var lcContainer = document.getElementById('packing-loadout-checkboxes');
+            var lc = document.getElementById('packing-loadout-checkboxes');
             if (loadouts.length === 0) {
-                lcContainer.innerHTML = '<p style="color:var(--gray-dark);font-size:0.85em;">No loadouts created yet. Create some in the Loadouts tab first.</p>';
+                lc.innerHTML = '<p style="color:var(--gray-dark);font-size:0.85em;">No loadouts created yet.</p>';
             } else {
-                lcContainer.innerHTML = '<div class="loadout-select-grid">' + loadouts.map(function(l) {
+                lc.innerHTML = '<div class="loadout-select-grid">' + loadouts.map(function(l) {
                     return '<label><input type="checkbox" class="packing-loadout-cb" value="' + l.id + '" checked>' + l.name + ' (' + l.items.length + ' items)</label>';
                 }).join('') + '</div>';
             }
 
-            var allTourneys = getTournaments();
+            var tourneys = getTournaments();
             var now = new Date();
-            var upcoming = allTourneys.filter(function(t) { return !t.end || new Date(t.end + 'T23:59:59') >= now; });
-            var tcContainer = document.getElementById('packing-tourney-checkboxes');
+            var upcoming = tourneys.filter(function(t) { return !t.end || new Date(t.end + 'T23:59:59') >= now; });
+            var tc = document.getElementById('packing-tourney-checkboxes');
             if (upcoming.length === 0) {
-                tcContainer.innerHTML = '<p style="color:var(--gray-dark);font-size:0.85em;">No upcoming tournaments in the schedule.</p>';
+                tc.innerHTML = '<p style="color:var(--gray-dark);font-size:0.85em;">No upcoming tournaments in the schedule.</p>';
             } else {
-                tcContainer.innerHTML = '<div class="loadout-select-grid">' + upcoming.map(function(t) {
+                tc.innerHTML = '<div class="loadout-select-grid">' + upcoming.map(function(t) {
                     var dateStr = t.start ? new Date(t.start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
                     var icon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏅';
-                    return '<label><input type="checkbox" class="packing-tourney-cb" value="' + t.id + '" checked>' + icon + ' ' + t.name + (dateStr ? ' — ' + dateStr : '') + '</label>';
+                    var teamStr = t.teams ? ' · ' + t.teams + ' teams' : '';
+                    return '<label><input type="checkbox" class="packing-tourney-cb" value="' + t.id + '" checked>' + icon + ' ' + t.name + (dateStr ? ' — ' + dateStr : '') + '<span style="color:var(--gray-dark);font-size:0.78em;">' + teamStr + '</span></label>';
                 }).join('') + '</div>';
             }
         }
 
-        function calculatePackingList() {
-            var loadoutCbs = document.querySelectorAll('.packing-loadout-cb:checked');
-            var loadoutIds = Array.from(loadoutCbs).map(function(cb) { return parseInt(cb.value); });
-            var allLoadouts = getLoadouts();
-            var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
+        // ========== START PACKING ==========
+        function startPacking() {
+            var loadoutIds = Array.from(document.querySelectorAll('.packing-loadout-cb:checked')).map(function(cb) { return parseInt(cb.value); });
+            var tourneyIds = Array.from(document.querySelectorAll('.packing-tourney-cb:checked')).map(function(cb) { return parseInt(cb.value); });
 
-            var tourneyCbs = document.querySelectorAll('.packing-tourney-cb:checked');
-            var tourneyIds = Array.from(tourneyCbs).map(function(cb) { return parseInt(cb.value); });
-            var allTourneys = getTournaments();
-            var selectedTourneys = allTourneys.filter(function(t) { return tourneyIds.indexOf(t.id) !== -1; });
-
-            if (selectedLoadouts.length === 0 || selectedTourneys.length === 0) {
+            if (loadoutIds.length === 0 || tourneyIds.length === 0) {
                 alert('Select at least one loadout and one tournament.');
                 return;
             }
 
-            // Group by site address
-            var sites = {};
-            selectedTourneys.forEach(function(t) {
-                var site = t.address || t.location || 'Main Site';
-                if (!sites[site]) sites[site] = [];
-                sites[site].push(t);
+            var container = document.getElementById('packing-results');
+            container.style.display = '';
+
+            var allLoadouts = getLoadouts();
+            var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
+            var allTourneys = getTournaments();
+            var selectedTourneys = allTourneys.filter(function(t) { return tourneyIds.indexOf(t.id) !== -1; });
+
+            // Get or init pack state for these tours
+            var packState = getPackState();
+            var sessionId = 'ps_' + Date.now();
+
+            // Calculate total jerseys needed
+            var totalTeams = selectedTourneys.reduce(function(sum, t) { return sum + (t.teams || 0); }, 0);
+            var estJerseys = estimateJerseyCount(totalTeams);
+            var totalSites = new Set(selectedTourneys.map(function(t) { return t.address || t.location || 'Main Site'; })).size;
+
+            // Group loadout items into sport-based chunks
+            var html = '';
+
+            // ——- Summary bar ——-
+            html += '<div class="packing-summary-bar">' +
+                '<div class="psb-stat"><div class="psb-num">' + selectedTourneys.length + '</div><div class="psb-label">Tournaments</div></div>' +
+                '<div class="psb-stat"><div class="psb-num">' + totalSites + '</div><div class="psb-label">Sites</div></div>' +
+                '<div class="psb-stat"><div class="psb-num">' + totalTeams + '</div><div class="psb-label">Teams</div></div>' +
+                '<div class="psb-stat"><div class="psb-num">~' + estJerseys + '</div><div class="psb-label">Jerseys Needed</div></div>' +
+                '<div class="psb-stat"><div class="psb-num">' + selectedLoadouts.reduce(function(s,l) { return s + l.items.length; }, 0) + '</div><div class="psb-label">Item Types</div></div>' +
+            '</div>';
+
+            // ——- Per-tournament packing cards ——-
+            selectedTourneys.forEach(function(tourney) {
+                var tId = 't_' + tourney.id;
+                if (!packState[tId]) packState[tId] = { items: {}, created: Date.now() };
+                var state = packState[tId];
+
+                // Loadout items that apply to this tournament
+                // Filter loadout items by sport match
+                var applicableItems = [];
+                selectedLoadouts.forEach(function(ld) {
+                    ld.items.forEach(function(item) {
+                        applicableItems.push({
+                            ldName: ld.name,
+                            name: item.name,
+                            baseQty: item.qty,
+                            id: item.id
+                        });
+                    });
+                });
+
+                // Calculate needed per item
+                var tourneyTeams = tourney.teams || 0;
+                var itemRows = applicableItems.map(function(item) {
+                    var need = item.baseQty;
+                    // If it's a jersey (has parentheses with size), scale by team count
+                    var parenMatch = item.name.match(/\(([^)]+)\)$/);
+                    if (parenMatch) {
+                        var size = parenMatch[1];
+                        var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
+                        var totalStock = getJerseyTotalStock(sport);
+                        need = calcJerseyNeed(item.name, size, tourneyTeams);
+                    }
+                    return { name: item.name, ldName: item.ldName, need: Math.max(need, 1), itemId: item.id };
+                });
+
+                // Merge rows with same name
+                var merged = {};
+                itemRows.forEach(function(r) {
+                    if (!merged[r.name]) merged[r.name] = { name: r.name, ldNames: [], need: 0, itemId: r.itemId };
+                    merged[r.name].ldNames.push(r.ldName);
+                    merged[r.name].need += r.need;
+                });
+                var rows = Object.values(merged);
+
+                var itemsPacked = 0;
+                var itemsNeeded = 0;
+                var itemsChecked = 0;
+
+                rows.forEach(function(r) {
+                    var key = r.name;
+                    var packed = state.items[key] || 0;
+                    itemsPacked += packed;
+                    itemsNeeded += r.need;
+                    if (packed >= r.need) itemsChecked++;
+                });
+
+                var progressPct = itemsNeeded > 0 ? Math.round((itemsPacked / itemsNeeded) * 100) : 0;
+                if (progressPct > 100) progressPct = 100;
+
+                var dateStr = tourney.start ? new Date(tourney.start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD';
+                var icon = tourney.sport === 'Soccer' ? '⚽' : tourney.sport === 'Baseball' ? '⚾' : '🏅';
+
+                html += '<div class="tourney-pack-card" id="tpc-' + tId + '">' +
+                    '<div class="tpc-header">' +
+                        '<div>' +
+                            '<div class="tpc-name">' + icon + ' ' + tourney.name + '</div>' +
+                            '<div class="tpc-meta">' + dateStr + ' · ' + (tourney.location || 'Location TBD') + (tourney.address ? ' (' + tourney.address + ')' : '') + ' · ' + tourneyTeams + ' teams</div>' +
+                        '</div>' +
+                        '<div class="btn-group">' +
+                            '<button class="btn btn-sm btn-secondary" onclick="resetPacked(' + tourney.id + ')">↺ Reset</button>' +
+                            '<button class="btn btn-sm btn-primary" onclick="printTourneySheet(' + tourney.id + ')">🖨️ Print</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="tpc-progress"><div class="fill" style="width:' + progressPct + '%;"></div></div>' +
+                    '<div class="tpc-stats">' +
+                        '<span><strong>' + itemsPacked + '</strong> / ' + itemsNeeded + ' items packed</span>' +
+                        '<span><strong>' + itemsChecked + '</strong> / ' + rows.length + ' item types complete</span>' +
+                        '<span style="color:' + (progressPct >= 100 ? 'var(--green)' : 'var(--gold)') + ';">' + progressPct + '% done</span>' +
+                    '</div>';
+
+                // —— Jersey count estimate box ——
+                if (tourneyTeams > 0) {
+                    html += '<div class="jersey-count-estimate">' +
+                        '<strong>📊 Jersey estimate:</strong> ~' + estimateJerseyCount(tourneyTeams) + ' jerseys needed for ' + tourneyTeams + ' teams (recommended). ' +
+                        'Adjust the packed quantity below if stock is low.' +
+                    '</div>';
+                }
+
+                // —— Item rows ——
+                rows.forEach(function(r) {
+                    var key = r.name;
+                    var packed = state.items[key] || 0;
+                    var shortfall = r.need - packed;
+                    var statusClass = packed >= r.need ? 'ok' : (packed > 0 ? 'short' : 'low');
+                    var statusText = packed >= r.need ? '✅ Done' : (packed > 0 ? '⚠️ Partial' : '❌ Needs');
+                    var isJersey = r.name.indexOf('(') > -1;
+                    var stockNote = '';
+
+                    if (isJersey) {
+                        // Try to match against inventory to show real stock
+                        var sport1 = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
+                        var inv = INVENTORY[sport1] || {};
+                        var jerseyBase = r.name.replace(/\s*\([^)]+\)$/, '');
+                        var sizeMatch = r.name.match(/\(([^)]+)\)$/);
+                        var size = sizeMatch ? sizeMatch[1] : '';
+                        var realStock = 0;
+                        if (inv[jerseyBase] && inv[jerseyBase].sizes[size]) {
+                            realStock = inv[jerseyBase].sizes[size];
+                        }
+                        if (realStock > 0) {
+                            stockNote = '<div class="pir-note">🏪 ' + realStock + ' in stock (per inventory)' + (packed > realStock ? ' — ⚠️ packed more than stock shows!' : '') + '</div>';
+                        } else {
+                            stockNote = '<div class="pir-note">🏪 No stock record for this exact size combo</div>';
+                        }
+                    }
+
+                    html += '<div class="pack-item-row" id="pir-' + tId + '-' + key.replace(/[^a-zA-Z0-9]/g, '_') + '">' +
+                        '<input type="checkbox" class="pir-check" ' + (packed >= r.need ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',\'' + key.replace(/'/g, "\\'") + '\',this)">' +
+                        '<span class="pir-name">' + r.name + '</span>' +
+                        '<span class="pir-needed">Need: ' + r.need + '</span>' +
+                        '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',\'' + key.replace(/'/g, "\\'") + '\',this)">' +
+                        '<span class="pir-status ' + statusClass + '">' + statusText + '</span>' +
+                        stockNote +
+                    '</div>';
+                });
+
+                html += '</div>';
             });
 
-            var masterList = {};
-            var totalTourneys = selectedTourneys.length;
-            var siteCount = Object.keys(sites).length;
+            // —— Global Actions ——
+            html += '<div class="card">' +
+                '<h3>⚡ Bulk Actions</h3>' +
+                '<div class="packing-actions">' +
+                    '<button class="btn btn-success" onclick="markAllPacked()">✅ Mark All Packed</button>' +
+                    '<button class="btn btn-secondary" onclick="resetAllPacked()">↺ Reset All</button>' +
+                    '<button class="btn btn-primary" onclick="printFullSheet()">🖨️ Print Full Sheet</button>' +
+                '</div>' +
+            '</div>';
 
+            savePackState(packState);
+            container.innerHTML = html;
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ========== PACKING ACTIONS ==========
+        function getTourneyState(tourneyId) {
+            var state = getPackState();
+            var tId = 't_' + tourneyId;
+            if (!state[tId]) state[tId] = { items: {}, created: Date.now() };
+            return { state: state, tId: tId, packState: state[tId] };
+        }
+
+        function saveAndRerender() {
+            startPacking();
+        }
+
+        function updatePackedQty(tourneyId, itemName, input) {
+            var val = parseInt(input.value) || 0;
+            var ctx = getTourneyState(tourneyId);
+            ctx.packState.items[itemName] = val;
+            savePackState(ctx.state);
+            // Update the checkbox and status
+            startPacking(); // Re-render all for consistent state
+        }
+
+        function togglePackedItem(tourneyId, itemName, checkbox) {
+            var ctx = getTourneyState(tourneyId);
+            // Find the need for this item
+            var tourneys = getTournaments();
+            var tourney = tourneys.find(function(t) { return t.id === tourneyId; });
+            if (!tourney) return;
+
+            var loadoutIds = Array.from(document.querySelectorAll('.packing-loadout-cb:checked')).map(function(cb) { return parseInt(cb.value); });
+            var allLoadouts = getLoadouts();
+            var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
+
+            var need = 0;
             selectedLoadouts.forEach(function(ld) {
                 ld.items.forEach(function(item) {
-                    var totalQty = item.qty * siteCount;
-                    if (masterList[item.name]) {
-                        masterList[item.name].qty += totalQty;
-                        masterList[item.name].from.push(ld.name);
-                    } else {
-                        masterList[item.name] = { qty: totalQty, from: [ld.name] };
+                    if (item.name === itemName) {
+                        var baseNeed = item.qty;
+                        var parenMatch = itemName.match(/\(([^)]+)\)$/);
+                        if (parenMatch) {
+                            var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
+                            baseNeed = calcJerseyNeed(itemName, parenMatch[1], tourney.teams || 0);
+                        }
+                        need += Math.max(baseNeed, 1);
                     }
                 });
             });
 
-            var uniqueItems = Object.keys(masterList).length;
-            var totalItems = 0;
-            Object.values(masterList).forEach(function(v) { totalItems += v.qty; });
-
-            document.getElementById('packing-results').style.display = '';
-            document.getElementById('packing-total-stats').innerHTML =
-                '<div class="pt-stat"><div class="pt-num">' + totalTourneys + '</div><div class="pt-label">Tournaments</div></div>' +
-                '<div class="pt-stat"><div class="pt-num">' + siteCount + '</div><div class="pt-label">Site' + (siteCount !== 1 ? 's' : '') + '</div></div>' +
-                '<div class="pt-stat"><div class="pt-num">' + uniqueItems + '</div><div class="pt-label">Item Types</div></div>' +
-                '<div class="pt-stat"><div class="pt-num">' + totalItems + '</div><div class="pt-label">Total Items</div></div>';
-
-            var itemsHtml = Object.keys(masterList).sort().map(function(name) {
-                var item = masterList[name];
-                return '<div class="packing-item">' +
-                    '<div><span class="pi-name">' + name + '</span><br><span class="pi-from">From: ' + item.from.join(', ') + ' × ' + siteCount + ' site' + (siteCount !== 1 ? 's' : '') + '</span></div>' +
-                    '<span class="pi-qty">×' + item.qty + '</span>' +
-                '</div>';
-            }).join('');
-            document.getElementById('packing-items-list').innerHTML = itemsHtml;
+            if (checkbox.checked) {
+                ctx.packState.items[itemName] = Math.max(ctx.packState.items[itemName] || 0, need);
+            } else {
+                ctx.packState.items[itemName] = 0;
+            }
+            savePackState(ctx.state);
+            startPacking();
         }
 
-        // === PRINT PACKING LIST ===
-        function printPackingList() {
-            var itemsContainer = document.getElementById('packing-items-list');
-            var itemRows = itemsContainer.querySelectorAll('.packing-item');
-            if (itemRows.length === 0) { alert('Calculate a packing list first.'); return; }
+        function markAllPacked() {
+            var tourneyCbs = document.querySelectorAll('.packing-tourney-cb:checked');
+            var tourneyIds = Array.from(tourneyCbs).map(function(cb) { return parseInt(cb.value); });
+            var state = getPackState();
 
-            var statsContainer = document.getElementById('packing-total-stats');
-            var stats = statsContainer.querySelectorAll('.pt-stat');
-            var totalTourneys = stats[0] ? stats[0].querySelector('.pt-num').textContent : '?';
-            var totalSites = stats[1] ? stats[1].querySelector('.pt-num').textContent : '?';
-            var totalItems = stats[3] ? stats[3].querySelector('.pt-num').textContent : '?';
+            tourneyIds.forEach(function(tId) {
+                var ctx = getTourneyState(tId);
+                // Find items and needs for this tourney
+                var tourneys = getTournaments();
+                var tourney = tourneys.find(function(t) { return t.id === tId; });
+                if (!tourney) return;
+
+                var loadoutIds = Array.from(document.querySelectorAll('.packing-loadout-cb:checked')).map(function(cb) { return parseInt(cb.value); });
+                var allLoadouts = getLoadouts();
+                var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
+
+                selectedLoadouts.forEach(function(ld) {
+                    ld.items.forEach(function(item) {
+                        var need = item.qty;
+                        var parenMatch = item.name.match(/\(([^)]+)\)$/);
+                        if (parenMatch) {
+                            var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
+                            need = calcJerseyNeed(item.name, parenMatch[1], tourney.teams || 0);
+                        }
+                        need = Math.max(need, 1);
+                        ctx.packState.items[item.name] = need;
+                    });
+                });
+            });
+            savePackState(state);
+            startPacking();
+        }
+
+        function resetAllPacked() {
+            if (!confirm('Reset all packing counts?')) return;
+            var state = getPackState();
+            Object.keys(state).forEach(function(key) {
+                if (key.startsWith('t_')) {
+                    state[key].items = {};
+                }
+            });
+            savePackState(state);
+            startPacking();
+        }
+
+        function resetPacked(tourneyId) {
+            if (!confirm('Reset packing for this tournament?')) return;
+            var state = getPackState();
+            var tId = 't_' + tourneyId;
+            if (state[tId]) state[tId].items = {};
+            savePackState(state);
+            startPacking();
+        }
+
+        // ========== PRINT ==========
+        function printTourneySheet(tourneyId) {
+            var tourneys = getTournaments();
+            var tourney = tourneys.find(function(t) { return t.id === tourneyId; });
+            if (!tourney) return;
+
+            var state = getPackState();
+            var tId = 't_' + tourneyId;
+            var tState = state[tId] || { items: {} };
+
+            var loadoutIds = Array.from(document.querySelectorAll('.packing-loadout-cb:checked')).map(function(cb) { return parseInt(cb.value); });
+            var allLoadouts = getLoadouts();
+            var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
+
+            var items = [];
+            selectedLoadouts.forEach(function(ld) {
+                ld.items.forEach(function(item) {
+                    var need = item.qty;
+                    var parenMatch = item.name.match(/\(([^)]+)\)$/);
+                    if (parenMatch) {
+                        var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
+                        need = calcJerseyNeed(item.name, parenMatch[1], tourney.teams || 0);
+                    }
+                    need = Math.max(need, 1);
+                    items.push({ name: item.name, need: need, packed: tState.items[item.name] || 0 });
+                });
+            });
 
             var w = window.open('', '_blank');
             var today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-            var itemsHtml = '';
-            itemRows.forEach(function(row) {
-                var name = row.querySelector('.pi-name') ? row.querySelector('.pi-name').textContent : 'Item';
-                var qty = row.querySelector('.pi-qty') ? row.querySelector('.pi-qty').textContent : '×0';
-                var from = row.querySelector('.pi-from') ? row.querySelector('.pi-from').textContent : '';
-                itemsHtml += '<div class="print-check-row">' +
+            var rowsHtml = items.map(function(it) {
+                return '<div class="print-check-row">' +
                     '<div class="checkbox"></div>' +
-                    '<span class="item-detail">' + name + '</span>' +
-                    '<span style="font-size:0.78em;color:#999;margin-left:8px;">' + from + '</span>' +
-                    '<span class="item-qty">' + qty + '</span>' +
+                    '<span class="item-detail">' + it.name + '</span>' +
+                    '<span style="font-size:0.8em;color:#999;margin:0 12px;">Need: ' + it.need + ' | Packed: ' + it.packed + '</span>' +
+                    '<span class="item-qty">Need: ' + it.need + '</span>' +
                 '</div>';
-            });
+            }).join('');
 
-            w.document.write('<!DOCTYPE html><html><head><title>Packing List — Future Stars</title>' +
+            w.document.write('<!DOCTYPE html><html><head><title>Packing Sheet — ' + tourney.name + '</title>' +
                 '<style>' +
-                    '* { margin: 0; padding: 0; box-sizing: border-box; }' +
-                    'body { font-family: Inter, Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; background: white; color: #111; }' +
-                    '.header-print { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 16px; margin-bottom: 20px; }' +
-                    '.header-print h1 { color: #111; font-size: 1.5em; }' +
-                    '.header-print .sub { color: #666; font-size: 0.85em; margin-top: 4px; }' +
-                    '.meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.9em; color: #444; margin-bottom: 20px; padding: 12px 16px; background: #f5f5f5; border-radius: 8px; }' +
-                    '.meta strong { color: #111; }' +
-                    '.print-card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; }' +
-                    '.print-card h4 { font-size: 1em; border-bottom: 2px solid #C9A227; padding-bottom: 8px; margin-bottom: 10px; color: #333; }' +
-                    '.print-check-row { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px dashed #eee; }' +
-                    '.print-check-row:last-child { border-bottom: none; }' +
-                    '.print-check-row .checkbox { width: 22px; height: 22px; border: 2px solid #999; border-radius: 4px; flex-shrink: 0; }' +
-                    '.print-check-row .item-detail { font-size: 0.95em; color: #333; }' +
-                    '.print-check-row .item-qty { font-weight: 700; color: #C9A227; margin-left: auto; font-size: 0.9em; }' +
-                    '.summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-top: 2px solid #ddd; margin-top: 12px; font-weight: 600; font-size: 0.95em; }' +
-                    '.footer-print { margin-top: 30px; padding-top: 16px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 0.8em; color: #999; }' +
-                    '@media print { body { padding: 0.5in; } .no-print { display: none !important; } .print-card { break-inside: avoid; } }' +
+                    '* { margin:0;padding:0;box-sizing:border-box; }' +
+                    'body { font-family:Inter,Arial,sans-serif; padding:40px; max-width:800px; margin:0 auto; background:white; color:#111; }' +
+                    '.header { text-align:center; border-bottom:3px solid #C9A227; padding-bottom:16px; margin-bottom:20px; }' +
+                    '.header h1 { color:#111; font-size:1.5em; }' +
+                    '.header .meta { color:#666; font-size:0.85em; margin-top:4px; }' +
+                    '.info { display:flex; gap:24px; flex-wrap:wrap; font-size:0.9em; color:#444; margin-bottom:20px; padding:12px 16px; background:#f5f5f5; border-radius:8px; }' +
+                    '.info strong { color:#111; }' +
+                    '.print-card { border:1px solid #ddd; border-radius:8px; padding:16px; }' +
+                    '.print-card h4 { font-size:1em; border-bottom:2px solid #C9A227; padding-bottom:8px; margin-bottom:10px; color:#333; }' +
+                    '.print-check-row { display:flex; align-items:center; gap:12px; padding:10px 4px; border-bottom:1px dashed #eee; }' +
+                    '.print-check-row:last-child { border-bottom:none; }' +
+                    '.print-check-row .checkbox { width:22px;height:22px;border:2px solid #999;border-radius:4px;flex-shrink:0; }' +
+                    '.print-check-row .item-detail { font-size:0.95em; color:#333; }' +
+                    '.print-check-row .item-qty { font-weight:700; color:#C9A227; margin-left:auto; }' +
+                    '.summary { display:flex; justify-content:space-between; padding:12px 0; border-top:2px solid #ddd; margin-top:12px; font-weight:600; }' +
+                    '.footer { margin-top:30px; padding-top:16px; border-top:1px solid #ddd; display:flex; justify-content:space-between; font-size:0.8em; color:#999; }' +
                 '</style></head><body>' +
-                '<div class="header-print">' +
-                    '<h1>📦 Packing List</h1>' +
-                    '<div class="sub">Future Stars Sports Co</div>' +
+                '<div class="header">' +
+                    '<h1>📦 Packing Sheet</h1>' +
+                    '<div class="meta">Future Stars Sports Co</div>' +
                 '</div>' +
-                '<div class="meta">' +
-                    '<span><strong>Date:</strong> ' + today + '</span>' +
-                    '<span><strong>Tournaments:</strong> ' + totalTourneys + '</span>' +
-                    '<span><strong>Sites:</strong> ' + totalSites + '</span>' +
+                '<div class="info">' +
+                    '<span><strong>Tournament:</strong> ' + tourney.name + '</span>' +
+                    '<span><strong>Date:</strong> ' + (tourney.start || 'TBD') + '</span>' +
+                    '<span><strong>Teams:</strong> ' + (tourney.teams || '?') + '</span>' +
+                    '<span><strong>Location:</strong> ' + (tourney.location || 'TBD') + '</span>' +
                 '</div>' +
                 '<div class="print-card">' +
                     '<h4>📦 Items to Pack</h4>' +
-                    itemsHtml +
+                    rowsHtml +
                 '</div>' +
-                '<div class="summary-row">' +
-                    '<span>Total Items</span>' +
-                    '<span>' + totalItems + '</span>' +
-                '</div>' +
-                '<div class="footer-print">' +
-                    '<span>Printed: ' + today + '</span>' +
-                    '<span>☐ Check each item as packed</span>' +
-                '</div>' +
+                '<div class="summary"><span>Total Items</span><span>' + items.reduce(function(s,i) { return s + i.need; }, 0) + '</span></div>' +
+                '<div class="footer"><span>Printed: ' + today + '</span><span>☐ Check each item as packed</span></div>' +
                 '<div class="no-print" style="text-align:center;margin-top:30px;">' +
                     '<button onclick="window.print()" style="padding:12px 32px;background:#C9A227;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:1em;">🖨️ Print This Sheet</button>' +
-                '</div>' +
-            '</body></html>');
+                '</div></body></html>');
             w.document.close();
         }
 
-        // === INIT ===
+        function printFullSheet() {
+            var tourneyCbs = document.querySelectorAll('.packing-tourney-cb:checked');
+            if (tourneyCbs.length === 0) { alert('No tournaments selected.'); return; }
+            // Just print the first selected one for now
+            printTourneySheet(parseInt(tourneyCbs[0].value));
+        }
+
+        // ========== INIT ==========
         renderJerseys();
         renderLoadouts();
         refreshLoadoutSelectors();
