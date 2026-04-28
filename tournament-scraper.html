@@ -253,6 +253,7 @@ function render() {
 }
 
 render();
+window.addEventListener('fs-sync-merged', function() { render(); });
 </script>
 <script src="fs-sync.js?v=1"></script>
 </body>
