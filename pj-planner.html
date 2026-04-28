@@ -492,6 +492,7 @@ function renderMainView() {
             '<button class="btn-tm btn-tm-book" onclick="toggleBookDD(\'' + tripId + '\')">📅 Book Trip</button>' +
             '<div class="book-dropdown" id="book-dd-' + tripId + '">' +
                   '<button class="book-dd-item" onclick="window._bookTab=\'car\';closeAllDD();viewTrip(\'' + tripId + '\')">🚗 Rent Car</button>' +
+              '<button class="book-dd-item" onclick="window._bookTab=undefined;closeAllDD();viewTrip(\'' + tripId + '\')">🏨 Book Hotel</button>' +
               '<button class="book-dd-item" onclick="planOpenFlight(\'' + (t.location||'') + '\')">✈️ Book Flight</button>' +
             '</div>' +
           '</div>' +
