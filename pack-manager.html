@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>
     <script src="inventory-data.js?v=1"></script>
+    <script src="sortly-api-demo.js?v=1"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -77,6 +78,16 @@
         .quick-add-bar input[type="number"] { width: 60px; padding: 6px 10px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; outline: none; }
         .quick-add-bar select:focus, .quick-add-bar input:focus { border-color: var(--gold); }
         .quick-add-bar span.label { color: var(--gray); font-size: 0.82em; }
+
+        /* Data source toggle */
+        .data-source-bar { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 16px; font-size: 0.82em; }
+        .data-source-bar .ds-label { color: var(--gray); }
+        .data-source-bar .ds-value { font-weight: 600; color: var(--gold); }
+        .toggle-switch { position: relative; width: 42px; height: 22px; background: var(--border); border-radius: 12px; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+        .toggle-switch.active { background: var(--green); }
+        .toggle-switch .knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: var(--white); border-radius: 50%; transition: all 0.15s; }
+        .toggle-switch.active .knob { left: 22px; }
+        .data-source-bar .ds-stats { margin-left: auto; color: var(--gray-dark); font-size: 0.78em; }
 
         /* Packing section styles */
         .tourney-pack-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
@@ -166,7 +177,7 @@
 
             <div class="card">
                 <h3>👕 Add Jerseys to Loadout</h3>
-                <p class="sub">Select a loadout below, then click any jersey to add it with all sizes & quantities from our inventory.</p>
+                <p class="sub">Select a loadout below, then click any jersey to add it with all sizes & quantities from our inventory. <span id="jersey-source-badge" style="color:var(--gray-dark);font-size:0.85em;">(Source: INVENTORY)</span></p>
                 <div class="quick-add-bar">
                     <span class="label">Add to:</span>
                     <select id="target-loadout-select">
@@ -186,6 +197,17 @@
 
         <!-- === PACK TOURNAMENTS TAB === -->
         <div id="tab-packing" style="display:none;">
+            <!-- Data Source Toggle -->
+            <div class="data-source-bar">
+                <span class="ds-label">📡 Data Source:</span>
+                <span class="ds-value" id="ds-label">Inventory (Hardcoded)</span>
+                <div class="toggle-switch" id="ds-toggle" onclick="toggleDataSource()">
+                    <div class="knob"></div>
+                </div>
+                <span class="ds-value" id="ds-demo-label" style="color:var(--gray-dark);">Sortly API (Demo)</span>
+                <span class="ds-stats" id="ds-stats"></span>
+            </div>
+
             <div class="card">
                 <h3>🎒 Pack for Tournaments</h3>
                 <p class="sub">Select loadouts and tournaments, then pack each item. The system calculates how many you need based on team count, and you can override if stock is low.</p>
@@ -214,6 +236,7 @@
 
         let jerseyFilter = 'all';
         let currentTab = 'loadouts';
+        let useSortlyApi = false;
 
         // ========== JERSEY NEEDS CALCULATION ==========
         // Estimate total jerseys needed based on team count
@@ -232,6 +255,19 @@
         function calcJerseyNeed(jerseyName, size, teams) {
             if (teams <= 0) return 1;
             var totalEstimate = estimateJerseyCount(teams);
+
+            // When Sortly API is active, use its stock numbers
+            if (useSortlyApi && window.SORTLY_API_DEMO) {
+                var allStock = getSortlyAllStock();
+                if (allStock <= 0) return Math.max(1, Math.round(totalEstimate * 0.005));
+                var thisStock = getSortlyJerseyStock(jerseyName, size) || 0;
+                if (thisStock > 0) {
+                    return Math.max(1, Math.round(totalEstimate * (thisStock / allStock)));
+                }
+                // Fallback: even distribution across all size variants
+                var totalVariants = SORTLY_API_DEMO.getAllItems().meta.total;
+                return Math.max(1, Math.round(totalEstimate / Math.max(totalVariants, 1)));
+            }
 
             // Sum ALL jersey stock across baseball + soccer
             var allStock = 0;
@@ -270,6 +306,12 @@
                 });
             });
             return Math.max(1, Math.round(totalEstimate / Math.max(totalJerseyNames, 1)));
+        }
+
+        function getSortlyAllStock() {
+            if (!window.SORTLY_API_DEMO) return 0;
+            var all = SORTLY_API_DEMO.getAllItems().data;
+            return all.reduce(function(sum, it) { return sum + it.quantity; }, 0);
         }
 
         // Total stock for a given sport (Baseball/Soccer)
@@ -725,7 +767,6 @@
                         var need = item.qty;
                         var parenMatch = item.name.match(/\(([^)]+)\)$/);
                         if (parenMatch) {
-                            var sport = tourney.sport === 'Baseball' ? 'baseball' : 'soccer';
                             need = calcJerseyNeed(item.name, parenMatch[1], tourney.teams || 0);
                         }
                         need = Math.max(need, 1);
@@ -851,6 +892,34 @@
         renderLoadouts();
         refreshLoadoutSelectors();
         window.addEventListener('fs-sync-merged', function() { renderLoadouts(); renderJerseys(); refreshLoadoutSelectors(); });
+        // Toggle between hardcoded INVENTORY and Sortly Demo API
+        function toggleDataSource() {
+            useSortlyApi = !useSortlyApi;
+            var toggle = document.getElementById('ds-toggle');
+            var label = document.getElementById('ds-label');
+            var statsEl = document.getElementById('ds-stats');
+            var badge = document.getElementById('jersey-source-badge');
+
+            if (useSortlyApi) {
+                toggle.classList.add('active');
+                label.textContent = 'Sortly API (Demo)';
+                label.style.color = 'var(--green)';
+                if (badge) badge.textContent = '(Source: Sortly Demo API — ' + SORTLY_API_DEMO.getAllItems().meta.total + ' items)';
+                if (window.SORTLY_API_DEMO) {
+                    var summary = SORTLY_API_DEMO.getSummary();
+                    statsEl.textContent = summary.totalItems + ' items · ' + summary.totalQuantity + ' units · $' + summary.totalValue.toLocaleString();
+                }
+            } else {
+                toggle.classList.remove('active');
+                label.textContent = 'Inventory (Hardcoded)';
+                label.style.color = 'var(--gold)';
+                if (badge) badge.textContent = '(Source: INVENTORY)';
+                statsEl.textContent = '';
+            }
+
+            if (currentTab === 'packing') populatePackingSelectors();
+            if (currentTab === 'loadouts') renderJerseys();
+        }
     </script>
     <script src="fs-sync.js?v=1"></script>
 </body>
