@@ -380,6 +380,102 @@
               '<div class="home-card"><div class="home-icon">🏨</div><div class="home-num">' + bookedHotels + '</div><div class="home-label">Hotels Booked</div></div>' +
               '<div class="home-card"><div class="home-icon">🚗</div><div class="home-num">' + bookedCars + '</div><div class="home-label">Cars Booked</div></div>' +
             '</div>';
+
+            // === Weekend Progress Bar ===
+            html += (function () {
+              var now = new Date();
+              var dayOfWeek = now.getDay();
+              var diffToSat = (6 - dayOfWeek + 7) % 7;
+              var saturday = new Date(now);
+              saturday.setDate(now.getDate() + diffToSat);
+              var sunday = new Date(saturday);
+              sunday.setDate(saturday.getDate() + 1);
+              var satStr = saturday.getFullYear() + '-' + String(saturday.getMonth()+1).padStart(2,'0') + '-' + String(saturday.getDate()).padStart(2,'0');
+              var sunStr = sunday.getFullYear() + '-' + String(sunday.getMonth()+1).padStart(2,'0') + '-' + String(sunday.getDate()).padStart(2,'0');
+
+              // Filter tournaments happening this weekend
+              var weekendTourneys = tournaments.filter(function(t) {
+                var tStart = t.start || '';
+                var tEnd = t.end || tStart;
+                return (tStart <= sunStr && tEnd >= satStr);
+              });
+
+              // Filter trips happening this weekend
+              var weekendTrips = pjTrips.filter(function(t) {
+                var tStart = t.start || '';
+                var tEnd = t.end || tStart;
+                return (tStart <= sunStr && tEnd >= satStr);
+              });
+
+              // Calculate progress score
+              var totalChecks = 0;
+              var doneChecks = 0;
+
+              // 1. Tournament schedule filled out
+              if (weekendTourneys.length > 0) {
+                totalChecks += weekendTourneys.length * 2;
+                weekendTourneys.forEach(function(t) {
+                  if (t.location) doneChecks++;
+                  if (t.address) doneChecks++;
+                });
+              }
+
+              // 2. Trip details
+              if (weekendTrips.length > 0) {
+                totalChecks += weekendTrips.length * 4;
+                weekendTrips.forEach(function(t) {
+                  if (t.hotelName) doneChecks++;
+                  if (t.carName) doneChecks++;
+                  if (t.crew) doneChecks++;
+                  if (t.status && t.status !== 'unassigned') doneChecks++;
+                });
+              }
+
+              // Also check general booked stats (hotels/cars from ANY trip)
+              if (weekendTrips.length === 0 && weekendTourneys.length === 0) {
+                totalChecks = 3;
+                doneChecks = 0;
+                if (bookedHotels > 0) doneChecks++;
+                if (bookedCars > 0) doneChecks++;
+                if (tournaments.length > 0) doneChecks++;
+              }
+
+              if (totalChecks === 0) totalChecks = 1;
+              var pct = Math.round((doneChecks / totalChecks) * 100);
+              if (pct > 100) pct = 100;
+
+              // Level labels
+              var level = '🆕 Getting Started';
+              if (pct >= 100) level = '🏆 All Set!';
+              else if (pct >= 75) level = '⚡ Almost There';
+              else if (pct >= 50) level = '📋 Halfway Done';
+              else if (pct >= 25) level = '🛠️ Making Progress';
+
+              // XP bar colors
+              var barColor = pct >= 100 ? 'var(--green)' : pct >= 75 ? 'var(--gold)' : pct >= 50 ? 'var(--orange)' : pct >= 25 ? 'var(--blue)' : 'var(--gray)';
+
+              var hasContent = weekendTourneys.length > 0 || weekendTrips.length > 0 || tournaments.length > 0;
+              if (!hasContent) return '';
+
+              return '<div style="margin-bottom:20px;background:var(--black-card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
+                  '<div style="font-family:\'Cinzel\',serif;color:var(--gold);font-size:0.9em;font-weight:600;">🎯 This Weekend\'s Progress</div>' +
+                  '<div style="font-size:0.85em;color:var(--gray);">' + level + '</div>' +
+                '</div>' +
+                '<div style="position:relative;height:24px;background:var(--black);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:6px;">' +
+                  '<div style="height:100%;width:' + pct + '%;background:' + barColor + ';border-radius:12px;transition:width 0.5s ease;display:flex;align-items:center;justify-content:center;">' +
+                    '<span style="font-size:0.7em;font-weight:700;color:var(--black);mix-blend-mode:screen;position:absolute;left:50%;transform:translateX(-50%);z-index:2;text-shadow:0 0 4px rgba(0,0,0,0.5);">' + pct + '%</span>' +
+                  '</div>' +
+                  '<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:0.7em;font-weight:700;color:var(--white);z-index:1;">' + pct + '%</span>' +
+                '</div>' +
+                '<div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;">' +
+                  '<span style="font-size:0.75em;color:var(--gray);">🏟️ ' + weekendTourneys.length + ' tournament' + (weekendTourneys.length !== 1 ? 's' : '') + '</span>' +
+                  '<span style="font-size:0.75em;color:var(--gray);">🚐 ' + weekendTrips.length + ' trip' + (weekendTrips.length !== 1 ? 's' : '') + '</span>' +
+                  '<span style="font-size:0.75em;color:var(--gray);">✅ ' + doneChecks + '/' + totalChecks + ' items done</span>' +
+                '</div>' +
+              '</div>';
+            })();
+
             // Add tournament list below stats
             if (tournaments.length > 0) {
               html += '<div class="home-section-title">📅 ' + (new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })) + ' Tournament Schedule</div><div class="home-list">';

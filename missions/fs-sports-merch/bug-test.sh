@@ -42,7 +42,6 @@ PAGES=(
   "contact.html"
   "privacy.html"
   "departments.html"
-  "trip-plans.html"
   "pj-planner.html"
 )
 

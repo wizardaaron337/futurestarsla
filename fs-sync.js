@@ -23,7 +23,8 @@
     'fs_team_members',
     'fs_pack_lists',
     'fs_departments',
-    'fs_contacts'
+    'fs_contacts',
+    'fs_loadouts'
   ];
 
   var pendingPush = null;
