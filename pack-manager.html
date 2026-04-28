@@ -308,6 +308,22 @@
             return Math.max(1, Math.round(totalEstimate / Math.max(totalJerseyNames, 1)));
         }
 
+        function getSortlyJerseyStock(jerseyName, size) {
+            if (!window.SORTLY_API_DEMO) return null;
+            var itemName = jerseyName + ' (' + size + ')';
+            var result = SORTLY_API_DEMO.getAllItems({ search: itemName });
+            var match = result.data.filter(function(it) { return it.name === itemName; });
+            return match.length > 0 ? match[0].quantity : null;
+        }
+
+        function getSortlyItemLocation(jerseyName, size) {
+            if (!window.SORTLY_API_DEMO) return null;
+            var itemName = jerseyName + ' (' + size + ')';
+            var result = SORTLY_API_DEMO.getAllItems({ search: itemName });
+            var match = result.data.filter(function(it) { return it.name === itemName; });
+            return match.length > 0 ? match[0].location : null;
+        }
+
         function getSortlyAllStock() {
             if (!window.SORTLY_API_DEMO) return 0;
             var all = SORTLY_API_DEMO.getAllItems().data;
