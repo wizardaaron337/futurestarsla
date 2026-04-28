@@ -526,6 +526,7 @@
         window.addEventListener('storage', function(e) {
             if (e.key === 'fs_tourney_schedule' || e.key === 'fs_trip_statuses') render();
         });
+        window.addEventListener('fs-sync-merged', function() { window._ttLast = null; setTimeout(render, 100); });
         setInterval(function() {
             var h = JSON.stringify(localStorage.getItem('fs_tourney_schedule') + '|' + localStorage.getItem('fs_trip_statuses'));
             if (h !== window._ttLast) { window._ttLast = h; render(); }
