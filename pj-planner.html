@@ -291,6 +291,26 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);m
 .plan-summary-total .value{font-family:'Cinzel',serif;color:var(--gold);font-size:1.2em;font-weight:700;}
 .plan-confirm-field{margin-top:10px;display:flex;flex-direction:column;gap:4px;}
 .plan-confirm-field label{font-size:.8em;color:var(--gray);font-weight:500;}
+
+/* Booking quick-link buttons */
+.plan-booking-link {
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:.72em;
+  font-weight:600;
+  text-decoration:none;
+  background:rgba(201,162,39,0.08);
+  color:var(--gold);
+  border:1px solid rgba(201,162,39,0.15);
+  white-space:nowrap;
+  transition:all .15s;
+}
+.plan-booking-link:hover {
+  background:rgba(201,162,39,0.2);
+  border-color:var(--gold);
+}
 .plan-confirm-field input{padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--black-light);color:var(--white);font-size:.9em;font-family:'Inter',sans-serif;outline:none;transition:border .2s;}
 .plan-confirm-field input:focus{border-color:var(--gold);}
 
@@ -988,8 +1008,8 @@ function viewTrip(tripId){
     (showCar ? '<div id="plan-car-section" class="detail-section" style="display:none;"><h4>🚗 Car Rentals</h4><div class="plan-options-grid" id="plan-car-grid"></div></div>' : '') +
     '<div id="plan-summary-box" class="plan-summary" style="display:none;">' +
       '<h4>📋 Enter Booking Details</h4>' +
-      '<div class="plan-confirm-field"><label>🏨 Hotel Name</label><input type="text" id="plan-hotel-name-text" placeholder="e.g. Marriott Downtown" value="' + (trip.hotelName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🏨 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="Confirmation #" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="text" id="plan-hotel-actual" placeholder="$" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' +
-      (showCar ? '<div class="plan-confirm-field"><label>🚗 Rental Company Name</label><input type="text" id="plan-car-name-text" placeholder="e.g. Enterprise" value="' + (trip.carName||'') + '" style="width:100%;"></div><div class="plan-confirm-field"><label>🚗 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="Confirmation #" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="text" id="plan-car-actual" placeholder="$" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
+      '<div class="plan-confirm-field"><label>🏨 Hotel Name</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-name-text" placeholder="e.g. Marriott Downtown" value="' + (trip.hotelName||'') + '" style="flex:1;"><a target="_blank" rel="noopener" class="plan-booking-link" href="https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(trip.destination||'') + '&checkin=' + (trip.startDate||'') + '&checkout=' + (trip.endDate||'') + '">🔍 Booking.com</a><a target="_blank" rel="noopener" class="plan-booking-link" href="https://www.google.com/travel/search?q=' + encodeURIComponent('hotels in ' + (trip.destination||'')) + '">🔍 Hotels</a></div></div><div class="plan-confirm-field"><label>🏨 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-hotel-conf" placeholder="Confirmation #" value="' + (trip.hotelConf||'') + '" style="flex:1.5;"><input type="text" id="plan-hotel-actual" placeholder="$" value="' + (trip.hotelActual||'') + '" style="flex:1;"></div></div>' +
+      (showCar ? '<div class="plan-confirm-field"><label>🚗 Rental Company Name</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-name-text" placeholder="e.g. Enterprise" value="' + (trip.carName||'') + '" style="flex:1;"><a target="_blank" rel="noopener" class="plan-booking-link" href="https://www.enterprise.com/en/car-rental/locations/' + encodeURIComponent(trip.destination||'us') + '.html">Enterprise</a><a target="_blank" rel="noopener" class="plan-booking-link" href="https://www.hertz.com/rentacar/reservation/">Hertz</a><a target="_blank" rel="noopener" class="plan-booking-link" href="https://www.expedia.com/carsearch?locn=' + encodeURIComponent(trip.destination||'') + '">Expedia</a></div></div><div class="plan-confirm-field"><label>🚗 Conf. # & Actual Price</label><div style="display:flex;gap:6px;"><input type="text" id="plan-car-conf" placeholder="Confirmation #" value="' + (trip.carConf||'') + '" style="flex:1.5;"><input type="text" id="plan-car-actual" placeholder="$" value="' + (trip.carActual||'') + '" style="flex:1;"></div></div>' : '') +
       '<div class="plan-summary-total"><span class="label">Est. Total</span><span class="value" id="plan-sum-total">$0</span></div>' +
       '<div style="display:flex;gap:10px;margin-top:12px;"><button class="btn btn-primary" onclick="planConfirmBooking()" style="flex:1;">✅ Confirm & Save Actuals</button></div>' +
     '</div>' +
