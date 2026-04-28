@@ -735,10 +735,10 @@
 
                         // Compute need-for-bin display: show how many total in this bin
                         html += '<div class="pack-item-row" id="pir-' + tId + '-' + binId + '-' + key.replace(/[^a-zA-Z0-9]/g, '_') + '">' +
-                            '<input type="checkbox" class="pir-check" ' + (packed >= need ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',\\'' + safeKey + '\\',\\'' + binId + '\\',this)">' +
+                            '<input type="checkbox" class="pir-check" ' + (packed >= need ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
                             '<span class="pir-name">' + it.displayName + (it.size ? ' <span style="color:var(--gray-dark);font-size:0.85em;">(' + it.size + ')</span>' : '') + '</span>' +
                             '<span class="pir-needed">' + need + '</span>' +
-                            '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',\\'' + safeKey + '\\',\\'' + binId + '\\',this)">' +
+                            '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
                             '<span class="pir-status ' + statusClass + '">' + statusText + '</span>' +
                             stockNote +
                         '</div>';
