@@ -551,14 +551,22 @@
         // ========== SIZE BIN DEFINITIONS ==========
         // How we pack: grouped by size into bins
         var SOCCER_SIZE_BINS = [
-            { id: 'bin-soc-22-24', label: 'Bin 1: 22s & 24s', sizes: ['20','22','24'], icon: '📦', color: '#42A5F5' },
-            { id: 'bin-soc-26-L', label: 'Bin 2: 26s & L', sizes: ['26','28','L'], icon: '📦', color: '#AB47BC' },
-            { id: 'bin-soc-S-M-XL', label: 'Bin 3: S · M · XL & Duffle', sizes: ['S','M','XL','extra'], icon: '👜', color: '#FF9800' },
+            { id: 'bin-soc-20', label: 'Size 20', sizes: ['20'], icon: '👕', color: '#42A5F5' },
+            { id: 'bin-soc-22', label: 'Size 22', sizes: ['22'], icon: '👕', color: '#4CAF50' },
+            { id: 'bin-soc-24', label: 'Size 24', sizes: ['24'], icon: '👕', color: '#AB47BC' },
+            { id: 'bin-soc-26', label: 'Size 26', sizes: ['26'], icon: '👕', color: '#FF9800' },
+            { id: 'bin-soc-28', label: 'Size 28', sizes: ['28'], icon: '👕', color: '#E91E63' },
+            { id: 'bin-soc-S', label: 'Size S (Small)', sizes: ['S'], icon: '👕', color: '#00BCD4' },
+            { id: 'bin-soc-M', label: 'Size M (Medium)', sizes: ['M'], icon: '👕', color: '#9C27B0' },
+            { id: 'bin-soc-L', label: 'Size L (Large)', sizes: ['L'], icon: '👕', color: '#FF5722' },
+            { id: 'bin-soc-XL', label: 'Size XL', sizes: ['XL'], icon: '👕', color: '#607D8B' },
         ];
-        // For baseball, just group by size naturally
         var BASEBALL_SIZE_BINS = [
-            { id: 'bin-bb-YS-YM', label: 'YS · YM · YL', sizes: ['YS','YM','YL'], icon: '📦', color: '#4CAF50' },
-            { id: 'bin-bb-YXL-AS', label: 'YXL · AS', sizes: ['YXL','AS'], icon: '📦', color: '#42A5F5' },
+            { id: 'bin-bb-YS', label: 'Size YS (Youth Small)', sizes: ['YS'], icon: '👕', color: '#4CAF50' },
+            { id: 'bin-bb-YM', label: 'Size YM (Youth Medium)', sizes: ['YM'], icon: '👕', color: '#42A5F5' },
+            { id: 'bin-bb-YL', label: 'Size YL (Youth Large)', sizes: ['YL'], icon: '👕', color: '#AB47BC' },
+            { id: 'bin-bb-YXL', label: 'Size YXL (Youth X-Large)', sizes: ['YXL'], icon: '👕', color: '#FF9800' },
+            { id: 'bin-bb-AS', label: 'Size AS (Adult Small)', sizes: ['AS'], icon: '👕', color: '#E91E63' },
         ];
 
         function getBinsForSport(sport) {
@@ -767,7 +775,7 @@
 
                         html += '<div class="pack-item-row" id="pir-' + tId + '-' + binId + '-' + key.replace(/[^a-zA-Z0-9]/g, '_') + '">' +
                             '<input type="checkbox" class="pir-check" ' + (done ? 'checked' : '') + ' onchange="togglePackedItem(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
-                            '<span class="pir-name"' + (it.size ? '' : '') + '>' + it.displayName + (it.size ? ' <span style="color:var(--gray-dark);font-size:0.85em;">(' + it.size + ')</span>' : '') + '</span>' +
+                            '<span class="pir-name">' + it.displayName + (it.size ? ' <span style="color:var(--gray-dark);font-size:0.85em;">(' + it.size + ')</span>' : '') + '</span>' +
                             '<span class="pir-needed">' + need + '</span>' +
                             '<input type="number" class="pir-packed" value="' + packed + '" min="0" onchange="updatePackedQty(' + tourney.id + ',&#39;' + safeKey + '&#39;,&#39;' + binId + '&#39;,this)">' +
                             '<span class="pir-status ' + statusClass + '">' + statusChar + '</span>' +
