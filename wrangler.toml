@@ -1,3 +1,7 @@
 name = "futurestarsla"
 pages_build_output_dir = "."
 compatibility_date = "2024-04-01"
+
+[[kv_namespaces]]
+binding = "FS_SYNC"
+id = "84dc48fe43af4d988ac0621ede51d66a"
