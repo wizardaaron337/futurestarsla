@@ -3,484 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pack Manager - Future Stars LA</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="images/fs.jpeg" type="image/jpeg">
-    <script src="fs-utils.js"></script>
-    <link rel="stylesheet" href="fs-utils.css">
-    <script src="inventory-data.js"></script>
-    <script src="auth-config.js"></script>
+    <title>Pack Manager — Future Stars</title>
+    <script src="auth-config.js?v=1777085641"></script>
     <script src="nav-dropdown.js?v=1"></script>
+    <link rel="stylesheet" href="fs-utils.css?v=1">
+    <script src="fs-utils.js?v=1"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --black: #0a0a0a;
-            --black-card: #111;
-            --black-light: #1a1a1a;
-            --gold: #C9A227;
-            --gold-light: #D4AF37;
-            --gold-dark: #A8881F;
-            --white: #f0f0f0;
-            --gray: #888;
-            --border: #222;
-            --green: #4CAF50;
-            --red: #EF5350;
-            --orange: #FF9800;
-            --blue: #42A5F5;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--black);
-            color: var(--white);
-            min-height: 100vh;
-        }
-        .header {
-            background: var(--black-card);
-            border-bottom: 1px solid var(--border);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo-img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; }
-        .logo-text { font-family: 'Cinzel', serif; font-size: 1.1em; color: var(--gold); font-weight: 700; letter-spacing: 2px; }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-name { font-size: 0.85em; color: var(--gray); }
-        .main { max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px; }
-        .page-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.4em;
-            color: var(--gold);
-            margin-bottom: 4px;
-        }
-        .page-subtitle {
-            font-size: 0.85em;
-            color: var(--gray);
-            margin-bottom: 24px;
-        }
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 20px;
-            background: var(--black-card);
-            border-radius: 10px;
-            padding: 4px;
-            border: 1px solid var(--border);
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background: transparent;
-            color: var(--gray);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85em;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .tab-btn:hover { color: var(--white); }
-        .tab-btn.active {
-            background: var(--gold);
-            color: var(--black);
-            font-weight: 600;
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        /* Create Trip Form */
-        .form-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .form-card h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1em;
-            color: var(--gold);
-            margin-bottom: 16px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.75em;
-            color: var(--gray);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--black);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9em;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-        /* Sport filter buttons */
-        .progress-wrap { background: var(--black); border-radius: 6px; height: 8px; margin-top: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 6px; transition: width 0.3s; }
-        .sport-filters {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        .sport-btn {
-            padding: 6px 16px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: transparent;
-            color: var(--gray);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .sport-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .sport-btn.active {
-            background: var(--gold);
-            color: var(--black);
-            border-color: var(--gold);
-            font-weight: 600;
-        }
-        /* Jersey picker - card grid */
-        .jersey-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 8px;
-            max-height: 320px;
-            overflow-y: auto;
-            padding: 4px;
-            margin-bottom: 14px;
-        }
-        .jersey-card {
-            background: var(--black);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.15s;
-            position: relative;
-            user-select: none;
-        }
-        .jersey-card:hover {
-            border-color: var(--gold-dark);
-            background: var(--black-light);
-        }
-        .jersey-card.selected {
-            border-color: var(--gold);
-            background: rgba(201,162,39,0.08);
-        }
-        .jersey-card .emoji { font-size: 1.3em; }
-        .jersey-card .jersey-name {
-            font-size: 0.8em;
-            color: var(--gray);
-            margin-top: 4px;
-        }
-        .jersey-card .check {
-            position: absolute;
-            top: 6px;
-            right: 8px;
-            font-size: 0.9em;
-            opacity: 0;
-            transition: opacity 0.15s;
-        }
-        .jersey-card.selected .check { opacity: 1; }
-        /* Qty/size row for each selected jersey */
-        .selected-section {
-            background: var(--black);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 14px;
-        }
-        .selected-section h4 {
-            font-size: 0.8em;
-            color: var(--gray);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .selected-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .selected-item:last-child { border-bottom: none; }
-        .selected-item .name {
-            font-size: 0.85em;
-            min-width: 130px;
-            flex: 1;
-        }
-        .selected-item label {
-            font-size: 0.7em;
-            color: var(--gray);
-        }
-        .selected-item input[type="number"] {
-            width: 60px;
-            padding: 5px 8px;
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--white);
-            font-size: 0.85em;
-            text-align: center;
-        }
-        .selected-item input[type="number"]:focus { border-color: var(--gold); outline: none; }
-        .selected-item select {
-            padding: 5px 8px;
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--white);
-            font-size: 0.8em;
-        }
-        .selected-item select:focus { border-color: var(--gold); outline: none; }
-        .selected-item .remove-btn {
-            background: none;
-            border: none;
-            color: var(--red);
-            cursor: pointer;
-            font-size: 1em;
-            opacity: 0.5;
-            padding: 2px 6px;
-        }
-        .selected-item .remove-btn:hover { opacity: 1; }
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 14px;
-        }
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-        .btn-primary { background: var(--gold); color: var(--black); }
-        .btn-primary:hover { background: var(--gold-light); }
-        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--gray); }
-        .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
-        .trip-section { margin-bottom: 28px; }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-        .section-header h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 1em;
-            color: var(--gold);
-            letter-spacing: 1px;
-        }
-        .section-header .count {
-            font-size: 0.85em;
-            color: var(--gray);
-        }
-        .trip-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 12px;
-        }
-        .trip-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            transition: all 0.2s;
-        }
-        .trip-card:hover { border-color: var(--gold-dark); }
-        .trip-card.shipped {
-            opacity: 0.55;
-            border-color: var(--red);
-        }
-        .trip-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .trip-name {
-            font-family: 'Cinzel', serif;
-            font-size: 0.95em;
-            color: var(--gold);
-            font-weight: 600;
-        }
-        .trip-status {
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: 0.7em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
-        .trip-status.ready {
-            background: rgba(76,175,80,0.15);
-            color: var(--green);
-            border: 1px solid rgba(76,175,80,0.3);
-        }
-        .trip-status.shipped {
-            background: rgba(239,83,80,0.15);
-            color: var(--red);
-            border: 1px solid rgba(239,83,80,0.3);
-        }
-        .trip-meta {
-            display: flex;
-            gap: 10px;
-            font-size: 0.8em;
-            color: var(--gray);
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .trip-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-        .trip-item-tag {
-            padding: 3px 8px;
-            background: var(--black);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.78em;
-            color: var(--gray);
-        }
-        .trip-item-tag .qty {
-            color: var(--gold);
-            font-weight: 700;
-        }
-        .trip-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-        }
-        .btn-sm {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.78em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--gray);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .btn-sm:hover { border-color: var(--gold); color: var(--gold); }
-        .btn-sm.blue { border-color: var(--blue); color: var(--blue); }
-        .btn-sm.blue:hover { background: rgba(66,165,245,0.1); }
-        .btn-sm.green { border-color: var(--green); color: var(--green); }
-        .btn-sm.green:hover { background: rgba(76,175,80,0.1); }
-        .btn-sm.red { border-color: var(--red); color: var(--red); }
-        .btn-sm.red:hover { background: rgba(239,83,80,0.1); }
-        .btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--gray);
-        }
-        .empty-state .big-emoji { font-size: 3em; margin-bottom: 12px; display: block; }
-        .empty-state p { font-size: 0.9em; margin-bottom: 4px; }
-        /* Quick Print Sheet */
-        .print-sheet {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .print-card {
-            background: var(--black-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            page-break-inside: avoid;
-        }
-        .print-card h4 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 0.95em;
-            border-bottom: 2px solid var(--gold);
-            padding-bottom: 6px;
-            margin-bottom: 10px;
-        }
-        .print-check-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 4px;
-            border-bottom: 1px dashed var(--border);
-        }
+        :root { --gold: #C9A227; --gold-dark: #B8941F; --black: #0A0A0A; --black-card: #1A1A1A; --white: #F8F6F0; --gray: #A8A498; --gray-dark: #6B665C; --border: #2A2824; --green: #4CAF50; --red: #EF5350; --orange: #FF9800; --blue: #42A5F5; --purple: #AB47BC; }
+        body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; font-size: 14px; }
+        .main { max-width: 1000px; width: 100%; margin: 0 auto; padding: 30px 20px; }
+        .page-title { font-family: 'Cinzel', serif; font-size: 1.6em; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+        .page-subtitle { color: var(--gray); font-size: 0.9em; margin-bottom: 24px; }
+        .card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .card h3 { color: var(--gold); font-family: 'Cinzel', serif; font-size: 1em; margin-bottom: 14px; letter-spacing: 0.5px; }
+        .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .form-group { flex: 1; min-width: 140px; }
+        .form-group label { display: block; color: var(--gray); font-size: 0.75em; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px 12px; background: var(--black); border: 1px solid var(--border); border-radius: 8px; color: var(--white); font-size: 0.9em; outline: none; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+        .form-group textarea { width: 100%; padding: 8px 12px; background: var(--black); border: 1px solid var(--border); border-radius: 8px; color: var(--white); font-size: 0.9em; outline: none; resize: vertical; }
+        .form-group textarea:focus { border-color: var(--gold); }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85em; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+        .btn-primary { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--black); }
+        .btn-success { background: var(--green); color: var(--white); }
+        .btn-danger { background: rgba(239,83,80,0.15); color: var(--red); border: 1px solid rgba(239,83,80,0.3); }
+        .btn-secondary { background: var(--black); border: 1px solid var(--border); color: var(--gray); }
+        .btn-sm { padding: 6px 12px; font-size: 0.78em; }
+        .btn-xs { padding: 4px 8px; font-size: 0.7em; border-radius: 6px; }
+        .btn:hover { filter: brightness(1.15); }
+        .btn-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .loadout-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-top: 16px; }
+        .loadout-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+        .loadout-card .loadout-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .loadout-card .loadout-name { font-weight: 600; color: var(--gold); font-size: 0.95em; }
+        .loadout-card .loadout-count { color: var(--gray); font-size: 0.75em; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 10px; }
+        .loadout-card .loadout-items { display: flex; flex-direction: column; gap: 4px; }
+        .loadout-card .loadout-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: rgba(255,255,255,0.03); border-radius: 6px; font-size: 0.82em; }
+        .loadout-card .loadout-item .li-name { color: var(--white); }
+        .loadout-card .loadout-item .li-qty { color: var(--gold); font-weight: 600; }
+        .loadout-card .loadout-edit-item { display: flex; gap: 6px; margin-top: 8px; }
+        .loadout-card .loadout-edit-item input { flex: 1; padding: 6px 10px; background: var(--black); border: 1px solid var(--border); border-radius: 6px; color: var(--white); font-size: 0.8em; outline: none; }
+        .loadout-card .loadout-edit-item input:focus { border-color: var(--gold); }
+        .loadout-card .loadout-edit-item input[type="number"] { flex: 0 0 60px; }
+
+        .apply-section { margin-top: 16px; }
+        .apply-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+        .apply-row select { flex: 1; min-width: 120px; padding: 8px 12px; background: var(--black); border: 1px solid var(--border); border-radius: 8px; color: var(--white); font-size: 0.85em; outline: none; }
+
+        .packing-summary { margin-top: 16px; }
+        .packing-summary h3 { margin-bottom: 10px; }
+        .packing-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 4px; font-size: 0.85em; }
+        .packing-item .pi-name { color: var(--white); font-weight: 500; }
+        .packing-item .pi-qty { color: var(--gold); font-weight: 700; font-size: 1.1em; }
+        .packing-item .pi-from { color: var(--gray); font-size: 0.78em; }
+
+        .packing-total { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; padding: 12px; background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.15); border-radius: 10px; }
+        .packing-total .pt-stat { text-align: center; flex: 1; min-width: 80px; }
+        .packing-total .pt-stat .pt-num { font-size: 1.4em; font-weight: 700; color: var(--gold); }
+        .packing-total .pt-stat .pt-label { font-size: 0.7em; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+        .empty-state { text-align: center; padding: 40px 20px; }
+        .empty-state .big { font-size: 2.5em; margin-bottom: 10px; }
+        .empty-state p { color: var(--gray); font-size: 0.9em; }
+        .empty-state .small { color: var(--gray-dark); font-size: 0.8em; margin-top: 4px; }
+
+        .tab-bar { display: flex; gap: 4px; margin-bottom: 20px; background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }
+        .tab-bar button { flex: 1; padding: 10px; border: none; background: transparent; color: var(--gray); font-weight: 500; font-size: 0.85em; cursor: pointer; border-radius: 8px; transition: all 0.15s; }
+        .tab-bar button.active { background: var(--gold); color: var(--black); font-weight: 700; }
+
+        .loadout-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 10px 0; }
+        .loadout-select-grid label { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; font-size: 0.85em; transition: all 0.15s; }
+        .loadout-select-grid label:hover { background: rgba(201,162,39,0.08); }
+        .loadout-select-grid input[type="checkbox"] { accent-color: var(--gold); width: 16px; height: 16px; }
+
+        /* Print Packing Sheet */
+        .print-sheet { display: flex; flex-direction: column; gap: 16px; }
+        .print-card { background: var(--black-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; page-break-inside: avoid; }
+        .print-card h4 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.95em; border-bottom: 2px solid var(--gold); padding-bottom: 6px; margin-bottom: 10px; }
+        .print-check-row { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px dashed var(--border); }
         .print-check-row:last-child { border-bottom: none; }
-        .print-check-row .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--gray);
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-        .print-check-row .item-detail {
-            font-size: 0.85em;
-        }
-        .print-check-row .item-qty {
-            color: var(--gold);
-            font-weight: 700;
-            margin-left: auto;
-            font-size: 0.85em;
-        }
-        .print-card .trip-meta-print {
-            font-size: 0.8em;
-            color: var(--gray);
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
+        .print-check-row .checkbox { width: 20px; height: 20px; border: 2px solid var(--gray); border-radius: 4px; flex-shrink: 0; }
+        .print-check-row .item-detail { font-size: 0.85em; }
+        .print-check-row .item-qty { color: var(--gold); font-weight: 700; margin-left: auto; font-size: 0.85em; }
+        .print-card .trip-meta-print { font-size: 0.8em; color: var(--gray); margin-bottom: 10px; line-height: 1.6; }
+
         @media (max-width: 768px) {
             .main { padding: 12px; }
-            .trip-grid { grid-template-columns: 1fr; }
-            .jersey-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-            .selected-item { flex-direction: column; align-items: flex-start; }
-            .selected-item .name { min-width: auto; }
-            table { font-size: 0.85em; overflow-x: auto; display: block; }
-            input, select, button, textarea { font-size: 16px !important; }
-            h1 { font-size: 1.3em; }
-            h2 { font-size: 1.1em; }
-            .header { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
-            .tabs { overflow-x: auto; }
-            .form-row { grid-template-columns: 1fr; }
+            .loadout-grid { grid-template-columns: 1fr; }
+            .form-row { flex-direction: column; }
+            .form-group { min-width: auto; }
         }
         @media print {
             .no-print { display: none !important; }
@@ -492,630 +105,426 @@
             .print-card .trip-meta-print { color: #555; }
         }
     </style>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="-1">
-    <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js?v="+Date.now());}</script>
 </head>
 <body>
-    <div class="header no-print">
-        <a href="index.html" class="logo-link">
-            <img src="images/fs.jpeg" alt="Future Stars" class="logo-img">
-            <span class="logo-text">FUTURE STARS</span>
-        </a>
-    </div>
+    <div id="nav-root"></div>
     <div class="main">
-        <div class="page-title no-print">📦 Pack Manager</div>
-        <div class="page-subtitle no-print">Create packing trips, pick jerseys with quantities, print checkout sheets for the crew.</div>
+        <div class="page-title">📦 Pack Manager</div>
+        <div class="page-subtitle">Create loadouts (packing presets) and apply them to tournaments to build packing lists</div>
+
         <!-- Tabs -->
-        <div class="tabs no-print">
-            <button class="tab-btn active" onclick="switchTab('create')">➕ New Trip</button>
-            <button class="tab-btn" onclick="switchTab('trips')">🚐 All Trips</button>
+        <div class="tab-bar">
+            <button class="active" data-tab="loadouts" onclick="switchTab('loadouts',this)">📋 Loadouts</button>
+            <button data-tab="packing" onclick="switchTab('packing',this)">🎒 Pack & Print</button>
         </div>
-        <!-- TAB: Create Trip -->
-        <div class="tab-content active" id="tab-create">
-            <div class="form-card">
-                <h3>📋 Select Tournament</h3>
-                <div class="form-group" style="margin-bottom:12px;">
-                    <label>Choose a tournament from the schedule</label>
-                    <select id="tourney-select" onchange="onSelectTournament()">
-                        <option value="">— Select a Tournament —</option>
-                    </select>
-                </div>
-                <div id="tourney-preview" style="display:none;background:var(--black);border:1px solid var(--border);border-radius:8px;padding:12px;">
-                    <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:0.85em;">
-                        <span style="color:var(--gray-dark);">Tournament</span><span id="preview-name" style="font-weight:600;"></span>
-                        <span style="color:var(--gray-dark);">Sport</span><span id="preview-sport"></span>
-                        <span style="color:var(--gray-dark);">Dates</span><span id="preview-dates"></span>
-                        <span style="color:var(--gray-dark);">Location</span><span id="preview-location"></span>
-                        <span style="color:var(--gray-dark);">Teams</span><span id="preview-teams"></span>
+
+        <!-- === LOADOUTS TAB === -->
+        <div id="tab-loadouts">
+            <div class="card">
+                <h3>➕ New Loadout</h3>
+                <div class="form-row">
+                    <div class="form-group" style="flex:2;">
+                        <label>Loadout Name</label>
+                        <input type="text" id="load-name" placeholder="e.g. Standard Baseball Kit" autocomplete="off">
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>First Item Name</label>
+                        <input type="text" id="load-first-item" placeholder="e.g. Red Jersey" autocomplete="off">
+                    </div>
+                    <div class="form-group" style="flex:0 0 80px;">
+                        <label>Qty</label>
+                        <input type="number" id="load-first-qty" placeholder="3" min="1">
                     </div>
                 </div>
-                <input type="hidden" id="trip-name">
-                <input type="hidden" id="trip-date">
-                <input type="hidden" id="trip-location">
-                <input type="hidden" id="trip-sport" value="baseball">
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="addLoadout()">✅ Create Loadout</button>
+                </div>
             </div>
-            <div class="form-card">
-                <h3>👕 Pick Jerseys</h3>
-                <div class="sport-filters" id="picker-filters">
-                    <button class="sport-btn active" data-filter="all" onclick="filterPicker('all')">All</button>
-                    <button class="sport-btn" data-filter="baseball" onclick="filterPicker('baseball')">⚾ Baseball</button>
-                    <button class="sport-btn" data-filter="soccer" onclick="filterPicker('soccer')">⚽ Soccer</button>
-                </div>
-                <div class="jersey-grid" id="jersey-picker"></div>
-                <div id="selected-items-section" style="display:none;">
-                    <h4 style="font-size:0.75em;color:var(--gray);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">
-                        ✅ Selected Jerseys — Set Quantities & Sizes
-                    </h4>
-                    <div id="total-progress" style="font-size:0.82em;color:var(--gray-dark);margin-bottom:8px;"></div>
-                    <div class="selected-section">
-                        <div id="selected-items"></div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-primary" id="create-btn" onclick="createTrip()">➕ Create Trip</button>
-                    <button class="btn btn-secondary" onclick="clearForm()">Clear All</button>
-                </div>
+            <div id="loadout-list">
+                <div class="empty-state"><div class="big">📦</div><p>No loadouts created yet.</p><div class="small">Define what gear you bring to tournaments — jerseys, bats, balls, coolers, etc.</div></div>
             </div>
         </div>
-        <!-- TAB: All Trips -->
-        <div class="tab-content" id="tab-trips">
-            <div class="trip-section">
-                <div class="section-header">
-                    <h2>🚐 Trips</h2>
-                    <span class="count" id="trip-count">0</span>
+
+        <!-- === PACKING TAB === -->
+        <div id="tab-packing" style="display:none;">
+            <div class="card">
+                <h3>🎒 Build Your Packing List</h3>
+                <p style="color:var(--gray);font-size:0.85em;margin-bottom:12px;">Select loadouts and tournaments, then calculate & print a packing checklist.</p>
+
+                <div id="packing-loadouts-select">
+                    <label style="display:block;color:var(--gray);font-size:0.75em;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">1. Select Loadouts</label>
+                    <div id="packing-loadout-checkboxes" style="margin-bottom:16px;">
+                        <p style="color:var(--gray-dark);font-size:0.85em;">No loadouts created yet. Create some in the Loadouts tab first.</p>
+                    </div>
                 </div>
-                <div id="trip-list"></div>
+
+                <div id="packing-tournaments-select">
+                    <label style="display:block;color:var(--gray);font-size:0.75em;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">2. Select Tournaments</label>
+                    <div id="packing-tourney-checkboxes" style="margin-bottom:16px;">
+                        <p style="color:var(--gray-dark);font-size:0.85em;">No upcoming tournaments in the schedule.</p>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-bottom:16px;">
+                    <button class="btn btn-success" onclick="calculatePackingList()">📊 Calculate Packing List</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('packing-results').style.display='none';">Clear</button>
+                </div>
+            </div>
+
+            <div id="packing-results" style="display:none;">
+                <div class="packing-summary card">
+                    <h3>📦 Packing List</h3>
+                    <div class="packing-total" id="packing-total-stats"></div>
+                    <div id="packing-items-list" style="margin-top:12px;"></div>
+                    <div class="btn-group" style="margin-top:12px;">
+                        <button class="btn btn-primary" onclick="printPackingList()">🖨️ Print Checklist</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session history of recent packing calculations -->
+            <div id="session-history" style="display:none;">
+                <div class="card">
+                    <h3>📜 Recent Packing Sessions</h3>
+                    <div id="session-history-list"></div>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
-        // ─── Auth ───────────────────────────────────────────────
-        if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")){
-            window.location.href = "signin.html";
+        let currentTab = 'loadouts';
+
+        // === LOADOUTS ===
+
+        function getLoadouts() { return JSON.parse(localStorage.getItem('fs_loadouts') || '[]'); }
+        function saveLoadouts(list) { localStorage.setItem('fs_loadouts', JSON.stringify(list)); renderLoadouts(); }
+
+        function addLoadout() {
+            const name = document.getElementById('load-name').value.trim();
+            const itemName = document.getElementById('load-first-item').value.trim();
+            const qty = parseInt(document.getElementById('load-first-qty').value) || 1;
+            if (!name) { alert('Enter a loadout name'); return; }
+            const list = getLoadouts();
+            const loadout = {
+                id: Date.now(),
+                name: name,
+                items: itemName ? [{ id: Date.now() + 1, name: itemName, qty: qty }] : [],
+                created: new Date().toISOString()
+            };
+            list.unshift(loadout);
+            saveLoadouts(list);
+            document.getElementById('load-name').value = '';
+            document.getElementById('load-first-item').value = '';
+            document.getElementById('load-first-qty').value = '';
+            switchTab('loadouts', document.querySelector('[data-tab="loadouts"]'));
         }
-        // ─── State ──────────────────────────────────────────────
-        let TRIPS = [];
-        let selectedJerseys = [];  // [{name, sport, qty, size}]
-        let pickerFilter = 'all';
-        // ─── Init ───────────────────────────────────────────────
-        try {
-            TRIPS = JSON.parse(localStorage.getItem('fs_trips_pack')) || [];
-        } catch(e) { TRIPS = []; }
-        // Populate tourney dropdown on page load (before switchTab gets called by click)
-        requestAnimationFrame(function() {
-            populateTourneySelect();
-        });
-        // Handle ?tournament= param
-        (function(){
-            var params = new URLSearchParams(window.location.search);
-            var tourParam = params.get('tournament');
-            if (tourParam) {
-                try {
-                    var schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-                    var found = schedule.find(function(t){return t.name === tourParam;});
-                    if (found) {
-                        // Store param for after dropdown loads
-                        window._pendingTournamentId = found.id;
-                    }
-                } catch(e){}
-            }
-        })();
-        // ─── Tab Switching ─────────────────────────────────────
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            if (tab === 'create') {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('tab-create').classList.add('active');
-                populateTourneySelect();
-            } else {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('tab-trips').classList.add('active');
-            }
+
+        function deleteLoadout(id) {
+            if (!confirm('Delete this loadout?')) return;
+            saveLoadouts(getLoadouts().filter(l => l.id !== id));
         }
-        function populateTourneySelect() {
-            const sel = document.getElementById('tourney-select');
-            sel.innerHTML = '<option value="">— Select a Tournament —</option>';
-            try {
-                var schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-                // Seed example tournaments if empty
-                if (schedule.length === 0) {
-                    schedule = [
-                        { id: 1700000001, name: 'Easter Classic', sport: 'Soccer', start: '2026-04-18', end: '2026-04-20', location: 'Lafayette, LA', teams: 85, times: 'Sat 8:00 AM — Field 3' },
-                        { id: 1700000002, name: 'Gulf Coast Showcase', sport: 'Baseball', start: '2026-05-02', end: '2026-05-05', location: 'Biloxi, MS', teams: 48, times: 'Sat 9:00 AM — Field 1' },
-                        { id: 1700000003, name: 'Spring Championship', sport: 'Soccer', start: '2026-03-10', end: '2026-03-13', location: 'Dallas, TX', teams: 110, times: 'Sat 8:00 AM — Field 3' },
-                        { id: 1700000004, name: 'Memorial Day Classic', sport: 'Baseball', start: '2026-05-25', end: '2026-05-28', location: 'New Orleans, LA', teams: 72, times: 'Mon 7:00 AM — Field 5' }
-                    ];
-                    localStorage.setItem('fs_tourney_schedule', JSON.stringify(schedule));
-                }
-                schedule.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t.id;
-                    const sportIcon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏟️';
-                    const dateStr = t.start ? t.start + (t.end ? ' — ' + t.end : '') : '';
-                    const teamStr = t.teams ? ' 👥 ' + t.teams + ' teams' : '';
-                    opt.textContent = sportIcon + ' ' + t.name + (dateStr ? ' (' + dateStr + ')' : '') + teamStr;
-                    sel.appendChild(opt);
-                });
-                // Auto-select if ?tournament= param was set
-                if (window._pendingTournamentId) {
-                    sel.value = window._pendingTournamentId;
-                    onSelectTournament();
-                    window._pendingTournamentId = null;
-                }
-            } catch(e) {}
+
+        function addLoadoutItem(loadoutId) {
+            const itemName = document.getElementById('li-name-' + loadoutId);
+            const itemQty = document.getElementById('li-qty-' + loadoutId);
+            if (!itemName || !itemQty) return;
+            const name = itemName.value.trim();
+            const qty = parseInt(itemQty.value) || 1;
+            if (!name) return;
+            const list = getLoadouts();
+            const ld = list.find(l => l.id === loadoutId);
+            if (!ld) return;
+            ld.items.push({ id: Date.now(), name: name, qty: qty });
+            saveLoadouts(list);
+            itemName.value = '';
+            itemQty.value = '1';
         }
-        function onSelectTournament() {
-            const id = document.getElementById('tourney-select').value;
-            const preview = document.getElementById('tourney-preview');
-            if (!id) {
-                preview.style.display = 'none';
+
+        function removeLoadoutItem(loadoutId, itemId) {
+            const list = getLoadouts();
+            const ld = list.find(l => l.id === loadoutId);
+            if (!ld) return;
+            ld.items = ld.items.filter(it => it.id !== itemId);
+            saveLoadouts(list);
+        }
+
+        function renderLoadouts() {
+            const container = document.getElementById('loadout-list');
+            const list = getLoadouts();
+            if (list.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="big">📦</div><p>No loadouts created yet.</p><div class="small">Define what gear you bring to tournaments — jerseys, bats, balls, coolers, etc.</div></div>';
                 return;
             }
-            try {
-                const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-                const t = schedule.find(x => x.id == id);
-                if (!t) return;
-                // Auto-fill hidden fields
-                document.getElementById('trip-name').value = t.name;
-                document.getElementById('trip-date').value = t.start || '';
-                document.getElementById('trip-location').value = t.location || '';
-                const sportVal = t.sport === 'Soccer' ? 'soccer' : 'baseball';
-                document.getElementById('trip-sport').value = sportVal;
-                // Show preview
-                document.getElementById('preview-name').textContent = t.name;
-                document.getElementById('preview-sport').textContent = (t.sport === 'Soccer' ? '⚽ Soccer' : t.sport === 'Baseball' ? '⚾ Baseball' : '🏟️ Other');
-                const dateStr = t.start ? t.start + (t.end ? ' through ' + t.end : '') : '—';
-                document.getElementById('preview-dates').textContent = dateStr;
-                document.getElementById('preview-location').textContent = t.location || '—';
-                const teamCount = t.teams || 0;
-                document.getElementById('preview-teams').textContent = teamCount ? teamCount + ' teams' : '—';
-                preview.style.display = 'block';
-                // Clear previous jersey selection
-                selectedJerseys = [];
-                renderJerseyPicker();
-                // Auto-set picker filter to match sport
-                if (t.sport === 'Soccer') filterPicker('soccer');
-                else if (t.sport === 'Baseball') filterPicker('baseball');
-            } catch(e) {}
-        }
-        // ─── Jersey Picker ─────────────────────────────────────
-        function renderJerseyPicker() {
-            const picker = document.getElementById('jersey-picker');
-            let html = '';
-            const allJerseys = [];
-            Object.entries(INVENTORY.baseball || {}).forEach(([name, data]) => {
-                allJerseys.push({ name, sport: 'baseball', data });
-            });
-            Object.entries(INVENTORY.soccer || {}).forEach(([name, data]) => {
-                allJerseys.push({ name, sport: 'soccer', data });
-            });
-            const filtered = pickerFilter === 'all' ? allJerseys
-                : allJerseys.filter(j => j.sport === pickerFilter);
-            filtered.forEach(j => {
-                const selected = selectedJerseys.some(s => s.name === j.name);
-                const emoji = j.sport === 'baseball' ? '⚾' : '⚽';
-                html += `<div class="jersey-card ${selected ? 'selected' : ''}" onclick="toggleJersey('${j.name.replace(/'/g, "\\'")}', '${j.sport}')">
-                    <div class="check">✅</div>
-                    <div class="emoji">${emoji}</div>
-                    <div class="jersey-name">${j.name}</div>
-                </div>`;
-            });
-            if (filtered.length === 0) {
-                html = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--gray);font-size:0.9em;">
-                    No jerseys found for this sport.
-                </div>`;
-            }
-            picker.innerHTML = html;
-            updateSelectedSection();
-        }
-        function filterPicker(filter) {
-            pickerFilter = filter;
-            document.querySelectorAll('.sport-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.filter === filter);
-            });
-            renderJerseyPicker();
-        }
-        function getSuggestedTotal(teams) {
-            if (teams >= 100) return 425;
-            if (teams >= 50) return 350;
-            return teams * 15;
-        }
-        function toggleJersey(name, sport) {
-            const idx = selectedJerseys.findIndex(s => s.name === name);
-            if (idx >= 0) {
-                selectedJerseys.splice(idx, 1);
-            } else {
-                // Calculate suggested qty per jersey style
-                let suggestedQty = 10;
-                try {
-                    const id = document.getElementById('tourney-select').value;
-                    if (id) {
-                        const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-                        const t = schedule.find(x => x.id == id);
-                        if (t && t.teams > 0) {
-                            // Distribute suggested total across all selected + this new one
-                            const totalGoal = getSuggestedTotal(t.teams);
-                            const count = selectedJerseys.length + 1;
-                            suggestedQty = Math.ceil(totalGoal / count / 5) * 5;
-                            // Also update existing jerseys to redistribute evenly
-                            selectedJerseys.forEach((item, i) => {
-                                selectedJerseys[i].qty = suggestedQty;
-                            });
-                        }
-                    }
-                } catch(e) {}
-                selectedJerseys.push({ name, sport, qty: suggestedQty, size: 'Mixed' });
-            }
-            renderJerseyPicker();
-        }
-        function updateSelectedSection() {
-            const section = document.getElementById('selected-items-section');
-            const container = document.getElementById('selected-items');
-            if (selectedJerseys.length === 0) {
-                section.style.display = 'none';
-                return;
-            }
-            section.style.display = 'block';
-            let html = '';
-            selectedJerseys.forEach((item, idx) => {
-                const sizeOptions = getSizeOptions(item.sport);
-                html += `<div class="selected-item">
-                    <span class="name">${item.sport === 'baseball' ? '⚾' : '⚽'} ${item.name}</span>
-                    <label>Qty:</label>
-                    <input type="number" value="${item.qty}" min="1" max="999"
-                        onchange="updateItemQty(${idx}, this.value)">
-                    <label>Size:</label>
-                    <select onchange="updateItemSize(${idx}, this.value)">
-                        ${sizeOptions.map(s =>
-                            `<option value="${s}" ${s === item.size ? 'selected' : ''}>${s}</option>`
-                        ).join('')}
-                    </select>
-                    <button class="remove-btn" onclick="removeJersey(${idx})" title="Remove">✕</button>
-                </div>`;
-            });
-            container.innerHTML = html;
-            // Show total vs suggested goal
-            const total = selectedJerseys.reduce((s, i) => s + i.qty, 0);
-            const progressEl = document.getElementById('total-progress');
-            try {
-                const id = document.getElementById('tourney-select').value;
-                if (id) {
-                    const schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-                    const t = schedule.find(x => x.id == id);
-                    if (t && t.teams > 0) {
-                        const goal = getSuggestedTotal(t.teams);
-                        const pct = Math.min(100, Math.round(total / goal * 100));
-                        progressEl.innerHTML = `📊 <b>${total}</b> / <strong>${goal}</strong> suggested total <span style="color:var(--gold);">(${t.teams} teams)</span>
-                            <div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>`;
-                        return;
-                    }
-                }
-            } catch(e) {}
-            progressEl.innerHTML = `📊 <b>${total}</b> total jerseys`;
-        }
-        function getSizeOptions(sport) {
-            if (sport === 'baseball') {
-                return ['Mixed', 'YS', 'YM', 'YL', 'YXL', 'AS'];
-            }
-            return ['Mixed', '20', '22', '24', '26', '28', 'S', 'M', 'L', 'XL'];
-        }
-        function updateItemQty(idx, val) {
-            if (selectedJerseys[idx]) {
-                selectedJerseys[idx].qty = parseInt(val) || 1;
-            }
-            updateSelectedSection();
-        }
-        function updateItemSize(idx, val) {
-            if (selectedJerseys[idx]) {
-                selectedJerseys[idx].size = val;
-            }
-        }
-        function removeJersey(idx) {
-            selectedJerseys.splice(idx, 1);
-            renderJerseyPicker();
-        }
-        // ─── Create Trip ───────────────────────────────────────
-        function createTrip() {
-            const name = document.getElementById('trip-name').value.trim();
-            const date = document.getElementById('trip-date').value;
-            const location = document.getElementById('trip-location').value.trim();
-            const sport = document.getElementById('trip-sport').value;
-            if (!name || !date) {
-                alert('Please fill in trip name and date');
-                return;
-            }
-            if (selectedJerseys.length === 0) {
-                alert('Select at least one jersey');
-                return;
-            }
-            const items = selectedJerseys.map(s => ({
-                name: s.name,
-                sport: s.sport,
-                qty: s.qty,
-                size: s.size
-            }));
-            TRIPS.push({
-                id: Date.now().toString(),
-                name, date,
-                location: location || 'TBD',
-                sport, items,
-                shipped: false
-            });
-            // Auto-set tournament status to 'out' in fs_trip_statuses
-            try {
-                var tourneyId = document.getElementById('tourney-select').value;
-                if (tourneyId) {
-                    var statuses = JSON.parse(localStorage.getItem('fs_trip_statuses') || '{}');
-                    statuses[tourneyId] = 'out';
-                    localStorage.setItem('fs_trip_statuses', JSON.stringify(statuses));
-                }
-            } catch(e) {}
-            saveTrips();
-            clearForm();
-            switchTab('trips');
-        }
-        function clearForm() {
-            document.getElementById('tourney-select').value = '';
-            document.getElementById('tourney-preview').style.display = 'none';
-            document.getElementById('trip-name').value = '';
-            document.getElementById('trip-date').value = '';
-            document.getElementById('trip-location').value = '';
-            document.getElementById('trip-sport').value = 'baseball';
-            selectedJerseys = [];
-            renderJerseyPicker();
-        }
-        // ─── Trip List ─────────────────────────────────────────
-        function renderTrips() {
-            const container = document.getElementById('trip-list');
-            document.getElementById('trip-count').textContent =
-                `${TRIPS.length} trip${TRIPS.length !== 1 ? 's' : ''}`;
-            if (TRIPS.length === 0) {
-                container.innerHTML = `<div class="empty-state">
-                    <span class="big-emoji">📦</span>
-                    <p>No trips yet</p>
-                    <p style="font-size:0.8em;color:var(--border);">Create a trip in the tab above.</p>
-                </div>`;
-                return;
-            }
-            const sorted = [...TRIPS].sort((a, b) => {
-                if (a.shipped !== b.shipped) return a.shipped ? 1 : -1;
-                return new Date(b.date) - new Date(a.date);
-            });
-            container.innerHTML = sorted.map(trip => {
-                const totalItems = trip.items.reduce((s,i) => s + i.qty, 0);
-                const sportIcon = trip.sport === 'baseball' ? '⚾' : trip.sport === 'soccer' ? '⚽' : '🏟️';
-                // Build sport/teams line from schedule
-                var tripSportLine = sportIcon + ' ' + trip.sport;
-                try {
-                    var schedule = JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
-                    var t = schedule.find(function(x){return x.name === trip.name;});
-                    if (t) {
-                        tripSportLine = sportIcon + ' ' + (t.sport || trip.sport) + (t.teams ? ' | 👥 ' + t.teams + ' teams' : '');
-                    }
-                } catch(e) {}
-                var sizeCheckboxes = function(item) {
-                    var sizes = ['SM','MD','LG'];
-                    var checkboxes = sizes.map(function(sz) {
-                        var checked = '';
-                        if (item.size === sz || item.size.indexOf(sz) >= 0) checked = ' checked';
-                        return '<label style="font-size:0.8em;cursor:pointer;display:inline-flex;align-items:center;gap:2px;">' +
-                            '<input type="checkbox" style="width:14px;height:14px;accent-color:var(--gold);"' + checked + '>' +
-                            '<span>' + sz + '</span></label>';
-                    }).join('&nbsp;');
-                    return checkboxes;
-                };
-                var itemsLines = trip.items.map(function(item) {
-                    return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;font-size:0.82em;border-bottom:1px solid var(--border);">' +
-                        '<span style="flex:1;color:var(--white);">' + item.name + '</span>' +
-                        '<span style="color:var(--gold);font-weight:600;">' + item.qty + 'x</span>' +
-                        '&nbsp;' + sizeCheckboxes(item) +
-                    '</div>';
-                }).join('');
-                return '<div class="trip-card ' + (trip.shipped ? 'shipped' : '') + '" style="position:relative;overflow:hidden;">' +
-                    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">' +
-                        '<span class="trip-name" style="font-size:0.9em;">📦 ' + trip.name + '</span>' +
-                        '<span class="trip-status ' + (trip.shipped ? 'shipped' : 'ready') + '" style="font-size:0.65em;">' + (trip.shipped ? 'Shipped' : 'Ready') + '</span>' +
-                    '</div>' +
-                    '<div style="display:flex;gap:10px;font-size:0.8em;color:var(--gray);margin-bottom:6px;">' +
-                        '<span>' + tripSportLine + '</span>' +
-                    '</div>' +
-                    '<div style="border-top:1px solid var(--gold-dark);border-bottom:1px solid var(--gold-dark);padding:4px 0;margin:4px 0;">' +
-                        itemsLines +
-                    '</div>' +
-                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:0.82em;">' +
-                        '<span style="color:var(--gray);">Total: <strong style="color:var(--gold);">' + totalItems + '</strong> items</span>' +
-                        '<div style="display:flex;gap:6px;">' +
-                            '<button class="btn-sm blue" onclick="printPackingSheet(\'' + trip.id + '\')" style="padding:4px 10px;font-size:0.75em;">🖨️ Print</button>' +
-                            (trip.shipped
-                                ? '<span style="color:var(--green);font-weight:600;font-size:0.8em;">📦 Shipped ✅</span>'
-                                : '<button class="btn-sm green" onclick="markShipped(\'' + trip.id + '\')" style="padding:4px 10px;font-size:0.75em;">📦 Ship</button>') +
-                            '<button class="btn-sm red" onclick="deleteTrip(\'' + trip.id + '\')" style="padding:4px 10px;font-size:0.75em;">🗑️</button>' +
+            container.innerHTML = '<div class="loadout-grid">' + list.map(l => {
+                const itemCount = l.items.length;
+                return '<div class="loadout-card">' +
+                    '<div class="loadout-header">' +
+                        '<span class="loadout-name">' + l.name + '</span>' +
+                        '<div class="btn-group">' +
+                            '<span class="loadout-count">' + itemCount + ' item' + (itemCount !== 1 ? 's' : '') + '</span>' +
+                            '<button class="btn btn-xs btn-danger" onclick="deleteLoadout(' + l.id + ')">🗑️</button>' +
                         '</div>' +
+                    '</div>' +
+                    '<div class="loadout-items">' +
+                        l.items.map(function(it) {
+                            return '<div class="loadout-item">' +
+                                '<span class="li-name">' + it.name + '</span>' +
+                                '<div class="btn-group">' +
+                                    '<span class="li-qty">×' + it.qty + '</span>' +
+                                    '<button class="btn btn-xs btn-danger" onclick="removeLoadoutItem(' + l.id + ',' + it.id + ')">✕</button>' +
+                                '</div>' +
+                            '</div>';
+                        }).join('') +
+                    '</div>' +
+                    '<div class="loadout-edit-item">' +
+                        '<input type="text" id="li-name-' + l.id + '" placeholder="New item" autocomplete="off">' +
+                        '<input type="number" id="li-qty-' + l.id + '" placeholder="Qty" min="1" value="1">' +
+                        '<button class="btn btn-sm btn-primary" onclick="addLoadoutItem(' + l.id + ')">+</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('') + '</div>';
+        }
+
+        // === PACKING TAB ===
+
+        function switchTab(tab, btn) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-bar button').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            document.getElementById('tab-loadouts').style.display = tab === 'loadouts' ? '' : 'none';
+            document.getElementById('tab-packing').style.display = tab === 'packing' ? '' : 'none';
+            if (tab === 'packing') populatePackingSelectors();
+        }
+
+        function getTournaments() {
+            return JSON.parse(localStorage.getItem('fs_tourney_schedule') || '[]');
+        }
+
+        function populatePackingSelectors() {
+            // Loadout checkboxes
+            const loadouts = getLoadouts();
+            const lcContainer = document.getElementById('packing-loadout-checkboxes');
+            if (loadouts.length === 0) {
+                lcContainer.innerHTML = '<p style="color:var(--gray-dark);font-size:0.85em;">No loadouts created yet. Create some in the Loadouts tab first.</p>';
+            } else {
+                lcContainer.innerHTML = '<div class="loadout-select-grid">' + loadouts.map(function(l) {
+                    return '<label><input type="checkbox" class="packing-loadout-cb" value="' + l.id + '" checked>' + l.name + ' (' + l.items.length + ' items)</label>';
+                }).join('') + '</div>';
+            }
+
+            // Tournament checkboxes — all upcoming
+            const allTourneys = getTournaments();
+            var now = new Date();
+            var upcoming = allTourneys.filter(function(t) { return !t.end || new Date(t.end + 'T23:59:59') >= now; });
+            var tcContainer = document.getElementById('packing-tourney-checkboxes');
+            if (upcoming.length === 0) {
+                tcContainer.innerHTML = '<p style="color:var(--gray-dark);font-size:0.85em;">No upcoming tournaments in the schedule.</p>';
+            } else {
+                tcContainer.innerHTML = '<div class="loadout-select-grid">' + upcoming.map(function(t) {
+                    var dateStr = t.start ? new Date(t.start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+                    var icon = t.sport === 'Soccer' ? '⚽' : t.sport === 'Baseball' ? '⚾' : '🏅';
+                    return '<label><input type="checkbox" class="packing-tourney-cb" value="' + t.id + '" checked>' + icon + ' ' + t.name + (dateStr ? ' — ' + dateStr : '') + '</label>';
+                }).join('') + '</div>';
+            }
+
+            // Show session history
+            renderSessionHistory();
+        }
+
+        function calculatePackingList() {
+            var loadoutCbs = document.querySelectorAll('.packing-loadout-cb:checked');
+            var loadoutIds = Array.from(loadoutCbs).map(function(cb) { return parseInt(cb.value); });
+            var allLoadouts = getLoadouts();
+            var selectedLoadouts = allLoadouts.filter(function(l) { return loadoutIds.indexOf(l.id) !== -1; });
+
+            var tourneyCbs = document.querySelectorAll('.packing-tourney-cb:checked');
+            var tourneyIds = Array.from(tourneyCbs).map(function(cb) { return parseInt(cb.value); });
+            var allTourneys = getTournaments();
+            var selectedTourneys = allTourneys.filter(function(t) { return tourneyIds.indexOf(t.id) !== -1; });
+
+            if (selectedLoadouts.length === 0 || selectedTourneys.length === 0) {
+                alert('Select at least one loadout and one tournament.');
+                return;
+            }
+
+            // Group tournaments by site address
+            var sites = {};
+            selectedTourneys.forEach(function(t) {
+                var site = t.address || t.location || 'Main Site';
+                if (!sites[site]) sites[site] = [];
+                sites[site].push(t);
+            });
+
+            // Build combined packing list — multiply by number of distinct sites
+            var masterList = {};
+            var totalTourneys = selectedTourneys.length;
+            var siteCount = Object.keys(sites).length;
+
+            selectedLoadouts.forEach(function(ld) {
+                ld.items.forEach(function(item) {
+                    var totalQty = item.qty * siteCount;
+                    if (masterList[item.name]) {
+                        masterList[item.name].qty += totalQty;
+                        masterList[item.name].from.push(ld.name);
+                    } else {
+                        masterList[item.name] = { qty: totalQty, from: [ld.name] };
+                    }
+                });
+            });
+
+            var uniqueItems = Object.keys(masterList).length;
+            var totalItems = 0;
+            Object.values(masterList).forEach(function(v) { totalItems += v.qty; });
+
+            // Render results
+            document.getElementById('packing-results').style.display = '';
+            document.getElementById('packing-total-stats').innerHTML =
+                '<div class="pt-stat"><div class="pt-num">' + totalTourneys + '</div><div class="pt-label">Tournaments</div></div>' +
+                '<div class="pt-stat"><div class="pt-num">' + siteCount + '</div><div class="pt-label">Site' + (siteCount !== 1 ? 's' : '') + '</div></div>' +
+                '<div class="pt-stat"><div class="pt-num">' + uniqueItems + '</div><div class="pt-label">Item Types</div></div>' +
+                '<div class="pt-stat"><div class="pt-num">' + totalItems + '</div><div class="pt-label">Total Items</div></div>';
+
+            var itemsHtml = Object.keys(masterList).sort().map(function(name) {
+                var item = masterList[name];
+                return '<div class="packing-item">' +
+                    '<div><span class="pi-name">' + name + '</span><br><span class="pi-from">From: ' + item.from.join(', ') + ' × ' + siteCount + ' site' + (siteCount !== 1 ? 's' : '') + '</span></div>' +
+                    '<span class="pi-qty">×' + item.qty + '</span>' +
+                '</div>';
+            }).join('');
+            document.getElementById('packing-items-list').innerHTML = itemsHtml;
+
+            // Save to session history
+            savePackingSession(selectedLoadouts, selectedTourneys, masterList, totalTourneys, siteCount, uniqueItems, totalItems);
+        }
+
+        // === PACKING SESSION HISTORY ===
+
+        function savePackingSession(loadouts, tourneys, items, totalTourneys, siteCount, uniqueItems, totalItems) {
+            var sessions = JSON.parse(localStorage.getItem('fs_packing_sessions') || '[]');
+            sessions.unshift({
+                id: Date.now(),
+                date: new Date().toISOString(),
+                loadoutNames: loadouts.map(function(l) { return l.name; }),
+                tourneyNames: tourneys.map(function(t) { return t.name; }),
+                totalTourneys: totalTourneys,
+                siteCount: siteCount,
+                uniqueItems: uniqueItems,
+                totalItems: totalItems,
+                itemCount: Object.keys(items).length
+            });
+            if (sessions.length > 20) sessions = sessions.slice(0, 20);
+            localStorage.setItem('fs_packing_sessions', JSON.stringify(sessions));
+            renderSessionHistory();
+        }
+
+        function renderSessionHistory() {
+            var sessions = JSON.parse(localStorage.getItem('fs_packing_sessions') || '[]');
+            var container = document.getElementById('session-history');
+            var list = document.getElementById('session-history-list');
+            if (sessions.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = '';
+            list.innerHTML = sessions.slice(0, 5).map(function(s) {
+                var d = new Date(s.date);
+                var dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                return '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:0.82em;">' +
+                    '<div style="display:flex;justify-content:space-between;">' +
+                        '<span style="color:var(--gold);font-weight:600;">' + dateStr + '</span>' +
+                        '<span style="color:var(--gray);">' + s.totalItems + ' items · ' + s.totalTourneys + ' tourneys</span>' +
+                    '</div>' +
+                    '<div style="color:var(--gray);font-size:0.85em;margin-top:2px;">' +
+                        'Loadouts: ' + s.loadoutNames.join(', ') +
+                    '</div>' +
+                    '<div style="color:var(--gray-dark);font-size:0.8em;">' +
+                        'Tourneys: ' + s.tourneyNames.join(', ') +
                     '</div>' +
                 '</div>';
             }).join('');
         }
-        function saveTrips() {
-            localStorage.setItem('fs_trips_pack', JSON.stringify(TRIPS));
-            renderTrips();
-            populateTourneySelect();
-        }
-        function markShipped(id) {
-            const trip = TRIPS.find(t => t.id === id);
-            if (trip && confirm(`Mark "${trip.name}" as shipped?`)) {
-                trip.shipped = true;
-                saveTrips();
-            }
-        }
-        function markReady(id) {
-            const trip = TRIPS.find(t => t.id === id);
-            if (trip) {
-                trip.shipped = false;
-                saveTrips();
-            }
-        }
-        function deleteTrip(id) {
-            const trip = TRIPS.find(t => t.id === id);
-            if (trip && confirm(`Delete "${trip.name}"?`)) {
-                TRIPS = TRIPS.filter(t => t.id !== id);
-                saveTrips();
-            }
-        }
-        // ─── Print Packing Sheet ────────────────────────────────
-        function printPackingSheet(id) {
-            const trip = TRIPS.find(t => t.id === id);
-            if (!trip) return;
-            const w = window.open('', '_blank');
-            const today = new Date().toLocaleDateString();
-            // Group items by sport for cleaner display
-            const baseballItems = trip.items.filter(i => i.sport === 'baseball');
-            const soccerItems = trip.items.filter(i => i.sport === 'soccer');
-            const renderItems = (items, sportEmoji) => items.map(i => `
-                <div class="print-check-row">
-                    <div class="checkbox"></div>
-                    <span class="item-detail">${sportEmoji} ${i.name}</span>
-                    <span class="item-qty">${i.qty} × ${i.size}</span>
-                </div>
-            `).join('');
-            let bodyHtml = '';
-            if (baseballItems.length > 0) {
-                bodyHtml += `<div class="print-card">
-                    <h4>⚾ Baseball Jerseys</h4>
-                    ${renderItems(baseballItems, '⚾')}
-                </div>`;
-            }
-            if (soccerItems.length > 0) {
-                bodyHtml += `<div class="print-card">
-                    <h4>⚽ Soccer Jerseys</h4>
-                    ${renderItems(soccerItems, '⚽')}
-                </div>`;
-            }
-            w.document.write(`
-                <html><head>
-                <title>Packing Sheet - ${trip.name}</title>
-                <style>
-                    * { margin: 0; padding: 0; box-sizing: border-box; }
-                    body {
-                        font-family: 'Inter', Arial, sans-serif;
-                        padding: 40px;
-                        max-width: 800px;
-                        width: 100%;
-                        margin: 0 auto;
-                        background: white;
-                        color: #111;
-                    }
-                    .header-print {
-                        text-align: center;
-                        border-bottom: 3px solid #C9A227;
-                        padding-bottom: 16px;
-                        margin-bottom: 20px;
-                    }
-                    .header-print h1 { color: #111; font-size: 1.5em; }
-                    .header-print .sub { color: #666; font-size: 0.85em; margin-top: 4px; }
-                    .trip-meta {
-                        display: flex;
-                        gap: 24px;
-                        flex-wrap: wrap;
-                        font-size: 0.9em;
-                        color: #444;
-                        margin-bottom: 20px;
-                        padding: 12px 16px;
-                        background: #f5f5f5;
-                        border-radius: 8px;
-                    }
-                    .trip-meta strong { color: #111; }
-                    .print-card {
-                        border: 1px solid #ddd;
-                        border-radius: 8px;
-                        padding: 16px;
-                        margin-bottom: 16px;
-                        page-break-inside: avoid;
-                    }
-                    .print-card h4 {
-                        font-size: 1em;
-                        border-bottom: 2px solid #C9A227;
-                        padding-bottom: 8px;
-                        margin-bottom: 10px;
-                        color: #333;
-                    }
-                    .print-check-row {
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        padding: 10px 4px;
-                        border-bottom: 1px dashed #eee;
-                    }
-                    .print-check-row:last-child { border-bottom: none; }
-                    .print-check-row .checkbox {
-                        width: 22px;
-                        height: 22px;
-                        border: 2px solid #999;
-                        border-radius: 4px;
-                        flex-shrink: 0;
-                    }
-                    .print-check-row .item-detail {
-                        font-size: 0.95em;
-                        color: #333;
-                    }
-                    .print-check-row .item-qty {
-                        font-weight: 700;
-                        color: #C9A227;
-                        margin-left: auto;
-                        font-size: 0.9em;
-                    }
-                    .summary-row {
-                        display: flex;
-                        justify-content: space-between;
-                        padding: 8px 0;
-                        border-top: 2px solid #ddd;
-                        margin-top: 12px;
-                        font-weight: 600;
-                        font-size: 0.95em;
-                    }
-                    .footer-print {
-                        margin-top: 30px;
-                        padding-top: 16px;
-                        border-top: 1px solid #ddd;
-                        display: flex;
-                        justify-content: space-between;
-                        font-size: 0.8em;
-                        color: #999;
-                    }
-                    @media print {
-                        body { padding: 0.5in; }
-                        .no-print { display: none !important; }
-                        .print-card { break-inside: avoid; }
-                    }
-                </style>
-                </head><body>
-                <div class="header-print">
-                    <h1>📦 Packing Sheet</h1>
-                    <div class="sub">Future Stars Sports Co</div>
-                </div>
-                <div class="trip-meta">
-                    <span><strong>Trip:</strong> ${trip.name}</span>
-                    <span><strong>Date:</strong> ${trip.date}</span>
-                    <span><strong>Location:</strong> ${trip.location || 'TBD'}</span>
-                    <span><strong>Sport:</strong> ${trip.sport === 'baseball' ? '⚾ Baseball' : trip.sport === 'soccer' ? '⚽ Soccer' : '🏟️ Both'}</span>
-                    <span><strong>Status:</strong> ${trip.shipped ? '✅ SHIPPED' : '📦 Ready to Pack'}</span>
-                </div>
-                ${bodyHtml}
-                <div class="summary-row">
-                    <span>Total Items to Pack</span>
-                    <span>${trip.items.reduce((s,i) => s + i.qty, 0)}</span>
-                </div>
-                <div class="footer-print">
-                    <span>Printed: ${today}</span>
-                    <span>☐ Check each item as packed</span>
-                </div>
-                <div class="no-print" style="text-align:center;margin-top:30px;">
-                    <button onclick="window.print()" style="padding:12px 32px;background:#C9A227;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:1em;">🖨️ Print This Sheet</button>
-                </div>
-                <script src="fs-sync.js?v=1"></script>
-</body></html>
-            `);
+
+        // === PRINT PACKING LIST ===
+
+        function printPackingList() {
+            var itemsContainer = document.getElementById('packing-items-list');
+            var itemRows = itemsContainer.querySelectorAll('.packing-item');
+            if (itemRows.length === 0) { alert('Calculate a packing list first.'); return; }
+
+            var statsContainer = document.getElementById('packing-total-stats');
+            var stats = statsContainer.querySelectorAll('.pt-stat');
+            var totalTourneys = stats[0] ? stats[0].querySelector('.pt-num').textContent : '?';
+            var totalSites = stats[1] ? stats[1].querySelector('.pt-num').textContent : '?';
+
+            var w = window.open('', '_blank');
+            var today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            var itemsHtml = '';
+            itemRows.forEach(function(row) {
+                var name = row.querySelector('.pi-name') ? row.querySelector('.pi-name').textContent : 'Item';
+                var qty = row.querySelector('.pi-qty') ? row.querySelector('.pi-qty').textContent : '×0';
+                var from = row.querySelector('.pi-from') ? row.querySelector('.pi-from').textContent : '';
+                itemsHtml += '<div class="print-check-row">' +
+                    '<div class="checkbox"></div>' +
+                    '<span class="item-detail">' + name + '</span>' +
+                    '<span style="font-size:0.78em;color:#999;margin-left:8px;">' + from + '</span>' +
+                    '<span class="item-qty">' + qty + '</span>' +
+                '</div>';
+            });
+
+            w.document.write('<!DOCTYPE html><html><head><title>Packing List — Future Stars</title>' +
+                '<style>' +
+                    '* { margin: 0; padding: 0; box-sizing: border-box; }' +
+                    'body { font-family: "Inter", Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; background: white; color: #111; }' +
+                    '.header-print { text-align: center; border-bottom: 3px solid #C9A227; padding-bottom: 16px; margin-bottom: 20px; }' +
+                    '.header-print h1 { color: #111; font-size: 1.5em; }' +
+                    '.header-print .sub { color: #666; font-size: 0.85em; margin-top: 4px; }' +
+                    '.meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.9em; color: #444; margin-bottom: 20px; padding: 12px 16px; background: #f5f5f5; border-radius: 8px; }' +
+                    '.meta strong { color: #111; }' +
+                    '.print-card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; }' +
+                    '.print-card h4 { font-size: 1em; border-bottom: 2px solid #C9A227; padding-bottom: 8px; margin-bottom: 10px; color: #333; }' +
+                    '.print-check-row { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px dashed #eee; }' +
+                    '.print-check-row:last-child { border-bottom: none; }' +
+                    '.print-check-row .checkbox { width: 22px; height: 22px; border: 2px solid #999; border-radius: 4px; flex-shrink: 0; }' +
+                    '.print-check-row .item-detail { font-size: 0.95em; color: #333; }' +
+                    '.print-check-row .item-qty { font-weight: 700; color: #C9A227; margin-left: auto; font-size: 0.9em; }' +
+                    '.summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-top: 2px solid #ddd; margin-top: 12px; font-weight: 600; font-size: 0.95em; }' +
+                    '.footer-print { margin-top: 30px; padding-top: 16px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; font-size: 0.8em; color: #999; }' +
+                    '@media print { body { padding: 0.5in; } .no-print { display: none !important; } .print-card { break-inside: avoid; } }' +
+                '</style></head><body>' +
+                '<div class="header-print">' +
+                    '<h1>📦 Packing List</h1>' +
+                    '<div class="sub">Future Stars Sports Co</div>' +
+                '</div>' +
+                '<div class="meta">' +
+                    '<span><strong>Date:</strong> ' + today + '</span>' +
+                    '<span><strong>Tournaments:</strong> ' + totalTourneys + '</span>' +
+                    '<span><strong>Sites:</strong> ' + totalSites + '</span>' +
+                '</div>' +
+                '<div class="print-card">' +
+                    '<h4>📦 Items to Pack</h4>' +
+                    itemsHtml +
+                '</div>' +
+                '<div class="summary-row">' +
+                    '<span>Total Items</span>' +
+                    '<span>' + (stats[3] ? stats[3].querySelector('.pt-num').textContent : '?') + '</span>' +
+                '</div>' +
+                '<div class="footer-print">' +
+                    '<span>Printed: ' + today + '</span>' +
+                    '<span>☐ Check each item as packed</span>' +
+                '</div>' +
+                '<div class="no-print" style="text-align:center;margin-top:30px;">' +
+                    '<button onclick="window.print()" style="padding:12px 32px;background:#C9A227;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:1em;">🖨️ Print This Sheet</button>' +
+                '</div>' +
+            '</body></html>');
             w.document.close();
         }
+
+        // === INIT ===
+        renderLoadouts();
+        window.addEventListener('fs-sync-merged', function() { renderLoadouts(); });
+    </script>
+    <script src="fs-sync.js?v=1"></script>
+</body>
+</html>
