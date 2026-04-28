@@ -29,6 +29,7 @@
         { page: 'pj-planner', label: 'PJ Trip Maker', icon: '🚐', roles: ['owner', 'logistics', 'tournament'] },
         { page: 'sortly-upload', label: 'Sortly Upload', icon: '📤', roles: ['owner', 'inventory', 'tournament'] },
         { page: 'trip-tracker', label: 'Trip Tracker', icon: '📍', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
+        { page: 'loadout', label: 'Loadout', icon: '📦', roles: ['owner', 'logistics', 'tournament', 'inventory'] },
 
         { page: 'departments', label: 'Departments', icon: '🏢', roles: ['owner'] },
         { divider: true },
@@ -235,7 +236,6 @@
         .fs-home-btn.active {
             background: linear-gradient(135deg, rgba(201,162,39,0.2), rgba(201,162,39,0.08)) !important;
             color: #E8C84B !important;
-        }
         }
         .fs-tab-btn.open {
             color: #E8C84B;
@@ -486,7 +486,7 @@
 
     // Close on outside click
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('#fs-top-nav')) {
+        if (!e.target.closest('#fs-top-nav') && !e.target.closest('#fs-mobile-menu')) {
             closeAllDropdowns();
         }
     });
