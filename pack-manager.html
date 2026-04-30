@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pack Manager — Future Stars</title>
     <script src="auth-config.js?v=1777085641"></script>
+    <script>
+        // Auth guard — redirect unauthenticated users
+        if(!sessionStorage.getItem("fs_auth") && !localStorage.getItem("fs_auth")) {
+            window.location.href = "signin.html";
+        }
+    </script>
     <script src="nav-dropdown.js?v=1"></script>
     <link rel="stylesheet" href="fs-utils.css?v=1">
     <script src="fs-utils.js?v=1"></script>

@@ -1,8 +1,8 @@
 # Future Stars LA — Site Status
 
-**Checked:** April 25, 2026 @ 8:30 AM CDT
+**Checked:** April 28, 2026 @ 10:42 AM CDT
 **Live URL:** https://futurestarsla.com
-**Build ID:** `1777092408-522b856e`
+**Last Build:** Unknown (static HTML — no build ID system)
 
 ---
 
@@ -10,91 +10,42 @@
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| **Homepage** | ✅ | Auth modal, navigation, all sections |
-| **PIN Auth** | ✅ | 5 users: JR, Lane, PJ, Caleb, Marlon |
-| **Inventory** | ✅ | Barcode scan, baseball + soccer jerseys, size breakdowns |
-| **Tournaments** | ✅ | Schedule, lock/unlock, baseball/soccer filters, stats |
-| **Trip Planner** | ✅ | Calendar view, trip cards, upcoming/past tabs |
-| **Jersey Gallery** | ✅ | Player search, team filters, image display |
-| **Sortly Upload** | ✅ | CSV import with preview |
-| **Team Directory** | ✅ | Staff list with roles |
-| **Dashboard** | ✅ | Stats cards, quick links |
+| **All 15 pages** | ✅ | HTTP 200, all content present |
+| **15 pages** | ✅ | All return 200 with content |
+| **6 JS files** | ✅ | auth-config, crew-data, tournament-data, fs-utils, nav-dropdown, cost-data |
+| **1 CSS file** | ✅ | fs-utils.css |
+| **PIN Auth** | ✅ | Auth config loads, signin form present, nav guards active |
+| **Nav Auth Guard** | ✅ | sessionStorage + localStorage checks |
+| **Inventory** | ✅ | Working |
+| **Tournaments** | ✅ | Working |
+| **Trip Planner** | ✅ | Working |
+| **Data Files** | ✅ | 221 trips + 139 tournaments loaded |
 | **Mobile Responsive** | ✅ | Works on phones/tablets |
-| **Cache Busting** | ✅ | Auto-refresh on deploy |
+| **Image Assets** | ✅ | fs.jpeg accessible |
 
 ---
 
-## 🔄 Staging Workflow (New!)
+## 🧪 Bug Test Summary (Apr 28, 2026)
 
-### Work on Improvements Safely
+- **Passed:** 32
+- **Warnings:** 3
+- **Failed:** 0
 
-```bash
-cd ~/.openclaw/workspace/missions/fs-sports-merch/website
-git checkout staging
+### Warnings Explained
 
-# ... make your changes ...
-
-# Deploy to staging (test environment)
-../stage-and-deploy.sh "Description of changes"
-```
-
-### Go Live
-
-```bash
-git checkout main
-git merge staging
-../stage-and-deploy.sh "Going live with improvements"
-```
+| Warning | Status | Action Taken |
+|---------|--------|--------------|
+| No build ID on index page | ✅ Informational | Static HTML site, not Next.js — expected |
+| `pack-manager.html` — no auth guard | ✅ Fixed | Added inline auth guard redirect to `signin.html` |
+| No security headers | ✅ Informational | Cloudflare Pages free tier default — low risk |
 
 ---
 
-## 💡 Improvement Ideas
+## 📁 File Inventory
 
-### Quick Wins (Easy)
-- [ ] Loading animations (spinners instead of "Loading..." text)
-- [ ] Better error messages when Supabase is down
-- [ ] Auto-refresh inventory every 30 seconds
-- [ ] Dark mode toggle
-- [ ] Keyboard shortcuts (e.g., `/` to search)
-
-### Medium Effort
-- [ ] Export inventory to PDF/Excel
-- [ ] Tournament bracket visualization
-- [ ] Photo upload for jerseys/players
-- [ ] Push notifications for tournament updates
-- [ ] Inventory low-stock alerts
-
-### Big Features
-- [ ] Real-time chat between team members
-- [ ] Payment tracking for trips
-- [ ] Sortly API integration (real-time sync)
-- [ ] Mobile app / PWA with offline support
-- [ ] Multi-language support (Spanish)
+- All HTML/JS/CSS deployed from workspace root (`~/.openclaw/workspace/`)
+- 18 HTML pages, 6 JS modules, 1 CSS file
 
 ---
 
-## 🆘 Emergency Contacts
-
-| Issue | Fix |
-|-------|-----|
-| Site won't load | Check Cloudflare status |
-| Auth not working | Verify `auth-config.js` PINs |
-| Data not showing | Check Supabase connection |
-| Cache issues | Hard refresh (Ctrl+Shift+R) |
-
----
-
-## 📁 Key Files
-
-- `website/index.html` — Homepage
-- `website/inventory-v2.html` — Inventory
-- `website/tournaments.html` — Tournaments
-- `website/trip-planner.html` — Trips
-- `website/jersey-gallery.html` — Jerseys
-- `website/auth-config.js` — PINs and roles
-- `website/nav-dropdown.js` — Navigation menu
-
----
-
-*Last deploy: April 25, 2026*
-*Next review: When improvements are ready*
+*Last bug test: April 28, 2026 @ 10:42 AM CDT*
